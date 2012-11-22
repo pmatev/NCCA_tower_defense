@@ -1,70 +1,71 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#ifndef NODE_H
+#define NODE_H
 
 #include <ngl/Vec3.h>
-
 //-------------------------------------------------------------------//
-/// @file entity.h
-/// @brief The base class for all renderable objects in the game
+/// @file node.h
+/// @brief the class which represents each grid location on which a static
+/// entity can be placed
 /// @author Peter May
 /// @version 1
 /// @date 22/11/12
 /// Revision History :
 /// Initial Version 22/11/12
-/// @class Entity
+/// @class Node
 //-------------------------------------------------------------------//
 
-class Entity
+class Node
 {
 public:
   //-------------------------------------------------------------------//
-  /// @brief a parameterised constructor
-  /// @param [in] _pos, a vector containing the initial position in 3D
-  /// space of the entity
-  /// @param [in] _health, the initial health value of the entity
+  /// @brief parameterised constructor
+  /// @param [in] _pos, a const reference to an ngl vector containing the
+  /// position with which to create the node
   //-------------------------------------------------------------------//
 
-  Entity(const ngl::Vec3 & _pos, float _health);
+  Node(const ngl::Vec3 & _pos);
 
   //-------------------------------------------------------------------//
-  /// @brief the destructor
+  /// @brief parameterised constructor
+  /// @param [in] _posX, the X position with which to create the node
+  /// @param [in] _posY, the Y position with which to create the node
+  /// @param [in] _posZ, the Z position with which to create the node
   //-------------------------------------------------------------------//
 
-  ~Entity();
+  Node(float _posX, float _posY, float _posZ);
 
   //-------------------------------------------------------------------//
-  /// @brief a virtual method which will update the entity when
-  /// implemented in child classes
+  /// @brief destructor
   //-------------------------------------------------------------------//
 
-  virtual void update()=0;
+  ~Node();
 
   //-------------------------------------------------------------------//
-  /// @brief a virtual method which will draw the entity when
-  /// implemented in child classes
+  /// @brief get method for the m_isOccupied variable
   //-------------------------------------------------------------------//
 
-  virtual void draw()=0;
+  inline bool getIsOccupied() {return m_isOccupied;}
 
   //-------------------------------------------------------------------//
-  /// @brief a method which will publish the entity's position to the
-  /// central database
+  /// @brief set method for the m_isOccupied variable
   //-------------------------------------------------------------------//
 
-  void publish();
+  inline void setIsOccupied(bool _isOccupied) {m_isOccupied = _isOccupied;}
 
 private:
   //-------------------------------------------------------------------//
-  /// @brief the vector to store the position of the entity
+  /// @brief The position in 3D space of the node
   //-------------------------------------------------------------------//
 
   ngl::Vec3 m_pos;
 
   //-------------------------------------------------------------------//
-  /// @brief the health value of the entity
+  /// @brief A boolean flag stating whether the node is occupied or
+  /// not
   //-------------------------------------------------------------------//
 
-  float m_health;
+  bool m_isOccupied;
+
 };
 
-#endif // ENTITY_H
+#endif // NODE_H

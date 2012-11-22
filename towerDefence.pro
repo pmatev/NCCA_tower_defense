@@ -22,9 +22,15 @@ INCLUDEPATH +=./include
 #project files
 
 SOURCES += src/main.cpp \
-    src/entity.cpp
+    src/entity.cpp \
+    src/staticentity.cpp \
+    src/node.cpp \
+    src/dynamicentity.cpp
 HEADERS += \
-    include/entity.h
+    include/entity.h \
+    include/staticentity.h \
+    include/node.h \
+    include/dynamicentity.h
 
 #including the Imath Library
 

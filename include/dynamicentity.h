@@ -1,70 +1,73 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#ifndef DYNAMICENTITY_H
+#define DYNAMICENTITY_H
 
-#include <ngl/Vec3.h>
+#include "entity.h"
 
 //-------------------------------------------------------------------//
-/// @file entity.h
-/// @brief The base class for all renderable objects in the game
+/// @file dynamicentity.h
+/// @brief The base class for all moving renderable objects in the
+/// game
 /// @author Peter May
 /// @version 1
 /// @date 22/11/12
 /// Revision History :
 /// Initial Version 22/11/12
-/// @class Entity
+/// @class DynamicEntity
 //-------------------------------------------------------------------//
 
-class Entity
+class DynamicEntity : public Entity
 {
 public:
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
+  /// @param [in] _damage, a float to initialise the damage value
+  /// @param [in] _aimVector, a vector to initialise the aim vector
+  /// @param [in] __maxVelocity, a float value describing the maximum
+  /// velocity of the dynamic entity
   /// @param [in] _pos, a vector containing the initial position in 3D
-  /// space of the entity
-  /// @param [in] _health, the initial health value of the entity
+  /// space of the entity, passed to the entity constructor
+  /// @param [in] _health, the initial health value of the entity,
+  /// passed to the entity constructor
   //-------------------------------------------------------------------//
 
-  Entity(const ngl::Vec3 & _pos, float _health);
+  DynamicEntity(
+      float _damage,
+      const ngl::vec3 & _aimVector,
+      float _maxVelocity,
+      const ngl::Vec3 & _pos,
+      float _health
+      );
 
   //-------------------------------------------------------------------//
   /// @brief the destructor
   //-------------------------------------------------------------------//
 
-  ~Entity();
+  ~DynamicEntity();
 
   //-------------------------------------------------------------------//
-  /// @brief a virtual method which will update the entity when
-  /// implemented in child classes
+  /// @brief a virtual brain method, to be implemented in children
   //-------------------------------------------------------------------//
 
-  virtual void update()=0;
-
-  //-------------------------------------------------------------------//
-  /// @brief a virtual method which will draw the entity when
-  /// implemented in child classes
-  //-------------------------------------------------------------------//
-
-  virtual void draw()=0;
-
-  //-------------------------------------------------------------------//
-  /// @brief a method which will publish the entity's position to the
-  /// central database
-  //-------------------------------------------------------------------//
-
-  void publish();
+  virtual ngl::Vec3 brain() = 0;
 
 private:
   //-------------------------------------------------------------------//
-  /// @brief the vector to store the position of the entity
+  /// @brief a damage value for the dynamic entity
   //-------------------------------------------------------------------//
 
-  ngl::Vec3 m_pos;
+  float m_damage;
 
   //-------------------------------------------------------------------//
-  /// @brief the health value of the entity
+  /// @brief The the aim vector of the dynamic entity
   //-------------------------------------------------------------------//
 
-  float m_health;
+  ngl::Vec3 m_aimVector;
+
+  //-------------------------------------------------------------------//
+  /// @brief The maximum velocity of the dynamic entity
+  //-------------------------------------------------------------------//
+
+  float m_maxVelocity;
 };
 
-#endif // ENTITY_H
+#endif // DYNAMICENTITY_H
