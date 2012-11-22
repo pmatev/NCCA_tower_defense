@@ -1,7 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <Imath/ImathVec.h>
+#include <ImathVec.h>
 
 class Entity
 {
