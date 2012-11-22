@@ -28,6 +28,12 @@ HEADERS += \
 
 #including the Imath Library
 
-LIBS += -L/usr/lib64 -lImath
-INCLUDEPATH += /usr/local/include/OpenEXR
-DEPENDPATH += /usr/lib64
+#LIBS += -L/usr/lib64 -lImath
+#INCLUDEPATH += /usr/local/include/OpenEXR
+#DEPENDPATH += /usr/lib64
+
+#including the NGL library
+
+LIBS +=  -L/$(HOME)/NGL/lib -l NGL
+INCLUDEPATH += $$(HOME)/NGL/include/
+DEPENDPATH += $$(HOME)/NGL/include/
