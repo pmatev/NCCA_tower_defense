@@ -13,7 +13,7 @@ Entity::Entity(const ngl::Vec3 & _pos, float _health):
 
 Entity::~Entity()
 {
-  //currently using default deconstructor
+  //currently using default destructor
 }
 
 //-------------------------------------------------------------------//
@@ -21,7 +21,6 @@ Entity::~Entity()
 void Entity::publish()
 {
   //yet to be implemented
-  std::cout<<"publishing "<<m_pos.m_x<<m_pos.m_y<<m_pos.m_z;
 }
 
 //-------------------------------------------------------------------//

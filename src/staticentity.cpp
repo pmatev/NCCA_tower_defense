@@ -1,17 +1,22 @@
-#include "node.h"
+#include "staticentity.h"
 
 //-------------------------------------------------------------------//
 
-Node::Node(const ngl::Vec3 &_pos):
-  m_pos(_pos),
-  m_isOccupied(false)
+StaticEntity::StaticEntity(
+    std::vector<boost::shared_ptr<Node> > &_linkedNodes,
+    const ngl::Vec3 &_pos,
+    float _health
+    ):
+  Entity(_pos,_health),
+  m_level(0),
+  m_linkedNodes(_linkedNodes)
 {
   //variables initialised before constructor body called
 }
 
 //-------------------------------------------------------------------//
 
-Node::~Node()
+StaticEntity::~StaticEntity()
 {
   //currently using default destructor
 }

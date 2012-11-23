@@ -7,9 +7,10 @@
 /// @brief the class which represents each grid location on which a static
 /// entity can be placed
 /// @author Peter May
-/// @version 1
-/// @date 22/11/12
+/// @version 1.1
+/// @date 23/11/12
 /// Revision History :
+/// 1.1 removed unnecessary ctor 23/11/12
 /// Initial Version 22/11/12
 /// @class Node
 //-------------------------------------------------------------------//
@@ -26,15 +27,6 @@ public:
   Node(const ngl::Vec3 & _pos);
 
   //-------------------------------------------------------------------//
-  /// @brief parameterised constructor
-  /// @param [in] _posX, the X position with which to create the node
-  /// @param [in] _posY, the Y position with which to create the node
-  /// @param [in] _posZ, the Z position with which to create the node
-  //-------------------------------------------------------------------//
-
-  Node(float _posX, float _posY, float _posZ);
-
-  //-------------------------------------------------------------------//
   /// @brief destructor
   //-------------------------------------------------------------------//
 
@@ -42,12 +34,16 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief get method for the m_isOccupied variable
+  /// @param [out]m_isOccupied, returns a boolean stating whether the
+  /// node is occupied or not
   //-------------------------------------------------------------------//
 
-  inline bool getIsOccupied() {return m_isOccupied;}
+  inline bool getIsOccupied() const {return m_isOccupied;}
 
   //-------------------------------------------------------------------//
   /// @brief set method for the m_isOccupied variable
+  /// @param [in] _isOccupied, a boolean value to set the occupied flag
+  /// to
   //-------------------------------------------------------------------//
 
   inline void setIsOccupied(bool _isOccupied) {m_isOccupied = _isOccupied;}

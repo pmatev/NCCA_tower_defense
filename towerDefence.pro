@@ -25,12 +25,14 @@ SOURCES += src/main.cpp \
     src/entity.cpp \
     src/staticentity.cpp \
     src/node.cpp \
-    src/dynamicentity.cpp
+    src/dynamicentity.cpp \
+    src/turret.cpp
 HEADERS += \
     include/entity.h \
     include/staticentity.h \
     include/node.h \
-    include/dynamicentity.h
+    include/dynamicentity.h \
+    include/turret.h
 
 #including the Imath Library
 

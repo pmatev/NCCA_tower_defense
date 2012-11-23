@@ -4,15 +4,16 @@
 
 DynamicEntity::DynamicEntity(
     float _damage,
-    const ngl::vec3 &_aimVector,
+    const ngl::Vec3 &_aimVector,
     float _maxVelocity,
     const ngl::Vec3 &_pos,
     float _health
     ):
+  Entity(_pos,_health),
   m_damage(_damage),
   m_aimVector(_aimVector),
-  m_maxVelocity(_maxVelocity),
-  Entity(_pos,_health)
+  m_maxVelocity(_maxVelocity)
+
 {
   //variables initialised before the constructor body
 }
@@ -21,7 +22,7 @@ DynamicEntity::DynamicEntity(
 
 DynamicEntity::~DynamicEntity()
 {
-  //currently using default deconstructor
+  //currently using default destructor
 }
 
 //-------------------------------------------------------------------//

@@ -32,7 +32,7 @@ public:
 
   DynamicEntity(
       float _damage,
-      const ngl::vec3 & _aimVector,
+      const ngl::Vec3 & _aimVector,
       float _maxVelocity,
       const ngl::Vec3 & _pos,
       float _health
@@ -46,6 +46,8 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief a virtual brain method, to be implemented in children
+  /// @param [out] a vector which will be used to define the behaviour
+  /// of the dynamic entity
   //-------------------------------------------------------------------//
 
   virtual ngl::Vec3 brain() = 0;
