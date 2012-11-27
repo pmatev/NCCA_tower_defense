@@ -2,6 +2,9 @@
 #define DYNAMICENTITY_H
 
 #include "entity.h"
+#include <boost/shared_ptr.hpp>
+
+typedef boost::shared_ptr<DynamicEntity> DynamicEntityPtr;
 
 //-------------------------------------------------------------------//
 /// @file dynamicentity.h
@@ -52,7 +55,7 @@ public:
 
   virtual ngl::Vec3 brain() = 0;
 
-private:
+protected:
   //-------------------------------------------------------------------//
   /// @brief a damage value for the dynamic entity
   //-------------------------------------------------------------------//
