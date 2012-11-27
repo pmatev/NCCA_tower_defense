@@ -1,10 +1,9 @@
 #ifndef DYNAMICENTITY_H
 #define DYNAMICENTITY_H
 
-#include "entity.h"
 #include <boost/shared_ptr.hpp>
 
-typedef boost::shared_ptr<DynamicEntity> DynamicEntityPtr;
+#include "entity.h"
 
 //-------------------------------------------------------------------//
 /// @file dynamicentity.h
@@ -74,5 +73,7 @@ protected:
 
   float m_maxVelocity;
 };
+
+typedef boost::shared_ptr<DynamicEntity> DynamicEntityPtr;
 
 #endif // DYNAMICENTITY_H

@@ -26,13 +26,18 @@ SOURCES += src/main.cpp \
     src/staticentity.cpp \
     src/node.cpp \
     src/dynamicentity.cpp \
-    src/turret.cpp
+    src/turret.cpp \
+    src/database.cpp \
+    src/entityfactory.cpp
 HEADERS += \
     include/entity.h \
     include/staticentity.h \
     include/node.h \
     include/dynamicentity.h \
-    include/turret.h
+    include/turret.h \
+    include/database.h \
+    include/entityrecord.h \
+    include/entityfactory.h
 
 #including the Imath Library
 

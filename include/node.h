@@ -1,7 +1,10 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <boost/shared_ptr.hpp>
+
 #include <ngl/Vec3.h>
+
 //-------------------------------------------------------------------//
 /// @file node.h
 /// @brief the class which represents each grid location on which a static
@@ -63,5 +66,7 @@ private:
   bool m_isOccupied;
 
 };
+
+typedef boost::shared_ptr<Node> NodePtr;
 
 #endif // NODE_H

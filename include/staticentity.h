@@ -32,7 +32,7 @@ public:
   //-------------------------------------------------------------------//
 
   StaticEntity(
-      std::vector<boost::shared_ptr<Node> > & _linkedNodes,
+      std::vector<NodePtr> & _linkedNodes,
       const ngl::Vec3 & _pos,
       float _health
       );
@@ -55,7 +55,7 @@ public:
 
   inline void decrementLevel () {m_level--;}
 
-private:
+protected:
   //-------------------------------------------------------------------//
   /// @brief The upgrade level of the static entity
   //-------------------------------------------------------------------//
@@ -67,7 +67,9 @@ private:
   /// static entity
   //-------------------------------------------------------------------//
 
-  std::vector<boost::shared_ptr<Node> > m_linkedNodes;
+  std::vector<NodePtr> m_linkedNodes;
 };
+
+typedef boost::shared_ptr<StaticEntity> StaticEntityPtr;
 
 #endif // STATICENTITY_H

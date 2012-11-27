@@ -1,7 +1,10 @@
 #ifndef TURRET_H
 #define TURRET_H
 
+#include <boost/shared_ptr.hpp>
+
 #include "staticentity.h"
+
 
 //-------------------------------------------------------------------//
 /// @file turret.h
@@ -57,7 +60,7 @@ public:
 
   void brain();
 
-private:
+protected:
   //-------------------------------------------------------------------//
   /// @brief value to define the field of view of the turret
   //-------------------------------------------------------------------//
@@ -82,5 +85,8 @@ private:
 
   ngl::Vec3 m_aim;
 };
+
+
+typedef boost::shared_ptr<Turret> TurretPtr;
 
 #endif // TURRET_H

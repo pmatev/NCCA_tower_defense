@@ -3,7 +3,7 @@
 //-------------------------------------------------------------------//
 
 StaticEntity::StaticEntity(
-    std::vector<boost::shared_ptr<Node> > &_linkedNodes,
+    std::vector<NodePtr> &_linkedNodes,
     const ngl::Vec3 &_pos,
     float _health
     ):

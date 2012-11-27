@@ -1,6 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <boost/shared_ptr.hpp>
 #include <ngl/Vec3.h>
 
 //-------------------------------------------------------------------//
@@ -53,7 +54,14 @@ public:
 
   void publish();
 
-private:
+  //-------------------------------------------------------------------//
+  /// @brief method to return the health value
+  /// @param [out] m_health, the health value of the entity
+  //-------------------------------------------------------------------//
+
+  inline float getHealth() const {return m_health;}
+
+protected:
   //-------------------------------------------------------------------//
   /// @brief the vector to store the position of the entity
   //-------------------------------------------------------------------//
@@ -66,5 +74,7 @@ private:
 
   float m_health;
 };
+
+typedef boost::shared_ptr<Entity> EntityPtr;
 
 #endif // ENTITY_H
