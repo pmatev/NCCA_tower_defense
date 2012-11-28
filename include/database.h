@@ -1,16 +1,14 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-#include <boost/shared_ptr.hpp>
 #include <vector>
 #include <list>
 #include <ngl/Vec3.h>
 
-#include "entityfactory.h"
+#include "entityrecord.h"
+#include "smartpointers.h"
 
-class Database;
-
-typedef boost::shared_ptr<Database> DatabasePtr;
+DECLARESMART(Database)
 
 //-------------------------------------------------------------------//
 /// @file database.h
@@ -29,59 +27,10 @@ class Database
 public: //typedefs and structs
 
   //-------------------------------------------------------------------//
-  /// @struct EntityRecord, a data structure for storing the information
-  /// about each entity that will be used in the update method
-  //-------------------------------------------------------------------//
-  struct EntityRecord
-  {
-    //-------------------------------------------------------------------//
-    /// @brief constructor
-    /// @param [in] _type, the enumerated entity type
-    /// @param [in] _pos, the position entity
-    //-------------------------------------------------------------------//
-
-    inline EntityRecord(
-        EntityType _type,
-        float _x,
-        float _y,
-        float _z
-        ):
-      m_type(_type),
-      m_x(_x),
-      m_y(_y),
-      m_z(_z)
-    {}
-
-    //-------------------------------------------------------------------//
-    /// @brief the enumerated entity type
-    //-------------------------------------------------------------------//
-
-    EntityType m_type;
-
-    //-------------------------------------------------------------------//
-    /// @brief the x position of the entity
-    //-------------------------------------------------------------------//
-
-    float m_x;
-
-    //-------------------------------------------------------------------//
-    /// @brief the y position of the entity
-    //-------------------------------------------------------------------//
-
-    float m_y;
-
-    //-------------------------------------------------------------------//
-    /// @brief the z position of the entity
-    //-------------------------------------------------------------------//
-
-    float m_z;
-  };
-
-  //-------------------------------------------------------------------//
   /// @typedef a boost shared pointer to a list of entity records
   //-------------------------------------------------------------------//
 
-  typedef boost::shared_ptr<std::list<EntityRecord> > entityRecordListPtr;
+  typedef boost::shared_ptr<std::list<EntityRecordPtr> > entityRecordListPtr;
 
 public: //methods
   //-------------------------------------------------------------------//
@@ -122,7 +71,7 @@ public: //methods
   /// @param [in] _pos, an ngl vec3 defining the position of the entity
   //-------------------------------------------------------------------//
 
-  void addRecord (EntityRecord _record);
+  void addRecord (EntityRecordPtr _record);
 
   //-------------------------------------------------------------------//
   /// @brief a method to return a list of entities that are possible

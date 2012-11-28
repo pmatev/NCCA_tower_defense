@@ -14,6 +14,24 @@ Database::Database(
   m_environMinX(_environMinX),
   m_environMinY(_environMinY)
 {
+  //checks that the min values are less than the max values
+  //and if not it swaps them
+
+  if (m_environMinX > _environMaxX)
+  {
+    float temp = m_environMinX;
+    m_environMinX = _environMaxX;
+    _environMaxX = temp;
+  }
+
+  if (m_environMinY > _environMaxY)
+  {
+    float temp = m_environMinY;
+    m_environMinY = _environMaxY;
+    _environMaxY = temp;
+  }
+
+
   //calculate the width and depth
 
   float width = _environMaxX - m_environMinX;
@@ -21,8 +39,8 @@ Database::Database(
 
   //calculate and assign the scale x and scale y values
 
-  m_scaleX = 1/(width/m_numCellsX);
-  m_scaleY = 1/(depth/_numCellsY);
+  m_scaleX = 1.0/(width/m_numCellsX);
+  m_scaleY = 1.0/(depth/_numCellsY);
 
   // initialise the vector
 
@@ -30,7 +48,7 @@ Database::Database(
   {
     for (int j = 0; j < _numCellsY; j++)
     {
-      entityRecordListPtr list (new std::list<EntityRecord>);
+      entityRecordListPtr list (new std::list<EntityRecordPtr>);
       m_grid.push_back(list);
     }
   }
@@ -67,12 +85,12 @@ DatabasePtr Database::create(
 
 //-------------------------------------------------------------------//
 
-void Database::addRecord(EntityRecord _record)
+void Database::addRecord(EntityRecordPtr _record)
 {
   //conversion to grid space for assigning to a grid cell
 
-  float gridSpaceX = (_record.m_x - m_environMinX)* m_scaleX;
-  float gridSpaceY = (_record.m_y - m_environMinY) * m_scaleY;
+  float gridSpaceX = (_record->m_x - m_environMinX)* m_scaleX;
+  float gridSpaceY = (_record->m_y - m_environMinY) * m_scaleY;
 
   //conversion from float to int
 
@@ -97,6 +115,23 @@ Database::entityRecordListPtr Database::getLocalEntities(
     float _maxY
     ) const
 {
+  //checks that the min values are smaller than the max values,
+  //and if not it swaps them
+
+  if(_minX > _maxX)
+  {
+    float temp = _minX;
+    _minX = _maxX;
+    _maxX = temp;
+  }
+
+  if(_minY > _maxY)
+  {
+    float temp = _minY;
+    _minY = _maxY;
+    _maxY = temp;
+  }
+
   //conversion of min and max values to grid space
 
   float minXGrid = (_minX - m_environMinX)* m_scaleX;
@@ -111,25 +146,68 @@ Database::entityRecordListPtr Database::getLocalEntities(
   int minYId = floor(minYGrid);
   int maxYId = floor(maxYGrid);
 
-  //create a list of IDs in the bounding box
+  //initialise a pointer to a list of entity records
 
-  entityRecordListPtr returnList;
+  entityRecordListPtr returnList(new std::list<EntityRecordPtr>);
+
+  //and initialise an iterator for that list
+
+  std::list<EntityRecordPtr>::iterator returnListIt;
+
+  //loop through each index of a cell overlapped by the bounding
+  //box
 
   for (int i = minYId; i <= maxYId; i++)
   {
     for (int j = minXId; j <= maxXId; j++)
     {
-      //splice the list stored in the grid cell onto the end of the
-      //return list
+      //if the return list is empty and there is an entity record stored in
+      //the currently selected cell
 
-      //set the iterator to the end of the return list
+      if (returnList->size()==0 && (*m_grid[j+(i*m_numCellsX)]).size()!=0)
+      {
+        //
+        //initialise an iterator to the beginning of the cell list
 
-      std::list<EntityRecord>::iterator it;
-      it = returnList->end();
+        std::list<EntityRecordPtr>::iterator cellListIt;
+        cellListIt = (*m_grid[j+(i*m_numCellsX)]).begin();
 
-      //and splice the current list onto the end of it
+        //push the first element of the list into the return list
 
-      returnList->splice(it,(*m_grid[i+(j*m_numCellsX)]));
+        returnList->push_back(*cellListIt);
+
+        // then increment the cell list iterator
+
+        cellListIt++;
+
+        //and set an iterator to the end of the return list
+
+        returnListIt = returnList->end();
+
+        //and insert the rest of the cell list onto the end of the list
+
+        returnList->insert(
+              returnListIt,
+              cellListIt,
+              (*m_grid[j+(i*m_numCellsX)]).end()
+              );
+      }
+      //otherwise, if the return list already has some values in it
+
+      else if (returnList->size()!=0)
+      {
+        //set the return list iterator to the end of the list
+
+        returnListIt = returnList->end();
+
+        //insert the whole  cell list ont the end of the return list
+
+        returnList->insert(
+              returnListIt,
+              (*m_grid[j+(i*m_numCellsX)]).begin(),
+              (*m_grid[j+(i*m_numCellsX)]).end()
+              );
+      }
     }
   }
 

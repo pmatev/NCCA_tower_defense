@@ -31,7 +31,8 @@ SOURCES += src/main.cpp \
     src/wavemanager.cpp \
     src/entityfactory.cpp \
     src/enemy.cpp \
-    src/database.cpp
+    src/database.cpp \
+    src/entityrecord.cpp
 
 HEADERS += \
     include/entity.h \
@@ -43,7 +44,9 @@ HEADERS += \
     include/wave.h \
     include/wavemanager.h \
     include/entityfactory.h \
-    include/enemy.h
+    include/enemy.h \
+    include/entityrecord.h \
+    include/smartpointers.h
 
 #including the Imath Library
 
