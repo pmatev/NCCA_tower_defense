@@ -3,11 +3,14 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include "dynamicentity.h"
+#include "enemy.h"
+
 //-------------------------------------------------------------------//
 /// @file entityfactory.h
 /// @brief a class used to create all entities, includes an entity type
 /// enum
-/// @author Peter May
+/// @author Peter May, Jared Auty
 /// @version 1
 /// @date 27/11/12
 /// Revision History :
@@ -21,7 +24,7 @@ enum EntityType
   //-------------------------------------------------------------------//
   //-------------------------TEST-VALUES-------------------------------//
   //-------------------------------------------------------------------//
-  ENEMYA,
+  ENEMY,
   ENEMYB,
   ENEMYC,
   PROJECTILEA,
@@ -44,6 +47,20 @@ public:
   //-------------------------------------------------------------------//
 
   ~EntityFactory();
+
+  //-------------------------------------------------------------------//
+  /// @brief create DynamicEntity and return pointer to it
+  /// @param[in] _type, type of DynamicEntity to create
+  /// @param[in] _damage, damage that enemy can do
+  /// @param[in] _maxVelocity, maximum velocity an enemy can travel at
+  /// @param[in] _pos, initital position of enemy
+  //-------------------------------------------------------------------//
+  static DynamicEntityPtr createDynamicEntity(
+      EntityType _type,
+      float _damage,
+      float _maxVelocity,
+      const ngl::Vec3 &_pos
+      );
 };
 
 

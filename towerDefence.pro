@@ -27,17 +27,21 @@ SOURCES += src/main.cpp \
     src/node.cpp \
     src/dynamicentity.cpp \
     src/turret.cpp \
-    src/database.cpp \
-    src/entityfactory.cpp
+    src/wave.cpp \
+    src/wavemanager.cpp \
+    src/entityfactory.cpp \
+    src/enemy.cpp
+
 HEADERS += \
     include/entity.h \
     include/staticentity.h \
     include/node.h \
     include/dynamicentity.h \
     include/turret.h \
-    include/database.h \
-    include/entityrecord.h \
-    include/entityfactory.h
+    include/wave.h \
+    include/wavemanager.h \
+    include/entityfactory.h \
+    include/enemy.h
 
 #including the Imath Library
 

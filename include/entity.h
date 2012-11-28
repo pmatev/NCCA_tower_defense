@@ -15,6 +15,7 @@
 /// @class Entity
 //-------------------------------------------------------------------//
 
+
 class Entity
 {
 public:
@@ -25,7 +26,8 @@ public:
   /// @param [in] _health, the initial health value of the entity
   //-------------------------------------------------------------------//
 
-  Entity(const ngl::Vec3 & _pos, float _health);
+  Entity(const ngl::Vec3 & _pos);
+
 
   //-------------------------------------------------------------------//
   /// @brief the destructor
@@ -45,7 +47,7 @@ public:
   /// implemented in child classes
   //-------------------------------------------------------------------//
 
-  virtual void draw()=0;
+  virtual void draw() const = 0;
 
   //-------------------------------------------------------------------//
   /// @brief a method which will publish the entity's position to the
@@ -62,6 +64,7 @@ public:
   inline float getHealth() const {return m_health;}
 
 protected:
+
   //-------------------------------------------------------------------//
   /// @brief the vector to store the position of the entity
   //-------------------------------------------------------------------//

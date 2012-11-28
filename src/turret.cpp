@@ -8,10 +8,9 @@ Turret::Turret(
     float _maxRotationSpeed,
     const ngl::Vec3 &_aim,
     std::vector<boost::shared_ptr<Node> > &_linkedNodes,
-    const ngl::Vec3 &_pos,
-    float _health
+    const ngl::Vec3 &_pos
     ):
-  StaticEntity(_linkedNodes,_pos,_health),
+  StaticEntity(_linkedNodes,_pos),
   m_fov(_fov),
   m_viewDistance(_viewDistance),
   m_maxRotationSpeed(_maxRotationSpeed),
@@ -20,18 +19,12 @@ Turret::Turret(
   //variables initialised before constructor body called
 }
 
+
 //-------------------------------------------------------------------//
 
 Turret::~Turret()
 {
   //currently using default destructor
-}
-
-//-------------------------------------------------------------------//
-
-void Turret::brain()
-{
-  //yet to be implemented
 }
 
 //-------------------------------------------------------------------//

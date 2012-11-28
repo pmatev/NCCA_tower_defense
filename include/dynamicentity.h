@@ -9,7 +9,7 @@
 /// @file dynamicentity.h
 /// @brief The base class for all moving renderable objects in the
 /// game
-/// @author Peter May
+/// @author Peter May, Jared Auty
 /// @version 1
 /// @date 22/11/12
 /// Revision History :
@@ -23,7 +23,6 @@ public:
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
   /// @param [in] _damage, a float to initialise the damage value
-  /// @param [in] _aimVector, a vector to initialise the aim vector
   /// @param [in] __maxVelocity, a float value describing the maximum
   /// velocity of the dynamic entity
   /// @param [in] _pos, a vector containing the initial position in 3D
@@ -34,10 +33,8 @@ public:
 
   DynamicEntity(
       float _damage,
-      const ngl::Vec3 & _aimVector,
       float _maxVelocity,
-      const ngl::Vec3 & _pos,
-      float _health
+      const ngl::Vec3 &_pos
       );
 
   //-------------------------------------------------------------------//
@@ -46,6 +43,13 @@ public:
 
   ~DynamicEntity();
 
+  //-------------------------------------------------------------------//
+  /// @brief update the objects position based on the brain output
+  //-------------------------------------------------------------------//
+
+  void update();
+
+protected:
   //-------------------------------------------------------------------//
   /// @brief a virtual brain method, to be implemented in children
   /// @param [out] a vector which will be used to define the behaviour

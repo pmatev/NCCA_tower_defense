@@ -10,7 +10,7 @@
 /// @file turret.h
 /// @brief The class for all turrets, static renderable objects with a
 /// brain and a view area
-/// @author Peter May
+/// @author Peter May, Jared Auty
 /// @version 1
 /// @date 23/11/12
 /// Revision History :
@@ -35,18 +35,16 @@ public:
   /// shared pointers to the nodes that are covered by the static entity
   /// @param [in] _pos, a vector containing the initial position in 3D
   /// space of the entity
-  /// @param [in] _health, the initial health value of the entity
   //-------------------------------------------------------------------//
 
   Turret(
-      float _fov,
-      float _viewDistance,
-      float _maxRotationSpeed,
-      const ngl::Vec3 & _aim,
-      std::vector<boost::shared_ptr<Node> > & _linkedNodes,
-      const ngl::Vec3 & _pos,
-      float _health
-      );
+        float _fov,
+        float _viewDistance,
+        float _maxRotationSpeed,
+        const ngl::Vec3 & _aim,
+        std::vector<boost::shared_ptr<Node> > & _linkedNodes,
+        const ngl::Vec3 & _pos
+        );
 
   //-------------------------------------------------------------------//
   /// @brief destructor
@@ -54,13 +52,8 @@ public:
 
   ~Turret();
 
-  //-------------------------------------------------------------------//
-  /// @brief the bain method, controls the AI of the turret
-  //-------------------------------------------------------------------//
-
-  void brain();
-
 protected:
+
   //-------------------------------------------------------------------//
   /// @brief value to define the field of view of the turret
   //-------------------------------------------------------------------//
@@ -85,7 +78,6 @@ protected:
 
   ngl::Vec3 m_aim;
 };
-
 
 typedef boost::shared_ptr<Turret> TurretPtr;
 
