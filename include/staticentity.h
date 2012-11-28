@@ -1,7 +1,6 @@
 #ifndef STATICENTITY_H
 #define STATICENTITY_H
 
-#include <boost/shared_ptr.hpp>
 #include <vector>
 
 #include "entity.h"
@@ -18,6 +17,8 @@
 /// Initial Version 23/11/12
 /// @class StaticEntity
 //-------------------------------------------------------------------//
+
+DECLARESMART(StaticEntity)
 
 class StaticEntity : public Entity
 {
@@ -68,7 +69,5 @@ protected:
 
   std::vector<NodePtr> m_linkedNodes;
 };
-
-typedef boost::shared_ptr<StaticEntity> StaticEntityPtr;
 
 #endif // STATICENTITY_H

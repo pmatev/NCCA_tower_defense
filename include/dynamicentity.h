@@ -17,6 +17,9 @@
 /// @class DynamicEntity
 //-------------------------------------------------------------------//
 
+class DynamicEntity;
+typedef boost::shared_ptr<DynamicEntity> DynamicEntityPtr;
+
 class DynamicEntity : public Entity
 {
 public:
@@ -78,6 +81,6 @@ protected:
   float m_maxVelocity;
 };
 
-typedef boost::shared_ptr<DynamicEntity> DynamicEntityPtr;
+
 
 #endif // DYNAMICENTITY_H

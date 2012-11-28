@@ -1,8 +1,9 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <boost/shared_ptr.hpp>
 #include <ngl/Vec3.h>
+
+#include "smartpointers.h"
 
 //-------------------------------------------------------------------//
 /// @file entity.h
@@ -15,6 +16,7 @@
 /// @class Entity
 //-------------------------------------------------------------------//
 
+DECLARESMART(Entity)
 
 class Entity
 {
@@ -78,6 +80,5 @@ protected:
   float m_health;
 };
 
-typedef boost::shared_ptr<Entity> EntityPtr;
 
 #endif // ENTITY_H

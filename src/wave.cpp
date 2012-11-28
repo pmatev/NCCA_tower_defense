@@ -91,7 +91,7 @@ void Wave::brain()
 
 //-------------------------------------------------------------------//
 void Wave::addEnemy(
-                    EntityType _type,
+                    std::string _type,
                     float _damage,
                     float _maxVelocity,
                     const ngl::Vec3 &_pos

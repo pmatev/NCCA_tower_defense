@@ -2,10 +2,11 @@
 #define ENEMY_H
 
 #include "dynamicentity.h"
+#include "smartpointers.h"
 
 //-------------------------------------------------------------------//
 /// @file Enemy.h
-/// @brief This is a simple example of an enemy class
+/// @brief CONCRETE TYPE This is a simple example of an enemy class
 /// @author Jared Auty
 /// @version 1
 /// @date 22/11/12
@@ -14,8 +15,7 @@
 /// @class Enemy
 //-------------------------------------------------------------------//
 
-class Enemy;
-typedef boost::shared_ptr<Enemy> EnemyPtr;
+DECLARESMART(Enemy)
 
 class Enemy : public DynamicEntity
 {
@@ -27,7 +27,7 @@ public:
   /// @param[in] _maxVelocity, maximum velocity an enemy can travel at
   /// @param[in] _pos, initital position of enemy
   //-------------------------------------------------------------------//
-  static EnemyPtr create(
+  static EntityPtr create(
       float _damage,
       float _maxVelocity,
       const ngl::Vec3 & _pos

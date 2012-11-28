@@ -1,8 +1,6 @@
 #ifndef TURRET_H
 #define TURRET_H
 
-#include <boost/shared_ptr.hpp>
-
 #include "staticentity.h"
 
 
@@ -17,6 +15,8 @@
 /// Initial Version 23/11/12
 /// @class Turret
 //-------------------------------------------------------------------//
+
+DECLARESMART(Turret)
 
 class Turret : public StaticEntity
 {
@@ -78,7 +78,5 @@ protected:
 
   ngl::Vec3 m_aim;
 };
-
-typedef boost::shared_ptr<Turret> TurretPtr;
 
 #endif // TURRET_H

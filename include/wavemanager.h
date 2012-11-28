@@ -17,9 +17,7 @@
 /// @class WaveManager
 //-------------------------------------------------------------------//
 
-class WaveManager;
-
-typedef boost::shared_ptr<WaveManager> WaveManagerPtr;
+DECLARESMART(WaveManager)
 
 class WaveManager
 {

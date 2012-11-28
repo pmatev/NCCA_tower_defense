@@ -18,13 +18,13 @@ Enemy::Enemy(
 
 //-------------------------------------------------------------------//
 
-EnemyPtr Enemy::create(
+EntityPtr Enemy::create(
     float _damage,
     float _maxVelocity,
     const ngl::Vec3 &_pos
     )
 {
-  EnemyPtr a(
+  EntityPtr a(
         new Enemy(
                   _damage,
                   _maxVelocity,
