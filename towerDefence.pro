@@ -30,7 +30,8 @@ SOURCES += src/main.cpp \
     src/wave.cpp \
     src/wavemanager.cpp \
     src/entityfactory.cpp \
-    src/enemy.cpp
+    src/enemy.cpp \
+    src/database.cpp
 
 HEADERS += \
     include/entity.h \
@@ -38,6 +39,7 @@ HEADERS += \
     include/node.h \
     include/dynamicentity.h \
     include/turret.h \
+    include/database.h \
     include/wave.h \
     include/wavemanager.h \
     include/entityfactory.h \
