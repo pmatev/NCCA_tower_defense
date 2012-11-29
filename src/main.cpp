@@ -1,10 +1,23 @@
 #include <iostream>
-#include <cstdlib>
+#include <SDL.h>
+
+#include "window.h"
+
 
 #include "entityfactory.h"
 #include "enemy.h"
 
 int main(int argc, char *argv[])
 {
-  return EXIT_SUCCESS;
+    // create and init the OpenGL Window
+    WindowPtr w = Window::create();
+    w->init();
+
+    // start the loop
+    w->loop();
+
+    //exit and close
+    w->quit();
 }
+
+

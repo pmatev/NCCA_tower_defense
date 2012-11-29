@@ -4,9 +4,10 @@
 #
 #-------------------------------------------------
 
-QT       += core
+QT       += core \
+            gui  \
+            opengl
 
-QT       -= gui
 
 TARGET = towerDefence
 CONFIG   += console
@@ -18,7 +19,7 @@ TEMPLATE = app
 
 OBJECTS_DIR=./obj
 INCLUDEPATH +=./include
-
+MOC_DIR=./moc/
 #project files
 
 SOURCES += src/main.cpp \
@@ -32,7 +33,8 @@ SOURCES += src/main.cpp \
     src/entityfactory.cpp \
     src/enemy.cpp \
     src/database.cpp \
-    src/entityrecord.cpp
+    src/game.cpp \
+    src/window.cpp
 
 HEADERS += \
     include/entity.h \
@@ -45,8 +47,11 @@ HEADERS += \
     include/wavemanager.h \
     include/entityfactory.h \
     include/enemy.h \
-    include/entityrecord.h \
-    include/smartpointers.h
+    include/game.h \
+    include/fwd/game.h \
+    include/smartpointers.h \
+    include/window.h \
+    include/fwd/window.h
 
 #including the Imath Library
 
@@ -56,6 +61,17 @@ HEADERS += \
 
 #including the NGL library
 
-LIBS +=  -L/$(HOME)/NGL/lib -l NGL
+QMAKE_CXXFLAGS+=$$system($$(HOME)/SDL2.0/bin/sdl2-config  --cflags)
+message(output from sdl2-config --cflags added to CXXFLAGS= $$QMAKE_CXXFLAGS)
+
+LIBS+=$$system($$(HOME)/SDL2.0/bin/sdl2-config  --libs)
+message(output from sdl2-config --libs added to LIB=$$LIBS)
+
+
 INCLUDEPATH += $$(HOME)/NGL/include/
 DEPENDPATH += $$(HOME)/NGL/include/
+
+DEFINES +=NGL_DEBUG
+
+LIBS += -L/usr/local/lib
+LIBS +=  -L/$(HOME)/NGL/lib -l NGL
