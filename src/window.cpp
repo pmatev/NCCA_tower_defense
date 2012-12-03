@@ -6,7 +6,7 @@
 //-------------------------------------------------------------------//
 Window::Window()
 {
-    m_game = Game::create(WindowPtr(this)); //initialize the game on creation
+    Game *game = Game::instance(); //initialize the game on creation
 }
 //-------------------------------------------------------------------//
 Window::~Window()
@@ -61,11 +61,15 @@ void Window::init()
     SDL_GL_SetSwapInterval(1);
 
 
+
 }
 //-------------------------------------------------------------------//
 void Window::loop()
 {
     SDL_Event event;
+
+    Game *game = Game::instance();
+
 
     // ------- GAME LOOP ------- //
 
@@ -77,7 +81,6 @@ void Window::loop()
 
     double currentTime = SDL_GetTicks();
     double accumulator = 0.0;
-
 
     // flag to indicate if we need to exit
     bool quit=false;
@@ -102,13 +105,13 @@ void Window::loop()
 
         while (accumulator >= dt)
         {
-            m_game->update(dt);
+            game->update(dt);
 
             accumulator -= dt;
             m_time += dt;
         }
 
-        m_game->draw();
+        game->draw();
 
         SDL_GL_SwapWindow(m_window);
         std::cout<<"swapped"<<std::endl;

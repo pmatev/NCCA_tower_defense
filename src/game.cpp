@@ -1,22 +1,46 @@
 #include "include/game.h"
 #include <iostream>
-#include <ngl/Text.h>
+#include <ngl/Camera.h>
+
+
+Game* Game::s_instance = 0;
 
 //-------------------------------------------------------------------//
-Game::Game(WindowPtr _parent)
+Game::Game()
 {
-    m_parent = _parent;
 }
 //-------------------------------------------------------------------//
 Game::~Game()
 {
 }
 //-------------------------------------------------------------------//
-GamePtr Game::create(WindowPtr _parent)
+Game* Game::instance()
 {
-    GamePtr a(new Game(_parent));
-    return a;
+    if(s_instance == 0)
+    {
+        s_instance = new Game();
+    }
+    return s_instance;
+
 }
+//-------------------------------------------------------------------//
+void Game::destroy()
+{
+    if (s_instance)
+    {
+          delete s_instance;
+    }
+}
+
+//-------------------------------------------------------------------//
+unsigned int Game::getNewID()
+{
+    m_currentID++;
+    return m_currentID;
+}
+//-------------------------------------------------------------------//
+
+
 //-------------------------------------------------------------------//
 void Game::run()
 {
@@ -30,6 +54,7 @@ void Game::update(const double _t)
 //-------------------------------------------------------------------//
 void Game::draw()
 {
+    //ngl::Camera cam = ngl::Camera(ngl::Vec3(1,2,3),ngl::Vec3(0,0,0), ngl::Vec3(0,1,0), ngl::PERSPECTIVE);
 
 }
 //-------------------------------------------------------------------//

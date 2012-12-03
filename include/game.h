@@ -3,6 +3,8 @@
 
 #include "fwd/game.h"
 #include "fwd/window.h"
+#include <map>
+#include "entity.h"
 
 
 //-------------------------------------------------------------------//
@@ -10,8 +12,8 @@
 /// @brief a class to manage the game state and delegate key/mouse events
 /// to other managers
 /// @author Peter Matev
-/// @version 1
-/// @date 29/11/12
+/// @version 1.1
+/// @date 3/12/12
 /// Revision History :
 /// Initial Version 29/11/12
 /// @class Game
@@ -25,9 +27,13 @@ public:
     //-------------------------------------------------------------------//
     ~Game();
     //-------------------------------------------------------------------//
-    /// @brief constructs the object and returns smart pointer
+    /// @brief returns instance of singleton
     //-------------------------------------------------------------------//
-    static GamePtr create(WindowPtr _parent);
+    static Game* instance();
+    //-------------------------------------------------------------------//
+    /// @brief returns instance of singleton
+    //-------------------------------------------------------------------//
+    void destroy();
     //-------------------------------------------------------------------//
     /// @brief initiates the game. Calls update() and draw().
     //-------------------------------------------------------------------//
@@ -41,18 +47,29 @@ public:
     //-------------------------------------------------------------------//
     void draw();
 
+    unsigned int getNewID();
+
+    void registerID(EntityPtr _e);
+
+    void unregisterID(EntityPtr _e);
+
+    void unregisterID(const unsigned int _i);
+
 protected:
     //-------------------------------------------------------------------//
-    /// @brief hidden ctor
+    /// @brief hidden ctor for singleton
     //-------------------------------------------------------------------//
-    Game(WindowPtr _m_parent);
+    Game();
 
-    //-------------------------------------------------------------------//
-    /// @brief Smart pointer to parent window
-    //-------------------------------------------------------------------//
-    WindowPtr m_parent;
+    unsigned int m_currentID;
 
 
+    std::map<unsigned int, EntityPtr> m_IDMap;
+
+
+private:
+
+    static Game* s_instance;
 
 };
 
