@@ -1,20 +1,20 @@
 #include "include/game.h"
 #include <iostream>
+#include <ngl/Text.h>
 
 //-------------------------------------------------------------------//
-Game::Game()
+Game::Game(WindowPtr _parent)
 {
-    //set basic game state variables
-    m_framerate = 60;
+    m_parent = _parent;
 }
 //-------------------------------------------------------------------//
 Game::~Game()
 {
 }
 //-------------------------------------------------------------------//
-GamePtr Game::create()
+GamePtr Game::create(WindowPtr _parent)
 {
-    GamePtr a(new Game());
+    GamePtr a(new Game(_parent));
     return a;
 }
 //-------------------------------------------------------------------//
@@ -23,13 +23,13 @@ void Game::run()
     // game logic code
 }
 //-------------------------------------------------------------------//
-void Game::update()
+void Game::update(const double _t)
 {
-    //update code
+    //std::cout<<_t<<std::endl;
 }
 //-------------------------------------------------------------------//
 void Game::draw()
 {
-    //drawing code
+
 }
 //-------------------------------------------------------------------//

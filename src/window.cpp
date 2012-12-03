@@ -6,12 +6,12 @@
 //-------------------------------------------------------------------//
 Window::Window()
 {
-    m_game = Game::create(); //initialize the game on creation
+    m_game = Game::create(WindowPtr(this)); //initialize the game on creation
 }
 //-------------------------------------------------------------------//
 Window::~Window()
 {
-    delete m_window;
+    //delete m_window;
 }
 //-------------------------------------------------------------------//
 WindowPtr Window::create()
@@ -35,7 +35,7 @@ void Window::init()
     SDL_Rect rect;
     SDL_GetDisplayBounds(0,&rect);
     // now create our window
-    SDL_Window *window=SDL_CreateWindow("SDLNGL",
+    m_window=SDL_CreateWindow("Tower Defence",
                                         SDL_WINDOWPOS_CENTERED,
                                         SDL_WINDOWPOS_CENTERED,
                                         rect.w,
@@ -43,19 +43,19 @@ void Window::init()
                                         SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
                                        );
     // check to see if that worked or exit
-    if (!window)
+    if (!m_window)
     {
       SDLErrorExit("Unable to create window");
     }
 
-    SDL_GLContext glContext=createOpenGLContext(window);
+    SDL_GLContext glContext=createOpenGLContext(m_window);
     if(!glContext)
     {
       SDLErrorExit("Problem creating OpenGL context");
     }
 
     // make this our current GL context (we can have more than one window but in this case not)
-    SDL_GL_MakeCurrent(window, glContext);
+    SDL_GL_MakeCurrent(m_window, glContext);
 
     /* This makes our buffer swap syncronized with the monitor's vertical refresh */
     SDL_GL_SetSwapInterval(1);
@@ -68,8 +68,20 @@ void Window::loop()
     SDL_Event event;
 
     // ------- GAME LOOP ------- //
+
+    // Based on:   http://gafferongames.com/game-physics/fix-your-timestep/
+
+
+    m_time = 0.0;
+    const double dt = 1; // update interval
+
+    double currentTime = SDL_GetTicks();
+    double accumulator = 0.0;
+
+
     // flag to indicate if we need to exit
     bool quit=false;
+
     while(!quit)
     {
         while (SDL_PollEvent(&event))
@@ -79,8 +91,27 @@ void Window::loop()
             case SDL_QUIT : quit = true; break;
             }
         }
-        m_game->run();
+
+        double newTime = SDL_GetTicks();
+        double frameTime = newTime - currentTime;
+        currentTime = newTime;
+
+        if(frameTime>80)frameTime=80; // cap simulation if frame is taking too long
+
+        accumulator += frameTime;
+
+        while (accumulator >= dt)
+        {
+            m_game->update(dt);
+
+            accumulator -= dt;
+            m_time += dt;
+        }
+
+        m_game->draw();
+
         SDL_GL_SwapWindow(m_window);
+        std::cout<<"swapped"<<std::endl;
     }
 }
 
