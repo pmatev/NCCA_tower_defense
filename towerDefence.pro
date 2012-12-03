@@ -33,8 +33,16 @@ SOURCES += src/main.cpp \
     src/entityfactory.cpp \
     src/enemy.cpp \
     src/database.cpp \
+    src/ui.cpp \
+    src/uiwindow.cpp \
+    src/uielement.cpp \
+    src/uimenu.cpp\
+    src/entityrecord.cpp \
     src/game.cpp \
-    src/window.cpp
+    src/window.cpp \
+    src/button.cpp
+
+
 
 HEADERS += \
     include/entity.h \
@@ -47,11 +55,20 @@ HEADERS += \
     include/wavemanager.h \
     include/entityfactory.h \
     include/enemy.h \
+    include/ui.h \
+    include/uiwindow.h \
+    include/uielement.h \
+    include/uimenu.h\
+    include/entityrecord.h \
+    include/smartpointers.h \
     include/game.h \
     include/fwd/game.h \
     include/smartpointers.h \
     include/window.h \
-    include/fwd/window.h
+    include/fwd/window.h \
+    include/button.h
+
+
 
 #including the Imath Library
 
