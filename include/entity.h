@@ -52,6 +52,13 @@ public:
   virtual void draw() const = 0;
 
   //-------------------------------------------------------------------//
+  /// @brief a virtual method that draws the selection frame (where each
+  /// object is rendered with a colour based on it's id)
+  //-------------------------------------------------------------------//
+
+  virtual void drawSelection() const = 0;
+
+  //-------------------------------------------------------------------//
   /// @brief a method which will publish the entity's position to the
   /// central database
   //-------------------------------------------------------------------//
@@ -65,7 +72,19 @@ public:
 
   inline float getHealth() const {return m_health;}
 
+  //-------------------------------------------------------------------//
+  /// @brief method to get the ID of the entity
+  //-------------------------------------------------------------------//
+
+  inline unsigned int getID() const {return m_ID;}
+
 protected:
+
+  //-------------------------------------------------------------------//
+  /// @brief Identifier for the entity
+  //-------------------------------------------------------------------//
+
+  unsigned int m_ID;
 
   //-------------------------------------------------------------------//
   /// @brief the vector to store the position of the entity

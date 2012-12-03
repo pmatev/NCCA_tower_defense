@@ -5,4 +5,5 @@
 
 DECLARESMART(Window)
 
+
 #endif // WINDOW_H
