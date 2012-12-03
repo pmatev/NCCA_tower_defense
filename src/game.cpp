@@ -31,14 +31,26 @@ void Game::destroy()
           delete s_instance;
     }
 }
-
 //-------------------------------------------------------------------//
-unsigned int Game::getNewID()
+unsigned int Game::registerID(EntityPtr _e)
 {
     m_currentID++;
+
+    m_IDMap[m_currentID] = _e;
+
     return m_currentID;
 }
 //-------------------------------------------------------------------//
+void Game::unregisterID(const unsigned int _i)
+{
+    m_IDMap.erase(_i);
+}
+
+//-------------------------------------------------------------------//
+EntityPtr Game::getEntityByID(const unsigned int _i)
+{
+    return m_IDMap.find(_i)->second;
+}
 
 
 //-------------------------------------------------------------------//
@@ -49,12 +61,12 @@ void Game::run()
 //-------------------------------------------------------------------//
 void Game::update(const double _t)
 {
-    //std::cout<<_t<<std::endl;
+    // update code by timestep _t
 }
 //-------------------------------------------------------------------//
 void Game::draw()
 {
-    //ngl::Camera cam = ngl::Camera(ngl::Vec3(1,2,3),ngl::Vec3(0,0,0), ngl::Vec3(0,1,0), ngl::PERSPECTIVE);
+    // draw code
 
 }
 //-------------------------------------------------------------------//
