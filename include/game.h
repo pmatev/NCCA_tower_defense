@@ -5,6 +5,7 @@
 #include "fwd/window.h"
 #include <map>
 #include "entity.h"
+#include <SDL.h>
 
 
 //-------------------------------------------------------------------//
@@ -38,11 +39,6 @@ public:
     void destroy();
 
     //-------------------------------------------------------------------//
-    /// @brief initiates the game. Calls update() and draw().
-    //-------------------------------------------------------------------//
-    void run();
-
-    //-------------------------------------------------------------------//
     /// @brief updates the game state
     //-------------------------------------------------------------------//
     void update(const double _t);
@@ -67,6 +63,23 @@ public:
     //-------------------------------------------------------------------//
     EntityPtr getEntityByID(const unsigned int _i);
 
+    //-------------------------------------------------------------------//
+    /// @brief function triggered on mouse move.
+    //-------------------------------------------------------------------//
+    void mouseMotionEvent(const SDL_MouseMotionEvent &_event);
+    //-------------------------------------------------------------------//
+    /// @brief function triggered on mouse button down
+    //-------------------------------------------------------------------//
+    void mouseButtonDownEvent(const SDL_MouseButtonEvent &_event);
+    //-------------------------------------------------------------------//
+    /// @brief function triggered on mouse button up
+    //-------------------------------------------------------------------//
+    void mouseButtonUpEvent(const SDL_MouseButtonEvent &_event);
+    //-------------------------------------------------------------------//
+    /// @brief function triggered on mouse wheel event
+    //-------------------------------------------------------------------//
+    void mouseWheelEvent(const SDL_MouseWheelEvent &_event);
+
 
 
 protected:
@@ -76,7 +89,7 @@ protected:
     Game();
 
     //-------------------------------------------------------------------//
-    /// @brief ID Counter for
+    /// @brief ID Counter for distributing unique IDs to entities.
     //-------------------------------------------------------------------//
     unsigned int m_currentID;
 
@@ -84,6 +97,8 @@ protected:
     /// @brief A map of IDs to Entity Pointers for game object management.
     //-------------------------------------------------------------------//
     std::map<unsigned int, EntityPtr> m_IDMap;
+
+
 
 
 private:

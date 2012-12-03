@@ -92,6 +92,10 @@ void Window::loop()
             switch(event.type)
             {
             case SDL_QUIT : quit = true; break;
+            case SDL_MOUSEMOTION : game->mouseMotionEvent(event.motion); break;
+            case SDL_MOUSEBUTTONDOWN : game->mouseButtonDownEvent(event.button); break;
+            case SDL_MOUSEBUTTONUP : game->mouseButtonUpEvent(event.button); break;
+            case SDL_MOUSEWHEEL : game->mouseWheelEvent(event.wheel); break;
             }
         }
 
@@ -114,7 +118,7 @@ void Window::loop()
         game->draw();
 
         SDL_GL_SwapWindow(m_window);
-        std::cout<<"swapped"<<std::endl;
+
     }
 }
 
