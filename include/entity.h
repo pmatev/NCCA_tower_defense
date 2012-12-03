@@ -8,7 +8,7 @@
 //-------------------------------------------------------------------//
 /// @file entity.h
 /// @brief The base class for all renderable objects in the game
-/// @author Peter May
+/// @author Peter May, Jared Auty
 /// @version 1
 /// @date 22/11/12
 /// Revision History :

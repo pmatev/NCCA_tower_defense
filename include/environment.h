@@ -1,96 +1,103 @@
-#ifndef NODE_H
-#define NODE_H
-
-#include <ngl/Vec3.h>
+#ifndef ENVIRONMENT_H
+#define ENVIRONMENT_H
 
 #include "smartpointers.h"
 
+#include "staticentity.h"
+#include "nodemanager.h"
+
 //-------------------------------------------------------------------//
-/// @file node.h
-/// @brief the class which represents each grid location on which a static
-/// entity can be placed
-/// @author Peter May, Jared Auty
-/// @version 1.2
+/// @file environment.h
+/// @brief This class manages everything about the environment (that is
+/// all of the static entities and the map)
+/// @author Jared Auty
+/// @version 1
 /// @date 3/12/12
 /// Revision History :
-/// Implementing node traversal functionality 3/12/12
-/// Initial Version 22/11/12
-/// @class Node
+/// Initial Version 3/12/12
+/// @class Environment
 //-------------------------------------------------------------------//
 
-DECLARESMART(Node)
+DECLARESMART(Environment)
 
-class Node
+class Environment
 {
 
 public:
 
   //-------------------------------------------------------------------//
-  /// @brief typedef for list of children
+  /// @brief creator
   //-------------------------------------------------------------------//
 
-  typedef boost::shared_ptr<std::list<NodePtr> > NodeChildListPtr;
-
-public:
-  //-------------------------------------------------------------------//
-  /// @brief parameterised constructor
-  /// @param [in] _pos, a const reference to an ngl vector containing the
-  /// position with which to create the node
-  //-------------------------------------------------------------------//
-
-  Node(const ngl::Vec3 & _pos);
+  static EnvironmentPtr create();
 
   //-------------------------------------------------------------------//
-  /// @brief destructor
+  /// @brief dtor
   //-------------------------------------------------------------------//
 
-  ~Node();
+  ~Environment();
 
   //-------------------------------------------------------------------//
-  /// @brief get method for the m_isOccupied variable
-  /// @param [out]m_isOccupied, returns a boolean stating whether the
-  /// node is occupied or not
+  /// @brief update all turrets
   //-------------------------------------------------------------------//
 
-  inline bool isOccupied() const {return m_isOccupied;}
+  void update();
 
   //-------------------------------------------------------------------//
-  /// @brief set method for the m_isOccupied variable
-  /// @param [in] _isOccupied, a boolean value to set the occupied flag
-  /// to
+  /// @brief call all turrets to publish
   //-------------------------------------------------------------------//
 
-  inline void setOccupied(bool _isOccupied) {m_isOccupied = _isOccupied;}
+  void publish();
 
   //-------------------------------------------------------------------//
-  /// @brief get the list of children that a node is linked to
-  /// @param [out] m_children, list of child nodes
+  /// @brief call all environment to draw
   //-------------------------------------------------------------------//
 
-  inline NodeChildListPtr getChildList() {return m_children;}
+  void draw() const;
+
+  //-------------------------------------------------------------------//
+  /// @brief draw selection based on IDs
+  //-------------------------------------------------------------------//
+
+  void drawSelection() const;
 
 
 protected:
-  //-------------------------------------------------------------------//
-  /// @brief The position in 3D space of the node
-  //-------------------------------------------------------------------//
-
-  ngl::Vec3 m_pos;
 
   //-------------------------------------------------------------------//
-  /// @brief A boolean flag stating whether the node is occupied or
-  /// not
+  /// @brief typedef for describing lists of towers
   //-------------------------------------------------------------------//
 
-  bool m_isOccupied;
+  typedef std::list<StaticEntityPtr> TowerList;
+
+protected:
+
 
   //-------------------------------------------------------------------//
-  /// @brief List of children for traversal
+  /// @brief list of all turrets and walls
   //-------------------------------------------------------------------//
 
-  NodeChildListPtr m_children;
+  TowerList m_towers;
 
+  //-------------------------------------------------------------------//
+  /// @brief base object
+  //-------------------------------------------------------------------//
 
+  StaticEntityPtr m_base;
+
+  //-------------------------------------------------------------------//
+  /// @brief map object
+  //-------------------------------------------------------------------//
+
+  NodeManagerPtr m_nodeMap;
+
+private:
+
+  //-------------------------------------------------------------------//
+  /// @brief ctor
+  //-------------------------------------------------------------------//
+
+  Environment();
 };
 
-#endif // NODE_H
+#endif // ENVIRONMENT_H

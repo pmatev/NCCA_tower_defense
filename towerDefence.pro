@@ -34,7 +34,9 @@ SOURCES += src/main.cpp \
     src/enemy.cpp \
     src/database.cpp \
     src/game.cpp \
-    src/window.cpp
+    src/window.cpp \
+    src/environment.cpp \
+    src/nodemanager.cpp
 
 HEADERS += \
     include/entity.h \
@@ -51,7 +53,9 @@ HEADERS += \
     include/fwd/game.h \
     include/smartpointers.h \
     include/window.h \
-    include/fwd/window.h
+    include/fwd/window.h \
+    include/environment.h \
+    include/nodemanager.h
 
 #including the Imath Library
 
