@@ -154,8 +154,8 @@ public: //methods
 
   entityRecordListPtr getLocalEntities (
       float _minX,
-      float _maxX,
       float _minY,
+      float _maxX,
       float _maxY
       )const;
 
