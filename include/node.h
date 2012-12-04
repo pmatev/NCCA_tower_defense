@@ -27,10 +27,12 @@ class Node : public Entity
 public:
 
   //-------------------------------------------------------------------//
-  /// @brief typedef for list of children
+  /// @brief typedefs for list of nodes
   //-------------------------------------------------------------------//
 
-  typedef boost::shared_ptr<std::list<NodePtr> > NodeChildListPtr;
+  typedef std::list<NodePtr> NodeList;
+
+  typedef boost::shared_ptr<NodeList> NodeListPtr;
 
 public:
   //-------------------------------------------------------------------//
@@ -83,7 +85,7 @@ public:
   /// @param [out] m_children, list of child nodes
   //-------------------------------------------------------------------//
 
-  inline NodeChildListPtr getChildList() {return m_children;}
+  inline NodeListPtr getChildList() {return m_children;}
 
   //-------------------------------------------------------------------//
   /// @brief set the list of children that a node is linked to
@@ -104,7 +106,7 @@ protected:
   /// @brief List of children for traversal
   //-------------------------------------------------------------------//
 
-  NodeChildListPtr m_children;
+  NodeListPtr m_children;
 
 
 };

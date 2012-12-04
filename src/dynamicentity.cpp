@@ -7,7 +7,8 @@ DynamicEntity::DynamicEntity(
     float _maxVelocity,
     const ngl::Vec3 &_pos,
     float _initialVelocity,
-    const ngl::Vec3 &_aim, GeneralType _type
+    const ngl::Vec3 &_aim,
+    GeneralType _type
     ):
   Entity(_pos,_type),
   m_damage(_damage),
