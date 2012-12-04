@@ -25,7 +25,7 @@ public:
   /// @brief creator
   //-------------------------------------------------------------------//
 
-  static NodeManagerPtr create();
+  static NodeManagerPtr create(int _gridWidth, int _gridHeight, int _hexagonSize);
 
   //-------------------------------------------------------------------//
   /// @brief default dtor
@@ -40,6 +40,7 @@ protected:
   //-------------------------------------------------------------------//
 
   typedef std::list<NodePtr> NodeList;
+  typedef boost::shared_ptr<std::list<NodePtr> > NodeChildListPtr;
 
 protected:
 
@@ -55,7 +56,7 @@ private:
   /// @brief default ctor
   //-------------------------------------------------------------------//
 
-  NodeManager();
+  NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize);
 };
 
 #endif // NODEMANAGER_H

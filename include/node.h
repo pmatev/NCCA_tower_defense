@@ -4,6 +4,7 @@
 #include <ngl/Vec3.h>
 
 #include "smartpointers.h"
+#include "entity.h"
 
 //-------------------------------------------------------------------//
 /// @file node.h
@@ -20,7 +21,7 @@
 
 DECLARESMART(Node)
 
-class Node
+class Node : public Entity
 {
 
 public:
@@ -47,6 +48,21 @@ public:
   ~Node();
 
   //-------------------------------------------------------------------//
+  /// @brief virtual update method
+  //-------------------------------------------------------------------//
+  void update();
+
+  //-------------------------------------------------------------------//
+  /// @brief virtual draw method
+  //-------------------------------------------------------------------//
+  void draw() const;
+
+  //-------------------------------------------------------------------//
+  /// @brief virtual draw selection method
+  //-------------------------------------------------------------------//
+  void drawSelection() const;
+
+  //-------------------------------------------------------------------//
   /// @brief get method for the m_isOccupied variable
   /// @param [out]m_isOccupied, returns a boolean stating whether the
   /// node is occupied or not
@@ -69,14 +85,14 @@ public:
 
   inline NodeChildListPtr getChildList() {return m_children;}
 
+  //-------------------------------------------------------------------//
+  /// @brief set the list of children that a node is linked to
+  /// @param [in] _children, list of child nodes
+  //-------------------------------------------------------------------//
+  inline NodeChildListPtr setChildList(NodeChildListPtr _children) {m_children = _children;}
+
 
 protected:
-  //-------------------------------------------------------------------//
-  /// @brief The position in 3D space of the node
-  //-------------------------------------------------------------------//
-
-  ngl::Vec3 m_pos;
-
   //-------------------------------------------------------------------//
   /// @brief A boolean flag stating whether the node is occupied or
   /// not

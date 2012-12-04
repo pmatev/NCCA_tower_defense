@@ -12,9 +12,6 @@ Game::Game()
 {
 //    ngl::NGLInit *Init = ngl::NGLInit::instance();
 //    Init->initGlew();
-
-
-
 }
 //-------------------------------------------------------------------//
 Game::~Game()
