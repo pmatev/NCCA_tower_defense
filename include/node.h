@@ -91,7 +91,7 @@ public:
   /// @brief set the list of children that a node is linked to
   /// @param [in] _children, list of child nodes
   //-------------------------------------------------------------------//
-  inline NodeChildListPtr setChildList(NodeChildListPtr _children) {m_children = _children;}
+  inline NodeListPtr setChildList(NodeListPtr _children) {m_children = _children;}
 
 
 protected:
