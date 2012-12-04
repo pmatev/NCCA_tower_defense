@@ -29,7 +29,9 @@ public:
   typedef EntityPtr (*createCallBack)(
         float _damage,
         float _maxVelocity,
-        const ngl::Vec3 &_pos
+        const ngl::Vec3 &_pos,
+        float _initialVelocity,
+        const ngl::Vec3 &_aim
         );
 
   //-------------------------------------------------------------------//
@@ -87,7 +89,9 @@ public:
       std::string _type,
       float _damage,
       float _maxVelocity,
-      const ngl::Vec3 &_pos
+      const ngl::Vec3 &_pos,
+      float _initialVelocity,
+      const ngl::Vec3 &_aim
       );
 
 protected:

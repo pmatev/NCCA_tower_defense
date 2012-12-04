@@ -34,7 +34,8 @@ public:
 
   StaticEntity(
       std::vector<NodePtr> & _linkedNodes,
-      const ngl::Vec3 & _pos
+      const ngl::Vec3 & _pos,
+      GeneralType _type
       );
 
   //-------------------------------------------------------------------//

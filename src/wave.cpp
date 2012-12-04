@@ -91,20 +91,24 @@ void Wave::brain()
 
 //-------------------------------------------------------------------//
 void Wave::addEnemy(
-                    std::string _type,
-                    float _damage,
-                    float _maxVelocity,
-                    const ngl::Vec3 &_pos
-                    )
+    std::string _type,
+    float _damage,
+    float _maxVelocity,
+    const ngl::Vec3 &_pos,
+    float _initialVelocity,
+    const ngl::Vec3 &_aim
+    )
 {
   // use EntityFactory to create enemy then save it in m_enemies
   m_enemies.push_back(
         EntityFactory::createDynamicEntity(
-                                          _type,
-                                          _damage,
-                                          _maxVelocity,
-                                          _pos
-                                          )
+          _type,
+          _damage,
+          _maxVelocity,
+          _pos,
+          _initialVelocity,
+          _aim
+          )
         );
 
 }

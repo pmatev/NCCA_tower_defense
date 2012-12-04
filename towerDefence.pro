@@ -42,7 +42,11 @@ SOURCES += src/main.cpp \
     src/button.cpp \
     src/environment.cpp \
     src/nodemanager.cpp \
-    src/testenemy.cpp
+    src/testenemy.cpp \
+    src/enemy.cpp \
+    src/projectile.cpp \
+    src/wall.cpp \
+    src/base.cpp
 
 
 HEADERS += \
@@ -69,8 +73,11 @@ HEADERS += \
     include/button.h \
     include/environment.h \
     include/nodemanager.h \
-    include/testenemy.h
-
+    include/testenemy.h \
+    include/enemy.h \
+    include/projectile.h \
+    include/wall.h \
+    include/base.h
 
 #including the Imath Library
 

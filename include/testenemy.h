@@ -1,7 +1,7 @@
 #ifndef TESTENEMY_H
 #define TESTENEMY_H
 
-#include "dynamicentity.h"
+#include "enemy.h"
 #include "smartpointers.h"
 
 //-------------------------------------------------------------------//
@@ -17,7 +17,7 @@
 
 DECLARESMART(TestEnemy)
 
-class TestEnemy : public DynamicEntity
+class TestEnemy : public Enemy
 {
 public:
 
@@ -32,7 +32,8 @@ public:
       float _damage,
       float _maxVelocity,
       const ngl::Vec3 & _pos,
-      float _initialVelocity
+      float _initialVelocity,
+      const ngl::Vec3 &_aim
       );
 
   //-------------------------------------------------------------------//
@@ -60,7 +61,8 @@ protected:
       float _damage,
       float _maxVelocity,
       const ngl::Vec3 &_pos,
-      float _initialVelocity
+      float _initialVelocity,
+      const ngl::Vec3 &_aim
       );
 
   //-------------------------------------------------------------------//

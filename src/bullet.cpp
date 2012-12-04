@@ -1,28 +1,22 @@
-#include "testenemy.h"
+#include "bullet.h"
 
 //-------------------------------------------------------------------//
 
-TestEnemy::TestEnemy(
+Bullet::Bullet(
     float _damage,
     float _maxVelocity,
-    const ngl::Vec3 & _pos,
+    const ngl::Vec3 &_pos,
     float _initialVelocity,
     const ngl::Vec3 &_aim
-    ):
-  Enemy(
-    _damage,
-    _maxVelocity,
-    _pos,
-    _initialVelocity,
-    _aim
-    )
+    ) :
+  Projectile(_damage, _maxVelocity, _pos, _initialVelocity,_aim)
 {
-  // ctor just passes everything to parent class
+
 }
 
 //-------------------------------------------------------------------//
 
-EntityPtr TestEnemy::create(
+BulletPtr Bullet::create(
     float _damage,
     float _maxVelocity,
     const ngl::Vec3 &_pos,
@@ -30,38 +24,38 @@ EntityPtr TestEnemy::create(
     const ngl::Vec3 &_aim
     )
 {
-  EntityPtr a(
-        new TestEnemy(
+  //create and return a smart pointer to the bullet
+
+  BulletPtr bullet(
+        new Bullet(
           _damage,
           _maxVelocity,
           _pos,
           _initialVelocity,
-          _aim
-          )
+          _aim)
         );
-  return a;
+  return bullet;
 }
 
 //-------------------------------------------------------------------//
 
-ngl::Vec3 TestEnemy::brain()
+void Bullet::draw() const
 {
-  // TEST value (tells it to just go forward)
-  return ngl::Vec3(1, 0, 0);
+
 }
 
 //-------------------------------------------------------------------//
 
-void TestEnemy::draw() const
+void Bullet::drawSelection() const
 {
-  // does nothing yet
+
 }
 
 //-------------------------------------------------------------------//
 
-void TestEnemy::drawSelection() const
+ngl::Vec3 Bullet::brain()
 {
-  // Should draw the object with a constant shader based on ID
+
 }
 
 //-------------------------------------------------------------------//

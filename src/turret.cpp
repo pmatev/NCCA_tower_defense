@@ -10,7 +10,7 @@ Turret::Turret(
     std::vector<boost::shared_ptr<Node> > &_linkedNodes,
     const ngl::Vec3 &_pos
     ):
-  StaticEntity(_linkedNodes,_pos),
+  StaticEntity(_linkedNodes,_pos,TURRET),
   m_fov(_fov),
   m_viewDistance(_viewDistance),
   m_maxRotationSpeed(_maxRotationSpeed),

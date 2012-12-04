@@ -36,7 +36,9 @@ public:
       float _damage,
       float _maxVelocity,
       const ngl::Vec3 &_pos,
-      float _initialVelocity
+      float _initialVelocity,
+      const ngl::Vec3 &_aimVector,
+      GeneralType _type
       );
 
   //-------------------------------------------------------------------//

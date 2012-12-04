@@ -119,11 +119,13 @@ protected:
   //-------------------------------------------------------------------//
 
   void addEnemy(
-                std::string _type,
-                float _damage,
-                float _maxVelocity,
-                const ngl::Vec3 &_pos
-                );
+        std::string _type,
+        float _damage,
+        float _maxVelocity,
+        const ngl::Vec3 &_pos,
+        float _initialVelocity,
+        const ngl::Vec3 &_aim
+        );
 
   //-------------------------------------------------------------------//
   /// @brief remove enemy based on its iterator and return iterator to

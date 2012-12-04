@@ -23,7 +23,7 @@ class Entity
 {
 public: //typedefs and structs
   //-------------------------------------------------------------------//
-  /// @brief a struct to contain the bounding box of the entity's visible
+  /// @struct a struct to contain the bounding box of the entity's visible
   /// area
   //-------------------------------------------------------------------//
 
@@ -69,6 +69,20 @@ public: //typedefs and structs
     {}
   };
 
+  //-------------------------------------------------------------------//
+  /// @enum an enumeration of the general types that the entity can be
+  //-------------------------------------------------------------------//
+
+  enum GeneralType
+  {
+    ENEMY,
+    PROJECTILE,
+    TURRET,
+    WALL,
+    BASE,
+    NODE
+  };
+
 public: //methods
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
@@ -77,7 +91,7 @@ public: //methods
   /// @param [in] _health, the initial health value of the entity
   //-------------------------------------------------------------------//
 
-  Entity(const ngl::Vec3 & _pos);
+  Entity(const ngl::Vec3 & _pos, GeneralType _type);
 
 
   //-------------------------------------------------------------------//
@@ -140,6 +154,13 @@ public: //methods
 
   void clearLocalEntities();
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the type string
+  //-------------------------------------------------------------------//
+
+  inline GeneralType getGeneralType() const {return m_generalType;}
+
+
 protected: //attributes
 
   //-------------------------------------------------------------------//
@@ -167,10 +188,19 @@ protected: //attributes
   Database::entityRecordListPtr m_localEntities;
 
   //-------------------------------------------------------------------//
-  /// a variable storing the bounding box of the entity's view area
+  /// @brief a variable storing the bounding box of the entity's view area
   //-------------------------------------------------------------------//
 
   ViewBBox m_viewBBox;
+
+private:
+
+  //-------------------------------------------------------------------//
+  /// @brief a string to store the generaltype of the entity
+  //-------------------------------------------------------------------//
+
+  GeneralType m_generalType;
+
 };
 
 

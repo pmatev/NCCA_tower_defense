@@ -4,10 +4,11 @@
 
 //-------------------------------------------------------------------//
 
-Entity::Entity(const ngl::Vec3 & _pos):
+Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type) :
   m_pos(_pos),
   m_health(100.0),
-  m_viewBBox(0,0,0,0)
+  m_viewBBox(0,0,0,0),
+  m_generalType(_type)
 {
   // Initialise id and register with game
   Game* game = Game::instance();
