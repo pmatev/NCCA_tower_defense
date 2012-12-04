@@ -1,4 +1,5 @@
 #include "database.h"
+#include "entity.h"
 
 Database * Database::s_instance =0;
 

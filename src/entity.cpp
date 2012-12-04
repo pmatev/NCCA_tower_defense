@@ -34,7 +34,13 @@ void Entity::publish()
   //add the record
 
   db->addRecord(
-        Database::EntityRecord(m_ID, m_pos.m_x, m_pos.m_y, m_pos.m_z)
+        Database::EntityRecord(
+          m_ID,
+          m_generalType,
+          m_pos.m_x,
+          m_pos.m_y,
+          m_pos.m_z
+          )
         );
 }
 

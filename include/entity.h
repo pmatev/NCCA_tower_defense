@@ -5,6 +5,7 @@
 
 #include "smartpointers.h"
 #include "database.h"
+#include "fwd/entity.h"
 
 //-------------------------------------------------------------------//
 /// @file entity.h
@@ -16,8 +17,6 @@
 /// Initial Version 22/11/12
 /// @class Entity
 //-------------------------------------------------------------------//
-
-DECLARESMART(Entity)
 
 class Entity
 {
@@ -67,20 +66,6 @@ public: //typedefs and structs
       m_maxX(_maxX),
       m_maxY(_maxY)
     {}
-  };
-
-  //-------------------------------------------------------------------//
-  /// @enum an enumeration of the general types that the entity can be
-  //-------------------------------------------------------------------//
-
-  enum GeneralType
-  {
-    ENEMY,
-    PROJECTILE,
-    TURRET,
-    WALL,
-    BASE,
-    NODE
   };
 
 public: //methods
@@ -159,6 +144,12 @@ public: //methods
   //-------------------------------------------------------------------//
 
   inline GeneralType getGeneralType() const {return m_generalType;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the position of the entity
+  //-------------------------------------------------------------------//
+
+  inline ngl::Vec3 getPos() const {return m_pos;}
 
 
 protected: //attributes

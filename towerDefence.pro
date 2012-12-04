@@ -77,7 +77,8 @@ HEADERS += \
     include/enemy.h \
     include/projectile.h \
     include/wall.h \
-    include/base.h
+    include/base.h \
+    include/fwd/entity.h
 
 #including the Imath Library
 

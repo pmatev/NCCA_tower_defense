@@ -7,6 +7,7 @@
 #include <QMutexLocker>
 
 #include "smartpointers.h"
+#include "fwd/entity.h"
 
 DECLARESMART(Database)
 
@@ -40,6 +41,12 @@ public: //typedefs and structs
     unsigned int m_id;
 
     //-------------------------------------------------------------------//
+    /// @brief the enumerated type ID
+    //-------------------------------------------------------------------//
+
+    GeneralType m_generalType;
+
+    //-------------------------------------------------------------------//
     /// @brief the x position of the entity
     //-------------------------------------------------------------------//
 
@@ -67,11 +74,13 @@ public: //typedefs and structs
 
     EntityRecord(
           unsigned int _id,
+          GeneralType _type,
           float _x,
           float _y,
           float _z
           ):
       m_id(_id),
+      m_generalType(_type),
       m_x(_x),
       m_y(_y),
       m_z(_z)
@@ -164,6 +173,7 @@ public: //methods
   //-------------------------------------------------------------------//
 
   void clearRecords();
+
 protected: //methods
   //-------------------------------------------------------------------//
   /// @brief constructor
