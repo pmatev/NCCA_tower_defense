@@ -7,7 +7,7 @@
 int main(int argc, char *argv[])
 {
   // create and init the OpenGL Window
-  WindowPtr w = Window::create();
+  Window *w = Window::instance();
   w->init();
 
 
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 
 
   //exit and close
-  w->quit();
+  w->destroy();
 }
 
 

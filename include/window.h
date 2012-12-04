@@ -9,11 +9,11 @@
 
 //-------------------------------------------------------------------//
 /// @file window.h
-/// @brief manages the OS window and OpenGL context. Also controls the game
-/// loop and the Game Class.
+/// @brief manages the OS window and OpenGL context. Manages the Game Loop and Rendering Loop
+/// also distributes key events
 /// @author Peter Matev (based on Jon Macey's SDLNGL demo)
-/// @version 1
-/// @date 29/11/12
+/// @version 1.1
+/// @date 04/12/12
 /// Revision History :
 /// Initial Version 29/11/12
 /// @class Window
@@ -22,15 +22,13 @@
 class Window
 {
 public:
-    //-------------------------------------------------------------------//
-    /// @brief the destructor
-    //-------------------------------------------------------------------//
-    ~Window();
+
 
     //-------------------------------------------------------------------//
     /// @brief constructs the object and returns smart pointer
     //-------------------------------------------------------------------//
-    static WindowPtr create();
+    static Window* instance();
+
 
     //-------------------------------------------------------------------//
     /// @brief initialize the window and display it on screen
@@ -43,14 +41,40 @@ public:
     void loop();
 
     //-------------------------------------------------------------------//
-    /// @brief close the window gracefully.
+    /// @brief close the window gracefully and delete the singleton
     //-------------------------------------------------------------------//
-    void quit();
+    void destroy();
+
+
+
 
     //-------------------------------------------------------------------//
     /// @brief getter for time.
     //-------------------------------------------------------------------//
     inline double get_time() const {return m_time;}
+
+    inline double getScreenWidth() const {return m_width;}
+
+    inline double getScreenHeight() const {return m_height;}
+
+    //-------------------------------------------------------------------//
+    /// @brief function triggered on mouse move.
+    //-------------------------------------------------------------------//
+    void mouseMotionEvent(const SDL_MouseMotionEvent &_event);
+    //-------------------------------------------------------------------//
+    /// @brief function triggered on mouse button down
+    //-------------------------------------------------------------------//
+    void mouseButtonDownEvent(const SDL_MouseButtonEvent &_event);
+    //-------------------------------------------------------------------//
+    /// @brief function triggered on mouse button up
+    //-------------------------------------------------------------------//
+    void mouseButtonUpEvent(const SDL_MouseButtonEvent &_event);
+    //-------------------------------------------------------------------//
+    /// @brief function triggered on mouse wheel event
+    //-------------------------------------------------------------------//
+    void mouseWheelEvent(const SDL_MouseWheelEvent &_event);
+
+
 
 
 protected:
@@ -59,6 +83,15 @@ protected:
     //-------------------------------------------------------------------//
     Window();
 
+    //-------------------------------------------------------------------//
+    /// @brief the destructor
+    //-------------------------------------------------------------------//
+    ~Window();
+
+    //-------------------------------------------------------------------//
+    /// @brief singleton pointer
+    //-------------------------------------------------------------------//
+    static Window* s_instance;
 
     //-------------------------------------------------------------------//
     /// @brief Smart Pointer to the internal SDL window
@@ -80,6 +113,43 @@ protected:
     /// @brief game time counter.
     //-------------------------------------------------------------------//
     double m_time;
+
+    //-------------------------------------------------------------------//
+    /// @brief width of window
+    //-------------------------------------------------------------------//
+    double m_width;
+    //-------------------------------------------------------------------//
+    /// @brief height of window
+    //-------------------------------------------------------------------//
+    double m_height;
+    //-------------------------------------------------------------------//
+    /// @brief current mouse X coord
+    //-------------------------------------------------------------------//
+    double m_mouseX;
+    //-------------------------------------------------------------------//
+    /// @brief current mouse Y coord
+    //-------------------------------------------------------------------//
+    double m_mouseY;
+    //-------------------------------------------------------------------//
+    /// @brief previous mouse X coord
+    //-------------------------------------------------------------------//
+    double m_oldMouseX;
+    //-------------------------------------------------------------------//
+    /// @brief previous mouse Y coord
+    //-------------------------------------------------------------------//
+    double m_oldMouseY;
+    //-------------------------------------------------------------------//
+    /// @brief flag for camera tumble
+    //-------------------------------------------------------------------//
+    bool m_rotate;
+    //-------------------------------------------------------------------//
+    /// @brief flag for camera track
+    //-------------------------------------------------------------------//
+    bool m_track;
+    //-------------------------------------------------------------------//
+    /// @brief flag for camera dolly
+    //-------------------------------------------------------------------//
+    bool m_dolly;
 
 };
 

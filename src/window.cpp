@@ -2,27 +2,50 @@
 #include "game.h"
 #include <string>
 #include <iostream>
+#include "renderer.h"
+#include "ngl/NGLInit.h"
+
+
+Window* Window::s_instance = 0;
 
 //-------------------------------------------------------------------//
 Window::Window()
 {
-    Game *game = Game::instance(); //initialize the game on creation
+
+
 }
 //-------------------------------------------------------------------//
 Window::~Window()
 {
-    //delete m_window;
+    ngl::NGLInit *Init = ngl::NGLInit::instance();
+    SDL_Quit();
+    Init->NGLQuit();
 }
 //-------------------------------------------------------------------//
-WindowPtr Window::create()
+
+Window* Window::instance()
 {
-    WindowPtr a(new Window());
-    return a;
+    if(s_instance == 0)
+    {
+        s_instance = new Window();
+    }
+    return s_instance;
 }
+
+void Window::destroy()
+{
+    if (s_instance)
+    {
+
+        delete s_instance;
+    }
+}
+
 //-------------------------------------------------------------------//
 void Window::init()
 {
     //***** Based on Jon Macey's SDLNGL demo ******//
+
 
     // Initialize SDL's Video subsystem
     if (SDL_Init(SDL_INIT_VIDEO) < 0 )
@@ -34,12 +57,15 @@ void Window::init()
     // now get the size of the display and create a window we need to init the video
     SDL_Rect rect;
     SDL_GetDisplayBounds(0,&rect);
+    m_width = rect.w;
+    m_height = rect.h;
+
     // now create our window
     m_window=SDL_CreateWindow("Tower Defence",
                                         SDL_WINDOWPOS_CENTERED,
                                         SDL_WINDOWPOS_CENTERED,
-                                        rect.w,
-                                        rect.h,
+                                        m_width,
+                                        m_height,
                                         SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
                                        );
     // check to see if that worked or exit
@@ -61,8 +87,24 @@ void Window::init()
     SDL_GL_SetSwapInterval(1);
 
 
+    ngl::NGLInit *Init = ngl::NGLInit::instance();
+
+    Init->initGlew();
+    #ifdef WIN32
+      glewInit(); // need a local glew init as well as lib one for windows
+    #endif
+
+
+    Game *game = Game::instance(); //initialize the game on creation
+    game->init();
+
+    Renderer *render = Renderer::instance();
+    render->init();
+
 
 }
+
+
 //-------------------------------------------------------------------//
 void Window::loop()
 {
@@ -92,10 +134,10 @@ void Window::loop()
             switch(event.type)
             {
             case SDL_QUIT : quit = true; break;
-            case SDL_MOUSEMOTION : game->mouseMotionEvent(event.motion); break;
-            case SDL_MOUSEBUTTONDOWN : game->mouseButtonDownEvent(event.button); break;
-            case SDL_MOUSEBUTTONUP : game->mouseButtonUpEvent(event.button); break;
-            case SDL_MOUSEWHEEL : game->mouseWheelEvent(event.wheel); break;
+            case SDL_MOUSEMOTION : mouseMotionEvent(event.motion); break;
+            case SDL_MOUSEBUTTONDOWN : mouseButtonDownEvent(event.button); break;
+            case SDL_MOUSEBUTTONUP : mouseButtonUpEvent(event.button); break;
+            case SDL_MOUSEWHEEL : mouseWheelEvent(event.wheel); break;
             }
         }
 
@@ -122,11 +164,6 @@ void Window::loop()
     }
 }
 
-//-------------------------------------------------------------------//
-void Window::quit()
-{
-    SDL_Quit();
-}
 //-------------------------------------------------------------------//
 
 SDL_GLContext Window::createOpenGLContext(SDL_Window *_window)
@@ -169,3 +206,71 @@ void Window::SDLErrorExit(const std::string &_msg)
   exit(EXIT_FAILURE);
 }
 //-------------------------------------------------------------------//
+
+//-------------------------------------------------------------------//
+void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
+{
+//    m_mouseX = _event.x;
+//    m_mouseY = _event.y;
+
+//    Renderer *render = Renderer::instance();
+//    Camera *cam = render->getCam();
+
+//    // Left Mouse Tumble
+//    if(m_rotate)
+//    {
+//      cam->tumble(m_oldMouseX, m_oldMouseY, m_mouseX, m_mouseY);
+//    }
+
+//    // Middle Mouse Track
+//    else if(m_track)
+//    {
+//        cam->track(m_oldMouseX, m_oldMouseY, m_mouseX, m_mouseY);
+//    }
+
+//    // Right Mouse Dolly
+//    else if(m_dolly)
+//    {
+//        cam->dolly(m_oldMouseX, m_mouseX);
+//    }
+
+//    m_oldMouseX = m_mouseX;
+//    m_oldMouseY = m_mouseY;
+
+}
+//-------------------------------------------------------------------//
+void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
+{
+//    m_oldMouseY = _event.x;
+//    m_oldMouseX = _event.y;
+
+//    if(_event.button == SDL_BUTTON_LEFT)
+//    {
+//        m_rotate =true;
+//    }
+
+//    else if(_event.button == SDL_BUTTON_MIDDLE)
+//    {
+//        m_track = true;
+//    }
+
+//    else if(_event.button == SDL_BUTTON_RIGHT)
+//    {
+//        m_dolly=true;
+//    }
+}
+//-------------------------------------------------------------------//
+void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
+{
+//    m_rotate=false;
+//    m_track = false;
+//    m_dolly=false;
+//    m_oldMouseX = m_mouseX;
+//    m_oldMouseY = m_mouseY;
+}
+
+//-------------------------------------------------------------------//
+void Window::mouseWheelEvent(const SDL_MouseWheelEvent &_event)
+{
+
+}

@@ -2,20 +2,20 @@
 #include <iostream>
 #include <ngl/Camera.h>
 #include <ngl/NGLInit.h>
-
-
+#include "renderer.h"
+#include <ngl/VAOPrimitives.h>
 
 Game* Game::s_instance = 0;
 
 //-------------------------------------------------------------------//
 Game::Game()
 {
-//    ngl::NGLInit *Init = ngl::NGLInit::instance();
-//    Init->initGlew();
+
 }
 //-------------------------------------------------------------------//
 Game::~Game()
 {
+    delete m_light;
 }
 //-------------------------------------------------------------------//
 Game* Game::instance()
@@ -27,6 +27,19 @@ Game* Game::instance()
     return s_instance;
 
 }
+//-------------------------------------------------------------------//
+void Game::init()
+{
+    ngl::VAOPrimitives *prim = ngl::VAOPrimitives::instance();
+    prim->createSphere("sphere",1.0,20);
+
+    Renderer *render = Renderer::instance();
+    render->createShader("Phong");
+
+    m_light = new ngl::Light(ngl::Vec3(1,2,0),ngl::Colour(1,1,1),ngl::POINTLIGHT);
+}
+
+
 //-------------------------------------------------------------------//
 void Game::destroy()
 {
@@ -66,31 +79,39 @@ void Game::update(const double _t)
 //-------------------------------------------------------------------//
 void Game::draw()
 {
+    glClearColor(0.1,0.2,0.3,1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    ngl::VAOPrimitives *prim = ngl::VAOPrimitives::instance();
+    Renderer *render = Renderer::instance();
+    ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+    (*shader)["Phong"]->use();
+
+
+    // clear the screen and depth buffer
+    // Rotation based on the mouse position for our global
+    // transform
+    ngl::Transformation trans;
+    ngl::Mat4 rotX;
+    ngl::Mat4 rotY;
+
+    // multiply the rotations
+    ngl::Mat4 final=rotY*rotX;
+    // add the translations
+    final.m_m[3][0] = 0;
+    final.m_m[3][1] = 0;
+    final.m_m[3][2] = 0;
+    // set this in the TX stack
+    trans.setMatrix(final);
+    ngl::TransformStack transformStack;
+    transformStack.setGlobal(trans);
+
+    //render->loadLightToShader(m_light,"Phong");
+    //render->loadMatrixToShader(transformStack,"Phong");
+    prim->draw("sphere");
 
 }
 //-------------------------------------------------------------------//
 
 
-
-//-------------------------------------------------------------------//
-void Game::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
-{
-
-}
-//-------------------------------------------------------------------//
-void Game::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
-{
-
-}
-//-------------------------------------------------------------------//
-void Game::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
-{
-
-}
-
-//-------------------------------------------------------------------//
-void Game::mouseWheelEvent(const SDL_MouseWheelEvent &_event)
-{
-
-}
 

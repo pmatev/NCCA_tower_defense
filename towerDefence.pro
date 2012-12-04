@@ -36,6 +36,8 @@ SOURCES += src/main.cpp \
     src/uielement.cpp \
     src/uimenu.cpp \
     src/game.cpp \
+    src/camera.cpp \
+    src/renderer.cpp \
     src/window.cpp \
     src/bullet.cpp \
     src/environment.cpp \
@@ -47,7 +49,6 @@ SOURCES += src/main.cpp \
     src/projectile.cpp \
     src/wall.cpp \
     src/base.cpp
-
 
 
 HEADERS += \
@@ -66,10 +67,9 @@ HEADERS += \
     include/uimenu.h \
     include/smartpointers.h \
     include/game.h \
-    include/fwd/game.h \
     include/smartpointers.h \
-    include/window.h \
-    include/fwd/window.h \
+    include/camera.h \
+    include/renderer.h \
     include/bullet.h \
     include/environment.h \
     include/nodemanager.h \
@@ -79,6 +79,8 @@ HEADERS += \
     include/projectile.h \
     include/wall.h \
     include/base.h \
+    include/fwd/window.h \
+    include/fwd/game.h \
     include/fwd/entity.h
 
 
@@ -104,3 +106,7 @@ DEFINES +=NGL_DEBUG
 
 LIBS += -L/usr/local/lib
 LIBS +=  -L/$(HOME)/NGL/lib -l NGL
+
+OTHER_FILES += \
+    shaders/Phong.vs \
+    shaders/Phong.fs

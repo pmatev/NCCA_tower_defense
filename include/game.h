@@ -6,15 +6,15 @@
 #include <map>
 #include "entity.h"
 #include <SDL.h>
-
+#include <ngl/Light.h>
 
 //-------------------------------------------------------------------//
 /// @file game.h
-/// @brief a class to manage the game state and delegate key/mouse events
+/// @brief a class to manage the game state and other game managers
 /// to other managers
 /// @author Peter Matev
-/// @version 1.1
-/// @date 3/12/12
+/// @version 1.2
+/// @date 04/12/12
 /// Revision History :
 /// Initial Version 29/11/12
 /// @class Game
@@ -23,15 +23,15 @@
 class Game
 {
 public:
-    //-------------------------------------------------------------------//
-    /// @brief the destructor
-    //-------------------------------------------------------------------//
-    ~Game();
+
 
     //-------------------------------------------------------------------//
     /// @brief returns instance of singleton
     //-------------------------------------------------------------------//
     static Game* instance();
+
+
+    void init();
 
     //-------------------------------------------------------------------//
     /// @brief returns instance of singleton
@@ -63,22 +63,7 @@ public:
     //-------------------------------------------------------------------//
     EntityPtr getEntityByID(const unsigned int _i);
 
-    //-------------------------------------------------------------------//
-    /// @brief function triggered on mouse move.
-    //-------------------------------------------------------------------//
-    void mouseMotionEvent(const SDL_MouseMotionEvent &_event);
-    //-------------------------------------------------------------------//
-    /// @brief function triggered on mouse button down
-    //-------------------------------------------------------------------//
-    void mouseButtonDownEvent(const SDL_MouseButtonEvent &_event);
-    //-------------------------------------------------------------------//
-    /// @brief function triggered on mouse button up
-    //-------------------------------------------------------------------//
-    void mouseButtonUpEvent(const SDL_MouseButtonEvent &_event);
-    //-------------------------------------------------------------------//
-    /// @brief function triggered on mouse wheel event
-    //-------------------------------------------------------------------//
-    void mouseWheelEvent(const SDL_MouseWheelEvent &_event);
+
 
 
 
@@ -87,6 +72,11 @@ protected:
     /// @brief hidden ctor for singleton
     //-------------------------------------------------------------------//
     Game();
+
+    //-------------------------------------------------------------------//
+    /// @brief hidden destructor
+    //-------------------------------------------------------------------//
+    ~Game();
 
     //-------------------------------------------------------------------//
     /// @brief ID Counter for distributing unique IDs to entities.
@@ -106,6 +96,8 @@ private:
     /// @brief instance pointer for singleton
     //-------------------------------------------------------------------//
     static Game* s_instance;
+
+    ngl::Light *m_light;
 
 };
 
