@@ -141,8 +141,8 @@ void Database::addRecord(EntityRecord _record)
 
 Database::entityRecordListPtr Database::getLocalEntities(
     float _minX,
-    float _maxX,
     float _minY,
+    float _maxX,
     float _maxY
     ) const
 {
