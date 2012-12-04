@@ -5,6 +5,7 @@
 
 #include "smartpointers.h"
 #include "database.h"
+#include "fwd/entity.h"
 
 //-------------------------------------------------------------------//
 /// @file entity.h
@@ -17,13 +18,11 @@
 /// @class Entity
 //-------------------------------------------------------------------//
 
-DECLARESMART(Entity)
-
 class Entity
 {
 public: //typedefs and structs
   //-------------------------------------------------------------------//
-  /// @brief a struct to contain the bounding box of the entity's visible
+  /// @struct a struct to contain the bounding box of the entity's visible
   /// area
   //-------------------------------------------------------------------//
 
@@ -77,7 +76,7 @@ public: //methods
   /// @param [in] _health, the initial health value of the entity
   //-------------------------------------------------------------------//
 
-  Entity(const ngl::Vec3 & _pos);
+  Entity(const ngl::Vec3 & _pos, GeneralType _type);
 
 
   //-------------------------------------------------------------------//
@@ -140,6 +139,19 @@ public: //methods
 
   void clearLocalEntities();
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the type string
+  //-------------------------------------------------------------------//
+
+  inline GeneralType getGeneralType() const {return m_generalType;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the position of the entity
+  //-------------------------------------------------------------------//
+
+  inline ngl::Vec3 getPos() const {return m_pos;}
+
+
 protected: //attributes
 
   //-------------------------------------------------------------------//
@@ -167,10 +179,19 @@ protected: //attributes
   Database::entityRecordListPtr m_localEntities;
 
   //-------------------------------------------------------------------//
-  /// a variable storing the bounding box of the entity's view area
+  /// @brief a variable storing the bounding box of the entity's view area
   //-------------------------------------------------------------------//
 
   ViewBBox m_viewBBox;
+
+private:
+
+  //-------------------------------------------------------------------//
+  /// @brief a string to store the generaltype of the entity
+  //-------------------------------------------------------------------//
+
+  GeneralType m_generalType;
+
 };
 
 

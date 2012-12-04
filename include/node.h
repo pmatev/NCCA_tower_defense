@@ -4,6 +4,7 @@
 #include <ngl/Vec3.h>
 
 #include "smartpointers.h"
+#include "entity.h"
 
 //-------------------------------------------------------------------//
 /// @file node.h
@@ -20,16 +21,19 @@
 
 DECLARESMART(Node)
 
-class Node
+class Node : public Entity
 {
 
 public:
 
   //-------------------------------------------------------------------//
-  /// @brief typedef for list of children
+  /// @brief typedefs for list of nodes
   //-------------------------------------------------------------------//
 
-  typedef boost::shared_ptr<std::list<NodePtr> > NodeChildListPtr;
+  typedef std::list<NodePtr> NodeList;
+  typedef std::vector<NodePtr> NodeVec;
+
+  typedef boost::shared_ptr<NodeList> NodeListPtr;
 
 public:
   //-------------------------------------------------------------------//
@@ -45,6 +49,21 @@ public:
   //-------------------------------------------------------------------//
 
   ~Node();
+
+  //-------------------------------------------------------------------//
+  /// @brief virtual update method
+  //-------------------------------------------------------------------//
+  void update();
+
+  //-------------------------------------------------------------------//
+  /// @brief virtual draw method
+  //-------------------------------------------------------------------//
+  void draw() const;
+
+  //-------------------------------------------------------------------//
+  /// @brief virtual draw selection method
+  //-------------------------------------------------------------------//
+  void drawSelection() const;
 
   //-------------------------------------------------------------------//
   /// @brief get method for the m_isOccupied variable
@@ -67,16 +86,16 @@ public:
   /// @param [out] m_children, list of child nodes
   //-------------------------------------------------------------------//
 
-  inline NodeChildListPtr getChildList() {return m_children;}
+  inline NodeListPtr getChildList() {return m_children;}
+
+  //-------------------------------------------------------------------//
+  /// @brief set the list of children that a node is linked to
+  /// @param [in] _children, list of child nodes
+  //-------------------------------------------------------------------//
+  inline void setChildList(NodeListPtr _children) {m_children = _children;}
 
 
 protected:
-  //-------------------------------------------------------------------//
-  /// @brief The position in 3D space of the node
-  //-------------------------------------------------------------------//
-
-  ngl::Vec3 m_pos;
-
   //-------------------------------------------------------------------//
   /// @brief A boolean flag stating whether the node is occupied or
   /// not
@@ -88,7 +107,7 @@ protected:
   /// @brief List of children for traversal
   //-------------------------------------------------------------------//
 
-  NodeChildListPtr m_children;
+  NodeListPtr m_children;
 
 
 };

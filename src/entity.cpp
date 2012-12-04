@@ -4,10 +4,11 @@
 
 //-------------------------------------------------------------------//
 
-Entity::Entity(const ngl::Vec3 & _pos):
+Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type) :
   m_pos(_pos),
   m_health(100.0),
-  m_viewBBox(0,0,0,0)
+  m_viewBBox(0,0,0,0),
+  m_generalType(_type)
 {
   // Initialise id and register with game
   Game* game = Game::instance();
@@ -33,7 +34,13 @@ void Entity::publish()
   //add the record
 
   db->addRecord(
-        Database::EntityRecord(m_ID, m_pos.m_x, m_pos.m_y, m_pos.m_z)
+        Database::EntityRecord(
+          m_ID,
+          m_generalType,
+          m_pos.m_x,
+          m_pos.m_y,
+          m_pos.m_z
+          )
         );
 }
 

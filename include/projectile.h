@@ -1,24 +1,24 @@
-#ifndef ENEMY_H
-#define ENEMY_H
+#ifndef PROJECTILE_H
+#define PROJECTILE_H
 
 #include "smartpointers.h"
 #include "dynamicentity.h"
 
 //-------------------------------------------------------------------//
-/// @file enemy.h
-/// @brief This is an intermediate class that individual enemies
+/// @file projectile.h
+/// @brief This is an intermediate class that individual projectiles
 /// inherit from which sets the m_general type of the entity
 /// @author Peter May
 /// @version 1
 /// @date 4/12/12
 /// Revision History :
 /// Initial Version 4/12/12
-/// @class Enemy
+/// @class Projectile
 //-------------------------------------------------------------------//
 
-DECLARESMART(Enemy)
+DECLARESMART(Projectile)
 
-class Enemy : public DynamicEntity
+class Projectile : public DynamicEntity
 {
 public:
   //-------------------------------------------------------------------//
@@ -31,7 +31,7 @@ public:
   /// @param[in] _initialVelocity, the starting velocity of the enemy
   //-------------------------------------------------------------------//
 
-  Enemy(
+  Projectile(
         float _damage,
         float _maxVelocity,
         const ngl::Vec3 &_pos,
@@ -40,4 +40,4 @@ public:
         );
 };
 
-#endif // ENEMY_H
+#endif // PROJECTILE_H

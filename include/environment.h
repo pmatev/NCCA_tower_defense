@@ -29,7 +29,7 @@ public:
   /// @brief creator
   //-------------------------------------------------------------------//
 
-  static EnvironmentPtr create();
+  static EnvironmentPtr create(int _gridWidth, int _gridHeight, int _hexagonSize);
 
   //-------------------------------------------------------------------//
   /// @brief dtor
@@ -97,7 +97,7 @@ private:
   /// @brief ctor
   //-------------------------------------------------------------------//
 
-  Environment();
+  Environment(int _gridWidth, int _gridHeight, int _hexagonSize);
 };
 
 #endif // ENVIRONMENT_H
