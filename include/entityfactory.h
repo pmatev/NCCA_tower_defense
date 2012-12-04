@@ -26,7 +26,11 @@ public:
   /// @brief typedef to manage callbacks
   //-------------------------------------------------------------------//
 
-  typedef EntityPtr (*createCallBack)(float _damage,float _maxVelocity,const ngl::Vec3 &_pos);
+  typedef EntityPtr (*createCallBack)(
+        float _damage,
+        float _maxVelocity,
+        const ngl::Vec3 &_pos
+        );
 
   //-------------------------------------------------------------------//
   /// @brief typedef to hold the map of all the possible types

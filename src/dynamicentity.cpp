@@ -5,12 +5,14 @@
 DynamicEntity::DynamicEntity(
     float _damage,
     float _maxVelocity,
-    const ngl::Vec3 &_pos
+    const ngl::Vec3 &_pos,
+    float _initialVelocity
     ):
   Entity(_pos),
   m_damage(_damage),
   m_aimVector(1, 0, 0),
-  m_maxVelocity(_maxVelocity)
+  m_maxVelocity(_maxVelocity),
+  m_currentVelocity(_maxVelocity)
 
 {
   //variables initialised before the constructor body

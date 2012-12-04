@@ -29,14 +29,14 @@ public:
   /// velocity of the dynamic entity
   /// @param [in] _pos, a vector containing the initial position in 3D
   /// space of the entity, passed to the entity constructor
-  /// @param [in] _health, the initial health value of the entity,
-  /// passed to the entity constructor
+  /// @param[in] _initialVelocity, the starting velocity of the enemy
   //-------------------------------------------------------------------//
 
   DynamicEntity(
       float _damage,
       float _maxVelocity,
-      const ngl::Vec3 &_pos
+      const ngl::Vec3 &_pos,
+      float _initialVelocity
       );
 
   //-------------------------------------------------------------------//
@@ -78,6 +78,12 @@ protected:
   //-------------------------------------------------------------------//
 
   float m_maxVelocity;
+
+  //-------------------------------------------------------------------//
+  /// @brief the current velocity of the dynamic entity
+  //-------------------------------------------------------------------//
+
+  float m_currentVelocity;
 };
 
 
