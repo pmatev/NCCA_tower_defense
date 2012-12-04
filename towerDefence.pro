@@ -37,7 +37,6 @@ SOURCES += src/main.cpp \
     src/uiwindow.cpp \
     src/uielement.cpp \
     src/uimenu.cpp\
-    src/entityrecord.cpp \
     src/game.cpp \
     src/window.cpp \
     src/button.cpp
@@ -59,7 +58,6 @@ HEADERS += \
     include/uiwindow.h \
     include/uielement.h \
     include/uimenu.h\
-    include/entityrecord.h \
     include/smartpointers.h \
     include/game.h \
     include/fwd/game.h \
