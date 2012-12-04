@@ -37,9 +37,15 @@ public:
     /// @brief draw element
     //-------------------------------------------------------------------//
 
-
-
     virtual void draw() const = 0;
+
+    //-------------------------------------------------------------------//
+    /// @brief see if a element has been clicked
+    //-------------------------------------------------------------------//
+
+    UIElementPtr returnClickedElement(const unsigned int _colourID);
+
+    typedef std::map<unsigned int, UIElementPtr> elementsMap;
 
 protected:
 
@@ -54,7 +60,7 @@ protected:
     /// the menu
     //-------------------------------------------------------------------//
 
-    std::vector <UIElementPtr> m_elements;
+    elementsMap m_elements;
 
 
 
