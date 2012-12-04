@@ -31,6 +31,7 @@ public:
   //-------------------------------------------------------------------//
 
   typedef std::list<NodePtr> NodeList;
+  typedef std::vector<NodePtr> NodeVec;
 
   typedef boost::shared_ptr<NodeList> NodeListPtr;
 
@@ -91,7 +92,7 @@ public:
   /// @brief set the list of children that a node is linked to
   /// @param [in] _children, list of child nodes
   //-------------------------------------------------------------------//
-  inline NodeListPtr setChildList(NodeListPtr _children) {m_children = _children;}
+  inline void setChildList(NodeListPtr _children) {m_children = _children;}
 
 
 protected:

@@ -11,9 +11,285 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
     {
       NodePtr node(new Node(ngl::Vec3(i * _hexagonSize, 0, j * (_hexagonSize * (sqrt(3)/2)))));
       m_nodes.push_back(node);
-      std::cout<<m_nodes.back()->getPos()<<std::endl;
     }
   }
+
+  //loop through again and set neighbours
+  for(int i = 0; i < _gridWidth; i++)
+  {
+    for(int j = 0; j < _gridHeight; j++)
+    {
+      Node::NodeListPtr neighbours(new Node::NodeList());
+
+      int x = 0;
+      int y = 0;
+
+      //Left
+      if(i == 0)
+      {
+        //Top left
+        if(j == 0)
+        {
+          x = i + 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+        }
+
+        //Mid left
+        else if(j < _gridHeight-1)
+        {
+          x = i;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+        }
+
+        //Bottom left
+        else
+        {
+          x = i;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+        }
+      }
+
+      //Right
+      else if(i == _gridWidth-1)
+      {
+        //Top right
+        if(j == 0)
+        {
+          x = i - 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+        }
+
+        //Mid right
+        else if(j < _gridHeight-1)
+        {
+          x = i;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i - 1;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i - 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+        }
+
+        //Bottom right
+        else
+        {
+          x = i - 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i - 1;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+        }
+      }
+
+      //Top
+      else if(j == 0)
+      {
+        //Lower top
+        if(i%2 != 2)
+        {
+          x = i - 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i - 1;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+        }
+
+        //Upper top
+        else
+        {
+          x = i - 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+        }
+      }
+
+      //Bottom
+      else if(j == _gridHeight-1)
+      {
+        //Lower bottom
+        if(i%2 != 2)
+        {
+          x = i - 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+        }
+
+        //Upper bottom
+        else
+        {
+          x = i - 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i - 1;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+        }
+      }
+
+      //enclosed
+      else
+      {
+        //enclosed odd
+        if(i%2 != 0)
+        {
+          x = i - 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i - 1;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+        }
+
+        //enclosed even
+        else
+        {
+          x = i - 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j - 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i + 1;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+
+          x = i - 1;
+          y = j + 1;
+          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+        }
+      }
+
+
+      m_nodes[(i*_gridWidth) + j]->setChildList(neighbours);
+    }
+  }
+
+//  for(int i = 0; i < m_nodes.size(); i++)
+//  {
+//    std::cout<<m_nodes[i]->getID() << " has pos: " << m_nodes[i]->getPos() << " with neighbours: " <<std::endl;
+
+//    for(Node::NodeList::iterator j = m_nodes[i]->getChildList()->begin(); j != m_nodes[i]->getChildList()->end(); j++)
+//    {
+//      std::cout<<(*j)->getID() << std::endl;
+//    }
+//  }
 
 }
 

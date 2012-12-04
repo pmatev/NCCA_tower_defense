@@ -148,7 +148,7 @@ protected:
   /// @brief list of nodes
   //-------------------------------------------------------------------//
 
-  Node::NodeList m_nodes;
+  Node::NodeVec m_nodes;
 
 
 private:
