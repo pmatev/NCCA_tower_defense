@@ -53,6 +53,42 @@ public:
 
   void update();
 
+  //-------------------------------------------------------------------//
+  /// @brief method to check whether or not an object has collided with
+  /// a bounding box
+  /// @param [in] _wsBBox the world space bounding box to test collisions
+  /// against
+  /// @param [out] a boolean value describing whether or not a collision
+  /// has occured
+  //-------------------------------------------------------------------//
+
+  bool collisionTest (BBox _wsBBox);
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to generate and return a code for a point based on
+  /// its location in space compared to the bounding box
+  /// @param [in] _point, the point to generate the code for
+  /// @param [in] _wsBBox, the world space bounding box to check against
+  /// @param [out]
+  //-------------------------------------------------------------------//
+
+  char genClippingCode(const ngl::Vec3& _point, BBox _wsBBox);
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the point of intersection of a line with
+  /// a plane. the plane is perpendicular to one of the axis, and that
+  /// axis is defined by whichever pair of extents are equal
+  /// @param [in] _point1 the first point of the line
+  /// @param [in] _point2 the second point of the line
+  /// @param [in] _planeExtents the extents of the plane in world space
+  /// @param [out] bool value stating whether or not the line intersects
+  /// the plane
+  //-------------------------------------------------------------------//
+  bool isIntersecting(
+        const ngl::Vec3 &_point1,
+        const ngl::Vec3 &_point2,
+        BBox _planeExtents);
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief a virtual brain method, to be implemented in children
@@ -86,6 +122,12 @@ protected:
   //-------------------------------------------------------------------//
 
   float m_currentVelocity;
+
+  //-------------------------------------------------------------------//
+  /// @brief a vector storing the previous position of the dynamic entity
+  //-------------------------------------------------------------------//
+
+  ngl::Vec3 m_prevPos;
 };
 
 

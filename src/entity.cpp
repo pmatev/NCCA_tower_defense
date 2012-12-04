@@ -7,7 +7,8 @@
 Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type) :
   m_pos(_pos),
   m_health(100.0),
-  m_viewBBox(0,0,0,0),
+  m_wsViewBBox(0,0,0,0,0,0),
+  m_lsMeshBBox(0,0,0,0,0,0),
   m_generalType(_type)
 {
   // Initialise id and register with game
@@ -57,10 +58,10 @@ void Entity::updateLocalEntities()
   //when checked against the exact viewing area
 
   m_localEntities = db->getLocalEntities(
-        m_viewBBox.m_minX,
-        m_viewBBox.m_minY,
-        m_viewBBox.m_maxX,
-        m_viewBBox.m_maxY
+        m_wsViewBBox.m_minX,
+        m_wsViewBBox.m_minY,
+        m_wsViewBBox.m_maxX,
+        m_wsViewBBox.m_maxY
         );
 }
 
@@ -68,7 +69,7 @@ void Entity::updateLocalEntities()
 
 void Entity::clearLocalEntities()
 {
-  //breack the link between the pointer and the list, reduces the
+  //break the link between the pointer and the list, reduces the
   //reference count to 0 and deletes the object
 
   m_localEntities.reset();

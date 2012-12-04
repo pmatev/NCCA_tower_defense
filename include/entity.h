@@ -26,7 +26,7 @@ public: //typedefs and structs
   /// area
   //-------------------------------------------------------------------//
 
-  struct ViewBBox
+  struct BBox
   {
     //-------------------------------------------------------------------//
     /// @brief the minimum x value of the entity's visible area
@@ -41,6 +41,12 @@ public: //typedefs and structs
     float m_minY;
 
     //-------------------------------------------------------------------//
+    /// @brief the minimum z value of the entity's visible area
+    //-------------------------------------------------------------------//
+
+    float m_minZ;
+
+    //-------------------------------------------------------------------//
     /// @brief the maximum x value of the entity's visible area
     //-------------------------------------------------------------------//
 
@@ -53,18 +59,35 @@ public: //typedefs and structs
     float m_maxY;
 
     //-------------------------------------------------------------------//
+    /// @brief the maximum z value of the entity's visible area
+    //-------------------------------------------------------------------//
+
+    float m_maxZ;
+
+    //-------------------------------------------------------------------//
     /// @brief constructor for the struct
     /// @param [in] _minX the minimum x value
     /// @param [in] _minY the minimum y value
+    /// @param [in] _minZ the minimum z value
     /// @param [in] _maxX the maximum x value
     /// @param [in] _maxY the maximum y value
+    /// @param [in] _maxZ the maximum z value
     //-------------------------------------------------------------------//
 
-    ViewBBox(float _minX, float _minY, float _maxX, float _maxY):
+    BBox(
+        float _minX,
+        float _minY,
+        float _minZ,
+        float _maxX,
+        float _maxY,
+        float _maxZ
+        ):
       m_minX(_minX),
       m_minY(_minY),
+      m_minZ(_minZ),
       m_maxX(_maxX),
-      m_maxY(_maxY)
+      m_maxY(_maxY),
+      m_maxZ(_maxZ)
     {}
   };
 
@@ -179,10 +202,18 @@ protected: //attributes
   Database::entityRecordListPtr m_localEntities;
 
   //-------------------------------------------------------------------//
-  /// @brief a variable storing the bounding box of the entity's view area
+  /// @brief a variable storing the bounding box of the entity's view
+  /// area, ws stands for world space
   //-------------------------------------------------------------------//
 
-  ViewBBox m_viewBBox;
+  BBox m_wsViewBBox;
+
+  //-------------------------------------------------------------------//
+  /// @brief a variable storing the bounding box of the entity's mesh,
+  /// ls stands for local space
+  //-------------------------------------------------------------------//
+
+  BBox m_lsMeshBBox;
 
 private:
 
