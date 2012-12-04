@@ -39,8 +39,9 @@ SOURCES += src/main.cpp \
     src/uimenu.cpp\
     src/game.cpp \
     src/window.cpp \
-    src/button.cpp
-
+    src/button.cpp \
+    src/environment.cpp \
+    src/nodemanager.cpp
 
 
 HEADERS += \
@@ -64,8 +65,9 @@ HEADERS += \
     include/smartpointers.h \
     include/window.h \
     include/fwd/window.h \
-    include/button.h
-
+    include/button.h \
+    include/environment.h \
+    include/nodemanager.h
 
 
 #including the Imath Library

@@ -17,8 +17,7 @@
 /// @class DynamicEntity
 //-------------------------------------------------------------------//
 
-class DynamicEntity;
-typedef boost::shared_ptr<DynamicEntity> DynamicEntityPtr;
+DECLARESMART(DynamicEntity)
 
 class DynamicEntity : public Entity
 {
