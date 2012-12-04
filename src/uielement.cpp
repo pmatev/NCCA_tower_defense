@@ -17,3 +17,16 @@ void UIElement::draw() const
 {
     //need to implement
 }
+
+
+
+std::string UIElement::getImagefile()
+{
+    return m_imageFile;
+}
+
+
+UIElement::~UIElement()
+{
+
+}

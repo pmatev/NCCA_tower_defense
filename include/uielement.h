@@ -35,10 +35,12 @@ public:
     ~UIElement();
 
     //-------------------------------------------------------------------//
-    /// @brief draw element
+    /// @brief virtual draw function passed through to other elements
     //-------------------------------------------------------------------//
 
      virtual void draw() const = 0;
+
+    std::string getImagefile();
 
 
 
@@ -59,6 +61,19 @@ protected:
     /// @brief colour ID used to query whether it has been clicked or not
     //-------------------------------------------------------------------//
     int m_colourID;
+
+    //-------------------------------------------------------------------//
+    /// @brief stores the maximum size in x direction can either be percentage
+    /// or pixel value. Will be relative to size of menu
+    //-------------------------------------------------------------------//
+    float m_maxBoundsX;
+
+
+    //-------------------------------------------------------------------//
+    /// @brief stores the maximum size in y direction can either be percentage
+    /// or pixel value. Will be relative to size of menu
+    //-------------------------------------------------------------------//
+    float m_maxBoundsY;
 
 };
 

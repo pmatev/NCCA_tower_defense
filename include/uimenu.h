@@ -4,7 +4,7 @@
 
 #include <ngl/Vec2.h>
 #include "smartpointers.h"
-#include "uielement.h"
+#include "uibutton.h"
 
 
 //-------------------------------------------------------------------//
@@ -23,6 +23,8 @@ DECLARESMART(UIMenu)
 class UIMenu
 
 {
+
+
 public:
     //-------------------------------------------------------------------//
     /// @brief the constructor
@@ -37,15 +39,40 @@ public:
     /// @brief draw element
     //-------------------------------------------------------------------//
 
-    virtual void draw() const = 0;
+    void draw() const;
 
     //-------------------------------------------------------------------//
     /// @brief see if a element has been clicked
+    /// @param [out] returns a button pointer which will either contain
+    /// the clicked button or an empty one if none were clicked
     //-------------------------------------------------------------------//
 
-    UIElementPtr returnClickedElement(const unsigned int _colourID);
+    UIButtonPtr returnClickedElement(const unsigned int _colourID);
 
-    typedef std::map<unsigned int, UIElementPtr> elementsMap;
+
+    void alignBottom();
+
+
+
+
+
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+    //inline UIButtonPtr getbutton() {return m_buttonTest;}
+
+    void createButtonTest(ngl::Vec2 _pos, std::string _imageFile);
+
+    void printTest();
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+
+
+
+
+
+    typedef std::map<unsigned int, UIButtonPtr> buttonsMap;
 
 protected:
 
@@ -56,14 +83,31 @@ protected:
     ngl::Vec2 m_pos;
 
     //-------------------------------------------------------------------//
-    /// @brief a list of smart pointers to UIElements contained within
+    /// @brief a list of smart pointers to just the buttons contained within
     /// the menu
     //-------------------------------------------------------------------//
 
-    elementsMap m_elements;
+    buttonsMap m_buttons;
+
+    //-------------------------------------------------------------------//
+    /// @brief flag which specifies whether the menu is displayable or not
+    /// for rendering
+    //-------------------------------------------------------------------//
+
+    bool m_displayed;
+
+    //-------------------------------------------------------------------//
+    /// @brief stores the maximum size in x direction can either be percentage
+    /// or pixel value
+    //-------------------------------------------------------------------//
+    float m_maxBoundsX;
 
 
-
+    //-------------------------------------------------------------------//
+    /// @brief stores the maximum size in y direction can either be percentage
+    /// or pixel value
+    //-------------------------------------------------------------------//
+    float m_maxBoundsY;
 
 
 
