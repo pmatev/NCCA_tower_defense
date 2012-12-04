@@ -1,5 +1,7 @@
 #include "database.h"
 
+Database * Database::s_instance =0;
+
 //-------------------------------------------------------------------//
 
 Database::Database(
@@ -48,7 +50,7 @@ Database::Database(
   {
     for (int j = 0; j < _numCellsY; j++)
     {
-      entityRecordListPtr list (new std::list<EntityRecordPtr>);
+      entityRecordListPtr list (new std::list<EntityRecord>);
       m_grid.push_back(list);
     }
   }
@@ -63,7 +65,7 @@ Database::~Database()
 
 //-------------------------------------------------------------------//
 
-DatabasePtr Database::create(
+Database * Database::create(
     int _numCellsX,
     int _numCellsY,
     float _environMaxX,
@@ -72,25 +74,54 @@ DatabasePtr Database::create(
     float _environMinY
     )
 {
-  DatabasePtr db(new Database(
-        _numCellsX,
-        _numCellsY,
-        _environMaxX,
-        _environMaxY,
-        _environMinX,
-        _environMinY
-        ));
-  return db;
+  //singleton patern based on code from Jon Macey's singleton template
+
+  if (s_instance == 0)
+  {
+    // create a mutux to stop other threads accessing
+
+    QMutex m;
+
+    // the locker will auto unlock when out of scope
+
+    QMutexLocker locker (&m);
+    if (s_instance == 0)
+    {
+      s_instance = (new Database(
+            _numCellsX,
+            _numCellsY,
+            _environMaxX,
+            _environMaxY,
+            _environMinX,
+            _environMinY
+            ));
+    }
+  }
+  return s_instance;
 }
 
 //-------------------------------------------------------------------//
 
-void Database::addRecord(EntityRecordPtr _record)
+Database * Database::instance()
+{
+  return s_instance;
+}
+
+//-------------------------------------------------------------------//
+
+void Database::destroy()
+{
+  delete s_instance;
+}
+
+//-------------------------------------------------------------------//
+
+void Database::addRecord(EntityRecord _record)
 {
   //conversion to grid space for assigning to a grid cell
 
-  float gridSpaceX = (_record->m_x - m_environMinX)* m_scaleX;
-  float gridSpaceY = (_record->m_y - m_environMinY) * m_scaleY;
+  float gridSpaceX = (_record.m_x - m_environMinX)* m_scaleX;
+  float gridSpaceY = (_record.m_y - m_environMinY) * m_scaleY;
 
   //conversion from float to int
 
@@ -110,8 +141,8 @@ void Database::addRecord(EntityRecordPtr _record)
 
 Database::entityRecordListPtr Database::getLocalEntities(
     float _minX,
-    float _maxX,
     float _minY,
+    float _maxX,
     float _maxY
     ) const
 {
@@ -148,11 +179,11 @@ Database::entityRecordListPtr Database::getLocalEntities(
 
   //initialise a pointer to a list of entity records
 
-  entityRecordListPtr returnList(new std::list<EntityRecordPtr>);
+  entityRecordListPtr returnList(new std::list<EntityRecord>);
 
   //and initialise an iterator for that list
 
-  std::list<EntityRecordPtr>::iterator returnListIt;
+  std::list<EntityRecord>::iterator returnListIt;
 
   //loop through each index of a cell overlapped by the bounding
   //box
@@ -169,7 +200,7 @@ Database::entityRecordListPtr Database::getLocalEntities(
         //
         //initialise an iterator to the beginning of the cell list
 
-        std::list<EntityRecordPtr>::iterator cellListIt;
+        std::list<EntityRecord>::iterator cellListIt;
         cellListIt = (*m_grid[j+(i*m_numCellsX)]).begin();
 
         //push the first element of the list into the return list
@@ -215,4 +246,24 @@ Database::entityRecordListPtr Database::getLocalEntities(
 
   return returnList;
 }
+//-------------------------------------------------------------------//
+
+void Database::clearRecords()
+{
+  // create an iterater to cycle through the cell lists and set it to the
+  //beginning of the vector of lists
+
+  std::vector<entityRecordListPtr>::iterator it;
+  it = m_grid.begin();
+
+  //then for each one
+
+  for (; it < m_grid.end(); it++)
+  {
+    //clear the list
+
+    (*it)->clear();
+  }
+}
+
 //-------------------------------------------------------------------//

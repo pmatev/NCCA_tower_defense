@@ -48,3 +48,8 @@ void Enemy::draw() const
 {
   // does nothing yet
 }
+
+void Enemy::drawSelection() const
+{
+  // Should draw the object with a constant shader based on ID
+}

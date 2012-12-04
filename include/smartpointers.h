@@ -21,6 +21,6 @@
 #define DECLARESMART(X) \
   class X; \
   typedef boost::shared_ptr< X > X ## Ptr; \
-  typedef boost::shared_ptr< const X > X ## CPtr;
+  typedef boost::shared_ptr< const X > X ## CPtr;\
 
 #endif // SMARTPOINTERS_H

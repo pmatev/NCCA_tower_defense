@@ -3,6 +3,9 @@
 
 #include "fwd/game.h"
 #include "fwd/window.h"
+#include <map>
+#include "entity.h"
+#include <SDL.h>
 
 
 //-------------------------------------------------------------------//
@@ -10,8 +13,8 @@
 /// @brief a class to manage the game state and delegate key/mouse events
 /// to other managers
 /// @author Peter Matev
-/// @version 1
-/// @date 29/11/12
+/// @version 1.1
+/// @date 3/12/12
 /// Revision History :
 /// Initial Version 29/11/12
 /// @class Game
@@ -24,35 +27,85 @@ public:
     /// @brief the destructor
     //-------------------------------------------------------------------//
     ~Game();
+
     //-------------------------------------------------------------------//
-    /// @brief constructs the object and returns smart pointer
+    /// @brief returns instance of singleton
     //-------------------------------------------------------------------//
-    static GamePtr create(WindowPtr _parent);
+    static Game* instance();
+
     //-------------------------------------------------------------------//
-    /// @brief initiates the game. Calls update() and draw().
+    /// @brief returns instance of singleton
     //-------------------------------------------------------------------//
-    void run();
+    void destroy();
+
     //-------------------------------------------------------------------//
     /// @brief updates the game state
     //-------------------------------------------------------------------//
     void update(const double _t);
+
     //-------------------------------------------------------------------//
     /// @brief draws the current game state
     //-------------------------------------------------------------------//
     void draw();
 
+    //-------------------------------------------------------------------//
+    /// @brief register the id of given Entity and return its ID
+    //-------------------------------------------------------------------//
+    unsigned int registerID(EntityPtr _e);
+
+    //-------------------------------------------------------------------//
+    /// @brief unregister Entity via ID
+    //-------------------------------------------------------------------//
+    void unregisterID(const unsigned int _i);
+
+    //-------------------------------------------------------------------//
+    /// @brief return Smart Pointer to Entity via ID.
+    //-------------------------------------------------------------------//
+    EntityPtr getEntityByID(const unsigned int _i);
+
+    //-------------------------------------------------------------------//
+    /// @brief function triggered on mouse move.
+    //-------------------------------------------------------------------//
+    void mouseMotionEvent(const SDL_MouseMotionEvent &_event);
+    //-------------------------------------------------------------------//
+    /// @brief function triggered on mouse button down
+    //-------------------------------------------------------------------//
+    void mouseButtonDownEvent(const SDL_MouseButtonEvent &_event);
+    //-------------------------------------------------------------------//
+    /// @brief function triggered on mouse button up
+    //-------------------------------------------------------------------//
+    void mouseButtonUpEvent(const SDL_MouseButtonEvent &_event);
+    //-------------------------------------------------------------------//
+    /// @brief function triggered on mouse wheel event
+    //-------------------------------------------------------------------//
+    void mouseWheelEvent(const SDL_MouseWheelEvent &_event);
+
+
+
 protected:
     //-------------------------------------------------------------------//
-    /// @brief hidden ctor
+    /// @brief hidden ctor for singleton
     //-------------------------------------------------------------------//
-    Game(WindowPtr _m_parent);
+    Game();
 
     //-------------------------------------------------------------------//
-    /// @brief Smart pointer to parent window
+    /// @brief ID Counter for distributing unique IDs to entities.
     //-------------------------------------------------------------------//
-    WindowPtr m_parent;
+    unsigned int m_currentID;
+
+    //-------------------------------------------------------------------//
+    /// @brief A map of IDs to Entity Pointers for game object management.
+    //-------------------------------------------------------------------//
+    std::map<unsigned int, EntityPtr> m_IDMap;
 
 
+
+
+private:
+    //-------------------------------------------------------------------//
+    /// @brief instance pointer for singleton
+    //-------------------------------------------------------------------//
+    static Game* s_instance;
 
 };
 
