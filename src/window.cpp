@@ -138,6 +138,7 @@ void Window::loop()
             case SDL_MOUSEBUTTONDOWN : mouseButtonDownEvent(event.button); break;
             case SDL_MOUSEBUTTONUP : mouseButtonUpEvent(event.button); break;
             case SDL_MOUSEWHEEL : mouseWheelEvent(event.wheel); break;
+            //case SDL_KEYDOWN:if(event.key.keysym.sym == SDLK_s)glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
 
             }
         }

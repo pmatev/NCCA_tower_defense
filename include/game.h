@@ -11,6 +11,7 @@
 #include "node.h"
 #include "wavemanager.h"
 #include "environment.h"
+#include "testenemy.h"
 
 
 //-------------------------------------------------------------------//
@@ -123,6 +124,8 @@ private:
     static Game* s_instance;
 
     ngl::Light *m_light;
+
+    TestEnemyPtr m_testEnemy;
 
 };
 

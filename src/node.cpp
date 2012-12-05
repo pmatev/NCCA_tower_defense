@@ -23,12 +23,17 @@ void Node::update()
 
 }
 
-void Node::draw() const
+void Node::draw()
 {
 
 }
 
-void Node::drawSelection() const
+void Node::drawSelection()
+{
+
+}
+
+void Node::generateMesh()
 {
 
 }

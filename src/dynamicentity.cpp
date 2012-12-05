@@ -39,6 +39,8 @@ void DynamicEntity::update()
   // based on brain where should it go next
   // FOR TESTING JUST HAVE IT GO EXACTLY WHERE THE BRAIN SAYS
   m_pos += brainVec;
+
+  m_transformStack.setPosition(m_pos);
 }
 
 //-------------------------------------------------------------------//

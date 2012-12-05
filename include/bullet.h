@@ -42,13 +42,16 @@ public: //methods
   /// @brief draw the object
   //-------------------------------------------------------------------//
 
-  void draw() const;
+  void draw() ;
 
   //-------------------------------------------------------------------//
   /// @brief draw the object based on id
   //-------------------------------------------------------------------//
 
-  void drawSelection() const;
+  void drawSelection() ;
+
+
+  void generateMesh();
 
 protected: //methods
   //-------------------------------------------------------------------//

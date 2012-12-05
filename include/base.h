@@ -28,6 +28,8 @@ public:
   Base(
       NodePtr _linkedNode
       );
+
+
 };
 
 #endif // BASE_H

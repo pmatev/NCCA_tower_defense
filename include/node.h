@@ -58,12 +58,12 @@ public:
   //-------------------------------------------------------------------//
   /// @brief virtual draw method
   //-------------------------------------------------------------------//
-  void draw() const;
+  void draw() ;
 
   //-------------------------------------------------------------------//
   /// @brief virtual draw selection method
   //-------------------------------------------------------------------//
-  void drawSelection() const;
+  void drawSelection() ;
 
   //-------------------------------------------------------------------//
   /// @brief get method for the m_isOccupied variable
@@ -93,6 +93,9 @@ public:
   /// @param [in] _children, list of child nodes
   //-------------------------------------------------------------------//
   inline void setChildList(NodeListPtr _children) {m_children = _children;}
+
+
+  void generateMesh();
 
 
 protected:

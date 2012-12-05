@@ -39,14 +39,20 @@ BulletPtr Bullet::create(
 
 //-------------------------------------------------------------------//
 
-void Bullet::draw() const
+void Bullet::draw()
 {
 
 }
 
+void Bullet::generateMesh()
+{
+
+}
+
+
 //-------------------------------------------------------------------//
 
-void Bullet::drawSelection() const
+void Bullet::drawSelection()
 {
 
 }

@@ -78,9 +78,7 @@ void Renderer::createVAO(std::string _id)
 }
 void Renderer::setDataToVAO(std::string _id, unsigned int _size, GLfloat &_data, unsigned int _meshSize)
 {
-  std::map<std::string, VAOPtr>::iterator it = m_mapVAO.find(_id);
-  VAOPtr vao= (*it).second;
-  vao->bind();
+  VAOPtr vao = bindVAOByID(_id);
 
   vao->setData(_size,_data,GL_STREAM_DRAW);
 
@@ -96,9 +94,7 @@ void Renderer::setDataToVAO(std::string _id, unsigned int _size, GLfloat &_data,
 
 void Renderer::setIndexedDataToVAO(std::string _id, unsigned int _size, const GLfloat &_data, unsigned int _indexSize, const GLvoid *_indexData, unsigned int _meshSize)
 {
-  std::map<std::string, VAOPtr>::iterator it = m_mapVAO.find(_id);
-  VAOPtr vao= (*it).second;
-  vao->bind();
+  VAOPtr vao = bindVAOByID(_id);
 
   vao->setIndexedData(_size, _data, _indexSize, _indexData, GL_UNSIGNED_BYTE, GL_STATIC_DRAW);
 
@@ -112,20 +108,16 @@ void Renderer::setIndexedDataToVAO(std::string _id, unsigned int _size, const GL
   vao->unbind();
 }
 
-void Renderer::draw()
+void Renderer::draw(std::string _id)
 {
-  std::map<std::string, VAOPtr>::iterator it;
-  for(it = m_mapVAO.begin(); it != m_mapVAO.end(); it++)
-  {
-    VAOPtr v= it->second;
-    v->bind();
-    v->draw();
-    v->unbind();
-  }
+  VAOPtr v = bindVAOByID(_id);
+
+  v->draw();
+  v->unbind();
 }
 
 
-void Renderer::loadMatrixToShader(ngl::TransformStack &_tx, std::string _shader)
+void Renderer::loadMatrixToShader( ngl::TransformStack &_tx,  std::string _shader)
 {
     ngl::ShaderLib *shader=ngl::ShaderLib::instance();
 
@@ -155,4 +147,12 @@ void Renderer::loadLightToShader(ngl::Light *_light, std::string _shader)
     _light->setTransform(iv);
     // load these values to the shader as well
     _light->loadToShader("light");
+}
+
+VAOPtr Renderer::bindVAOByID(const std::string _id)
+{
+  std::map<std::string, VAOPtr>::iterator it = m_mapVAO.find(_id);
+  VAOPtr vao= (*it).second;
+  vao->bind();
+  return vao;
 }

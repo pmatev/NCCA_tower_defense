@@ -1,6 +1,6 @@
 #include "entity.h"
 #include "database.h"
-
+#include "boost/lexical_cast.hpp"
 #include "game.h"
 
 //-------------------------------------------------------------------//
@@ -16,6 +16,9 @@ Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type) :
   Game* game = Game::instance();
   // register instance with Game
   m_ID = game->registerID(EntityPtr(this));
+  m_IDStr = boost::lexical_cast<std::string>(m_ID);
+
+  m_transformStack = ngl::TransformStack();
 }
 
 //-------------------------------------------------------------------//
@@ -23,6 +26,7 @@ Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type) :
 Entity::~Entity()
 {
   //currently using default
+
 }
 
 //-------------------------------------------------------------------//
@@ -82,3 +86,5 @@ void Entity::clearLocalEntities()
 }
 
 //-------------------------------------------------------------------//
+
+

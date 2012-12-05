@@ -7,6 +7,7 @@
 #include "smartpointers.h"
 #include "fwd/database.h"
 #include "fwd/entity.h"
+#include "ngl/TransformStack.h"
 
 //-------------------------------------------------------------------//
 /// @file entity.h
@@ -18,6 +19,8 @@
 /// Initial Version 22/11/12
 /// @class Entity
 //-------------------------------------------------------------------//
+
+typedef boost::shared_ptr<ngl::TransformStack> TXPtr;
 
 class Entity
 {
@@ -121,14 +124,14 @@ public: //methods
   /// implemented in child classes
   //-------------------------------------------------------------------//
 
-  virtual void draw() const = 0;
+  virtual void draw()  = 0;
 
   //-------------------------------------------------------------------//
   /// @brief a virtual method that draws the selection frame (where each
   /// object is rendered with a colour based on it's id)
   //-------------------------------------------------------------------//
 
-  virtual void drawSelection() const = 0;
+  virtual void drawSelection()  = 0;
 
   //-------------------------------------------------------------------//
   /// @brief a method which will publish the entity's position to the
@@ -178,6 +181,10 @@ public: //methods
   inline ngl::Vec3 getPos() const {return m_pos;}
 
 
+  virtual void generateMesh() = 0;
+
+
+
 protected: //attributes
 
   //-------------------------------------------------------------------//
@@ -185,6 +192,8 @@ protected: //attributes
   //-------------------------------------------------------------------//
 
   unsigned int m_ID;
+
+  std::string m_IDStr;
 
   //-------------------------------------------------------------------//
   /// @brief the vector to store the position of the entity
@@ -217,6 +226,9 @@ protected: //attributes
   //-------------------------------------------------------------------//
 
   BBox m_lsMeshBBox;
+
+  ngl::TransformStack m_transformStack;
+
 
 private:
 

@@ -21,6 +21,7 @@
 //-------------------------------------------------------------------//
 
 typedef boost::shared_ptr<ngl::VertexArrayObject> VAOPtr;
+typedef boost::shared_ptr<ngl::TransformStack> TXPtr;
 
 struct vertData
 {
@@ -45,14 +46,14 @@ public:
     void createVAO(std::string _id);
     void setDataToVAO(std::string _id, unsigned int _size, GLfloat &_data, unsigned int _meshSize);
     void setIndexedDataToVAO(std::string _id, unsigned int _size, const GLfloat &_data, unsigned int _indexSize, const GLvoid *_indexData, unsigned int _meshSize);
-    void draw();
+    void draw(std::string _id);
 
     //vertData packData(const ngl::Vec3 &_vert, ngl::Vec3 &_norm);
 
     void loadMatrixToShader(ngl::TransformStack &_tx, std::string _shader);
     void loadLightToShader(ngl::Light *_light, std::string _shader);
 
-
+    VAOPtr bindVAOByID(const std::string _id);
 
     inline Camera* getCam() const {return m_cam;}
 
