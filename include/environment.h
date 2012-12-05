@@ -64,11 +64,7 @@ public:
 
 protected:
 
-  //-------------------------------------------------------------------//
-  /// @brief typedef for describing lists of towers
-  //-------------------------------------------------------------------//
 
-  typedef std::list<StaticEntityPtr> TowerList;
 
 protected:
 
@@ -77,7 +73,7 @@ protected:
   /// @brief list of all turrets and walls
   //-------------------------------------------------------------------//
 
-  TowerList m_towers;
+  StaticEntityList m_towers;
 
   //-------------------------------------------------------------------//
   /// @brief base object

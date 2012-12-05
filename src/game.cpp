@@ -8,7 +8,8 @@
 Game* Game::s_instance = 0;
 
 //-------------------------------------------------------------------//
-Game::Game()
+Game::Game():
+  m_currentID(0)  // set current ID to
 {
 
 }

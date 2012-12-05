@@ -30,7 +30,7 @@ void Environment::update()
 {
   // Go through all the towers and draw
   for(
-      TowerList::iterator it = m_towers.begin();
+      StaticEntityList::iterator it = m_towers.begin();
       it != m_towers.end();
       ++it
       )
@@ -47,7 +47,7 @@ void Environment::publish()
 {
   // Go through all the towers and draw
   for(
-      TowerList::iterator it = m_towers.begin();
+      StaticEntityList::iterator it = m_towers.begin();
       it != m_towers.end();
       ++it
       )
@@ -64,7 +64,7 @@ void Environment::draw() const
 {
   // Go through all the towers and draw
   for(
-      TowerList::const_iterator it = m_towers.begin();
+      StaticEntityList::const_iterator it = m_towers.begin();
       it != m_towers.end();
       ++it
       )
@@ -81,7 +81,7 @@ void Environment::drawSelection() const
 {
   // Go through all the towers and draw
   for(
-      TowerList::const_iterator it = m_towers.begin();
+      StaticEntityList::const_iterator it = m_towers.begin();
       it != m_towers.end();
       ++it
       )

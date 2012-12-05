@@ -28,9 +28,7 @@ protected:
   /// @brief typedefs for dealing with path finding
   //-------------------------------------------------------------------//
 
-  DECLARESMART(PathNode)
-
-  typedef std::list<PathNodePtr> PathNodeList;
+  DECLARESMARTLIST(PathNode)
 
   //-------------------------------------------------------------------//
   /// @brief struct for use in pathFinding (basically just a wrapper for
@@ -92,7 +90,11 @@ public:
   /// @brief creator
   //-------------------------------------------------------------------//
 
-  static NodeManagerPtr create(int _gridWidth, int _gridHeight, int _hexagonSize);
+  static NodeManagerPtr create(
+        int _gridWidth,
+        int _gridHeight,
+        int _hexagonSize
+        );
 
   //-------------------------------------------------------------------//
   /// @brief default dtor
@@ -112,7 +114,7 @@ protected:
   /// @brief Shortest possible distance between two nodes
   //-------------------------------------------------------------------//
 
-  int heuristicPath(NodePtr _start, NodePtr _goal) const;
+  float heuristicPath(NodePtr _start, NodePtr _goal) const;
 
   //-------------------------------------------------------------------//
   /// @brief trace through node parents to create an ordered list of all
@@ -127,19 +129,18 @@ protected:
   Node::NodeList reconstructPath(
         PathNodePtr _current,
         NodePtr _start,
-        Node::NodeList _currentList
+        Node::NodeList _currentList = Node::NodeList()
         ) const;
 
+  //-------------------------------------------------------------------//
+  /// @brief check a _list to see if it contains _node
+  /// @param[in] _node, the node to search for
+  /// @param[in] _list, the list to search in
+  /// @param[out] whether it's contained in the list or not. true if
+  /// contained, false if not
+  //-------------------------------------------------------------------//
+
   bool checkListForNode(PathNodePtr _node, PathNodeList _list) const;
-
-
-//  //-------------------------------------------------------------------//
-//  /// @brief find the PathNode that stores _node as it's node.
-//  /// @param[in] _node, node to look for
-//  /// @param[in] _list, list to look through for node
-//  /// @param[out] the ordered list of nodes that make up the path
-//  //-------------------------------------------------------------------//
-//  PathNodePtr findPathNode(NodePtr _node, PathNodeList _list);
 
 
 protected:
@@ -149,6 +150,12 @@ protected:
   //-------------------------------------------------------------------//
 
   Node::NodeVec m_nodes;
+
+  //-------------------------------------------------------------------//
+  /// @brief distance between the centers of any two adjacent nodes
+  //-------------------------------------------------------------------//
+
+  float m_centerDist;
 
 
 private:

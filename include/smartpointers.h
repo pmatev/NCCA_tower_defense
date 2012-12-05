@@ -7,10 +7,11 @@
 //-------------------------------------------------------------------//
 /// @file smartpointers.h
 /// @brief This file is for holding macros for aiding the creation of
-/// boost smart pointers
+/// boost smart pointers. This is handy but it may increase compile
+/// times quite a bit.
 /// @author Jared Auty
-/// @version 1
-/// @date 28/11/12
+/// @version 1.1
+/// @date 5/12/12
 /// Revision History :
 /// Initial Version 28/11/12
 //-------------------------------------------------------------------//

@@ -18,7 +18,7 @@
 /// @class StaticEntity
 //-------------------------------------------------------------------//
 
-DECLARESMART(StaticEntity)
+DECLARESMARTLIST(StaticEntity)
 
 class StaticEntity : public Entity
 {
