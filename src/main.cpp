@@ -2,10 +2,12 @@
 #include <SDL.h>
 
 #include "window.h"
+#include "nodemanager.h"
 
 
 int main(int argc, char *argv[])
 {
+  NodeManagerPtr nm_test(NodeManager::create(4, 3, 2));
   // create and init the OpenGL Window
   Window *w = Window::instance();
   w->init();

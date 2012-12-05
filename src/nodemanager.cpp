@@ -9,7 +9,13 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
   {
     for(int j = 0; j < _gridHeight; j++)
     {
-      NodePtr node(new Node(ngl::Vec3(i * _hexagonSize, 0, j * (_hexagonSize * (sqrt(3)/2)))));
+      NodePtr node(
+            new Node(
+              ngl::Vec3(i * _hexagonSize, 0,
+                        j * (_hexagonSize * (sqrt(3)/2))
+                        )
+              )
+            );
       m_nodes.push_back(node);
     }
   }
@@ -32,11 +38,11 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
         {
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
         }
 
         //Mid left
@@ -44,19 +50,19 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
         {
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
         }
 
         //Bottom left
@@ -64,15 +70,15 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
         {
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
         }
       }
 
@@ -82,13 +88,33 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
         //Top right
         if(j == 0)
         {
-          x = i - 1;
-          y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          //Upper top right
+          if(i%2 == 0)
+          {
+            x = i - 1;
+            y = j;
+            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
-          x = i;
-          y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+            x = i;
+            y = j + 1;
+            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          }
+
+          //Lower top right
+          if(i%2 != 0)
+          {
+            x = i - 1;
+            y = j;
+            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+
+            x = i - 1;
+            y = j + 1;
+            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+
+            x = i;
+            y = j + 1;
+            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          }
         }
 
         //Mid right
@@ -96,19 +122,19 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
         {
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i - 1;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
         }
 
         //Bottom right
@@ -116,15 +142,15 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
         {
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i - 1;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
         }
       }
 
@@ -136,23 +162,23 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
         {
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i - 1;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
         }
 
         //Upper top
@@ -160,15 +186,15 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
         {
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
         }
       }
 
@@ -180,15 +206,15 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
         {
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
         }
 
         //Upper bottom
@@ -196,23 +222,23 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
         {
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i - 1;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
         }
       }
 
@@ -224,27 +250,27 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
         {
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i - 1;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
         }
 
         //enclosed even
@@ -252,32 +278,32 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
         {
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i - 1;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*x) + y]);
+          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
         }
       }
 
 
-      m_nodes[(i*_gridWidth) + j]->setChildList(neighbours);
+      m_nodes[(j*_gridWidth) + i]->setChildList(neighbours);
     }
   }
 
@@ -295,7 +321,10 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize)
 
 //-------------------------------------------------------------------//
 
-NodeManagerPtr NodeManager::create(int _gridWidth, int _gridHeight, int _hexagonSize)
+NodeManagerPtr NodeManager::create(
+    int _gridWidth,
+    int _gridHeight,
+    int _hexagonSize)
 {
   NodeManagerPtr a(new NodeManager(_gridWidth, _gridHeight, _hexagonSize));
   return a;
