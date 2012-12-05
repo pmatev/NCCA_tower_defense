@@ -29,7 +29,13 @@ public:
   /// @brief creator
   //-------------------------------------------------------------------//
 
-  static EnvironmentPtr create(int _gridWidth, int _gridHeight, int _hexagonSize);
+  static EnvironmentPtr create(
+        int _gridWidth,
+        int _gridHeight,
+        int _hexagonSize,
+        ngl::Vec3 _origin,
+        int _baseX,
+        int _baseY);
 
   //-------------------------------------------------------------------//
   /// @brief dtor
@@ -101,7 +107,13 @@ private:
   /// @brief ctor
   //-------------------------------------------------------------------//
 
-  Environment(int _gridWidth, int _gridHeight, int _hexagonSize);
+  Environment(
+        int _gridWidth,
+        int _gridHeight,
+        int _hexagonSize,
+        ngl::Vec3 _origin,
+        int _baseX,
+        int _baseY);
 };
 
 #endif // ENVIRONMENT_H

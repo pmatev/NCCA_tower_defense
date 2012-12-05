@@ -3,8 +3,18 @@
 
 //-------------------------------------------------------------------//
 
-Environment::Environment(int _gridWidth, int _gridHeight, int _hexagonSize):
-  m_nodeMap(NodeManager::create(_gridWidth, _gridHeight, _hexagonSize))
+Environment::Environment(
+    int _gridWidth,
+    int _gridHeight,
+    int _hexagonSize,
+    ngl::Vec3 _origin,
+    int _baseX,
+    int _baseY):
+  m_nodeMap(NodeManager::create(
+              _gridWidth,
+              _gridHeight,
+              _hexagonSize,
+              _origin))
 {
   // default ctor
 
@@ -12,9 +22,21 @@ Environment::Environment(int _gridWidth, int _gridHeight, int _hexagonSize):
 
 //-------------------------------------------------------------------//
 
-EnvironmentPtr Environment::create(int _gridWidth, int _gridHeight, int _hexagonSize)
+EnvironmentPtr Environment::create(
+    int _gridWidth,
+    int _gridHeight,
+    int _hexagonSize,
+    ngl::Vec3 _origin,
+    int _baseX,
+    int _baseY)
 {
-  EnvironmentPtr a(new Environment(_gridWidth, _gridHeight, _hexagonSize));
+  EnvironmentPtr a(new Environment(
+                     _gridWidth,
+                     _gridHeight,
+                     _hexagonSize,
+                     _origin,
+                     _baseX,
+                     _baseY));
   return a;
 }
 

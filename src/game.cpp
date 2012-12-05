@@ -97,7 +97,7 @@ void Game::init()
     /* ------------------------------------------------- End Testing -------------------------------------------------------------------- */
 
     m_waveManager = WaveManager::create();
-    m_environment = Environment::create(6, 6, 2); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
+    m_environment = Environment::create(6, 6, 2, ngl::Vec3(0.0, 0.0, 0.0), 5, 5); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
 
 }
 

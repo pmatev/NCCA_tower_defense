@@ -503,7 +503,10 @@ Node::NodeList NodeManager::findPathFromPos(
     ngl::Vec3 _goal) const
 {
   //need to find the start and finish nodes in m_nodes from the vec3s.
+  NodePtr start = getNodeFromPos(_start);
+  NodePtr goal = getNodeFromPos(_goal);
 
+  return findPath(start, goal);
 }
 
 NodePtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
