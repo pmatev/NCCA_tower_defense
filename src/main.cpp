@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-  NodeManagerPtr nm_test(NodeManager::create(4, 3, 2));
+  NodeManagerPtr nm_test(NodeManager::create(6, 6, 2));
   // create and init the OpenGL Window
   Window *w = Window::instance();
   w->init();
