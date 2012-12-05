@@ -2,6 +2,8 @@
 #define ENTITYFACTORY_H
 
 #include "dynamicentity.h"
+#include "staticentity.h"
+#include "node.h"
 #include "smartpointers.h"
 //-------------------------------------------------------------------//
 /// @file entityfactory.h
@@ -26,7 +28,7 @@ public:
   /// @brief typedef to manage callbacks
   //-------------------------------------------------------------------//
 
-  typedef EntityPtr (*createCallBack)(
+  typedef EntityPtr (*dynamicEntityCallBack)(
         float _damage,
         float _maxVelocity,
         const ngl::Vec3 &_pos,
@@ -34,11 +36,19 @@ public:
         const ngl::Vec3 &_aim
         );
 
+  typedef EntityPtr (*staticEntityCallBack)(
+        NodePtr _node
+        );
+
   //-------------------------------------------------------------------//
-  /// @brief typedef to hold the map of all the possible types
+  /// @brief typedefs to hold the map of all the possible types
   //-------------------------------------------------------------------//
 
-  typedef std::map<std::string, EntityFactory::createCallBack> EntityTypeMap;
+  typedef std::map<std::string, EntityFactory::dynamicEntityCallBack>
+      DynamicEntityTypeMap;
+
+  typedef std::map<std::string, EntityFactory::staticEntityCallBack>
+      StaticEntityTypeMap;
 
 public:
   //-------------------------------------------------------------------//
@@ -68,7 +78,22 @@ public:
   /// @param[in] _cb, the callback method (the create method of the class)
   //-------------------------------------------------------------------//
 
-  static void registerEntity(const std::string _type, createCallBack _cb);
+  static void registerDynamicEntity(
+        const std::string _type,
+        dynamicEntityCallBack _cb
+        );
+
+  //-------------------------------------------------------------------//
+  /// @brief add the specified type and constuct method to the list of
+  /// possible types
+  /// @param[in] _type, a string referring to the type's name
+  /// @param[in] _cb, the callback method (the create method of the class)
+  //-------------------------------------------------------------------//
+
+  static void registerStaticEntity(
+        const std::string _type,
+        staticEntityCallBack _cb
+        );
 
   //-------------------------------------------------------------------//
   /// @brief remove the specified type from the list of possible types
@@ -76,7 +101,15 @@ public:
   /// removed
   //-------------------------------------------------------------------//
 
-  static void unregisterEntity(const std::string _type);
+  static void unregisterDynamicEntity(const std::string _type);
+
+  //-------------------------------------------------------------------//
+  /// @brief remove the specified type from the list of possible types
+  /// @param[in] _type, a string referring to the type that should be
+  /// removed
+  //-------------------------------------------------------------------//
+
+  static void unregisterStaticEntity(const std::string _type);
 
   //-------------------------------------------------------------------//
   /// @brief create DynamicEntity and return pointer to it
@@ -94,8 +127,20 @@ public:
       const ngl::Vec3 &_aim
       );
 
+  //-------------------------------------------------------------------//
+  /// @brief create StaticEntity and return pointer to it
+  /// @param[in] _type, type of StaticEntity to create
+  /// @param[in] _node, which node to create the StaticEntity on
+  //-------------------------------------------------------------------//
+
+  static StaticEntityPtr createStaticEntity(
+      std::string _type,
+      NodePtr _node
+      );
+
 protected:
-  static EntityTypeMap s_entityTypes;
+  static DynamicEntityTypeMap s_dynamicEntityTypes;
+  static StaticEntityTypeMap s_staticEntityTypes;
 };
 
 
