@@ -1,30 +1,28 @@
-#ifndef DATABASE_H
-#define DATABASE_H
+#ifndef DATABASEGRID_H
+#define DATABASEGRID_H
 
 #include <vector>
 #include <list>
-#include <ngl/Vec3.h>
-#include <QMutexLocker>
 
 #include "smartpointers.h"
-#include "fwd/database.h"
-#include "databasegrid.h"
-
-DECLARESMART(Database)
+#include "entity.h"
 
 //-------------------------------------------------------------------//
-/// @file database.h
-/// @brief The database class, used to centralise and freeze published
-/// variables so that updates can be calculated in parallel
+/// @file databasegrid.h
+/// @brief The database grid system, a system that stores entity records
+/// used to abstract the data store from the database so thjat more than
+/// data store can be used for different types
 /// @author Peter May
 /// @version 1
-/// @date 27/11/12
+/// @date 5/12/12
 /// Revision History :
-/// Initial Version 27/11/12
-/// @class Database
+/// Initial Version 5/12/12
+/// @class DatabaseGrid
 //-------------------------------------------------------------------//
 
-class Database
+DECLARESMART(DatabaseGrid)
+
+class DatabaseGrid
 {
 public: //methods
   //-------------------------------------------------------------------//
@@ -42,10 +40,11 @@ public: //methods
   /// direction
   /// @param [in] _numCellsY, the desired number of cells in the y
   /// direction
-  /// @param [out] s_instance, a pointer to the database instance
+  /// @param [out] s_instance, a smart pointer to the database grid
+  /// instance
   //-------------------------------------------------------------------//
 
-  static Database * create(
+  static DatabaseGridPtr create(
         int _numCellsX,
         int _numCellsY,
         float _environMaxX,
@@ -55,17 +54,10 @@ public: //methods
         );
 
   //-------------------------------------------------------------------//
-  /// @brief static instance method
-  /// @param [out] s_instance, a pointer to the static instance
+  /// @brief destructor
   //-------------------------------------------------------------------//
 
-  static Database *instance();
-
-  //-------------------------------------------------------------------//
-  /// @brief destroy method
-  //-------------------------------------------------------------------//
-
-  void destroy();
+  ~DatabaseGrid();
 
   //-------------------------------------------------------------------//
   /// @brief a method to add an entity record to the grid
@@ -88,12 +80,11 @@ public: //methods
   /// influences as defined
   //-------------------------------------------------------------------//
 
-  entityRecordListPtr getLocalEntities (
+  entityRecordListPtr getLocalEntities(
         float _minX,
         float _minY,
         float _maxX,
-        float _maxY,
-        std::list<GeneralType> &_typeList
+        float _maxY
         )const;
 
   //-------------------------------------------------------------------//
@@ -119,73 +110,55 @@ protected: //methods
   /// direction
   //-------------------------------------------------------------------//
 
-  Database(
-      int _numCellsX,
-      int _numCellsY,
-      float _environMaxX,
-      float _environMaxY,
-      float _environMinX,
-      float _environMinY
-      );
-
-  //-------------------------------------------------------------------//
-  /// @brief destructor
-  //-------------------------------------------------------------------//
-
-  ~Database();
+  DatabaseGrid(
+        int _numCellsX,
+        int _numCellsY,
+        float _environMaxX,
+        float _environMaxY,
+        float _environMinX,
+        float _environMinY
+        );
 
 protected: //attributes
   //-------------------------------------------------------------------//
   /// @brief a vector of pointers to lists of entity records, the entity
   /// records are oredered by their position in 3D space based on a grid
   /// system to reduce positional checks carried out in each update cycle
-  /// this database grid stores the enemies that are uploaded
   //-------------------------------------------------------------------//
 
-  DatabaseGridPtr m_enemyGrid;
+  std::vector<entityRecordListPtr> m_grid;
 
   //-------------------------------------------------------------------//
-  /// @brief this database grid stores the projectiles that are uploaded
+  /// @brief The normalisation x scale factor of grid, to enable the entity
+  /// records to be assigned a grid location based on a unit grid size
   //-------------------------------------------------------------------//
 
-  DatabaseGridPtr m_projectileGrid;
+  float m_scaleX;
 
   //-------------------------------------------------------------------//
-  /// @brief this database grid stores the turrets that are uploaded
+  /// @brief The normalisation y scale factor of grid, to enable the entity
+  /// records to be assigned a grid location based on a unit grid size
   //-------------------------------------------------------------------//
 
-  DatabaseGridPtr m_turretGrid;
+  float m_scaleY;
 
   //-------------------------------------------------------------------//
-  /// @brief this database grid stores the walls that are uploaded
+  /// @brief the number of cells in X (cell width/grid width)
   //-------------------------------------------------------------------//
 
-  DatabaseGridPtr m_wallGrid;
+  int m_numCellsX;
 
   //-------------------------------------------------------------------//
-  /// @brief this database grid stores the nodes that are uploaded
+  /// @brief the x value of the start point of the environment
   //-------------------------------------------------------------------//
 
-  DatabaseGridPtr m_nodeGrid;
+  float m_environMinX;
 
   //-------------------------------------------------------------------//
-  /// @brief this variable stores the base
+  /// @brief the y value of the start point of the environment
   //-------------------------------------------------------------------//
 
-  EntityRecord m_base;
-
-  //-------------------------------------------------------------------//
-  /// @brief a varieable to store whether or not the base has been set
-  //-------------------------------------------------------------------//
-
-  bool m_isBaseSet;
-
-  //-------------------------------------------------------------------//
-  /// @brief unique instance of singleton
-  //-------------------------------------------------------------------//
-
-  static Database * s_instance;
-
+  float m_environMinY;
 };
 
-#endif // DATABASE_H
+#endif // DATABASEGRID_H

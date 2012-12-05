@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "database.h"
 
 #include "game.h"
 
@@ -35,7 +36,7 @@ void Entity::publish()
   //add the record
 
   db->addRecord(
-        Database::EntityRecord(
+        EntityRecord(
           m_ID,
           m_generalType,
           m_pos.m_x,
@@ -47,22 +48,27 @@ void Entity::publish()
 
 //-------------------------------------------------------------------//
 
-void Entity::updateLocalEntities()
+entityRecordListPtr Entity::updateLocalEntities(
+    std::list<GeneralType> &_typeList
+    )
 {
   //get a pointer to the database instance
 
   Database * db = Database::instance();
 
-  //get a pointer to the list of possible local entities and store it
-  //it in the m_localEntities variable. This will be further reduced
-  //when checked against the exact viewing area
+  //get a pointer to the list of possible local entities
 
-  m_localEntities = db->getLocalEntities(
+  entityRecordListPtr result = db->getLocalEntities(
         m_wsViewBBox.m_minX,
         m_wsViewBBox.m_minY,
         m_wsViewBBox.m_maxX,
-        m_wsViewBBox.m_maxY
+        m_wsViewBBox.m_maxY,
+        _typeList
         );
+
+  //and return it
+
+  return result;
 }
 
 //-------------------------------------------------------------------//

@@ -2,6 +2,8 @@
 #include <SDL.h>
 
 
+#include "database.h"
+
 #include "window.h"
 
 int main(int argc, char *argv[])

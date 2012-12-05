@@ -1,4 +1,4 @@
-#ifndef DYNAMICENTITY_H
+ #ifndef DYNAMICENTITY_H
 #define DYNAMICENTITY_H
 
 #include <boost/shared_ptr.hpp>

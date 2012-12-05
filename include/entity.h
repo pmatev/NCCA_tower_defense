@@ -2,9 +2,10 @@
 #define ENTITY_H
 
 #include <ngl/Vec3.h>
+#include <list>
 
 #include "smartpointers.h"
-#include "database.h"
+#include "fwd/database.h"
 #include "fwd/entity.h"
 
 //-------------------------------------------------------------------//
@@ -154,7 +155,9 @@ public: //methods
   /// @brief a method to update the list of localEntities
   //-------------------------------------------------------------------//
 
-  void updateLocalEntities();
+  entityRecordListPtr updateLocalEntities(
+      std::list<GeneralType> &_typeList
+      );
 
   //-------------------------------------------------------------------//
   /// @brief a method to clear the list of local entities
@@ -199,7 +202,7 @@ protected: //attributes
   /// @brief a pointer to a list of entity records
   //-------------------------------------------------------------------//
 
-  Database::entityRecordListPtr m_localEntities;
+  entityRecordListPtr m_localEntities;
 
   //-------------------------------------------------------------------//
   /// @brief a variable storing the bounding box of the entity's view

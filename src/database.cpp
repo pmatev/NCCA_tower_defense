@@ -12,49 +12,59 @@ Database::Database(
     float _environMaxY,
     float _environMinX,
     float _environMinY
-    ):
-  m_numCellsX(_numCellsX),
-  m_environMinX(_environMinX),
-  m_environMinY(_environMinY)
+    ) :
+    m_base(0,BASE,0,0,0)
 {
-  //checks that the min values are less than the max values
-  //and if not it swaps them
+  //initialise the grids
 
-  if (m_environMinX > _environMaxX)
-  {
-    float temp = m_environMinX;
-    m_environMinX = _environMaxX;
-    _environMaxX = temp;
-  }
+  m_enemyGrid = DatabaseGrid::create(
+        _numCellsX,
+        _numCellsY,
+        _environMaxX,
+        _environMaxY,
+        _environMinX,
+        _environMinY
+        );
 
-  if (m_environMinY > _environMaxY)
-  {
-    float temp = m_environMinY;
-    m_environMinY = _environMaxY;
-    _environMaxY = temp;
-  }
+  m_projectileGrid = DatabaseGrid::create(
+        _numCellsX,
+        _numCellsY,
+        _environMaxX,
+        _environMaxY,
+        _environMinX,
+        _environMinY
+        );
 
+  m_turretGrid = DatabaseGrid::create(
+        _numCellsX,
+        _numCellsY,
+        _environMaxX,
+        _environMaxY,
+        _environMinX,
+        _environMinY
+        );
 
-  //calculate the width and depth
+  m_wallGrid = DatabaseGrid::create(
+        _numCellsX,
+        _numCellsY,
+        _environMaxX,
+        _environMaxY,
+        _environMinX,
+        _environMinY
+        );
 
-  float width = _environMaxX - m_environMinX;
-  float depth = _environMaxY - m_environMinY;
+  m_nodeGrid = DatabaseGrid::create(
+        _numCellsX,
+        _numCellsY,
+        _environMaxX,
+        _environMaxY,
+        _environMinX,
+        _environMinY
+        );
 
-  //calculate and assign the scale x and scale y values
+  //initialise base with null values
 
-  m_scaleX = 1.0/(width/m_numCellsX);
-  m_scaleY = 1.0/(depth/_numCellsY);
-
-  // initialise the vector
-
-  for (int i = 0; i < _numCellsX; i++)
-  {
-    for (int j = 0; j < _numCellsY; j++)
-    {
-      entityRecordListPtr list (new std::list<EntityRecord>);
-      m_grid.push_back(list);
-    }
-  }
+  m_isBaseSet = false;
 }
 
 //-------------------------------------------------------------------//
@@ -119,131 +129,121 @@ void Database::destroy()
 
 void Database::addRecord(EntityRecord _record)
 {
-  //conversion to grid space for assigning to a grid cell
+  //check the type of the enemy and set it according to that variable
 
-  float gridSpaceX = (_record.m_x - m_environMinX)* m_scaleX;
-  float gridSpaceY = (_record.m_y - m_environMinY) * m_scaleY;
-
-  //conversion from float to int
-
-  int floorX = floor(gridSpaceX);
-  int floorY = floor(gridSpaceY);
-
-  //calculating the index
-
-  int index = floorX + (floorY*m_numCellsX);
-
-  //store the record in the appropriate list
-
-  (*m_grid[index]).push_back(_record);
+  switch (_record.m_generalType)
+  {
+  case ENEMY:
+    m_enemyGrid->addRecord(_record);
+    break;
+  case PROJECTILE:
+    m_projectileGrid->addRecord(_record);
+    break;
+  case TURRET:
+    m_turretGrid->addRecord(_record);
+    break;
+  case WALL:
+    m_wallGrid->addRecord(_record);
+    break;
+  case NODE:
+    m_nodeGrid->addRecord(_record);
+    break;
+  case BASE:
+    m_base = _record;
+    m_isBaseSet = true;
+    break;
+  }
 }
 
 //-------------------------------------------------------------------//
 
-Database::entityRecordListPtr Database::getLocalEntities(
+entityRecordListPtr Database::getLocalEntities(
     float _minX,
     float _minY,
     float _maxX,
-    float _maxY
+    float _maxY,
+    std::list<GeneralType> &_typeList
     ) const
 {
-  //checks that the min values are smaller than the max values,
-  //and if not it swaps them
-
-  if(_minX > _maxX)
-  {
-    float temp = _minX;
-    _minX = _maxX;
-    _maxX = temp;
-  }
-
-  if(_minY > _maxY)
-  {
-    float temp = _minY;
-    _minY = _maxY;
-    _maxY = temp;
-  }
-
-  //conversion of min and max values to grid space
-
-  float minXGrid = (_minX - m_environMinX)* m_scaleX;
-  float maxXGrid = (_maxX - m_environMinX)* m_scaleX;
-  float minYGrid = (_minY - m_environMinY)* m_scaleY;
-  float maxYGrid = (_maxY - m_environMinY)* m_scaleY;
-
-  //conversion from float to int
-
-  int minXId = floor(minXGrid);
-  int maxXId = floor(maxXGrid);
-  int minYId = floor(minYGrid);
-  int maxYId = floor(maxYGrid);
-
   //initialise a pointer to a list of entity records
 
   entityRecordListPtr returnList(new std::list<EntityRecord>);
 
-  //and initialise an iterator for that list
+  //initialise an iterator to the beginning of the list of entity
+  //records
+
+  std::list<GeneralType>::iterator typeListIt;
+
+  typeListIt = _typeList.begin();
+
+  //and initialise an iterator for the return list
 
   std::list<EntityRecord>::iterator returnListIt;
 
-  //loop through each index of a cell overlapped by the bounding
-  //box
+  //set up a tempory list to store the reult in
 
-  for (int i = minYId; i <= maxYId; i++)
+  entityRecordListPtr tempList;
+
+  //cycle through each element of the type list
+
+  for (; typeListIt != _typeList.end(); typeListIt++)
   {
-    for (int j = minXId; j <= maxXId; j++)
+    //then switch through the types and get the local entities of the
+    //selected type
+
+    switch ((*typeListIt))
     {
-      //if the return list is empty and there is an entity record stored in
-      //the currently selected cell
+    case ENEMY:
+      tempList = m_enemyGrid->getLocalEntities(_minX,_minY,_maxX,_maxY);
+      break;
+    case PROJECTILE:
+      tempList = m_projectileGrid->getLocalEntities(_minX,_minY,_maxX,_maxY);
+      break;
+    case TURRET:
+      tempList = m_turretGrid->getLocalEntities(_minX,_minY,_maxX,_maxY);
+      break;
+    case WALL:
+      tempList = m_wallGrid->getLocalEntities(_minX,_minY,_maxX,_maxY);
+      break;
+    case NODE:
+      tempList = m_nodeGrid->getLocalEntities(_minX,_minY,_maxX,_maxY);
+      break;
+    case BASE:
+      tempList->push_back(m_base);
+      break;
+    }
 
-      if (returnList->size()==0 && (*m_grid[j+(i*m_numCellsX)]).size()!=0)
+    //now add the tempList to the return list if it has elements:
+
+    if (tempList->size()!=0)
+    {
+      //and if the return list is empty
+
+      if (returnList->size()==0)
       {
-        //
-        //initialise an iterator to the beginning of the cell list
+        //set the return list iterator to the beginning of the list
 
-        std::list<EntityRecord>::iterator cellListIt;
-        cellListIt = (*m_grid[j+(i*m_numCellsX)]).begin();
-
-        //push the first element of the list into the return list
-
-        returnList->push_back(*cellListIt);
-
-        // then increment the cell list iterator
-
-        cellListIt++;
-
-        //and set an iterator to the end of the return list
-
-        returnListIt = returnList->end();
-
-        //and insert the rest of the cell list onto the end of the list
-
-        returnList->insert(
-              returnListIt,
-              cellListIt,
-              (*m_grid[j+(i*m_numCellsX)]).end()
-              );
+        returnListIt = returnList->begin();
       }
-      //otherwise, if the return list already has some values in it
-
-      else if (returnList->size()!=0)
+      else
       {
         //set the return list iterator to the end of the list
 
         returnListIt = returnList->end();
-
-        //insert the whole  cell list ont the end of the return list
-
-        returnList->insert(
-              returnListIt,
-              (*m_grid[j+(i*m_numCellsX)]).begin(),
-              (*m_grid[j+(i*m_numCellsX)]).end()
-              );
       }
+
+      //insert the whole cell list into the return list
+
+      returnList->splice(
+            returnListIt,
+            (*tempList),
+            tempList->begin(),
+            tempList->end()
+            );
     }
+
   }
 
-  //return a pointer to the list
 
   return returnList;
 }
@@ -251,20 +251,10 @@ Database::entityRecordListPtr Database::getLocalEntities(
 
 void Database::clearRecords()
 {
-  // create an iterater to cycle through the cell lists and set it to the
-  //beginning of the vector of lists
+  // call clear in both of the dynamic entity grids
 
-  std::vector<entityRecordListPtr>::iterator it;
-  it = m_grid.begin();
-
-  //then for each one
-
-  for (; it < m_grid.end(); it++)
-  {
-    //clear the list
-
-    (*it)->clear();
-  }
+  m_enemyGrid->clearRecords();
+  m_projectileGrid->clearRecords();
 }
 
 //-------------------------------------------------------------------//
