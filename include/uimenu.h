@@ -5,7 +5,9 @@
 #include <ngl/Vec2.h>
 #include "smartpointers.h"
 #include "uibutton.h"
-
+#include "uielement.h"
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
 
 //-------------------------------------------------------------------//
 /// @file uimenu.h
@@ -20,16 +22,21 @@
 //-------------------------------------------------------------------//
 DECLARESMART(UIMenu)
 
-class UIMenu
+
+
+class UIMenu : public UIElement
 
 {
 
+typedef  boost::function<void()> functionPtr;
 
 public:
     //-------------------------------------------------------------------//
     /// @brief the constructor
     //-------------------------------------------------------------------//
-    UIMenu();
+    UIMenu(ngl::Vec2 _pos,
+           std::string _imageFile,
+           std::string _name);
     //-------------------------------------------------------------------//
     /// @brief the destructor
     //-------------------------------------------------------------------//
@@ -41,29 +48,47 @@ public:
 
     void draw() const;
 
-    //-------------------------------------------------------------------//
-    /// @brief see if a element has been clicked
-    /// @param [out] returns a button pointer which will either contain
-    /// the clicked button or an empty one if none were clicked
-    //-------------------------------------------------------------------//
 
-    UIButtonPtr returnClickedElement(const unsigned int _colourID);
-
+    //-------------------------------------------------------------------//
+    /// @brief aligns selected object to bottom of menu
+    //-------------------------------------------------------------------//
 
     void alignBottom();
 
 
+    //-------------------------------------------------------------------//
+    /// @brief creates a button within the menu
+    /// @param [in] takes in a UIButtonPtr
+    //-------------------------------------------------------------------//
+
+    void addButton(UIButtonPtr _button);
+
+    //-------------------------------------------------------------------//
+    /// @brief connects functions to ui elements
+    /// @param [in] boost::function which connects to the ui elements
+    /// function parameter
+    /// @param [in] string which is the name of the element you are trying
+    /// to connect to
+    //-------------------------------------------------------------------//
+
+    void connect(functionPtr _func, std::string _name);
+
+
+    //-------------------------------------------------------------------//
+    /// @brief defines the virtual setFubction which in this case prints
+    /// out and error message
+    //-------------------------------------------------------------------//
+
+    void setFunction(functionPtr _func);
+
+
 
 
 
     //-------------------------------------------------------------------//
     //-------------------------------------------------------------------//
     //-------------------------------------------------------------------//
-    //inline UIButtonPtr getbutton() {return m_buttonTest;}
-
-    void createButtonTest(ngl::Vec2 _pos, std::string _imageFile);
-
-    void printTest();
+    void runCommandTest();
     //-------------------------------------------------------------------//
     //-------------------------------------------------------------------//
     //-------------------------------------------------------------------//
@@ -72,7 +97,17 @@ public:
 
 
 
-    typedef std::map<unsigned int, UIButtonPtr> buttonsMap;
+    //-------------------------------------------------------------------//
+    /// @brief implement execute function which in this case will do nothing
+    //-------------------------------------------------------------------//
+
+    void isClicked();
+
+
+
+
+
+    typedef std::vector<UIElementPtr> elementsMap;
 
 protected:
 
@@ -83,11 +118,11 @@ protected:
     ngl::Vec2 m_pos;
 
     //-------------------------------------------------------------------//
-    /// @brief a list of smart pointers to just the buttons contained within
+    /// @brief a list of shared pointers to the all the elements within
     /// the menu
     //-------------------------------------------------------------------//
 
-    buttonsMap m_buttons;
+    elementsMap m_elements;
 
     //-------------------------------------------------------------------//
     /// @brief flag which specifies whether the menu is displayable or not
@@ -108,6 +143,16 @@ protected:
     /// or pixel value
     //-------------------------------------------------------------------//
     float m_maxBoundsY;
+
+
+
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+    UIButtonPtr m_buttonTest;
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
 
 
 

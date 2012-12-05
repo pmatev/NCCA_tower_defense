@@ -2,6 +2,7 @@
 #define UIELEMENT_H
 
 #include <ngl/Vec2.h>
+#include <boost/function.hpp>
 #include"smartpointers.h"
 
 DECLARESMART(UIElement)
@@ -18,16 +19,26 @@ DECLARESMART(UIElement)
 //-------------------------------------------------------------------//
 
 class UIElement
+
+
+
 {
+
+
+
 public:
+
+    typedef  boost::function<void()> functionPtr;
     //-------------------------------------------------------------------//
     /// @brief a parameterised constructor
     /// @param [in] _pos, a Vec2 value for the starting position of the
     /// button
     /// @param [in] _imageFile, a string containing the image file path name
+    /// @param [in] inputs a string for the name of the element
     //-------------------------------------------------------------------//
     UIElement( ngl::Vec2 _pos,
-               std::string _imageFile);
+               std::string _imageFile,
+               std::string _name);
 
     //-------------------------------------------------------------------//
     /// @brief the destructor
@@ -38,7 +49,34 @@ public:
     /// @brief virtual draw function passed through to other elements
     //-------------------------------------------------------------------//
 
-     virtual void draw() const = 0;
+    virtual void draw() const = 0;
+
+    //-------------------------------------------------------------------//
+    /// @brief virtual execute function passed through to other elements
+    /// only elements which can interact with user will have anything
+    /// implemeneted in it
+    //-------------------------------------------------------------------//
+
+    virtual void isClicked() = 0;
+
+    //-------------------------------------------------------------------//
+    /// @brief sets the position of the button
+    /// @param [in] takes in an vector for position
+    //-------------------------------------------------------------------//
+    void setPosition(ngl::Vec2 _pos);
+
+    //-------------------------------------------------------------------//
+    /// @brief gets the name of the element
+    /// @param [out] returns the name of the element
+    //-------------------------------------------------------------------//
+    inline std::string getName() {return m_name;}
+
+    //-------------------------------------------------------------------//
+    /// @brief sets the function to run
+    /// @param [in] takes in a boost::function
+    //-------------------------------------------------------------------//
+    virtual void setFunction(functionPtr _func) = 0;
+
 
     std::string getImagefile();
 
@@ -58,15 +96,25 @@ protected:
     std::string m_imageFile;
 
     //-------------------------------------------------------------------//
-    /// @brief colour ID used to query whether it has been clicked or not
+    /// @brief stores the elements function
     //-------------------------------------------------------------------//
-    int m_colourID;
+    functionPtr m_execute;
+
+    //-------------------------------------------------------------------//
+    /// @brief ID used to query whether it has been clicked or not
+    //-------------------------------------------------------------------//
+    unsigned int m_ID;
 
     //-------------------------------------------------------------------//
     /// @brief stores the maximum size in x direction can either be percentage
     /// or pixel value. Will be relative to size of menu
     //-------------------------------------------------------------------//
     float m_maxBoundsX;
+
+    //-------------------------------------------------------------------//
+    /// @brief stores the name of the element
+    //-------------------------------------------------------------------//
+    std::string m_name;
 
 
     //-------------------------------------------------------------------//

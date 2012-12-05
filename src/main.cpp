@@ -5,6 +5,7 @@
 #include "database.h"
 
 #include "window.h"
+#include "uiSelection.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +13,14 @@ int main(int argc, char *argv[])
   Window *w = Window::instance();
 
   w->init();
+
+
+
+
+
+
+
+
 
   // start the loop
   w->loop();

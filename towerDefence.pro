@@ -59,6 +59,7 @@ HEADERS += \
     include/dynamicentity.h \
     include/turret.h \
     include/database.h \
+    include/window.h \
     include/wave.h \
     include/wavemanager.h \
     include/entityfactory.h \

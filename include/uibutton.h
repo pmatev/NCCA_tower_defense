@@ -20,7 +20,7 @@
 
 DECLARESMART(UIButton)
 
-typedef  boost::function<void()> functionPtr;
+
 
 class UIButton : public UIElement
 
@@ -31,9 +31,12 @@ public:
     /// @brief ctor
     //-------------------------------------------------------------------//
 
-    UIButton(ngl::Vec2 _pos, std::string _imageFile);
+    UIButton(ngl::Vec2 _pos, std::string _imageFile,
+             std::string _name);
 
-
+    //-------------------------------------------------------------------//
+    /// @brief default ctor
+    //-------------------------------------------------------------------//
     UIButton();
 
     //-------------------------------------------------------------------//
@@ -42,11 +45,19 @@ public:
 
     ~UIButton();
 
+    inline void setFunction(functionPtr _func)  {m_execute = _func;}
+
+
+
+    inline void isClicked() {m_execute();}
+
+
+
 
     void draw() const;
 
 
-    functionPtr execute;
+
 
 
 protected:

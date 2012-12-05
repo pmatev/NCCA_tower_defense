@@ -70,7 +70,7 @@ void Environment::draw() const
       ++it
       )
   {
-    (*it)->draw();
+      (*it)->draw();
   }
   // draw base
   m_base->draw();
