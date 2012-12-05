@@ -7,6 +7,9 @@
 #include "entity.h"
 #include <SDL.h>
 #include <ngl/Light.h>
+#include "node.h"
+#include "wavemanager.h"
+#include "environment.h"
 
 //-------------------------------------------------------------------//
 /// @file game.h
@@ -63,6 +66,15 @@ public:
     //-------------------------------------------------------------------//
     EntityPtr getEntityByID(const unsigned int _i);
 
+    //-------------------------------------------------------------------//
+    /// @brief try to create a tower on the specified node with the specified
+    /// type.
+    /// @param[in] _type, the type of tower to create
+    /// @param[in] _node, which node to create the tower on
+    /// @param[out] whether the creation was successful or not
+    //-------------------------------------------------------------------//
+    bool tryToCreateTower(const std::string &_type, NodePtr _node);
+
 
 
 
@@ -78,6 +90,8 @@ protected:
     //-------------------------------------------------------------------//
     ~Game();
 
+protected:
+
     //-------------------------------------------------------------------//
     /// @brief ID Counter for distributing unique IDs to entities.
     //-------------------------------------------------------------------//
@@ -88,8 +102,17 @@ protected:
     //-------------------------------------------------------------------//
     std::map<unsigned int, EntityPtr> m_IDMap;
 
+    //-------------------------------------------------------------------//
+    /// @brief pointer to the wavemanager
+    //-------------------------------------------------------------------//
 
+    WaveManagerPtr m_waveManager;
 
+    //-------------------------------------------------------------------//
+    /// @brief pointer to the environment
+    //-------------------------------------------------------------------//
+
+    EnvironmentPtr m_environment;
 
 private:
     //-------------------------------------------------------------------//

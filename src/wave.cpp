@@ -84,6 +84,18 @@ void Wave::draw() const
 
 //-------------------------------------------------------------------//
 
+bool Wave::generatePaths(NodePtr _node)
+{
+  // 1. Find all Enemies affected by _node
+  // 2. Go through each Enemy and tell it to generate a new temporary path
+  // 3. If all the paths were created successfully tell all enemies to update
+        // their paths and return true, else return false
+
+  return true;
+}
+
+//-------------------------------------------------------------------//
+
 void Wave::brain()
 {
   // Work out which enemies need creating and where
@@ -114,8 +126,12 @@ void Wave::addEnemy(
 }
 
 //-------------------------------------------------------------------//
+
 Wave::EnemyList::iterator Wave::removeEnemy(EnemyList::iterator _it)
 {
   // remove it from m_enemies and return the next iterator
   return m_enemies.erase(_it);
 }
+
+
+

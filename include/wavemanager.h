@@ -53,6 +53,15 @@ public:
 
   void draw() const;
 
+  //-------------------------------------------------------------------//
+  /// @brief create new temporary paths for all enemies that are affected
+  /// by inserting this tower
+  /// @param[in] _node, the node in question
+  /// @param[out] whether all the paths were successful or not
+  //-------------------------------------------------------------------//
+
+  bool generatePaths(NodePtr _node);
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief ctor

@@ -3,10 +3,9 @@
 //-------------------------------------------------------------------//
 
 Base::Base(
-    std::vector<NodePtr> &_linkedNodes,
-    const ngl::Vec3 &_pos
+    NodePtr _linkedNode
     ) :
-  StaticEntity(_linkedNodes,_pos,BASE)
+  StaticEntity(_linkedNode,BASE)
 {
 }
 

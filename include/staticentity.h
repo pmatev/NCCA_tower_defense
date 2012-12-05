@@ -33,8 +33,7 @@ public:
   //-------------------------------------------------------------------//
 
   StaticEntity(
-      std::vector<NodePtr> & _linkedNodes,
-      const ngl::Vec3 & _pos,
+      NodePtr _linkedNode,
       GeneralType _type
       );
 
@@ -68,7 +67,7 @@ protected:
   /// static entity
   //-------------------------------------------------------------------//
 
-  std::vector<NodePtr> m_linkedNodes;
+  NodePtr m_linkedNode;
 };
 
 #endif // STATICENTITY_H

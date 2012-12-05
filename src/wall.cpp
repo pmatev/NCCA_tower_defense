@@ -3,10 +3,9 @@
 //-------------------------------------------------------------------//
 
 Wall::Wall(
-    std::vector<NodePtr> &_linkedNodes,
-    const ngl::Vec3 &_pos
+    NodePtr _linkedNode
     ) :
-  StaticEntity(_linkedNodes,_pos,WALL)
+  StaticEntity(_linkedNode,WALL)
 {
 }
 

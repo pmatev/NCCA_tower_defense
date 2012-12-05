@@ -61,10 +61,14 @@ public:
 
   void drawSelection() const;
 
+  //-------------------------------------------------------------------//
+  /// @brief create new static entity
+  /// @param[in] _type, type of tower to create
+  /// @param[in] _centerNode, node to create the tower on
+  /// @param[out] whether the creation was successful or not
+  //-------------------------------------------------------------------//
 
-protected:
-
-
+  void createTower(const std::string &_type, NodePtr _centerNode);
 
 protected:
 
@@ -86,6 +90,10 @@ protected:
   //-------------------------------------------------------------------//
 
   NodeManagerPtr m_nodeMap;
+
+protected:
+
+
 
 private:
 

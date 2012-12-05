@@ -317,8 +317,6 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize) :
           neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
         }
       }
-
-
       m_nodes[(j*_gridWidth) + i]->setChildList(neighbours);
     }
   }

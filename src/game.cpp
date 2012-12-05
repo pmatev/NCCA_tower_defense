@@ -9,7 +9,7 @@ Game* Game::s_instance = 0;
 
 //-------------------------------------------------------------------//
 Game::Game():
-  m_currentID(0)  // set current ID to
+  m_currentID(0) // set current ID to
 {
 
 }
@@ -23,12 +23,13 @@ Game* Game::instance()
 {
     if(s_instance == 0)
     {
-        s_instance = new Game();
+         s_instance = new Game();
     }
     return s_instance;
 
 }
 //-------------------------------------------------------------------//
+
 void Game::init()
 {
     ngl::VAOPrimitives *prim = ngl::VAOPrimitives::instance();
@@ -38,6 +39,8 @@ void Game::init()
     render->createShader("Phong");
 
     m_light = new ngl::Light(ngl::Vec3(1,2,0),ngl::Colour(1,1,1),ngl::POINTLIGHT);
+    m_waveManager = WaveManager::create();
+    m_environment = Environment::create(6, 6, 2); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
 }
 
 
@@ -113,6 +116,19 @@ void Game::draw()
 
 }
 //-------------------------------------------------------------------//
+
+bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
+{
+  // Update all Enemy paths and check that they are all valid
+  if(m_waveManager->generatePaths(_node))
+  {
+    // Tell the environment to create a tower
+    m_environment->createTower(_type, _node);
+  }
+}
+
+//-------------------------------------------------------------------//
+
 
 
 

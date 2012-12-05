@@ -42,8 +42,7 @@ public:
         float _viewDistance,
         float _maxRotationSpeed,
         const ngl::Vec3 & _aim,
-        std::vector<boost::shared_ptr<Node> > & _linkedNodes,
-        const ngl::Vec3 & _pos
+        NodePtr _linkedNode
         );
 
   //-------------------------------------------------------------------//

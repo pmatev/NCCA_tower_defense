@@ -38,3 +38,10 @@ void WaveManager::draw() const
 {
   m_wave->draw();
 }
+
+//-------------------------------------------------------------------//
+
+bool WaveManager::generatePaths(NodePtr _node)
+{
+  return m_wave->generatePaths(_node);
+}

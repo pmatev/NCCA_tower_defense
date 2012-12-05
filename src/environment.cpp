@@ -1,4 +1,5 @@
 #include "environment.h"
+#include "entityfactory.h"
 
 //-------------------------------------------------------------------//
 
@@ -90,6 +91,20 @@ void Environment::drawSelection() const
   }
   // draw base
   m_base->drawSelection();
+}
+
+//-------------------------------------------------------------------//
+
+void Environment::createTower(
+    const std::string &_type,
+    NodePtr _centerNode
+    )
+{
+  // Create the new tower
+  m_towers.push_back(EntityFactory::createStaticEntity(
+                     _type,
+                     _centerNode
+                     ));
 }
 
 //-------------------------------------------------------------------//

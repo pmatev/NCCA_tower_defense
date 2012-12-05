@@ -26,8 +26,7 @@ public:
   //-------------------------------------------------------------------//
 
   Base(
-      std::vector<NodePtr> & _linkedNodes,
-      const ngl::Vec3 & _pos
+      NodePtr _linkedNode
       );
 };
 
