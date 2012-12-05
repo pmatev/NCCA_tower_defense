@@ -5,7 +5,6 @@
 #include "database.h"
 
 #include "window.h"
-#include "uiSelection.h"
 
 int main(int argc, char *argv[])
 {

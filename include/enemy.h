@@ -3,6 +3,7 @@
 
 #include "smartpointers.h"
 #include "dynamicentity.h"
+#include "node.h"
 
 //-------------------------------------------------------------------//
 /// @file enemy.h
@@ -38,6 +39,12 @@ public:
         float _initialVelocity,
         const ngl::Vec3 &_aim
         );
+
+private:
+  //-------------------------------------------------------------------//
+  /// @brief a list containing all the nodes in the path
+  //-------------------------------------------------------------------//
+  Node::NodeList m_pathNodes;
 };
 
 #endif // ENEMY_H

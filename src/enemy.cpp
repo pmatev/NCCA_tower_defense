@@ -1,4 +1,5 @@
 #include "enemy.h"
+#include "nodemanager.h"
 
 //-------------------------------------------------------------------//
 
@@ -11,6 +12,8 @@ Enemy::Enemy(
     ) :
   DynamicEntity(_damage,_maxVelocity,_pos,_initialVelocity,_aim,ENEMY)
 {
+  //Get an initial path for the entity
+  //m_pathNodes = NodeManager::pathFind()
 }
 
 //-------------------------------------------------------------------//

@@ -2,29 +2,35 @@
 
 //-------------------------------------------------------------------//
 
-NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize) :
-  m_centerDist(_hexagonSize * 1.732)
+NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize, ngl::Vec3 _origin) :
+  m_centerDist(_hexagonSize * 1.732),
+  m_gridWidth(_gridWidth),
+  m_gridHeight(_gridHeight),
+  m_hexagonSize(_hexagonSize),
+  m_origin(_origin)
 {
+
   // create all the necessary node
-  for(int i = 0; i < _gridWidth; i++)
+  for(int j = 0; j < _gridHeight; j++)
   {
-    for(int j = 0; j < _gridHeight; j++)
+    for(int i = 0; i < _gridWidth; i++)
     {
       NodePtr node(
             new Node(
-              ngl::Vec3(i * _hexagonSize, 0,
+              ngl::Vec3((i) * _hexagonSize, 0,
                         j * (_hexagonSize * (sqrt(3)/2))
-                        )
+                        ) + m_origin
               )
             );
       m_nodes.push_back(node);
+      std::cout<<"#"<<(_gridWidth*j) + i<<": Node "<<"("<<i<<","<<j<<")" << " has coords: ["<<i * _hexagonSize<<","<<j * (_hexagonSize * (sqrt(3)/2))<<"]"<<std::endl;
     }
   }
 
   //loop through again and set neighbours
-  for(int i = 0; i < _gridWidth; i++)
+  for(int j = 0; j < _gridHeight; j++)
   {
-    for(int j = 0; j < _gridHeight; j++)
+    for(int i = 0; i < _gridWidth; i++)
     {
       Node::NodeListPtr neighbours(new Node::NodeList());
 
@@ -126,11 +132,11 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize) :
           neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i - 1;
-          y = j - 1;
+          y = j;
           neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i - 1;
-          y = j;
+          y = j + 1;
           neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i;
@@ -174,7 +180,7 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize) :
       else if(j == 0)
       {
         //Lower top
-        if(i%2 != 2)
+        if(i%2 != 0)
         {
           x = i - 1;
           y = j;
@@ -218,7 +224,7 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize) :
       else if(j == _gridHeight-1)
       {
         //Lower bottom
-        if(i%2 != 2)
+        if(i%2 != 0)
         {
           x = i - 1;
           y = j;
@@ -249,7 +255,7 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize) :
           neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
-          y = j + 1;
+          y = j - 1;
           neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
 
           x = i + 1;
@@ -320,6 +326,17 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize) :
       m_nodes[(j*_gridWidth) + i]->setChildList(neighbours);
     }
   }
+
+//  for(int i = 0; i < m_nodes.size(); i++)
+//  {
+//    std::cout<<(*m_nodes[i]).getID()<< " has neighbours:"<<std::endl;
+//    for(Node::NodeList::iterator it = m_nodes[i]->getChildList()->begin(); it != m_nodes[i]->getChildList()->end(); it++)
+//    {
+//      std::cout<<(*it)->getID()<<std::endl;
+//    }
+//    std::cout<<std::endl;
+//  }
+
 }
 
 //-------------------------------------------------------------------//
@@ -327,9 +344,10 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize) :
 NodeManagerPtr NodeManager::create(
     int _gridWidth,
     int _gridHeight,
-    int _hexagonSize)
+    int _hexagonSize,
+    ngl::Vec3 _origin)
 {
-  NodeManagerPtr a(new NodeManager(_gridWidth, _gridHeight, _hexagonSize));
+  NodeManagerPtr a(new NodeManager(_gridWidth, _gridHeight, _hexagonSize, _origin));
   return a;
 }
 
@@ -342,7 +360,7 @@ NodeManager::~NodeManager()
 
 //-------------------------------------------------------------------//
 
-Node::NodeList NodeManager::pathFind(NodePtr _start, NodePtr _goal) const
+Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
 {
   // From http://en.wikipedia.org/wiki/A*_search_algorithm
   // THIS FUNCTION COULD PROBABLY BE SIMPLIFIED
@@ -476,4 +494,49 @@ bool NodeManager::checkListForNode(PathNodePtr _node, PathNodeList _list) const
     }
   }
   return o_inList;
+}
+
+//-------------------------------------------------------------------//
+
+Node::NodeList NodeManager::findPathFromPos(
+    ngl::Vec3 _start,
+    ngl::Vec3 _goal) const
+{
+  //need to find the start and finish nodes in m_nodes from the vec3s.
+
+}
+
+NodePtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
+{
+  std::cout<<std::endl;
+
+  float x = _pos.m_x;
+  float y = _pos.m_z;
+
+  //clamp between values within the grid
+  x = x < 0 ? 0 : (x > (m_gridWidth-1)*m_hexagonSize ? (m_gridWidth-1)*m_hexagonSize : x);
+  y = y < 0 ? 0 : (y > (m_gridHeight-1)*(m_hexagonSize * (sqrt(3)/2)) ? (m_gridHeight-1)*(m_hexagonSize * (sqrt(3)/2)) : y);
+
+  //transform into coordinate space
+  x /= m_hexagonSize;
+  y /= (m_hexagonSize*(sqrt(3)/2));
+
+  //round to nearest int
+  x = floor(x + 0.5);
+  y = floor(y + 0.5);
+
+  std::cout<<x<<std::endl;
+  std::cout<<y<<std::endl;
+
+  //calculate the index of the nearest based on x and y
+  int index = (y * m_gridWidth) + x;
+
+  std::cout<<_pos<< " closest is: ("<<x<<", "<<y<<") with coords: "<<(*m_nodes[index]).getPos()<<std::endl;
+
+  return m_nodes[index];
+}
+
+NodePtr NodeManager::getNodeFromCoords(int _x, int _y) const
+{
+  return m_nodes[(_y*m_gridWidth) + _x];
 }

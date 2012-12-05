@@ -93,7 +93,8 @@ public:
   static NodeManagerPtr create(
         int _gridWidth,
         int _gridHeight,
-        int _hexagonSize
+        int _hexagonSize,
+        ngl::Vec3 _origin
         );
 
   //-------------------------------------------------------------------//
@@ -106,7 +107,30 @@ public:
   /// @brief Find a path between two nodes ( A* search algorithm)
   //-------------------------------------------------------------------//
 
-  Node::NodeList pathFind(NodePtr _start, NodePtr _goal) const;
+  Node::NodeList findPath(NodePtr _start, NodePtr _goal) const;
+
+  //-------------------------------------------------------------------//
+  /// @brief Wraps the findPath method so that coordinates can be
+  /// passed in instead of NodePtrs.
+  //-------------------------------------------------------------------//
+
+  Node::NodeList findPathFromPos(ngl::Vec3 _start, ngl::Vec3 goal) const;
+
+  //-------------------------------------------------------------------//
+  /// @brief Finds the NodePtr closest to the position passed in
+  /// @param[in] _pos, the position to use
+  /// @param[out] the node closest to the pos passed in
+  //-------------------------------------------------------------------//
+
+  NodePtr getNodeFromPos(ngl::Vec3 _pos) const;
+
+  //-------------------------------------------------------------------//
+  /// @brief Gets node from grid coords
+  /// @param[in] _coords the coords to use
+  /// @param[out] the node with grids coords _coords
+  //-------------------------------------------------------------------//
+
+  NodePtr getNodeFromCoords(int _x, int _y) const;
 
 protected:
 
@@ -152,6 +176,30 @@ protected:
   Node::NodeVec m_nodes;
 
   //-------------------------------------------------------------------//
+  /// @brief size of hexagons
+  //-------------------------------------------------------------------//
+
+  int m_hexagonSize;
+
+  //-------------------------------------------------------------------//
+  /// @brief grid width
+  //-------------------------------------------------------------------//
+
+  int m_gridWidth;
+
+  //-------------------------------------------------------------------//
+  /// @brief grid height
+  //-------------------------------------------------------------------//
+
+  int m_gridHeight;
+
+  //-------------------------------------------------------------------//
+  /// @brief origin
+  //-------------------------------------------------------------------//
+
+  ngl::Vec3 m_origin;
+
+  //-------------------------------------------------------------------//
   /// @brief distance between the centers of any two adjacent nodes
   //-------------------------------------------------------------------//
 
@@ -164,7 +212,7 @@ private:
   /// @brief default ctor
   //-------------------------------------------------------------------//
 
-  NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize);
+  NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize, ngl::Vec3 _origin);
 };
 
 #endif // NODEMANAGER_H
