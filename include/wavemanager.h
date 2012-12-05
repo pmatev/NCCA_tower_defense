@@ -51,7 +51,7 @@ public:
   /// @brief draw everything
   //-------------------------------------------------------------------//
 
-  void draw() const;
+  void draw();
 
   //-------------------------------------------------------------------//
   /// @brief create new temporary paths for all enemies that are affected

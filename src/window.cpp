@@ -94,12 +94,16 @@ void Window::init()
       glewInit(); // need a local glew init as well as lib one for windows
     #endif
 
+    // Init factory
+    EntityFactory::initialiseFactory();
 
     Game *game = Game::instance(); //initialize the game on creation
     game->init();
 
     Renderer *render = Renderer::instance();
     render->init();
+
+
 
 
 }

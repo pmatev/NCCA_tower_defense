@@ -14,22 +14,31 @@
 /// @class Base
 //-------------------------------------------------------------------//
 
+DECLARESMART(Base)
+
 class Base : public StaticEntity
 {
 public:
   //-------------------------------------------------------------------//
-  /// @brief a parameterised constructor
-  /// @param [in] _linkedNodes, a reference to an stl vector of boost
-  /// shared pointers to the nodes that are covered by the static entity
-  /// @param [in] _pos, a vector containing the initial position in 3D
-  /// space of the entity
+  /// @brief a parameterised creator
+  /// @param [in] _linkedNode, the node to place the base on
   //-------------------------------------------------------------------//
 
-  Base(
-      NodePtr _linkedNode
-      );
+  static BasePtr create(NodePtr _linkedNode);
 
+  void update();
+  void draw();
+  void drawSelection();
+  void generateMesh();
 
+protected:
+
+  //-------------------------------------------------------------------//
+  /// @brief a parameterised constructor
+  /// @param [in] _linkedNode, the node to place the base on
+  //-------------------------------------------------------------------//
+
+  Base(NodePtr _linkedNode);
 };
 
 #endif // BASE_H

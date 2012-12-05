@@ -34,7 +34,7 @@ void WaveManager::publish()
 }
 
 //-------------------------------------------------------------------//
-void WaveManager::draw() const
+void WaveManager::draw()
 {
   m_wave->draw();
 }

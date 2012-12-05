@@ -8,6 +8,13 @@ Wave::Wave(EnemyPairList _enemiesForCreation):
   m_enemiesForCreation(_enemiesForCreation)
 {
   // ctor
+  //---------------------------------------------TEST--------------------------------------------------
+  // create shit load o enemies!!!
+  for(int i=0; i < 10; ++i)
+  {
+     addEnemy("TestEnemy", 100, 1, ngl::Vec3(0, 0, i), 0, ngl::Vec3(0, 0, 0));
+  }
+  //-------------------------------------------END TEST------------------------------------------------
 }
 
 //-------------------------------------------------------------------//
@@ -69,11 +76,11 @@ void Wave::publish()
 
 //-------------------------------------------------------------------//
 
-void Wave::draw() const
+void Wave::draw()
 {
   // Go through all the enemies and call their publish
   for(
-      EnemyList::const_iterator it = m_enemies.begin();
+      EnemyList::iterator it = m_enemies.begin();
       it != m_enemies.end();
       ++it
       )
@@ -113,13 +120,13 @@ void Wave::addEnemy(
 {
   // use EntityFactory to create enemy then save it in m_enemies
   m_enemies.push_back(
-        EntityFactory::createDynamicEntity(
-          _type,
-          _damage,
-          _maxVelocity,
-          _pos,
-          _initialVelocity,
-          _aim
+          EntityFactory::createDynamicEntity(
+            _type,
+            _damage,
+            _maxVelocity,
+            _pos,
+            _initialVelocity,
+            _aim
           )
         );
 

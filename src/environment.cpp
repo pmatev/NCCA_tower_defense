@@ -1,5 +1,6 @@
 #include "environment.h"
 #include "entityfactory.h"
+#include "game.h"
 
 //-------------------------------------------------------------------//
 
@@ -17,7 +18,9 @@ Environment::Environment(
               _origin))
 {
   // default ctor
-
+  // base needs to be initialised here as it fails when putting it in the
+  // inititalisation list
+  m_base = Base::create(m_nodeMap->getNodeFromCoords(_baseX, _baseY));
 }
 
 //-------------------------------------------------------------------//

@@ -18,7 +18,8 @@ TestEnemy::TestEnemy(
     )
 {
   // ctor just passes everything to parent class
-
+  // HACKY TESTING HERE
+  generateMesh();
 }
 
 //-------------------------------------------------------------------//

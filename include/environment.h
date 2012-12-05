@@ -5,6 +5,7 @@
 
 #include "staticentity.h"
 #include "nodemanager.h"
+#include "base.h"
 
 //-------------------------------------------------------------------//
 /// @file environment.h
@@ -89,7 +90,7 @@ protected:
   /// @brief base object
   //-------------------------------------------------------------------//
 
-  StaticEntityPtr m_base;
+  BasePtr m_base;
 
   //-------------------------------------------------------------------//
   /// @brief map object

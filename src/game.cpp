@@ -6,7 +6,6 @@
 #include <ngl/VAOPrimitives.h>
 #include "entityfactory.h"
 
-
 Game* Game::s_instance = 0;
 
 //-------------------------------------------------------------------//
@@ -42,69 +41,8 @@ void Game::init()
 
     m_light = new ngl::Light(ngl::Vec3(1,2,0),ngl::Colour(1,1,1),ngl::POINTLIGHT);
 
-
-
-    /* -------------------------------------------------- Testing ---------------------------------------------------------- */
-
-//    const static GLubyte indices[]=  {
-//                                        0,1,5,0,4,5, // back
-//                                        3,2,6,7,6,3, // front
-//                                        0,1,2,3,2,0, // top
-//                                        4,5,6,7,6,4, // bottom
-//                                        0,3,4,4,7,3,
-//                                        1,5,2,2,6,5
-//                                     };
-
-//    GLfloat vertices[] = {-1,1,-1,
-//                          1,1,-1,
-//                          1,1,1,
-//                          -1,1,1,
-//                          -1,-1,-1,
-//                          1,-1,-1,
-//                          1,-1,1,
-//                          -1,-1,1
-//                         };
-//    GLfloat normals[] = {-1,1,-1,
-//                          1,1,-1,
-//                          1,1,1,
-//                          -1,1,1,
-//                          -1,-1,-1,
-//                          1,-1,-1,
-//                          1,-1,1,
-//                          -1,-1,1
-//                         };
-
-//    std::vector<vertData> boxData;
-//    vertData d;
-//    for(int j=0; j<8; j++)
-//    {
-//      d.x = vertices[j*3];
-//      d.y = vertices[(j*3)+1];
-//      d.z = vertices[(j*3)+2];
-//      d.nx = normals[j*3];
-//      d.ny = normals[(j*3)+1];
-//      d.nz = normals[(j*3)+2];
-
-//      boxData.push_back(d);
-//    }
-
-//    unsigned int meshSize = sizeof(boxData);
-
-//    render->createVAO("box");
-//    render->setIndexedDataToVAO("box",meshSize*boxData.size(), boxData[0].x, sizeof(indices), &indices[0], meshSize);
-
-
-//   // render->loadLightToShader(m_light,"Phong");
-
-
     m_waveManager = WaveManager::create();
-    m_environment = Environment::create(6, 6, 2, ngl::Vec3(0.0, 0.0, 0.0), 5, 5); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
-
-    EntityFactory::initialiseFactory();
-    m_testEnemy = boost::dynamic_pointer_cast<TestEnemy> (EntityFactory::createDynamicEntity("TestEnemy", 10,0.1,ngl::Vec3(0,0,0), 0,ngl::Vec3(0,0,0)));
-
-    m_testEnemy->generateMesh();
-    /* ------------------------------------------------- End Testing -------------------------------------------------------------------- */
+    m_environment = Environment::create(6, 6, 2, ngl::Vec3(0.0, 0.0, 0.0), 3, 3); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
 }
 
 
@@ -126,7 +64,6 @@ unsigned int Game::registerID(EntityPtr _e)
     return m_currentID;
 }
 
-
 //-------------------------------------------------------------------//
 void Game::unregisterID(const unsigned int _i)
 {
@@ -139,20 +76,20 @@ EntityPtr Game::getEntityByID(const unsigned int _i)
     return m_IDMap.find(_i)->second;
 }
 
-
-
 //-------------------------------------------------------------------//
 void Game::update(const double _t)
 {
-    m_testEnemy->update();
+    // update code by timestep _t
+  m_waveManager->update();
+  m_environment->update();
 }
 //-------------------------------------------------------------------//
 void Game::draw()
 {
     glClearColor(0.1,0.2,0.3,1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    m_testEnemy->draw();
+    m_environment->draw();
+    m_waveManager->draw();
 
 }
 //-------------------------------------------------------------------//

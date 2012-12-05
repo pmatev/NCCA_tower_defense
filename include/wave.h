@@ -3,7 +3,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "dynamicentity.h"
+#include "enemy.h"
 #include "entityfactory.h"
 
 //-------------------------------------------------------------------//
@@ -84,7 +84,7 @@ public:
   /// @brief call all enemies to draw
   //-------------------------------------------------------------------//
 
-  void draw() const;
+  void draw();
 
   //-------------------------------------------------------------------//
   /// @brief create new temporary paths for all enemies that are affected
@@ -96,13 +96,7 @@ public:
   bool generatePaths(NodePtr _node);
 
 protected:
-
-  //-------------------------------------------------------------------//
-  /// @brief typedef for list of Enemies
-  //-------------------------------------------------------------------//
-
   typedef std::list<DynamicEntityPtr> EnemyList;
-
 protected:
 
   //-------------------------------------------------------------------//
@@ -158,6 +152,15 @@ protected:
   //-------------------------------------------------------------------//
 
   EnemyPairList m_enemiesForCreation;
+  //-------------------------------------------END TEST------------------------------------------------
+  //-------------------------------------------------------------------//
+  /// @brief map of all Nodes currently being used for paths and their
+  /// corresponding list of Enemies
+  //-------------------------------------------------------------------//
+
+  //std::map<NodePtr, EnemyListPtr> m_usedNodes;
+  //-------------------------------------------END TEST------------------------------------------------
+
 };
 
 

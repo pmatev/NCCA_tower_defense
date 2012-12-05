@@ -13,14 +13,6 @@ int main(int argc, char *argv[])
 
   w->init();
 
-
-
-
-
-
-
-
-
   // start the loop
   w->loop();
 
