@@ -138,6 +138,7 @@ void Window::loop()
             case SDL_MOUSEBUTTONDOWN : mouseButtonDownEvent(event.button); break;
             case SDL_MOUSEBUTTONUP : mouseButtonUpEvent(event.button); break;
             case SDL_MOUSEWHEEL : mouseWheelEvent(event.wheel); break;
+
             }
         }
 
@@ -210,63 +211,63 @@ void Window::SDLErrorExit(const std::string &_msg)
 //-------------------------------------------------------------------//
 void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
 {
-//    m_mouseX = _event.x;
-//    m_mouseY = _event.y;
+    m_mouseX = _event.x;
+    m_mouseY = _event.y;
 
-//    Renderer *render = Renderer::instance();
-//    Camera *cam = render->getCam();
+    Renderer *render = Renderer::instance();
+    Camera *cam = render->getCam();
 
-//    // Left Mouse Tumble
-//    if(m_rotate)
-//    {
-//      cam->tumble(m_oldMouseX, m_oldMouseY, m_mouseX, m_mouseY);
-//    }
+    // Left Mouse Tumble
+    if(m_rotate)
+    {
+      cam->tumble(m_oldMouseX, m_oldMouseY, m_mouseX, m_mouseY);
+    }
 
-//    // Middle Mouse Track
-//    else if(m_track)
-//    {
-//        cam->track(m_oldMouseX, m_oldMouseY, m_mouseX, m_mouseY);
-//    }
+    // Middle Mouse Track
+    else if(m_track)
+    {
+        cam->track(m_oldMouseX, m_oldMouseY, m_mouseX, m_mouseY);
+    }
 
-//    // Right Mouse Dolly
-//    else if(m_dolly)
-//    {
-//        cam->dolly(m_oldMouseX, m_mouseX);
-//    }
+    // Right Mouse Dolly
+    else if(m_dolly)
+    {
+        cam->dolly(m_oldMouseX, m_mouseX);
+    }
 
-//    m_oldMouseX = m_mouseX;
-//    m_oldMouseY = m_mouseY;
+    m_oldMouseX = m_mouseX;
+    m_oldMouseY = m_mouseY;
 
 }
 //-------------------------------------------------------------------//
 void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
 {
-//    m_oldMouseY = _event.x;
-//    m_oldMouseX = _event.y;
+    m_oldMouseX = _event.x;
+    m_oldMouseY = _event.y;
 
-//    if(_event.button == SDL_BUTTON_LEFT)
-//    {
-//        m_rotate =true;
-//    }
+    if(_event.button == SDL_BUTTON_LEFT)
+    {
+        m_rotate =true;
+    }
 
-//    else if(_event.button == SDL_BUTTON_MIDDLE)
-//    {
-//        m_track = true;
-//    }
+    else if(_event.button == SDL_BUTTON_MIDDLE)
+    {
+        m_track = true;
+    }
 
-//    else if(_event.button == SDL_BUTTON_RIGHT)
-//    {
-//        m_dolly=true;
-//    }
+    else if(_event.button == SDL_BUTTON_RIGHT)
+    {
+        m_dolly=true;
+    }
 }
 //-------------------------------------------------------------------//
 void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 {
-//    m_rotate=false;
-//    m_track = false;
-//    m_dolly=false;
-//    m_oldMouseX = m_mouseX;
-//    m_oldMouseY = m_mouseY;
+    m_rotate=false;
+    m_track = false;
+    m_dolly=false;
+    m_oldMouseX = m_mouseX;
+    m_oldMouseY = m_mouseY;
 }
 
 //-------------------------------------------------------------------//

@@ -7,9 +7,11 @@
 #include "entity.h"
 #include <SDL.h>
 #include <ngl/Light.h>
+#include "uielement.h"
 #include "node.h"
 #include "wavemanager.h"
 #include "environment.h"
+
 
 //-------------------------------------------------------------------//
 /// @file game.h

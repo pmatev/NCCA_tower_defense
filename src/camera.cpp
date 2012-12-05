@@ -34,7 +34,7 @@ void Camera::update()
 {
     this->set(m_eye.toVec3(), m_look.toVec3(), ngl::Vec3(0,1,0));
 
-    std::cout<<m_eye<<" "<<m_look<<" "<<std::endl;
+   // std::cout<<m_eye<<" "<<m_look<<" "<<std::endl;
 }
 
 
@@ -50,7 +50,7 @@ void Camera::dolly(int _oldX, int _newX)
 
     update();
 
-    std::cout<<"dolly"<<std::endl;
+    //std::cout<<"dolly"<<std::endl;
 }
 //----------------------------------------------------------------------------------------------------------------------
 void Camera::track(int _oldX, int _oldY, int _newX, int _newY)
@@ -71,7 +71,7 @@ void Camera::track(int _oldX, int _oldY, int _newX, int _newY)
 
     update();
 
-    std::cout<<"track"<<std::endl;
+    //std::cout<<"track"<<std::endl;
 }
 //----------------------------------------------------------------------------------------------------------------------
 void Camera::tumble(int _oldX, int _oldY, int _newX, int _newY)
@@ -147,5 +147,5 @@ void Camera::tumble(int _oldX, int _oldY, int _newX, int _newY)
 
     update();
 
-    std::cout<<"tumble"<<std::endl;
+    //std::cout<<"tumble"<<std::endl;
 }

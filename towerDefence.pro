@@ -81,6 +81,7 @@ HEADERS += \
     include/projectile.h \
     include/wall.h \
     include/base.h \
+    include/window.h \
     include/fwd/window.h \
     include/fwd/game.h \
     include/fwd/entity.h \
