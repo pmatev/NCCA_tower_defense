@@ -15,7 +15,7 @@ Wave::Wave(EnemyPairList _enemiesForCreation):
   // create shit load o enemies!!!
   for(int i=0; i < 10; ++i)
   {
-     addEnemy("TestEnemy", 100, 1, ngl::Vec3(0, 0, i*2), 0, ngl::Vec3(0, 0, 0));
+     addEnemy("TestEnemy", ngl::Vec3(0, 0, i*2), ngl::Vec3(0, 0, 0));
   }
   //-------------------------------------------END TEST------------------------------------------------
 }
@@ -151,10 +151,7 @@ void Wave::brain()
 //-------------------------------------------------------------------//
 void Wave::addEnemy(
     std::string _type,
-    float _damage,
-    float _maxVelocity,
     const ngl::Vec3 &_pos,
-    float _initialVelocity,
     const ngl::Vec3 &_aim
     )
 {
@@ -162,10 +159,7 @@ void Wave::addEnemy(
   EnemyPtr newEnemy = boost::dynamic_pointer_cast<Enemy>(
         EntityFactory::createDynamicEntity(
         _type,
-        _damage,
-        _maxVelocity,
         _pos,
-        _initialVelocity,
         _aim
       )
     );

@@ -3,18 +3,19 @@
 //-------------------------------------------------------------------//
 
 Base::Base(
-    NodePtr _linkedNode
+    NodePtr _linkedNode,
+    unsigned int _id
     ) :
-  StaticEntity(_linkedNode,BASE)
+  StaticEntity(_linkedNode,BASE, _id)
 {
 
 }
 
 //-------------------------------------------------------------------//
 
-BasePtr Base::create(NodePtr _linkedNode)
+BasePtr Base::create(NodePtr _linkedNode, unsigned int _id)
 {
-  BasePtr a = BasePtr(new Base(_linkedNode));
+  BasePtr a = BasePtr(new Base(_linkedNode,_id));
   return a;
 }
 

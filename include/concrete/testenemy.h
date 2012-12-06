@@ -29,12 +29,10 @@ public:
   /// @param[in] _initialVelocity, the starting velocity of the TestEnemy
   //-------------------------------------------------------------------//
   static EntityPtr create(
-      float _damage,
-      float _maxVelocity,
-      const ngl::Vec3 & _pos,
-      float _initialVelocity,
-      const ngl::Vec3 &_aim
-      );
+        const ngl::Vec3 &_pos,
+        const ngl::Vec3 &_aim,
+        unsigned int _id
+        );
 
   //-------------------------------------------------------------------//
   /// @brief destructor
@@ -67,12 +65,10 @@ protected:
   //-------------------------------------------------------------------//
 
   TestEnemy(
-      float _damage,
-      float _maxVelocity,
-      const ngl::Vec3 &_pos,
-      float _initialVelocity,
-      const ngl::Vec3 &_aim
-      );
+        const ngl::Vec3 &_pos,
+        const ngl::Vec3 &_aim,
+        unsigned int _id
+        );
 
   //-------------------------------------------------------------------//
   /// @brief works out which direction the TestEnemy should go in next

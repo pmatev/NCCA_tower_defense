@@ -1,0 +1,89 @@
+#ifndef PROJECTILEMANAGER_H
+#define PROJECTILEMANAGER_H
+
+#include "smartpointers.h"
+#include "projectile.h"
+
+//-------------------------------------------------------------------//
+/// @file projectilemanager.h
+/// @brief This is a class to store and manage all of the projectiles
+/// currently active in the game
+/// @author Peter May
+/// @version 1
+/// @date 6/12/12
+/// Revision History :
+/// Initial Version 6/12/12
+/// @class ProjectileManager
+//-------------------------------------------------------------------//
+
+DECLARESMART(ProjectileManager)
+
+class ProjectileManager
+{
+public://methods
+  //-------------------------------------------------------------------//
+  /// @brief destructor
+  //-------------------------------------------------------------------//
+
+  ~ProjectileManager();
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to get the number of projectiles currently active
+  //-------------------------------------------------------------------//
+
+  unsigned int getNumProjectiles() const {return m_projectiles.size();}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to do collision detection for each projectile.
+  /// @param [out] returns a list of collisions
+  //-------------------------------------------------------------------//
+
+  std::list<Collision> CheckCollisions();
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to call update on each of the projectiles
+  //-------------------------------------------------------------------//
+
+  void update();
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to deal with any projectiles that have hit
+  //-------------------------------------------------------------------//
+
+  void checkDeaths();
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to add a new projectile to the set
+  /// @param[in] _type, type of projectile to create
+  /// @param[in] _damage, damage that enemy can do
+  /// @param[in] _maxVelocity, maximum velocity an enemy can travel at
+  /// @param[in] _pos, initital position of enemy
+  /// @param[in] _initialVelocity, the initial velocity of the projectile
+  //-------------------------------------------------------------------//
+
+  void addProjectile(
+        std::string _type,
+        float _damage,
+        float _maxVelocity,
+        const ngl::Vec3 &_pos,
+        float _initialVelocity,
+        const ngl::Vec3 &_aim
+        );
+
+protected: //methods
+
+  //-------------------------------------------------------------------//
+  /// @brief constructor, currently using default
+  //-------------------------------------------------------------------//
+
+  ProjectileManager();
+protected://attributes
+  //-------------------------------------------------------------------//
+  /// @brief a list of pointers to the projectiles currently active in
+  /// game
+  //-------------------------------------------------------------------//
+
+  ProjectileList m_projectiles;
+};
+
+#endif // PROJECTILEMANAGER_H

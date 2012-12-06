@@ -35,12 +35,10 @@ public:
   //-------------------------------------------------------------------//
 
   DynamicEntity(
-      float _damage,
-      float _maxVelocity,
       const ngl::Vec3 &_pos,
-      float _initialVelocity,
-      const ngl::Vec3 &_aimVector,
-      GeneralType _type
+      const ngl::Vec3 &_aim,
+      GeneralType _type,
+        unsigned int _id
       );
 
   //-------------------------------------------------------------------//

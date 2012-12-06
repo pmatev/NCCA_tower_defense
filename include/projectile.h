@@ -16,15 +16,15 @@
 /// @class Projectile
 //-------------------------------------------------------------------//
 
-DECLARESMART(Projectile)
+DECLARESMARTLIST(Projectile)
 
 class Projectile : public DynamicEntity
 {
-public:
+public://methods
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
   /// @param [in] _damage, a float to initialise the damage value
-  /// @param [in] __maxVelocity, a float value describing the maximum
+  /// @param [in] _maxVelocity, a float value describing the maximum
   /// velocity of the dynamic entity
   /// @param [in] _pos, a vector containing the initial position in 3D
   /// space of the entity, passed to the entity constructor
@@ -32,11 +32,9 @@ public:
   //-------------------------------------------------------------------//
 
   Projectile(
-        float _damage,
-        float _maxVelocity,
         const ngl::Vec3 &_pos,
-        float _initialVelocity,
-        const ngl::Vec3 &_aim
+        const ngl::Vec3 &_aim,
+        unsigned int _id
         );
 
   //-------------------------------------------------------------------//

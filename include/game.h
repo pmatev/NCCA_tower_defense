@@ -60,9 +60,16 @@ public:
     void drawSelection();
 
     //-------------------------------------------------------------------//
+    /// @brief returns an ID for an entity
+    //-------------------------------------------------------------------//
+
+    unsigned int getID();
+
+    //-------------------------------------------------------------------//
     /// @brief register the id of given Entity and return its ID
     //-------------------------------------------------------------------//
-    unsigned int registerID(EntityPtr _e);
+
+    void registerID(EntityPtr _e, unsigned int _id);
 
     //-------------------------------------------------------------------//
     /// @brief unregister Entity via ID
@@ -108,11 +115,6 @@ protected:
     ~Game();
 
 protected:
-
-    //-------------------------------------------------------------------//
-    /// @brief ID Counter for distributing unique IDs to entities.
-    //-------------------------------------------------------------------//
-    unsigned int m_currentID;
 
     //-------------------------------------------------------------------//
     /// @brief A map of IDs to Entity Pointers for game object management.

@@ -5,17 +5,14 @@
 
 //-------------------------------------------------------------------//
 
-Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type) :
+Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type, unsigned int _id) :
+  m_ID(_id),
   m_pos(_pos),
   m_health(100.0),
   m_wsViewBBox(0,0,0,0,0,0),
   m_lsMeshBBox(0,0,0,0,0,0),
   m_generalType(_type)
 {
-  // Initialise id and register with game
-  Game* game = Game::instance();
-  // register instance with Game
-  m_ID = game->registerID(EntityPtr(this));
   m_IDStr = boost::lexical_cast<std::string>(m_ID);
 
   m_transformStack = ngl::TransformStack();

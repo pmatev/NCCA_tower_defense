@@ -1,4 +1,5 @@
 #include "nodemanager.h"
+#include "game.h"
 
 //-------------------------------------------------------------------//
 
@@ -9,6 +10,9 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize, ngl:
   m_hexagonSize(_hexagonSize),
   m_origin(_origin)
 {
+  //get a pointer to the game
+
+  Game* game = Game::instance();
 
   // create all the necessary node
   for(int j = 0; j < _gridHeight; j++)
@@ -20,7 +24,8 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize, ngl:
               ngl::Vec3(i * _hexagonSize * 0.75, 0,
                         j * (_hexagonSize * (sqrt(3)/2)) + (_hexagonSize * (sqrt(3)/2))/2 * ((i%2 != 0))
                         ) + m_origin,
-              m_hexagonSize
+              m_hexagonSize,
+              game->getID()
               )
             );
       m_nodes.push_back(node);

@@ -7,8 +7,8 @@
 
 //-------------------------------------------------------------------//
 
-Node::Node(const ngl::Vec3 &_pos, float _hexagonSize):
-  Entity(_pos, NODE),
+Node::Node(const ngl::Vec3 &_pos, float _hexagonSize, unsigned int _id):
+  Entity(_pos, NODE,_id),
   m_isOccupied(false),
   m_hexagonSize(_hexagonSize)
 {

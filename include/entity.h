@@ -103,7 +103,7 @@ public: //methods
   /// @param [in] _health, the initial health value of the entity
   //-------------------------------------------------------------------//
 
-  Entity(const ngl::Vec3 & _pos, GeneralType _type);
+  Entity(const ngl::Vec3 & _pos, GeneralType _type, unsigned int _id);
 
 
   //-------------------------------------------------------------------//
@@ -236,6 +236,7 @@ protected: //attributes
 
   ngl::TransformStack m_transformStack;
 
+private:
   //-------------------------------------------------------------------//
   /// @brief an enum to store the generaltype of the entity
   //-------------------------------------------------------------------//

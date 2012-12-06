@@ -33,11 +33,9 @@ public:
   //-------------------------------------------------------------------//
 
   Enemy(
-        float _damage,
-        float _maxVelocity,
         const ngl::Vec3 &_pos,
-        float _initialVelocity,
-        const ngl::Vec3 &_aim
+        const ngl::Vec3 &_aim,
+        unsigned int _id
         );
 
   //-------------------------------------------------------------------//

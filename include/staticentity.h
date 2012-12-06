@@ -30,9 +30,10 @@ public:
   //-------------------------------------------------------------------//
 
   StaticEntity(
-      NodePtr _linkedNode,
-      GeneralType _type
-      );
+        NodePtr _linkedNode,
+        GeneralType _type,
+        unsigned int _id
+        );
 
   //-------------------------------------------------------------------//
   /// @brief destructor

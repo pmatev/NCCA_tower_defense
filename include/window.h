@@ -79,7 +79,11 @@ public:
     unsigned int colourToID(ngl::Vec3 _c);
     ngl::Vec3 IDToColour(unsigned int _id);
 
+    //-------------------------------------------------------------------//
+    /// @brief a method to get a unique id
+    //-------------------------------------------------------------------//
 
+    unsigned int getID();
 
 protected:
     //-------------------------------------------------------------------//
@@ -158,6 +162,10 @@ protected:
     /// @brief flag for camera dolly
     //-------------------------------------------------------------------//
     bool m_dolly;
+    //-------------------------------------------------------------------//
+    /// @brief ID Counter for distributing unique IDs to entities.
+    //-------------------------------------------------------------------//
+    unsigned int m_currentID;
 
 };
 

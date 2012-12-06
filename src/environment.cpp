@@ -20,7 +20,16 @@ Environment::Environment(
   // default ctor
   // base needs to be initialised here as it fails when putting it in the
   // inititalisation list
-  m_base = Base::create(m_nodeMap->getNodeFromCoords(_baseX, _baseY));
+  //get an instance of the game
+
+  Game* game = Game::instance();
+
+  //create the base
+
+  m_base = Base::create(
+        m_nodeMap->getNodeFromCoords(_baseX, _baseY),
+        game->getID()
+        );
 }
 
 //-------------------------------------------------------------------//

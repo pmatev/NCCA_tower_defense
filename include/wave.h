@@ -129,10 +129,7 @@ protected:
 
   void addEnemy(
         std::string _type,
-        float _damage,
-        float _maxVelocity,
         const ngl::Vec3 &_pos,
-        float _initialVelocity,
         const ngl::Vec3 &_aim
         );
 

@@ -3,37 +3,28 @@
 //-------------------------------------------------------------------//
 
 Bullet::Bullet(
-    float _damage,
-    float _maxVelocity,
     const ngl::Vec3 &_pos,
-    float _initialVelocity,
-    const ngl::Vec3 &_aim
+    const ngl::Vec3 &_aim,
+    unsigned int _id
     ) :
-  Projectile(_damage, _maxVelocity, _pos, _initialVelocity,_aim)
+  Projectile(_pos,_aim, _id)
 {
-
+  m_damage = 20;
+  m_maxVelocity = 10;
+  m_currentVelocity = 2;
 }
 
 //-------------------------------------------------------------------//
 
 BulletPtr Bullet::create(
-    float _damage,
-    float _maxVelocity,
     const ngl::Vec3 &_pos,
-    float _initialVelocity,
-    const ngl::Vec3 &_aim
+    const ngl::Vec3 &_aim,
+    unsigned int _id
     )
 {
   //create and return a smart pointer to the bullet
 
-  BulletPtr bullet(
-        new Bullet(
-          _damage,
-          _maxVelocity,
-          _pos,
-          _initialVelocity,
-          _aim)
-        );
+  BulletPtr bullet(new Bullet(_pos,_aim, _id));
   return bullet;
 }
 

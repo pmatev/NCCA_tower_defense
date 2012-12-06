@@ -5,12 +5,12 @@
 #include "renderer.h"
 #include <ngl/VAOPrimitives.h>
 #include "entityfactory.h"
+#include "window.h"
 
 Game* Game::s_instance = 0;
 
 //-------------------------------------------------------------------//
-Game::Game():
-  m_currentID(0) // set current ID to
+Game::Game()
 {
 
 }
@@ -57,14 +57,20 @@ void Game::destroy()
           delete s_instance;
     }
 }
+
 //-------------------------------------------------------------------//
-unsigned int Game::registerID(EntityPtr _e)
+
+unsigned int Game::getID()
 {
-    m_currentID++;
+  Window* w = Window::instance();
 
-    m_IDMap[m_currentID] = _e;
+  return w->getID();
+}
 
-    return m_currentID;
+//-------------------------------------------------------------------//
+void Game::registerID(EntityPtr _e, unsigned int _id)
+{
+    m_IDMap[_id] = _e;
 }
 
 //-------------------------------------------------------------------//

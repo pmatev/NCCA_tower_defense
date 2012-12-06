@@ -49,7 +49,8 @@ SOURCES += src/main.cpp \
     src/projectile.cpp \
     src/wall.cpp \
     src/base.cpp \
-    src/databasegrid.cpp
+    src/databasegrid.cpp \
+    src/projectilemanager.cpp
 
 
 HEADERS += \
@@ -86,7 +87,8 @@ HEADERS += \
     include/fwd/game.h \
     include/fwd/entity.h \
     include/databasegrid.h \
-    include/fwd/database.h
+    include/fwd/database.h \
+    include/projectilemanager.h
 
 
 #including the Imath Library

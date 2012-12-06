@@ -9,7 +9,8 @@
 Window* Window::s_instance = 0;
 
 //-------------------------------------------------------------------//
-Window::Window()
+Window::Window():
+  m_currentID(0)
 {
 
 
@@ -311,4 +312,13 @@ ngl::Vec3 Window::IDToColour(unsigned int _id)
 
   //std::cout<<c<<std::endl;
   return c;
+}
+
+//-------------------------------------------------------------------//
+
+unsigned int Window::getID()
+{
+  m_currentID++;
+
+  return m_currentID;
 }

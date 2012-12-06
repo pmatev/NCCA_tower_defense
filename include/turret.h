@@ -38,11 +38,9 @@ public:
   //-------------------------------------------------------------------//
 
   Turret(
-        float _fov,
-        float _viewDistance,
-        float _maxRotationSpeed,
         const ngl::Vec3 & _aim,
-        NodePtr _linkedNode
+        NodePtr _linkedNode,
+        unsigned int _id
         );
 
   //-------------------------------------------------------------------//

@@ -2,6 +2,7 @@
 
 #include "entityfactory.h"
 #include "concrete/testenemy.h"
+#include "game.h"
 
 EntityFactory::DynamicEntityTypeMap EntityFactory::s_dynamicEntityTypes;
 EntityFactory::StaticEntityTypeMap EntityFactory::s_staticEntityTypes;
@@ -59,25 +60,37 @@ void EntityFactory::unregisterStaticEntity(const std::string _type)
 
 DynamicEntityPtr EntityFactory::createDynamicEntity(
     std::string _type,
-    float _damage,
-    float _maxVelocity,
     const ngl::Vec3 &_pos,
-    float _initialVelocity,
     const ngl::Vec3 &_aim
     )
 {
   DynamicEntityTypeMap::iterator it = s_dynamicEntityTypes.find(_type);
   if(it != s_dynamicEntityTypes.end())
   {
+    // get an instance of the Game class
+
+    Game* game = Game::instance();
+
+    //get an id for the entity
+
+    unsigned int id = game->getID();
     // This runs the create function for the specified type and casts the output
     // to a DynamicEntityPtr
-    return boost::dynamic_pointer_cast<DynamicEntity>((it->second)(
-                                                        _damage,
-                                                        _maxVelocity,
-                                                        _pos,
-                                                        _initialVelocity,
-                                                        _aim
-                                                        ));
+    DynamicEntityPtr de = boost::dynamic_pointer_cast<DynamicEntity>(
+          (it->second)(
+            _pos,
+            _aim,
+            id
+            )
+          );
+
+    //register the entity with the game
+
+    game->registerID(de,id);
+
+    //then return the pointer
+
+    return de;
   }
   return DynamicEntityPtr();
 }
@@ -93,11 +106,29 @@ StaticEntityPtr EntityFactory::createStaticEntity(
   StaticEntityTypeMap::iterator it = s_staticEntityTypes.find(_type);
   if(it != s_staticEntityTypes.end())
   {
+    // get an instance of the Game class
+
+    Game* game = Game::instance();
+
+    //get an id for the entity
+
+    unsigned int id = game->getID();
+
     // This runs the create function for the specified type and casts the output
     // to StaticEntityPtr
-    return boost::dynamic_pointer_cast<StaticEntity>((it->second)(
-                                                        _node
-                                                        ));
+    StaticEntityPtr se = boost::dynamic_pointer_cast<StaticEntity>
+        ((it->second)(
+           _node,
+           id
+           ));
+
+    //register the entity with the game
+
+    game->registerID(se,id);
+
+    //then return the pointer
+
+    return se;
   }
   return StaticEntityPtr();
 }

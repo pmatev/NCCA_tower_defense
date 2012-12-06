@@ -24,7 +24,7 @@ public:
   /// @param [in] _linkedNode, the node to place the base on
   //-------------------------------------------------------------------//
 
-  static BasePtr create(NodePtr _linkedNode);
+  static BasePtr create(NodePtr _linkedNode, unsigned int _id);
 
   void update();
   void draw();
@@ -38,7 +38,7 @@ protected:
   /// @param [in] _linkedNode, the node to place the base on
   //-------------------------------------------------------------------//
 
-  Base(NodePtr _linkedNode);
+  Base(NodePtr _linkedNode, unsigned int _id);
 };
 
 #endif // BASE_H

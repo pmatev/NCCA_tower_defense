@@ -3,16 +3,14 @@
 //-------------------------------------------------------------------//
 
 Turret::Turret(
-    float _fov,
-    float _viewDistance,
-    float _maxRotationSpeed,
     const ngl::Vec3 &_aim,
-    NodePtr _linkedNode
+    NodePtr _linkedNode,
+    unsigned int _id
     ):
-  StaticEntity(_linkedNode,TURRET),
-  m_fov(_fov),
-  m_viewDistance(_viewDistance),
-  m_maxRotationSpeed(_maxRotationSpeed),
+  StaticEntity(_linkedNode,TURRET,_id),
+  m_fov(360),
+  m_viewDistance(20),
+  m_maxRotationSpeed(20),
   m_aim(_aim)
 {
   //variables initialised before constructor body called

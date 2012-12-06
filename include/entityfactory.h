@@ -29,15 +29,14 @@ public:
   //-------------------------------------------------------------------//
 
   typedef EntityPtr (*dynamicEntityCallBack)(
-        float _damage,
-        float _maxVelocity,
         const ngl::Vec3 &_pos,
-        float _initialVelocity,
-        const ngl::Vec3 &_aim
+        const ngl::Vec3 &_aim,
+        unsigned int _id
         );
 
   typedef EntityPtr (*staticEntityCallBack)(
-        NodePtr _node
+        NodePtr _node,
+        unsigned int _id
         );
 
   //-------------------------------------------------------------------//
@@ -114,18 +113,13 @@ public:
   //-------------------------------------------------------------------//
   /// @brief create DynamicEntity and return pointer to it
   /// @param[in] _type, type of DynamicEntity to create
-  /// @param[in] _damage, damage that enemy can do
-  /// @param[in] _maxVelocity, maximum velocity an enemy can travel at
   /// @param[in] _pos, initital position of enemy
   //-------------------------------------------------------------------//
   static DynamicEntityPtr createDynamicEntity(
-      std::string _type,
-      float _damage,
-      float _maxVelocity,
-      const ngl::Vec3 &_pos,
-      float _initialVelocity,
-      const ngl::Vec3 &_aim
-      );
+        std::string _type,
+        const ngl::Vec3 &_pos,
+        const ngl::Vec3 &_aim
+        );
 
   //-------------------------------------------------------------------//
   /// @brief create StaticEntity and return pointer to it
@@ -134,9 +128,9 @@ public:
   //-------------------------------------------------------------------//
 
   static StaticEntityPtr createStaticEntity(
-      std::string _type,
-      NodePtr _node
-      );
+        std::string _type,
+        NodePtr _node
+        );
 
 protected:
   static DynamicEntityTypeMap s_dynamicEntityTypes;

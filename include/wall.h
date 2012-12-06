@@ -28,7 +28,8 @@ public:
   //-------------------------------------------------------------------//
 
   Wall(
-        NodePtr _linkedNode
+        NodePtr _linkedNode,
+        unsigned int _id
         );
 };
 

@@ -3,20 +3,11 @@
 //-------------------------------------------------------------------//
 
 Projectile::Projectile(
-    float _damage,
-    float _maxVelocity,
     const ngl::Vec3 &_pos,
-    float _initialVelocity,
-    const ngl::Vec3 &_aim
+    const ngl::Vec3 &_aim,
+    unsigned int _id
     ) :
-  DynamicEntity(
-    _damage,
-    _maxVelocity,
-    _pos,
-    _initialVelocity,
-    _aim,
-    PROJECTILE
-    )
+  DynamicEntity(_pos,_aim,PROJECTILE, _id)
 {
 
 }

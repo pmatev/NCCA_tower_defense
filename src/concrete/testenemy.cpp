@@ -3,24 +3,19 @@
 //-------------------------------------------------------------------//
 
 TestEnemy::TestEnemy(
-    float _damage,
-    float _maxVelocity,
     const ngl::Vec3 & _pos,
-    float _initialVelocity,
-    const ngl::Vec3 &_aim
+    const ngl::Vec3 &_aim,
+    unsigned int _id
     ):
-  Enemy(
-    _damage,
-    _maxVelocity,
-    _pos,
-    _initialVelocity,
-    _aim
-    )
+  Enemy(_pos,_aim, _id)
 {
   // ctor just passes everything to parent class
   // HACKY TESTING HERE
   generateMesh();
   m_active = false;
+  m_damage = 100;
+  m_currentVelocity = 0;
+  m_maxVelocity = 1;
 }
 
 //-------------------------------------------------------------------//
@@ -33,22 +28,12 @@ TestEnemy::~TestEnemy()
 //-------------------------------------------------------------------//
 
 EntityPtr TestEnemy::create(
-    float _damage,
-    float _maxVelocity,
     const ngl::Vec3 &_pos,
-    float _initialVelocity,
-    const ngl::Vec3 &_aim
+    const ngl::Vec3 &_aim,
+    unsigned int _id
     )
 {
-  EntityPtr a(
-        new TestEnemy(
-          _damage,
-          _maxVelocity,
-          _pos,
-          _initialVelocity,
-          _aim
-          )
-        );
+  EntityPtr a(new TestEnemy(_pos,_aim, _id));
   return a;
 }
 

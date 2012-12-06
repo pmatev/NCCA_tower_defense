@@ -3,9 +3,9 @@
 //-------------------------------------------------------------------//
 
 Wall::Wall(
-    NodePtr _linkedNode
+    NodePtr _linkedNode, unsigned int _id
     ) :
-  StaticEntity(_linkedNode,WALL)
+  StaticEntity(_linkedNode,WALL, _id)
 {
 }
 
