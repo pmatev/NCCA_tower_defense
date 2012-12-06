@@ -109,13 +109,13 @@ ngl::Vec3 TestEnemy::brain()
 
 //-------------------------------------------------------------------//
 
-void TestEnemy::draw(std::string _shader)
+void TestEnemy::draw()
 {
     Renderer *r = Renderer::instance();
 
-    r->loadMatrixToShader(m_transformStack, _shader);
+    r->loadMatrixToShader(m_transformStack, "Phong");
 
-    r->draw(m_IDStr, _shader);
+    r->draw(m_IDStr, "Phong");
 
 }
 
@@ -123,7 +123,11 @@ void TestEnemy::draw(std::string _shader)
 
 void TestEnemy::drawSelection()
 {
+  Renderer *r = Renderer::instance();
 
+  r->loadMatrixToShader(m_transformStack, "Colour");
+
+  r->draw(m_IDStr, "Colour");
 }
 
 //-------------------------------------------------------------------//

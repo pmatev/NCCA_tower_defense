@@ -4,7 +4,7 @@
 #include <iostream>
 #include "renderer.h"
 #include "ngl/NGLInit.h"
-
+#include "uiSelection.h"
 
 Window* Window::s_instance = 0;
 
@@ -247,27 +247,32 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
 //-------------------------------------------------------------------//
 void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
 {
-    m_oldMouseX = _event.x;
-    m_oldMouseY = _event.y;
+//    m_oldMouseX = _event.x;
+//    m_oldMouseY = _event.y;
 
-    if(_event.button == SDL_BUTTON_LEFT)
-    {
-        m_rotate =true;
-    }
+//    if(_event.button == SDL_BUTTON_LEFT)
+//    {
+//        m_rotate =true;
+//    }
 
-    else if(_event.button == SDL_BUTTON_MIDDLE)
-    {
-        m_track = true;
-    }
+//    else if(_event.button == SDL_BUTTON_MIDDLE)
+//    {
+//        m_track = true;
+//    }
 
-    else if(_event.button == SDL_BUTTON_RIGHT)
-    {
-        m_dolly=true;
-    }
+//    else if(_event.button == SDL_BUTTON_RIGHT)
+//    {
+//        m_dolly=true;
+//    }
 
   /* -------- Testing Code -------------*/
 
+  Renderer *r = Renderer::instance();
+  r->prepareDrawSelection();
 
+  UISelection *ui = UISelection::instance();
+
+  r->readColourSelection(_event.x, _event.y);
 
   /* -------- End Testing Code -------------*/
 
@@ -285,5 +290,13 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 //-------------------------------------------------------------------//
 void Window::mouseWheelEvent(const SDL_MouseWheelEvent &_event)
 {
+
+}
+
+
+
+void Window::doSelection()
+{
+
 
 }

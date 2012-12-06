@@ -124,7 +124,7 @@ public: //methods
   /// implemented in child classes
   //-------------------------------------------------------------------//
 
-  virtual void draw(std::string _shader)  = 0;
+  virtual void draw()  = 0;
 
   //-------------------------------------------------------------------//
   /// @brief a virtual method that draws the selection frame (where each
@@ -132,6 +132,8 @@ public: //methods
   //-------------------------------------------------------------------//
 
   virtual void drawSelection()  = 0;
+
+
 
   //-------------------------------------------------------------------//
   /// @brief a method which will publish the entity's position to the

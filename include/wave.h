@@ -87,6 +87,11 @@ public:
   void draw();
 
   //-------------------------------------------------------------------//
+  /// @brief call all enemies to draw selection
+  //-------------------------------------------------------------------//
+    void drawSelection();
+
+  //-------------------------------------------------------------------//
   /// @brief create new temporary paths for all enemies that are affected
   /// by inserting this tower
   /// @param[in] _node, the node in question

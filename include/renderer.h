@@ -48,7 +48,8 @@ public:
     void setIndexedDataToVAO(std::string _id, unsigned int _size, const GLfloat &_data, unsigned int _indexSize, const GLvoid *_indexData, unsigned int _numIndices);
     void draw(std::string _id, std::string _shader);
 
-    void drawSelection();
+    void prepareDrawSelection();
+    ngl::Vec3 readColourSelection(const int _x, const int _y);
 
     //vertData packData(const ngl::Vec3 &_vert, ngl::Vec3 &_norm);
 

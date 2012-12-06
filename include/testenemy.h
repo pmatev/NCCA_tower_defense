@@ -44,7 +44,7 @@ public:
   /// @brief draw the object
   //-------------------------------------------------------------------//
 
-  void draw(std::string _shader) ;
+  void draw() ;
 
   //-------------------------------------------------------------------//
   /// @brief draw the object based on id

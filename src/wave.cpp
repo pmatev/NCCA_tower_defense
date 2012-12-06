@@ -85,9 +85,24 @@ void Wave::draw()
       ++it
       )
   {
-    (*it)->draw("Phong");
+    (*it)->draw();
   }
 }
+//-------------------------------------------------------------------//
+
+void Wave::drawSelection()
+{
+  // Go through all the enemies and call their publish
+  for(
+      EnemyList::iterator it = m_enemies.begin();
+      it != m_enemies.end();
+      ++it
+      )
+  {
+    (*it)->drawSelection();
+  }
+}
+
 
 //-------------------------------------------------------------------//
 

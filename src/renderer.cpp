@@ -128,14 +128,28 @@ void Renderer::draw(std::string _id, std::string _shader)
   v->unbind();
 }
 //-------------------------------------------------------------------//
-void Renderer::drawSelection()
+void Renderer::prepareDrawSelection()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glDisable(GL_LIGHTING);
   glDisable(GL_TEXTURE_2D);
   glDisable(GL_FOG);
-
 }
+ngl::Vec3 Renderer::readColourSelection(const int _x, const int _y)
+{
+  // get color information from frame buffer
+  unsigned char pixel[3];
+  // get the viweport
+  GLint viewport[4];
+  glGetIntegerv(GL_VIEWPORT, viewport);
+  // read the pixels (1,1 at present but could do wider area)
+  glReadPixels(_x, viewport[3] - _y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
+  // now loop for each object and see if the colour matches
+  // need to use a reference object as we will change the class Active value
+  ngl::Vec3 p(pixel[0], pixel[1], pixel[2]);
+  return p;
+}
+
 //-------------------------------------------------------------------//
 void Renderer::loadMatrixToShader( ngl::TransformStack &_tx,  std::string _shader)
 {
