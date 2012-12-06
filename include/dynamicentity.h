@@ -91,28 +91,6 @@ public:
         const ngl::Vec3 &_point2,
         BBox _planeExtents);
 
-  //-------------------------------------------------------------------//
-  /// @brief a method to create an instance of the object and return a
-  /// smart pointer to it, pure virtual
-  /// @param [in] _damage, a float to initialise the damage value
-  /// @param [in] __maxVelocity, a float value describing the maximum
-  /// velocity of the dynamic entity
-  /// @param [in] _pos, a vector containing the initial position in 3D
-  /// space of the entity, passed to the entity constructor
-  /// @param [in] _initialVelocity, the starting velocity of the enemy
-  /// @param [in] _aimVector, its initial aim
-  /// @param [in] _type, the general type of the entity
-  //-------------------------------------------------------------------//
-
-  virtual EntityPtr create(
-        float _damage,
-        float _maxVelocity,
-        const ngl::Vec3 &_pos,
-        float _initialVelocity,
-        const ngl::Vec3 &_aimVector,
-        GeneralType _type
-        ) = 0;
-
 protected:
   //-------------------------------------------------------------------//
   /// @brief a virtual brain method, to be implemented in children

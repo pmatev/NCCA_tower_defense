@@ -52,18 +52,6 @@ public:
 
   inline void decrementLevel () {m_level--;}
 
-  //-------------------------------------------------------------------//
-  /// @brief a method to create an instance of the object and return a
-  /// smart pointer to it, pure virtual
-  /// @param [in] _linkedNode, a smart pointer to the linked node
-  /// @param [in] _type, the general type of the entity
-  //-------------------------------------------------------------------//
-
-  virtual EntityPtr create(
-        NodePtr _linkedNode,
-        GeneralType _type
-        ) = 0;
-
 protected:
   //-------------------------------------------------------------------//
   /// @brief The upgrade level of the static entity

@@ -92,11 +92,17 @@ public:
   /// @brief set the list of children that a node is linked to
   /// @param [in] _children, list of child nodes
   //-------------------------------------------------------------------//
+
   inline void setChildList(NodeListPtr _children) {m_children = _children;}
 
 
   void generateMesh();
 
+  //-------------------------------------------------------------------//
+  /// @brief destroy method
+  //-------------------------------------------------------------------//
+
+  void destroy();
 
 protected:
   //-------------------------------------------------------------------//

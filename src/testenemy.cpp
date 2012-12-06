@@ -45,6 +45,7 @@ EntityPtr TestEnemy::create(
   return a;
 }
 
+//-------------------------------------------------------------------//
 
 void TestEnemy::generateMesh()
 {
@@ -95,7 +96,14 @@ void TestEnemy::generateMesh()
 
   render->createVAO(m_IDStr);
 
-  render->setIndexedDataToVAO(m_IDStr,sizeof(vertData)*boxData.size(), boxData[0].x, sizeof(indices), &indices[0], sizeof(indices)/sizeof(GLubyte));
+  render->setIndexedDataToVAO(
+        m_IDStr,
+        sizeof(vertData)*boxData.size(),
+        boxData[0].x,
+        sizeof(indices),
+        &indices[0],
+        sizeof(indices)/sizeof(GLubyte)
+        );
 
 }
 
@@ -128,6 +136,13 @@ void TestEnemy::drawSelection()
   r->loadMatrixToShader(m_transformStack, "Colour");
 
   r->draw(m_IDStr, "Colour");
+}
+
+//-------------------------------------------------------------------//
+
+void TestEnemy::destroy()
+{
+
 }
 
 //-------------------------------------------------------------------//
