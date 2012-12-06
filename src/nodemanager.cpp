@@ -551,8 +551,8 @@ Node::NodeList NodeManager::findPathFromPos(
 
 NodePtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
 {
-  float x = _pos.m_x;
-  float y = _pos.m_z;
+  float x = _pos.m_x - m_origin.m_x;
+  float y = _pos.m_z - m_origin.m_z;
 
   //clamp between values within the grid
   x = x < 0 ? 0 : (x > (m_gridWidth-1)*m_hexagonSize ? (m_gridWidth-1)*m_hexagonSize : x);

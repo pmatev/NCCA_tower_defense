@@ -43,7 +43,7 @@ void Game::init()
 
     //Environment has to be created before the waves, as the enemies query data
     //in environment.
-    m_environment = Environment::create(10, 10, 2, ngl::Vec3(0.0, 0.0, 0.0), 4, 4); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
+    m_environment = Environment::create(10, 10, 2, ngl::Vec3(0.0, 0.0, 0.0), 8, 8); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
     m_waveManager = WaveManager::create();
 
 }
