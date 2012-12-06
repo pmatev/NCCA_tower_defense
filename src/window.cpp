@@ -57,8 +57,8 @@ void Window::init()
     // now get the size of the display and create a window we need to init the video
     SDL_Rect rect;
     SDL_GetDisplayBounds(0,&rect);
-    m_width = rect.w;
-    m_height = rect.w;
+    m_width = 600;
+    m_height = 400;
 
     // now create our window
     m_window=SDL_CreateWindow("Tower Defence",

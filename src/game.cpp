@@ -41,8 +41,11 @@ void Game::init()
     render->createShader("Colour");
     //m_light = new ngl::Light(ngl::Vec3(1,2,0),ngl::Colour(1,1,1),ngl::POINTLIGHT);
 
+    //Environment has to be created before the waves, as the enemies query data
+    //in environment.
+    m_environment = Environment::create(10, 10, 1, ngl::Vec3(0.0, 0.0, 0.0), 3, 3); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
     m_waveManager = WaveManager::create();
-    m_environment = Environment::create(6, 6, 2, ngl::Vec3(0.0, 0.0, 0.0), 3, 3); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
+
 }
 
 
@@ -80,17 +83,17 @@ EntityPtr Game::getEntityByID(const unsigned int _i)
 void Game::update(const double _t)
 {
     // update code by timestep _t
-  m_waveManager->update();
   m_environment->update();
+  m_waveManager->update();
 }
 //-------------------------------------------------------------------//
 void Game::draw()
 {
     glClearColor(0.1,0.2,0.3,1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     m_environment->draw();
     m_waveManager->draw();
-
 }
 //-------------------------------------------------------------------//
 
@@ -121,6 +124,18 @@ bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
 
 //-------------------------------------------------------------------//
 
+ngl::Vec3 Game::getBasePos() const
+{
+  return m_environment->getBasePos();
+}
+
+//-------------------------------------------------------------------//
+EnvironmentWeakPtr Game::getEnvironmentWeakPtr()
+{
+  //EnvironmentWeakPtr a(m_environment);
+  EnvironmentWeakPtr a(m_environment);
+  return a;
+}
 
 
 

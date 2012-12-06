@@ -19,6 +19,7 @@
 #include "node.h"
 
 DECLARESMART(NodeManager)
+DECLAREWEAKSMART(NodeManager)
 
 class NodeManager
 {
@@ -103,6 +104,10 @@ public:
 
   ~NodeManager();
 
+  void update();
+
+  void draw();
+
   //-------------------------------------------------------------------//
   /// @brief Find a path between two nodes ( A* search algorithm)
   //-------------------------------------------------------------------//
@@ -131,6 +136,8 @@ public:
   //-------------------------------------------------------------------//
 
   NodePtr getNodeFromCoords(int _x, int _y) const;
+
+  void drawSelection();
 
 protected:
 

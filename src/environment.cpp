@@ -65,6 +65,7 @@ void Environment::update()
   }
   // update base
   m_base->update();
+  m_nodeMap->update();
 }
 
 //-------------------------------------------------------------------//
@@ -99,6 +100,7 @@ void Environment::draw() const
   }
   // draw base
   m_base->draw();
+  m_nodeMap->draw();
 }
 
 //-------------------------------------------------------------------//
@@ -116,6 +118,7 @@ void Environment::drawSelection() const
   }
   // draw base
   m_base->drawSelection();
+  m_nodeMap->drawSelection();
 }
 
 //-------------------------------------------------------------------//
@@ -133,3 +136,17 @@ void Environment::createTower(
 }
 
 //-------------------------------------------------------------------//
+
+
+ngl::Vec3 Environment::getBasePos()
+{
+  return m_base->getPos();
+}
+
+//-------------------------------------------------------------------//
+
+NodeManagerWeakPtr Environment::getNodeManagerWeakPtr()
+{
+  NodeManagerWeakPtr a(m_nodeMap);
+  return a;
+}

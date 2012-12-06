@@ -17,13 +17,14 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize, ngl:
     {
       NodePtr node(
             new Node(
-              ngl::Vec3((i) * _hexagonSize, 0,
-                        j * (_hexagonSize * (sqrt(3)/2))
-                        ) + m_origin
+              ngl::Vec3(i * _hexagonSize * 0.75, 0,
+                        j * (_hexagonSize * (sqrt(3)/2)) + (_hexagonSize * (sqrt(3)/2))/2 * ((i%2 != 0))
+                        ) + m_origin,
+              m_hexagonSize
               )
             );
       m_nodes.push_back(node);
-      std::cout<<"#"<<(_gridWidth*j) + i<<": Node "<<"("<<i<<","<<j<<")" << " has coords: ["<<i * _hexagonSize<<","<<j * (_hexagonSize * (sqrt(3)/2))<<"]"<<std::endl;
+      //std::cout<<"#"<<(_gridWidth*j) + i<<": Node "<<"("<<i<<","<<j<<")" << " has coords: ["<<i * _hexagonSize<<","<<j * (_hexagonSize * (sqrt(3)/2))<<"]"<<std::endl;
     }
   }
 
@@ -356,6 +357,34 @@ NodeManagerPtr NodeManager::create(
 NodeManager::~NodeManager()
 {
   // default dtor
+}
+
+//-------------------------------------------------------------------//
+
+void NodeManager::update()
+{
+  for(int i = 0; i < m_nodes.size(); i++)
+  {
+    m_nodes[i]->update();
+  }
+}
+
+//-------------------------------------------------------------------//
+
+void NodeManager::draw()
+{
+  for(int i = 0; i < m_nodes.size(); i++)
+  {
+    m_nodes[i]->draw();
+  }
+}
+
+void NodeManager::drawSelection()
+{
+  for(int i = 0; i < m_nodes.size(); i++)
+  {
+    m_nodes[i]->drawSelection();
+  }
 }
 
 //-------------------------------------------------------------------//

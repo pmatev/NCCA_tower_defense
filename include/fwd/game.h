@@ -5,4 +5,5 @@
 
 DECLARESMART(Game)
 
+
 #endif // GAME_FWD_H

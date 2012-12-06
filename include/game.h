@@ -83,7 +83,16 @@ public:
     //-------------------------------------------------------------------//
     bool tryToCreateTower(const std::string &_type, NodePtr _node);
 
+    //-------------------------------------------------------------------//
+    /// @brief return base position
+    /// @param[out] an ngl::vec3
+    //-------------------------------------------------------------------//
+    ngl::Vec3 getBasePos() const;
 
+    //-------------------------------------------------------------------//
+    /// @brief return weak smart pointer to the environment
+    //-------------------------------------------------------------------//
+    EnvironmentWeakPtr getEnvironmentWeakPtr();
 
 
 

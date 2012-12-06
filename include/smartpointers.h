@@ -2,6 +2,7 @@
 #define SMARTPOINTERS_H
 
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include <list>
 
 //-------------------------------------------------------------------//
@@ -24,6 +25,15 @@
   class X; \
   typedef boost::shared_ptr< X > X ## Ptr; \
   typedef boost::shared_ptr< const X > X ## CPtr;\
+
+//-------------------------------------------------------------------//
+/// @brief preprocessor macro to aid in the creation of boost::weak_ptrs
+//-------------------------------------------------------------------//
+
+#define DECLAREWEAKSMART(X) \
+  class X; \
+  typedef boost::weak_ptr< X > X ## WeakPtr; \
+  typedef boost::weak_ptr< const X > X ## WeakCPtr;\
 
 
 //-------------------------------------------------------------------//

@@ -20,6 +20,7 @@
 //-------------------------------------------------------------------//
 
 DECLARESMART(Environment)
+DECLAREWEAKSMART(Environment)
 
 class Environment
 {
@@ -76,6 +77,10 @@ public:
   //-------------------------------------------------------------------//
 
   void createTower(const std::string &_type, NodePtr _centerNode);
+
+  ngl::Vec3 getBasePos();
+
+  NodeManagerWeakPtr getNodeManagerWeakPtr();
 
 protected:
 

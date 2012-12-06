@@ -40,11 +40,34 @@ public:
         const ngl::Vec3 &_aim
         );
 
+  //-------------------------------------------------------------------//
+  /// @brief updates path from node manager
+  /// @param[out] the NodeList containing the nodes in the path
+  //-------------------------------------------------------------------//
+  bool generateTempPath();
+
+  //-------------------------------------------------------------------//
+  /// @brief updates path from node manager
+  /// @param[out] the NodeList containing the nodes in the path
+  //-------------------------------------------------------------------//
+  void finalisePath();
+
+  //-------------------------------------------------------------------//
+  /// @brief updates path from node manager
+  /// @param[out] the NodeList containing the nodes in the path
+  //-------------------------------------------------------------------//
+  Node::NodeList getPath() const;
+
 private:
   //-------------------------------------------------------------------//
   /// @brief a list containing all the nodes in the path
   //-------------------------------------------------------------------//
   Node::NodeList m_pathNodes;
+
+  //-------------------------------------------------------------------//
+  /// @brief a list temporary location for thepath nodes
+  //-------------------------------------------------------------------//
+  Node::NodeList m_tempPathNodes;
 };
 
 #endif // ENEMY_H
