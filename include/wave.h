@@ -101,7 +101,8 @@ public:
   bool generatePaths(NodePtr _node);
 
 protected:
-  typedef std::list<DynamicEntityPtr> EnemyList;
+  //typedef std::list<DynamicEntityPtr> EnemyList;
+  //typedef boost::shared_ptr<EnemyList> EnemyListPtr;
 protected:
 
   //-------------------------------------------------------------------//
@@ -145,6 +146,20 @@ protected:
 
   EnemyList::iterator removeEnemy(EnemyList::iterator _it);
 
+  //-------------------------------------------------------------------//
+  /// @brief goes through all the Enemies, asks for their paths and compiles
+  /// the result into m_usedNodes
+  //-------------------------------------------------------------------//
+
+  void rebuildPathNodes();
+
+  //-------------------------------------------------------------------//
+  /// @brief Add Enemies path to the map of all paths
+  /// @param[in] _enemy, Enemy to insert
+  //-------------------------------------------------------------------//
+
+  void addToPathNodes(EnemyPtr _enemy);
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief list of all currently active enemies
@@ -157,14 +172,14 @@ protected:
   //-------------------------------------------------------------------//
 
   EnemyPairList m_enemiesForCreation;
-  //-------------------------------------------END TEST------------------------------------------------
+
   //-------------------------------------------------------------------//
   /// @brief map of all Nodes currently being used for paths and their
-  /// corresponding list of Enemies
+  /// corresponding list of Enemies. This list must be updated whenever
+  /// an enemy updates it's path
   //-------------------------------------------------------------------//
 
-  //std::map<NodePtr, EnemyListPtr> m_usedNodes;
-  //-------------------------------------------END TEST------------------------------------------------
+  std::map<NodePtr, EnemyListPtr> m_pathNodes;
 
 };
 

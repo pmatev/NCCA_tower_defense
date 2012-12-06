@@ -17,7 +17,7 @@
 /// @class Enemy
 //-------------------------------------------------------------------//
 
-DECLARESMART(Enemy)
+DECLARESMARTLIST(Enemy)
 
 class Enemy : public DynamicEntity
 {

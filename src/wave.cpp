@@ -1,6 +1,9 @@
 #include "wave.h"
 
+#include <boost/foreach.hpp>
+
 #include "entityfactory.h"
+#include "node.h"
 
 //-------------------------------------------------------------------//
 
@@ -112,7 +115,29 @@ bool Wave::generatePaths(NodePtr _node)
   // 2. Go through each Enemy and tell it to generate a new temporary path
   // 3. If all the paths were created successfully tell all enemies to update
         // their paths and return true, else return false
+  // 4. Update the map with the new node values
 
+  // 1.
+  EnemyListPtr enemyList = m_pathNodes[_node];
+    //-----------------------------------------------------------------------------------------------
+    //NEED TO CHECK FAIL HERE!!!
+    //-----------------------------------------------------------------------------------------------
+  // 2.
+  BOOST_FOREACH(EnemyPtr it, *enemyList)
+  {
+    if(!it->generateTempPath())
+    {
+      return false;
+    }
+  }
+  // 3.
+  BOOST_FOREACH(EnemyPtr it, *enemyList)
+  {
+    it->finalisePath();
+  }
+  // 4.
+  // clear list and rebuild
+  rebuildPathNodes();
   return true;
 }
 
@@ -134,26 +159,57 @@ void Wave::addEnemy(
     )
 {
   // use EntityFactory to create enemy then save it in m_enemies
-  m_enemies.push_back(
-          EntityFactory::createDynamicEntity(
-            _type,
-            _damage,
-            _maxVelocity,
-            _pos,
-            _initialVelocity,
-            _aim
-          )
-        );
+  EnemyPtr newEnemy = boost::dynamic_pointer_cast<Enemy>(
+        EntityFactory::createDynamicEntity(
+        _type,
+        _damage,
+        _maxVelocity,
+        _pos,
+        _initialVelocity,
+        _aim
+      )
+    );
+  m_enemies.push_back(newEnemy);
+  addToPathNodes(newEnemy);
 
 }
 
 //-------------------------------------------------------------------//
 
-Wave::EnemyList::iterator Wave::removeEnemy(EnemyList::iterator _it)
+EnemyList::iterator Wave::removeEnemy(EnemyList::iterator _it)
 {
   // remove it from m_enemies and return the next iterator
   return m_enemies.erase(_it);
 }
 
+void Wave::rebuildPathNodes()
+{
+  // clear map
+  m_pathNodes.clear();
+  // go through all Enemies
+  BOOST_FOREACH(EnemyPtr enemy, m_enemies)
+  {
+    // THIS SHOULD BE CHANGED SO THAT ENEMIES IS STORED AS
+    // A LIST OF ENEMIES RATHER THAN HAVING TO CAST IT EVERY TIME!!!
+    addToPathNodes(enemy);
+  }
+}
+
+void Wave::addToPathNodes(EnemyPtr _enemy)
+{
+  // Find path
+  Node::NodeList path = _enemy->getPath();
+  BOOST_FOREACH(NodePtr node, path)
+  {
+    // Check if Node is in map
+    if(m_pathNodes.find(node) == m_pathNodes.end())
+    {
+      // Add to map
+      m_pathNodes[node] = EnemyListPtr(new EnemyList());
+    }
+    // Add to the enemy to the list
+    m_pathNodes[node]->push_back(_enemy);
+  }
+}
 
 

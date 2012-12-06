@@ -17,7 +17,7 @@
 /// @class DynamicEntity
 //-------------------------------------------------------------------//
 
-DECLARESMART(DynamicEntity)
+DECLARESMARTLIST(DynamicEntity)
 
 class DynamicEntity : public Entity
 {
