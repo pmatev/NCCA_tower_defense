@@ -16,6 +16,7 @@ Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type, unsigned int _id) :
   m_IDStr = boost::lexical_cast<std::string>(m_ID);
 
   m_transformStack = ngl::TransformStack();
+  m_transformStack.setPosition(m_pos);
 }
 
 //-------------------------------------------------------------------//

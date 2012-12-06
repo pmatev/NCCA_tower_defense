@@ -427,6 +427,12 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
       Node::NodeList outputPath = reconstructPath(current, _start);
       return outputPath;
     }
+
+    if(current->m_node->isOccupied())
+    {
+      continue;
+    }
+
     // Take current from openSet and move it into closedSet
     openSet.remove(current);
     closedSet.push_back(current);
@@ -437,12 +443,7 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
         Node::NodeList::iterator it = children->begin();
         it != children->end();
         ++it)
-    {
-      if((*it)->isOccupied())
-      {
-        continue;
-      }
-
+    { 
       PathNodePtr child;
       //Get PathNode affiliated with node
       std::map<NodePtr, PathNodePtr>::iterator childIt = allPathNodes.find(*it);
@@ -550,8 +551,6 @@ Node::NodeList NodeManager::findPathFromPos(
 
 NodePtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
 {
-  std::cout<<std::endl;
-
   float x = _pos.m_x;
   float y = _pos.m_z;
 
@@ -560,20 +559,15 @@ NodePtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
   y = y < 0 ? 0 : (y > (m_gridHeight-1)*(m_hexagonSize * (sqrt(3)/2)) ? (m_gridHeight-1)*(m_hexagonSize * (sqrt(3)/2)) : y);
 
   //transform into coordinate space
-  x /= m_hexagonSize;
+  x /= m_hexagonSize*0.75;
   y /= (m_hexagonSize*(sqrt(3)/2));
 
   //round to nearest int
   x = floor(x + 0.5);
   y = floor(y + 0.5);
 
-  std::cout<<x<<std::endl;
-  std::cout<<y<<std::endl;
-
   //calculate the index of the nearest based on x and y
   int index = (y * m_gridWidth) + x;
-
-  std::cout<<_pos<< " closest is: ("<<x<<", "<<y<<") with coords: "<<(*m_nodes[index]).getPos()<<std::endl;
 
   return m_nodes[index];
 }

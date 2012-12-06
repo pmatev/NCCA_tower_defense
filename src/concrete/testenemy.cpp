@@ -13,6 +13,7 @@ TestEnemy::TestEnemy(
   // HACKY TESTING HERE
   generateMesh();
   m_active = false;
+
   m_damage = 100;
   m_currentVelocity = 0;
   m_maxVelocity = 1;
@@ -104,7 +105,7 @@ void TestEnemy::generateMesh()
 ngl::Vec3 TestEnemy::brain()
 {
   // TEST value (tells it to just go forward)
-  return ngl::Vec3(0.0, 0, 0);
+  return getVectorToNearestNodeInPath() * 0.005;
 }
 
 //-------------------------------------------------------------------//
@@ -112,7 +113,7 @@ ngl::Vec3 TestEnemy::brain()
 void TestEnemy::draw()
 {
     Renderer *r = Renderer::instance();
-
+    m_transformStack.setScale(0.3, 0.3, 0.3);
     r->loadMatrixToShader(m_transformStack, "Phong");
 
     r->draw(m_IDStr, "Phong");
@@ -124,7 +125,7 @@ void TestEnemy::draw()
 void TestEnemy::drawSelection()
 {
   Renderer *r = Renderer::instance();
-
+  m_transformStack.setScale(0.3, 0.3, 0.3);
   r->loadMatrixToShader(m_transformStack, "Colour");
 
   r->drawSelection(m_ID, m_IDStr);

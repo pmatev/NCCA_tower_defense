@@ -56,7 +56,14 @@ public:
   //-------------------------------------------------------------------//
   Node::NodeList getPath() const;
 
-private:
+  //-------------------------------------------------------------------//
+  /// @brief returns an aim vector aiming towards the nearest node
+  /// in the path
+  /// @param[out] an ngl::vec3
+  //-------------------------------------------------------------------//
+  ngl::Vec3 getVectorToNearestNodeInPath();
+
+protected:
   //-------------------------------------------------------------------//
   /// @brief a list containing all the nodes in the path
   //-------------------------------------------------------------------//
