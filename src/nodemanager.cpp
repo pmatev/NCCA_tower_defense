@@ -12,6 +12,10 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize, ngl:
 {
   //get a pointer to the game
 
+  // Initialise Database
+  //Database::init(_gridHeight, _gridWidth, );
+  // INITIALISE DATABASE HERE OTHERWISE STATIC ENTITIES CANNOT DESTRUCT!!!---------------------------------------
+
   Game* game = Game::instance();
 
   // create all the necessary node
@@ -443,7 +447,7 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
         Node::NodeList::iterator it = children->begin();
         it != children->end();
         ++it)
-    { 
+    {
       PathNodePtr child;
       //Get PathNode affiliated with node
       std::map<NodePtr, PathNodePtr>::iterator childIt = allPathNodes.find(*it);

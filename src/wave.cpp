@@ -4,6 +4,7 @@
 
 #include "entityfactory.h"
 #include "node.h"
+#include "game.h"
 
 //-------------------------------------------------------------------//
 
@@ -172,6 +173,8 @@ void Wave::addEnemy(
 
 EnemyList::iterator Wave::removeEnemy(EnemyList::iterator _it)
 {
+  // unregister from game so that the smartptr is freed
+  Game::instance()->unregisterID((*_it)->getID());
   // remove it from m_enemies and return the next iterator
   return m_enemies.erase(_it);
 }

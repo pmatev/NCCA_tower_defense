@@ -1,5 +1,6 @@
 #include "environment.h"
 #include "entityfactory.h"
+#include "database.h"
 #include "game.h"
 
 //-------------------------------------------------------------------//
@@ -17,7 +18,7 @@ Environment::Environment(
               _hexagonSize,
               _origin))
 {
-  // default ctor
+
   // base needs to be initialised here as it fails when putting it in the
   // inititalisation list
   //get an instance of the game
@@ -63,6 +64,9 @@ Environment::~Environment()
 
 void Environment::update()
 {
+  //--------------------------------------------------------------------------------------------------------
+  //createTower("TestTurret", m_nodeMap->getNodeFromCoords(0, 0));
+  //--------------------------------------------------------------------------------------------------------
   // Go through all the towers and draw
   for(
       StaticEntityList::iterator it = m_towers.begin();
@@ -75,6 +79,9 @@ void Environment::update()
   // update base
   m_base->update();
   m_nodeMap->update();
+  //--------------------------------------------------------------------------------------------------------
+  //removeTower(m_towers.begin());
+  //--------------------------------------------------------------------------------------------------------
 }
 
 //-------------------------------------------------------------------//
@@ -139,9 +146,21 @@ void Environment::createTower(
 {
   // Create the new tower
   m_towers.push_back(EntityFactory::createStaticEntity(
-                     _type,
-                     _centerNode
-                     ));
+                       _type,
+                       _centerNode
+                       )
+                     );
+}
+
+void Environment::removeTower(StaticEntityList::iterator _tower)
+{
+  // unregister
+  Game::instance()->unregisterID((*_tower)->getID());
+  // remove
+  if(m_towers.size() != 0)
+  {
+    m_towers.erase(_tower);
+  }
 }
 
 //-------------------------------------------------------------------//

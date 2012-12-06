@@ -2,6 +2,7 @@
 
 #include "entityfactory.h"
 #include "concrete/testenemy.h"
+#include "concrete/testturret.h"
 #include "game.h"
 
 EntityFactory::DynamicEntityTypeMap EntityFactory::s_dynamicEntityTypes;
@@ -25,6 +26,7 @@ void EntityFactory::initialiseFactory()
 {
   // This is where all different types are registered
   registerDynamicEntity("TestEnemy", TestEnemy::create);
+  registerStaticEntity("TestTurret", TestTurret::create);
 }
 
 void EntityFactory::registerDynamicEntity(

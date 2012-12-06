@@ -13,6 +13,16 @@ Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type, unsigned int _id) :
   m_lsMeshBBox(0,0,0,0,0,0),
   m_generalType(_type)
 {
+  // THIS IS BUGGY AND CREATES PROBLEMS WHEN TRYING TO FREE MEMORY
+  // SPECIFICALLY EntityPtr(this)
+  // IMPLEMENTING REGISTERING IN ENTITY FACTORY
+
+//  // Initialise id and register with game
+//  Game* game = Game::instance();
+//  // register instance with Game
+//  m_ID = game->registerID(EntityPtr(this));
+//  m_IDStr = boost::lexical_cast<std::string>(m_ID);
+
   m_IDStr = boost::lexical_cast<std::string>(m_ID);
 
   m_transformStack = ngl::TransformStack();

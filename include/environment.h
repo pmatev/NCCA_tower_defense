@@ -76,7 +76,12 @@ public:
   /// @param[out] whether the creation was successful or not
   //-------------------------------------------------------------------//
 
-  void createTower(const std::string &_type, NodePtr _centerNode);
+  void createTower(
+        const std::string &_type,
+        NodePtr _centerNode
+        );
+
+  void removeTower(StaticEntityList::iterator _tower);
 
   ngl::Vec3 getBasePos();
 

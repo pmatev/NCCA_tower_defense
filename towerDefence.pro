@@ -43,13 +43,14 @@ SOURCES += src/main.cpp \
     src/environment.cpp \
     src/nodemanager.cpp \
     src/uiSelection.cpp \
-    src/uibutton.cpp \
-    src/concrete/testenemy.cpp \
+    src/uibutton.cpp \ 
     src/enemy.cpp \
     src/projectile.cpp \
     src/wall.cpp \
     src/base.cpp \
     src/databasegrid.cpp \
+    src/concrete/testenemy.cpp \
+    src/concrete/testturret.cpp \
     src/projectilemanager.cpp
 
 
@@ -77,8 +78,7 @@ HEADERS += \
     include/environment.h \
     include/nodemanager.h \
     include/uiSelection.h \
-    include/uibutton.h \
-    include/concrete/testenemy.h \
+    include/uibutton.h \  
     include/projectile.h \
     include/wall.h \
     include/base.h \
@@ -87,6 +87,8 @@ HEADERS += \
     include/fwd/game.h \
     include/fwd/entity.h \
     include/databasegrid.h \
+    include/concrete/testenemy.h \
+    include/concrete/testturret.h \
     include/fwd/database.h \
     include/projectilemanager.h
 

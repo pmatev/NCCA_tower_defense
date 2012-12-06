@@ -3,7 +3,6 @@
 //-------------------------------------------------------------------//
 
 Turret::Turret(
-    const ngl::Vec3 &_aim,
     NodePtr _linkedNode,
     unsigned int _id
     ):
@@ -11,7 +10,7 @@ Turret::Turret(
   m_fov(360),
   m_viewDistance(20),
   m_maxRotationSpeed(20),
-  m_aim(_aim)
+  m_aim(ngl::Vec3(0, 1, 0))
 {
   //variables initialised before constructor body called
 }
@@ -25,3 +24,10 @@ Turret::~Turret()
 }
 
 //-------------------------------------------------------------------//
+
+void Turret::update()
+{
+  // TEST
+  // just do whatever the brain says
+  m_aim = brain();
+}
