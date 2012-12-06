@@ -25,10 +25,7 @@ Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type) :
 
 Entity::~Entity()
 {
-  // unregister the entity from the id
 
-  Game* game = Game::instance();
-  game->unregisterID(m_ID);
 }
 
 //-------------------------------------------------------------------//
