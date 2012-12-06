@@ -231,9 +231,6 @@ protected: //attributes
 
   ngl::TransformStack m_transformStack;
 
-
-private:
-
   //-------------------------------------------------------------------//
   /// @brief a string to store the generaltype of the entity
   //-------------------------------------------------------------------//

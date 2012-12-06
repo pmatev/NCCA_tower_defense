@@ -93,6 +93,13 @@ public: //methods
 
   void clearRecords();
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to remove a specific entity record based on its ID
+  /// @param [in] _id the entity's id to check against the record
+  //-------------------------------------------------------------------//
+
+  void unPublish(unsigned int _id);
+
 protected: //methods
   //-------------------------------------------------------------------//
   /// @brief constructor

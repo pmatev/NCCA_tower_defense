@@ -97,10 +97,21 @@ public: //methods
         )const;
 
   //-------------------------------------------------------------------//
-  /// @brief method to clear out the m_grid cell lists
+  /// @brief method to clear out the dynamic database grids
   //-------------------------------------------------------------------//
 
   void clearRecords();
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to remove an entity record from the appropriate grid
+  /// based on the type ID passed in and the id og the individual entity
+  /// @param [in] _generalType, the type of the entity used to establish
+  /// grid to remove the entity from
+  /// @param [in] _id, the id of the entity ehose corresponding record is
+  /// being removed
+  //-------------------------------------------------------------------//
+
+  void unPublish (GeneralType _generalType, unsigned int _id);
 
 protected: //methods
   //-------------------------------------------------------------------//

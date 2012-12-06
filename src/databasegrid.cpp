@@ -218,3 +218,47 @@ void DatabaseGrid::clearRecords()
 }
 
 //-------------------------------------------------------------------//
+
+void DatabaseGrid::unPublish(unsigned int _id)
+{
+  //initialise a boolean to check if the entity is unregistered
+
+  bool isUnregistered = false;
+
+  //first cycle through each cell
+
+  int i = 0;
+
+  while ( i <= m_grid.size() && isUnregistered != true )
+  {
+    //check that the cell is not empty
+
+    if (m_grid[i]->size() !=0)
+    {
+      //then set an iterator to cycle through the currenly selected list
+
+      std::list<EntityRecord>::iterator listIt = m_grid[i]->begin();
+
+      //then cycle through each element and check it's id against the
+      //one provided
+
+      for (; listIt != m_grid[i]->end(); listIt++)
+      {
+        //if the ids match
+
+        if ((*listIt).m_id == _id)
+        {
+          //erase that element and set the boolean to true
+
+          m_grid[i]->erase(listIt);
+          isUnregistered = true;
+
+          //then break out of the for loop
+
+          break;
+        }
+      }
+    }
+    i++;
+  }
+}

@@ -258,3 +258,39 @@ void Database::clearRecords()
 }
 
 //-------------------------------------------------------------------//
+
+void Database::unPublish(GeneralType _generalType, unsigned int _id)
+{
+  //switch through each type and if it matches the type passed in
+  //call unpublish in the appropriate grid passing in the id
+
+  switch (_generalType)
+  {
+  case ENEMY:
+    m_enemyGrid->unPublish(_id);
+    break;
+  case PROJECTILE:
+    m_projectileGrid->unPublish(_id);
+    break;
+  case TURRET:
+    m_turretGrid->unPublish(_id);
+    break;
+  case WALL:
+    m_wallGrid->unPublish(_id);
+    break;
+  case NODE:
+    m_nodeGrid->unPublish(_id);
+    break;
+  case BASE:
+    m_base.m_generalType = BASE;
+    m_base.m_id = 0;
+    m_base.m_x = 0;
+    m_base.m_y = 0;
+    m_base.m_z = 0;
+    m_isBaseSet = false;
+    break;
+  }
+}
+
+//-------------------------------------------------------------------//
+

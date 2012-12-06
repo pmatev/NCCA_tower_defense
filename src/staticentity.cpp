@@ -1,4 +1,5 @@
 #include "staticentity.h"
+#include "database.h"
 
 //-------------------------------------------------------------------//
 
@@ -17,7 +18,13 @@ StaticEntity::StaticEntity(
 
 StaticEntity::~StaticEntity()
 {
-  //currently using default destructor
+  //get a pointer to the instance of the database
+
+  Database * db = Database::instance();
+
+  //un-publish the database record from the database
+
+  db->unPublish(m_generalType,m_ID);
 }
 
 //-------------------------------------------------------------------//
