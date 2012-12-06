@@ -133,8 +133,6 @@ public: //methods
 
   virtual void drawSelection()  = 0;
 
-
-
   //-------------------------------------------------------------------//
   /// @brief a method which will publish the entity's position to the
   /// central database
@@ -182,10 +180,24 @@ public: //methods
 
   inline ngl::Vec3 getPos() const {return m_pos;}
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to generate the mesh of the entity, pure virtual
+  //-------------------------------------------------------------------//
 
   virtual void generateMesh() = 0;
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to create an instance of the object and return a
+  /// smart pointer to it, pure virtual
+  //-------------------------------------------------------------------//
 
+  virtual EntityPtr create() = 0;
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to destroy the entity, pure virtual
+  //-------------------------------------------------------------------//
+
+  virtual void destroy() = 0;
 
 protected: //attributes
 
@@ -232,7 +244,7 @@ protected: //attributes
   ngl::TransformStack m_transformStack;
 
   //-------------------------------------------------------------------//
-  /// @brief a string to store the generaltype of the entity
+  /// @brief an enum to store the generaltype of the entity
   //-------------------------------------------------------------------//
 
   GeneralType m_generalType;
