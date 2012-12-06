@@ -17,7 +17,7 @@ Game::Game():
 //-------------------------------------------------------------------//
 Game::~Game()
 {
-    delete m_light;
+    //delete m_light;
 }
 //-------------------------------------------------------------------//
 Game* Game::instance()
@@ -38,8 +38,8 @@ void Game::init()
 
     Renderer *render = Renderer::instance();
     render->createShader("Phong");
-
-    m_light = new ngl::Light(ngl::Vec3(1,2,0),ngl::Colour(1,1,1),ngl::POINTLIGHT);
+    render->createShader("Colour");
+    //m_light = new ngl::Light(ngl::Vec3(1,2,0),ngl::Colour(1,1,1),ngl::POINTLIGHT);
 
     m_waveManager = WaveManager::create();
     m_environment = Environment::create(6, 6, 2, ngl::Vec3(0.0, 0.0, 0.0), 3, 3); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)

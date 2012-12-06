@@ -44,9 +44,11 @@ public:
     void createShader(std::string _name);
 
     void createVAO(std::string _id);
-    void setDataToVAO(std::string _id, unsigned int _size, GLfloat &_data, unsigned int _meshSize);
-    void setIndexedDataToVAO(std::string _id, unsigned int _size, const GLfloat &_data, unsigned int _indexSize, const GLvoid *_indexData, unsigned int _meshSize);
-    void draw(std::string _id);
+    void setDataToVAO(std::string _id, unsigned int _size, GLfloat &_data, unsigned int _numIndices);
+    void setIndexedDataToVAO(std::string _id, unsigned int _size, const GLfloat &_data, unsigned int _indexSize, const GLvoid *_indexData, unsigned int _numIndices);
+    void draw(std::string _id, std::string _shader);
+
+    void drawSelection();
 
     //vertData packData(const ngl::Vec3 &_vert, ngl::Vec3 &_norm);
 

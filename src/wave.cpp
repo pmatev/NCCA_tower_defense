@@ -85,7 +85,7 @@ void Wave::draw()
       ++it
       )
   {
-    (*it)->draw();
+    (*it)->draw("Phong");
   }
 }
 

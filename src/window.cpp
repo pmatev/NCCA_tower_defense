@@ -58,7 +58,7 @@ void Window::init()
     SDL_Rect rect;
     SDL_GetDisplayBounds(0,&rect);
     m_width = rect.w;
-    m_height = rect.h;
+    m_height = rect.w;
 
     // now create our window
     m_window=SDL_CreateWindow("Tower Defence",
@@ -264,6 +264,13 @@ void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
     {
         m_dolly=true;
     }
+
+  /* -------- Testing Code -------------*/
+
+
+
+  /* -------- End Testing Code -------------*/
+
 }
 //-------------------------------------------------------------------//
 void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)

@@ -124,7 +124,7 @@ public: //methods
   /// implemented in child classes
   //-------------------------------------------------------------------//
 
-  virtual void draw()  = 0;
+  virtual void draw(std::string _shader)  = 0;
 
   //-------------------------------------------------------------------//
   /// @brief a virtual method that draws the selection frame (where each

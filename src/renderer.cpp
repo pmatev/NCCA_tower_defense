@@ -1,17 +1,18 @@
 #include "include/renderer.h"
 #include "window.h"
-
+#include "game.h"
 
 Renderer* Renderer::s_instance = 0;
-
+//-------------------------------------------------------------------//
 Renderer::Renderer()
 {
 }
+//-------------------------------------------------------------------//
 Renderer::~Renderer()
 {
     delete m_cam;
 }
-
+//-------------------------------------------------------------------//
 
 Renderer* Renderer::instance()
 {
@@ -21,7 +22,7 @@ Renderer* Renderer::instance()
     }
     return s_instance;
 }
-
+//-------------------------------------------------------------------//
 void Renderer::destroy()
 {
     if(s_instance)
@@ -30,7 +31,7 @@ void Renderer::destroy()
     }
 }
 
-
+//-------------------------------------------------------------------//
 
 void Renderer::init()
 {
@@ -38,11 +39,18 @@ void Renderer::init()
 
     m_cam = new Camera(ngl::Vec4(10,10,10,1),ngl::Vec4(0,0,0,1),ngl::Vec4(0,1,0,0));
 
+    float w = window->getScreenWidth();
+    float h = window->getScreenHeight();
+
     // set the viewport for openGL
-    glViewport(0,0,window->getScreenWidth(),window->getScreenHeight());
+    glViewport(0,0,w,h);
+    //set camera shape
+    m_cam->setShape(45,(float)w/h,0.5,150);
+
+
     glEnable(GL_DEPTH_TEST);
 }
-
+//-------------------------------------------------------------------//
 void Renderer::createShader(std::string _name)
 {
     ngl::ShaderLib *shader = ngl::ShaderLib::instance();
@@ -70,13 +78,14 @@ void Renderer::createShader(std::string _name)
     m_shaderNames.push_back(_name);
 
 }
-
+//-------------------------------------------------------------------//
 void Renderer::createVAO(std::string _id)
 {
   m_mapVAO[_id] = VAOPtr(ngl::VertexArrayObject::createVOA(GL_TRIANGLES));
 
 }
-void Renderer::setDataToVAO(std::string _id, unsigned int _size, GLfloat &_data, unsigned int _meshSize)
+//-------------------------------------------------------------------//
+void Renderer::setDataToVAO(std::string _id, unsigned int _size, GLfloat &_data, unsigned int _numIndices)
 {
   VAOPtr vao = bindVAOByID(_id);
 
@@ -87,12 +96,12 @@ void Renderer::setDataToVAO(std::string _id, unsigned int _size, GLfloat &_data,
   // vert normals attribute
   vao->setVertexAttributePointer(1,3,GL_FLOAT,sizeof(vertData),3);
 
-  vao->setNumIndices(_meshSize);
+  vao->setNumIndices(_numIndices);
 
   vao->unbind();
 }
-
-void Renderer::setIndexedDataToVAO(std::string _id, unsigned int _size, const GLfloat &_data, unsigned int _indexSize, const GLvoid *_indexData, unsigned int _meshSize)
+//-------------------------------------------------------------------//
+void Renderer::setIndexedDataToVAO(std::string _id, unsigned int _size, const GLfloat &_data, unsigned int _indexSize, const GLvoid *_indexData, unsigned int _numIndices)
 {
   VAOPtr vao = bindVAOByID(_id);
 
@@ -103,20 +112,31 @@ void Renderer::setIndexedDataToVAO(std::string _id, unsigned int _size, const GL
   // vert normals attribute
   vao->setVertexAttributePointer(1,3,GL_FLOAT,sizeof(vertData),3);
 
-  vao->setNumIndices(_meshSize);
+  vao->setNumIndices(_numIndices);
 
   vao->unbind();
 }
-
-void Renderer::draw(std::string _id)
+//-------------------------------------------------------------------//
+void Renderer::draw(std::string _id, std::string _shader)
 {
+  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
+  (*shader)[_shader]->use();
+
   VAOPtr v = bindVAOByID(_id);
 
   v->draw();
   v->unbind();
 }
+//-------------------------------------------------------------------//
+void Renderer::drawSelection()
+{
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glDisable(GL_LIGHTING);
+  glDisable(GL_TEXTURE_2D);
+  glDisable(GL_FOG);
 
-
+}
+//-------------------------------------------------------------------//
 void Renderer::loadMatrixToShader( ngl::TransformStack &_tx,  std::string _shader)
 {
     ngl::ShaderLib *shader=ngl::ShaderLib::instance();
@@ -137,7 +157,7 @@ void Renderer::loadMatrixToShader( ngl::TransformStack &_tx,  std::string _shade
 
 
 }
-
+//-------------------------------------------------------------------//
 void Renderer::loadLightToShader(ngl::Light *_light, std::string _shader)
 {
     ngl::ShaderLib *shader=ngl::ShaderLib::instance();
@@ -148,7 +168,7 @@ void Renderer::loadLightToShader(ngl::Light *_light, std::string _shader)
     // load these values to the shader as well
     _light->loadToShader("light");
 }
-
+//-------------------------------------------------------------------//
 VAOPtr Renderer::bindVAOByID(const std::string _id)
 {
   std::map<std::string, VAOPtr>::iterator it = m_mapVAO.find(_id);

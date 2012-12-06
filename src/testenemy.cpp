@@ -20,6 +20,7 @@ TestEnemy::TestEnemy(
   // ctor just passes everything to parent class
   // HACKY TESTING HERE
   generateMesh();
+  m_active = false;
 }
 
 //-------------------------------------------------------------------//
@@ -89,12 +90,12 @@ void TestEnemy::generateMesh()
     boxData.push_back(d);
   }
 
-  unsigned int meshSize = sizeof(boxData);
+
   Renderer *render = Renderer::instance();
 
   render->createVAO(m_IDStr);
 
-  render->setIndexedDataToVAO(m_IDStr,meshSize*boxData.size(), boxData[0].x, sizeof(indices), &indices[0], meshSize);
+  render->setIndexedDataToVAO(m_IDStr,sizeof(vertData)*boxData.size(), boxData[0].x, sizeof(indices), &indices[0], sizeof(indices)/sizeof(GLubyte));
 
 }
 
@@ -103,27 +104,26 @@ void TestEnemy::generateMesh()
 ngl::Vec3 TestEnemy::brain()
 {
   // TEST value (tells it to just go forward)
-  return ngl::Vec3(0.01, 0, 0);
+  return ngl::Vec3(0.0, 0, 0);
 }
 
 //-------------------------------------------------------------------//
 
-void TestEnemy::draw()
+void TestEnemy::draw(std::string _shader)
 {
-    ngl::ShaderLib *shader = ngl::ShaderLib::instance();
-    (*shader)["Phong"]->use();
-
     Renderer *r = Renderer::instance();
-    r->loadMatrixToShader(m_transformStack, "Phong");
-    r->draw(m_IDStr);
-    std::cout<<"drawing now!"<<std::endl;
+
+    r->loadMatrixToShader(m_transformStack, _shader);
+
+    r->draw(m_IDStr, _shader);
+
 }
 
 //-------------------------------------------------------------------//
 
 void TestEnemy::drawSelection()
 {
-  // Should draw the object with a constant shader based on ID
+
 }
 
 //-------------------------------------------------------------------//

@@ -44,7 +44,7 @@ public:
   /// @brief draw the object
   //-------------------------------------------------------------------//
 
-  void draw() ;
+  void draw(std::string _shader) ;
 
   //-------------------------------------------------------------------//
   /// @brief draw the object based on id
@@ -75,6 +75,8 @@ protected:
   //-------------------------------------------------------------------//
 
   ngl::Vec3 brain();
+
+  bool m_active;
 };
 
 #endif // TESTENEMY_H

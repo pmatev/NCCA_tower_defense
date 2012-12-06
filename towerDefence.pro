@@ -114,4 +114,6 @@ LIBS +=  -L/$(HOME)/NGL/lib -l NGL
 
 OTHER_FILES += \
     shaders/Phong.vs \
-    shaders/Phong.fs
+    shaders/Phong.fs \
+    shaders/Colour.vs \
+    shaders/Colour.fs
