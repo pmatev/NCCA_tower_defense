@@ -117,7 +117,7 @@ public: //methods
   /// implemented in child classes
   //-------------------------------------------------------------------//
 
-  virtual void update()=0;
+  virtual void update() = 0;
 
   //-------------------------------------------------------------------//
   /// @brief a virtual method which will draw the entity when
@@ -185,13 +185,6 @@ public: //methods
   //-------------------------------------------------------------------//
 
   virtual void generateMesh() = 0;
-
-  //-------------------------------------------------------------------//
-  /// @brief a method to create an instance of the object and return a
-  /// smart pointer to it, pure virtual
-  //-------------------------------------------------------------------//
-
-  virtual EntityPtr create() = 0;
 
   //-------------------------------------------------------------------//
   /// @brief a method to destroy the entity, pure virtual

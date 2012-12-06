@@ -50,6 +50,9 @@ public: //methods
 
   void drawSelection() ;
 
+  //-------------------------------------------------------------------//
+  /// @brief method to generate the mesh of the object
+  //-------------------------------------------------------------------//
 
   void generateMesh();
 

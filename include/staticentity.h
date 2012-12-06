@@ -25,11 +25,8 @@ class StaticEntity : public Entity
 public:
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
-  /// @param [in] _linkedNodes, a reference to an stl vector of boost
-  /// shared pointers to the nodes that are covered by the static entity
-  /// @param [in] _pos, a vector containing the initial position in 3D
-  /// space of the entity
-  /// @param [in] _health, the initial health value of the entity
+  /// @param [in] _linkedNode, a smart pointer to the linked node
+  /// @param [in] _type, the general type of the entity
   //-------------------------------------------------------------------//
 
   StaticEntity(
@@ -54,6 +51,18 @@ public:
   //-------------------------------------------------------------------//
 
   inline void decrementLevel () {m_level--;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to create an instance of the object and return a
+  /// smart pointer to it, pure virtual
+  /// @param [in] _linkedNode, a smart pointer to the linked node
+  /// @param [in] _type, the general type of the entity
+  //-------------------------------------------------------------------//
+
+  virtual EntityPtr create(
+        NodePtr _linkedNode,
+        GeneralType _type
+        ) = 0;
 
 protected:
   //-------------------------------------------------------------------//
