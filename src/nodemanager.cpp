@@ -433,6 +433,11 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
         it != children->end();
         ++it)
     {
+      if((*it)->isOccupied())
+      {
+        continue;
+      }
+
       PathNodePtr child;
       //Get PathNode affiliated with node
       std::map<NodePtr, PathNodePtr>::iterator childIt = allPathNodes.find(*it);

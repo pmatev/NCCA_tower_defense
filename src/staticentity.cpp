@@ -11,7 +11,8 @@ StaticEntity::StaticEntity(
   m_level(0),
   m_linkedNode(_linkedNode)
 {
-  //variables initialised before constructor body called
+  // tag node as occupied
+  m_linkedNode->setOccupied(true);
 }
 
 //-------------------------------------------------------------------//
@@ -25,6 +26,8 @@ StaticEntity::~StaticEntity()
   //un-publish the database record from the database
 
   db->unPublish(m_generalType,m_ID);
+  // release node occupation
+  m_linkedNode->setOccupied(false);
 }
 
 //-------------------------------------------------------------------//

@@ -110,14 +110,24 @@ void Game::drawSelection()
 
 bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
 {
-  // Update all Enemy paths and check that they are all valid
+  // Update all Enemy paths and check that they are all valid if _node
+  // is occupied
+
+  // quick stupidity check to make sure that the node is not occupied
+  if(_node->isOccupied())
+  {
+    return false;
+  }
+  // set node to occupied
+  _node->setOccupied(true);
   if(m_waveManager->generatePaths(_node))
   {
     // Tell the environment to create a tower
     m_environment->createTower(_type, _node);
-
     return true;
   }
+  // if placing the tower was unsuccessful set the node back to unoccupied
+  _node->setOccupied(false);
   return false;
 
 }
