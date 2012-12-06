@@ -186,12 +186,6 @@ public: //methods
 
   virtual void generateMesh() = 0;
 
-  //-------------------------------------------------------------------//
-  /// @brief a method to destroy the entity, pure virtual
-  //-------------------------------------------------------------------//
-
-  virtual void destroy() = 0;
-
 protected: //attributes
 
   //-------------------------------------------------------------------//

@@ -30,7 +30,6 @@ public:
   void draw();
   void drawSelection();
   void generateMesh();
-  void destroy();
 
 protected:
 

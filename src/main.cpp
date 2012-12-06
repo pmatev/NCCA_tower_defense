@@ -4,6 +4,8 @@
 #include "window.h"
 #include "uiSelection.h"
 
+#include "testenemy.h"
+
 
 int main(int argc, char *argv[])
 {

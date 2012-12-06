@@ -98,12 +98,6 @@ public:
 
   void generateMesh();
 
-  //-------------------------------------------------------------------//
-  /// @brief destroy method
-  //-------------------------------------------------------------------//
-
-  void destroy();
-
 protected:
   //-------------------------------------------------------------------//
   /// @brief A boolean flag stating whether the node is occupied or

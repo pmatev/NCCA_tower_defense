@@ -25,6 +25,13 @@ TestEnemy::TestEnemy(
 
 //-------------------------------------------------------------------//
 
+TestEnemy::~TestEnemy()
+{
+  //currently using default
+}
+
+//-------------------------------------------------------------------//
+
 EntityPtr TestEnemy::create(
     float _damage,
     float _maxVelocity,
@@ -136,13 +143,6 @@ void TestEnemy::drawSelection()
   r->loadMatrixToShader(m_transformStack, "Colour");
 
   r->drawSelection(m_ID, m_IDStr);
-}
-
-//-------------------------------------------------------------------//
-
-void TestEnemy::destroy()
-{
-
 }
 
 //-------------------------------------------------------------------//
