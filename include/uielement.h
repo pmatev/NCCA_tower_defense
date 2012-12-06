@@ -51,6 +51,9 @@ public:
 
     virtual void draw() const = 0;
 
+
+    virtual void drawSelection() = 0;
+
     //-------------------------------------------------------------------//
     /// @brief virtual execute function passed through to other elements
     /// only elements which can interact with user will have anything
@@ -69,13 +72,20 @@ public:
     /// @brief gets the name of the element
     /// @param [out] returns the name of the element
     //-------------------------------------------------------------------//
-    inline std::string getName() {return m_name;}
+    inline const std::string getName() {return m_name;}
 
     //-------------------------------------------------------------------//
     /// @brief sets the function to run
     /// @param [in] takes in a boost::function
     //-------------------------------------------------------------------//
     virtual void setFunction(functionPtr _func) = 0;
+
+
+    //-------------------------------------------------------------------//
+    /// @brief converts the percentage values
+    /// @param [in] takes in a boost::function
+    //-------------------------------------------------------------------//
+    void percentageToPixels(int _maxX);
 
 
     std::string getImagefile();

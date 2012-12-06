@@ -30,7 +30,6 @@ UIMenu::~UIMenu()
 }
 
 
-
 //-------------------------------------------------------------------//
 
 void UIMenu::draw() const
@@ -39,12 +38,19 @@ void UIMenu::draw() const
 }
 
 
+//-------------------------------------------------------------------//
+
+void UIMenu::drawSelection()
+{
+    //do something
+}
 
 //-------------------------------------------------------------------//
 
 void UIMenu::alignBottom()
 {
-   //will align the uimenu to the bottom of the window
+   //will align the uimenu to the bottom of the window when draw has been set
+   //up
 }
 
 
@@ -55,7 +61,7 @@ void UIMenu::addButton(UIButtonPtr _button)
 {
     m_elements.push_back(_button);
     _button->setPosition(m_pos);
-    std::cout<<"button created"<<std::endl;
+    std::cout<<"\nbutton created"<<std::endl;
 }
 
 //-------------------------------------------------------------------//
@@ -68,18 +74,18 @@ void UIMenu::isClicked()
 
 //-------------------------------------------------------------------//
 
-void UIMenu::connect(functionPtr _func, std::string _name)
+void UIMenu::connectEvent(functionPtr _func, std::string _name)
 {
     for(elementsMap::iterator it = m_elements.begin();
         it != m_elements.end();
         ++it)
     {
-        std::cout<<"\nrunning through elements"<<std::endl;
 
         if(_name == (*it)->getName())
         {
-            std::cout<<"\nfound name"<<std::endl;
+
             (*it)->setFunction(_func);
+            std::cout<<"\nfunction set"<<std::endl;
             break;
         }
 
@@ -94,17 +100,18 @@ void UIMenu::runCommandTest()
         it != m_elements.end();
         ++it)
     {
-        std::cout<<"\nthis is running the function"<<std::endl;
+
         (*it)->isClicked();
-        break;
 
     }
 }
 
+//-------------------------------------------------------------------//
 
 void UIMenu::setFunction(functionPtr _func)
 {
-    std::cout<<"\nyou cannot add a function to a menu class stupid"<<std::endl;
+    //displays that this function will not do anything as menus do not have functions
+    std::cout<<_func<<"\nyou cannot add a function to a menu class stupid"<<std::endl;
 
 }
 

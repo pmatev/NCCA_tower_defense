@@ -26,5 +26,14 @@ UIButton::~UIButton()
 
 void UIButton::draw() const
 {
+    //needs to be implemented
 
+}
+
+
+//-------------------------------------------------------------------//
+
+void UIButton::drawSelection()
+{
+    //do something
 }

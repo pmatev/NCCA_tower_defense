@@ -101,7 +101,11 @@ bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
   {
     // Tell the environment to create a tower
     m_environment->createTower(_type, _node);
+
+    return true;
   }
+  return false;
+
 }
 
 //-------------------------------------------------------------------//

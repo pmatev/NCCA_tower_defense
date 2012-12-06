@@ -4,6 +4,7 @@
 #include "uimenu.h"
 #include "staticentity.h"
 #include "uielement.h"
+#include "entityfactory.h"
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 
@@ -43,7 +44,12 @@ public:
     /// @brief draw element
     //-------------------------------------------------------------------//
 
-    void draw() const;
+    void draw();
+
+    //-------------------------------------------------------------------//
+    /// @brief draw all elements with constant shader for selection
+    //-------------------------------------------------------------------//
+    void drawSelection();
 
     //-------------------------------------------------------------------//
     /// @brief see if a element has been clicked in the m_IDMap
@@ -72,6 +78,7 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief register UIElement into IDMap
+    /// @param [in] takes in a new uielement
     /// @param [out] returns the id for the element
     //-------------------------------------------------------------------//
     unsigned int registerID(UIElementPtr _e);
@@ -79,21 +86,30 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief unregister UIElement via ID
+    /// @param [in] takes in the id of the element you want to unregister
     //-------------------------------------------------------------------//
     void unregisterID(const unsigned int _i);
 
+    //-------------------------------------------------------------------//
+    /// @brief creates tower into temporary storage to be placed down
+    /// @param [in] takes in string refering to type of staticEntity
+    /// @param [in] takes in the node which it will be placed on
+    //-------------------------------------------------------------------//
+    void createTower(std::string _type, NodePtr _node);
 
 
 
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
     void printTest();
 
+    void printTest2();
 
-
-
-
-
-
-    void createTestMen();
+    void createTestMenu();
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
 
 
 
@@ -132,7 +148,7 @@ private:
     //-------------------------------------------------------------------//
     /// @brief temp storage for tower while it is being placed down
     //-------------------------------------------------------------------//
-    EntityPtr m_createdEntity;
+    StaticEntityPtr m_staticEntityTemp;
 
 
     //-------------------------------------------------------------------//
@@ -144,8 +160,9 @@ private:
     /// @brief when in creation mode this checks if the staticEntity can be
     /// placed on node if it can add to the list of towers else wait for
     /// do nothing until next click
+    /// @param [in] takes in the _ID
     //-------------------------------------------------------------------//
-    void createStaticEntity();
+    void createStaticEntity(const unsigned int _ID);
 
 
 

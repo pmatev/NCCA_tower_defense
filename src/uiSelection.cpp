@@ -78,13 +78,16 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
 
         EntityPtr entityClick;
 
-        if(UIClick == 0)
+        if(UIClick)
         {
             entityClick = checkEntityClicked(_ID);
 
-            if(entityClick != 0)
+            if(entityClick->getGeneralType() != NODE && entityClick)
             {
                 // display the upgrade menu as the tower is selected
+                //need to also boost dynamic cast into a static object
+                //as I need to make sure that it is a staticEntity
+                //so I can upgrade a tower!
             }
 
         }
@@ -95,28 +98,66 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
     }
     else
     {
-        createStaticEntity();
+        //createStaticEntity(_ID);
     }
 
 
 }
 
-
 //-------------------------------------------------------------------//
-
-
 
 UISelection::~UISelection()
 {
+    for(elementsMap::iterator it = m_IDMap.begin();
+        it != m_IDMap.end();
+        ++it)
+    {
+
+    }
+
+}
+
+//-------------------------------------------------------------------//
+
+void UISelection::draw()
+{
+
+    for(elementsMap::iterator it = m_IDMap.begin();
+        it != m_IDMap.end();
+        ++it)
+    {
+        UIElementPtr drawEl = (*it).second;
+        drawEl->draw();
+
+        std::cout<<"\n"<<(drawEl)->getName()<< " drawn"<<std::endl;
+    }
+
+}
+
+//-------------------------------------------------------------------//
+
+void UISelection::drawSelection()
+{
+
+    for(elementsMap::iterator it = m_IDMap.begin();
+        it != m_IDMap.end();
+        ++it)
+    {
+        UIElementPtr drawEl = (*it).second;
+        drawEl->drawSelection();
+
+        std::cout<<"\n"<<(drawEl)->getName()<< " drawn selection"<<std::endl;
+    }
 
 }
 
 
-
 //-------------------------------------------------------------------//
 
-void UISelection::createStaticEntity()
+void UISelection::createStaticEntity(const unsigned int _ID)
 {
+    Game* game = Game::instance();
+
 
     //get current node that mouse is on
 
@@ -133,15 +174,23 @@ void UISelection::createStaticEntity()
 
 //-------------------------------------------------------------------//
 
-void UISelection::createTestMen()
+void UISelection::createTestMenu()
 {
     m_menuTest = UIMenuPtr(new UIMenu(ngl::Vec2 (2,5), "hello", "menuTest"));
 
     m_menuTest->addButton(UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello","buttonTest")));
 
-    m_menuTest->connect(boost::bind(&UISelection::printTest, this), "buttonTest");
+    m_menuTest->addButton(UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello","buttonTest2")));
+
+    m_menuTest->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
+
+    m_menuTest->connectEvent(boost::bind(&UISelection::printTest2, this), "buttonTest2");
 
     m_menuTest->runCommandTest();
+
+    draw();
+
+    drawSelection();
 
 
 }
@@ -150,7 +199,23 @@ void UISelection::createTestMen()
 //-------------------------------------------------------------------//
 void UISelection::printTest()
 {
-    std::cout<<"it's working and the filename is "<<std::endl;
+    std::cout<<"\nthis is the test function "<<std::endl;
 }
 
 
+//-------------------------------------------------------------------//
+void UISelection::printTest2()
+{
+    std::cout<<"\nThis is test function number 2 "<<std::endl;
+}
+
+
+//-------------------------------------------------------------------//
+void UISelection::createTower(std::string _type,
+                                  NodePtr _node)
+{
+
+    // need to check this as jarad is unsure of creating a hard copy
+    m_staticEntityTemp = EntityFactory::createStaticEntity( _type,  _node);
+
+}

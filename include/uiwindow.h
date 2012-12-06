@@ -4,9 +4,8 @@
 
 //-------------------------------------------------------------------//
 /// @file uiwindow.h
-/// @brief The UIWIndow class is a window which can contain both UIMenus
-/// and UIElements. This class is used for windows which will pause the
-/// game
+/// @brief The UiWindow is a composite of UIElements and controls every
+/// UI which is displayed while game is not running
 /// @author Luke Gravett
 /// @version 1
 /// @date 28/11/12

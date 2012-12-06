@@ -48,12 +48,33 @@ public:
 
     void draw() const;
 
+    //-------------------------------------------------------------------//
+    /// @brief draw element with constant shader for selection use
+    //-------------------------------------------------------------------//
+    void drawSelection();
+
 
     //-------------------------------------------------------------------//
-    /// @brief aligns selected object to bottom of menu
+    /// @brief aligns menu to bottom of window
     //-------------------------------------------------------------------//
-
     void alignBottom();
+
+
+    //-------------------------------------------------------------------//
+    /// @brief aligns menu to top of window
+    //-------------------------------------------------------------------//
+    void alignTop();
+
+    //-------------------------------------------------------------------//
+    /// @brief aligns menu to left of window
+    //-------------------------------------------------------------------//
+    void alignLeft();
+
+
+    //-------------------------------------------------------------------//
+    /// @brief aligns menu to right of window
+    //-------------------------------------------------------------------//
+    void alignRight();
 
 
     //-------------------------------------------------------------------//
@@ -70,18 +91,17 @@ public:
     /// @param [in] string which is the name of the element you are trying
     /// to connect to
     //-------------------------------------------------------------------//
-
-    void connect(functionPtr _func, std::string _name);
+    void connectEvent(functionPtr _func, std::string _name);
 
 
     //-------------------------------------------------------------------//
     /// @brief defines the virtual setFubction which in this case prints
     /// out and error message
+    /// @param [in] takes in a boost function but does nothing but print it
+    /// out as a menu doesn't store a function
     //-------------------------------------------------------------------//
 
     void setFunction(functionPtr _func);
-
-
 
 
 

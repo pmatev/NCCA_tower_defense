@@ -44,6 +44,7 @@ void Bullet::draw()
 
 }
 
+
 void Bullet::generateMesh()
 {
 
