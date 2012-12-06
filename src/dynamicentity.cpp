@@ -32,8 +32,8 @@ DynamicEntity::~DynamicEntity()
 
 void DynamicEntity::update()
 {
-  std::cout<<"updating dynamic entity"<<std::endl;
-  std::cout<<"now at position"<<m_pos<<std::endl;
+//  std::cout<<"updating dynamic entity"<<std::endl;
+//  std::cout<<"now at position"<<m_pos<<std::endl;
   // get the brain vector
   ngl::Vec3 brainVec = brain();
   // based on brain where should it go next

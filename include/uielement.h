@@ -24,8 +24,6 @@ class UIElement
 
 {
 
-
-
 public:
 
     typedef  boost::function<void()> functionPtr;
@@ -45,12 +43,13 @@ public:
     //-------------------------------------------------------------------//
     ~UIElement();
 
+
     //-------------------------------------------------------------------//
     /// @brief virtual draw function passed through to other elements
     //-------------------------------------------------------------------//
-
     virtual void draw() const = 0;
 
+    //virtual void generateMesh() =0;
 
     virtual void drawSelection() = 0;
 
@@ -122,17 +121,15 @@ protected:
     float m_maxBoundsX;
 
     //-------------------------------------------------------------------//
-    /// @brief stores the name of the element
-    //-------------------------------------------------------------------//
-    std::string m_name;
-
-
-    //-------------------------------------------------------------------//
     /// @brief stores the maximum size in y direction can either be percentage
     /// or pixel value. Will be relative to size of menu
     //-------------------------------------------------------------------//
     float m_maxBoundsY;
 
+    //-------------------------------------------------------------------//
+    /// @brief stores the name of the element
+    //-------------------------------------------------------------------//
+    std::string m_name;
 };
 
 

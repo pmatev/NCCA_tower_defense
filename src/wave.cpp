@@ -12,7 +12,7 @@ Wave::Wave(EnemyPairList _enemiesForCreation):
   // create shit load o enemies!!!
   for(int i=0; i < 10; ++i)
   {
-     addEnemy("TestEnemy", 100, 1, ngl::Vec3(0, 0, i), 0, ngl::Vec3(0, 0, 0));
+     addEnemy("TestEnemy", 100, 1, ngl::Vec3(0, 0, i*2), 0, ngl::Vec3(0, 0, 0));
   }
   //-------------------------------------------END TEST------------------------------------------------
 }
@@ -37,7 +37,7 @@ Wave::~Wave()
 
 void Wave::update()
 {
-  std::cout<<"updating wave"<<std::endl;
+//  std::cout<<"updating wave"<<std::endl;
   for(
       EnemyList::iterator it = m_enemies.begin();
       it != m_enemies.end();

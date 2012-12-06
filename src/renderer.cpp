@@ -79,9 +79,9 @@ void Renderer::createShader(std::string _name)
 
 }
 //-------------------------------------------------------------------//
-void Renderer::createVAO(std::string _id)
+void Renderer::createVAO(std::string _id, GLenum _drawType)
 {
-  m_mapVAO[_id] = VAOPtr(ngl::VertexArrayObject::createVOA(GL_TRIANGLES));
+  m_mapVAO[_id] = VAOPtr(ngl::VertexArrayObject::createVOA(_drawType));
 
 }
 //-------------------------------------------------------------------//
@@ -127,6 +127,24 @@ void Renderer::draw(std::string _id, std::string _shader)
   v->draw();
   v->unbind();
 }
+
+void Renderer::drawSelection(unsigned int _id, std::string _idStr)
+{
+  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
+  (*shader)["Colour"]->use();
+
+  VAOPtr v = bindVAOByID(_idStr);
+
+  ngl::Vec3 c = Window::instance()->IDToColour(_id);
+
+  shader->setShaderParam4f("Colour", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
+
+  //std::cout<<c<<std::endl;
+
+  v->draw();
+  v->unbind();
+}
+
 //-------------------------------------------------------------------//
 void Renderer::prepareDrawSelection()
 {

@@ -55,6 +55,11 @@ public:
     void draw();
 
     //-------------------------------------------------------------------//
+    /// @brief draws the selection buffer for current game state
+    //-------------------------------------------------------------------//
+    void drawSelection();
+
+    //-------------------------------------------------------------------//
     /// @brief register the id of given Entity and return its ID
     //-------------------------------------------------------------------//
     unsigned int registerID(EntityPtr _e);

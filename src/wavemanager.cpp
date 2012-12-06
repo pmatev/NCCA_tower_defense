@@ -39,6 +39,11 @@ void WaveManager::draw()
   m_wave->draw();
 }
 
+void WaveManager::drawSelection()
+{
+  m_wave->drawSelection();
+}
+
 //-------------------------------------------------------------------//
 
 bool WaveManager::generatePaths(NodePtr _node)

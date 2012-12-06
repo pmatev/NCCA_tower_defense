@@ -12,10 +12,6 @@ int main(int argc, char *argv[])
 
   w->init();
 
-  UISelection* test = UISelection::instance();
-
-  test->createTestMenu();
-
 
   // start the loop
   w->loop();

@@ -94,6 +94,17 @@ void Game::draw()
 }
 //-------------------------------------------------------------------//
 
+void Game::drawSelection()
+{
+  glClearColor(0.0,0.0,0.0,1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  m_environment->drawSelection();
+  m_waveManager->drawSelection();
+}
+
+//-------------------------------------------------------------------//
+
+
 bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
 {
   // Update all Enemy paths and check that they are all valid

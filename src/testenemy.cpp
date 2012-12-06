@@ -94,7 +94,7 @@ void TestEnemy::generateMesh()
 
   Renderer *render = Renderer::instance();
 
-  render->createVAO(m_IDStr);
+  render->createVAO(m_IDStr, GL_TRIANGLES);
 
   render->setIndexedDataToVAO(
         m_IDStr,
@@ -135,7 +135,7 @@ void TestEnemy::drawSelection()
 
   r->loadMatrixToShader(m_transformStack, "Colour");
 
-  r->draw(m_IDStr, "Colour");
+  r->drawSelection(m_ID, m_IDStr);
 }
 
 //-------------------------------------------------------------------//

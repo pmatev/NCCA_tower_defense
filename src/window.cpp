@@ -247,32 +247,34 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
 //-------------------------------------------------------------------//
 void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
 {
-//    m_oldMouseX = _event.x;
-//    m_oldMouseY = _event.y;
+    m_oldMouseX = _event.x;
+    m_oldMouseY = _event.y;
 
-//    if(_event.button == SDL_BUTTON_LEFT)
-//    {
-//        m_rotate =true;
-//    }
+    if(_event.button == SDL_BUTTON_LEFT)
+    {
+        m_rotate =true;
+    }
 
-//    else if(_event.button == SDL_BUTTON_MIDDLE)
-//    {
-//        m_track = true;
-//    }
+    else if(_event.button == SDL_BUTTON_MIDDLE)
+    {
+        m_track = true;
+    }
 
-//    else if(_event.button == SDL_BUTTON_RIGHT)
-//    {
-//        m_dolly=true;
-//    }
+    else if(_event.button == SDL_BUTTON_RIGHT)
+    {
+        m_dolly=true;
+    }
 
   /* -------- Testing Code -------------*/
 
   Renderer *r = Renderer::instance();
   r->prepareDrawSelection();
 
-  UISelection *ui = UISelection::instance();
+  Game *g = Game::instance();
+  g->drawSelection();
 
-  r->readColourSelection(_event.x, _event.y);
+  ngl::Vec3 pixel = r->readColourSelection(_event.x, _event.y);
+  std::cout<<colourToID(pixel)<<std::endl;
 
   /* -------- End Testing Code -------------*/
 
@@ -293,10 +295,20 @@ void Window::mouseWheelEvent(const SDL_MouseWheelEvent &_event)
 
 }
 
-
-
-void Window::doSelection()
+unsigned int Window::colourToID(ngl::Vec3 _c)
 {
+  unsigned int i;
+  i =   (_c.m_x*(256*256)) + (_c.m_y*256) + _c.m_z;
+  return i;
+}
 
+ngl::Vec3 Window::IDToColour(unsigned int _id)
+{
+  ngl::Vec3 c;
+  c.m_x = std::floor(_id/(256*256));
+  c.m_y = std::floor(_id/256);
+  c.m_z = _id%256;
 
+  //std::cout<<c<<std::endl;
+  return c;
 }

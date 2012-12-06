@@ -6,6 +6,7 @@
 #include "fwd/game.h"
 #include "fwd/window.h"
 #include <string>
+#include <ngl/Vec3.h>
 
 //-------------------------------------------------------------------//
 /// @file window.h
@@ -74,6 +75,9 @@ public:
     //-------------------------------------------------------------------//
     void mouseWheelEvent(const SDL_MouseWheelEvent &_event);
 
+
+    unsigned int colourToID(ngl::Vec3 _c);
+    ngl::Vec3 IDToColour(unsigned int _id);
 
 
 
