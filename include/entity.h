@@ -20,7 +20,6 @@
 /// @class Entity
 //-------------------------------------------------------------------//
 
-typedef boost::shared_ptr<ngl::TransformStack> TXPtr;
 
 class Entity
 {

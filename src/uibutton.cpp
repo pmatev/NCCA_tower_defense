@@ -1,4 +1,7 @@
 #include "uibutton.h"
+#include "renderer.h"
+
+
 //-------------------------------------------------------------------//
 UIButton::UIButton(ngl::Vec2 _pos,
                    std::string _imageFile,
@@ -25,9 +28,11 @@ UIButton::~UIButton()
 //-------------------------------------------------------------------//
 
 
-void UIButton::draw() const
+void UIButton::draw()
 {
-    //needs to be implemented
+  Renderer *r = Renderer::instance();
+  r->loadMatrixToShaderSS(m_transformStack, "Phong");
+  r->draw(m_IDStr, "Phong");
 
 }
 
@@ -36,5 +41,7 @@ void UIButton::draw() const
 
 void UIButton::drawSelection()
 {
-    //do something
+  Renderer *r = Renderer::instance();
+  r->loadMatrixToShaderSS(m_transformStack, "Colour");
+  r->drawSelection(m_ID, m_IDStr);
 }

@@ -33,7 +33,7 @@ public:
     /// @brief draw element
     //-------------------------------------------------------------------//
 
-    virtual void draw() const = 0;
+    virtual void draw() = 0;
 };
 
 #endif // UIWINDOW_H

@@ -11,6 +11,7 @@ Renderer::Renderer()
 Renderer::~Renderer()
 {
     delete m_cam;
+    delete m_orthoCam;
 }
 //-------------------------------------------------------------------//
 
@@ -39,6 +40,8 @@ void Renderer::init()
 
     m_cam = new Camera(ngl::Vec4(10,10,10,1),ngl::Vec4(0,0,0,1),ngl::Vec4(0,1,0,0));
 
+    m_orthoCam = new ngl::Camera(ngl::Vec3(0,0,0.1),ngl::Vec3(0,0,0),ngl::Vec3(0,1,0),ngl::ORTHOGRAPHIC);
+
     float w = window->getScreenWidth();
     float h = window->getScreenHeight();
 
@@ -46,10 +49,22 @@ void Renderer::init()
     glViewport(0,0,w,h);
     //set camera shape
     m_cam->setShape(45,(float)w/h,0.5,150);
-
+    m_orthoCam->setShape(45,(float)w/h,0.5,150);
 
     glEnable(GL_DEPTH_TEST);
 }
+//-------------------------------------------------------------------//
+
+void Renderer::resize(const unsigned int _w, const unsigned int _h)
+{
+  // set the viewport for openGL
+  glViewport(0,0,_w,_h);
+  //set camera shape
+  m_cam->setShape(45,(float)_w/_h,0.5,150);
+}
+
+
+
 //-------------------------------------------------------------------//
 void Renderer::createShader(std::string _name)
 {
@@ -178,16 +193,39 @@ void Renderer::loadMatrixToShader( ngl::TransformStack &_tx,  std::string _shade
     ngl::Mat4 M;
     ngl::Mat4 V;
     ngl::Mat4 P;
-    ngl::Mat3 normalMatrix;
     M=_tx.getCurrentTransform().getMatrix();
     V= m_cam->getViewMatrix();
     P= m_cam->getProjectionMatrix();
-    normalMatrix=M*V;
-    normalMatrix.inverse();
 
     shader->setShaderParamFromMat4("MVP",M*V*P);
+}
+//-------------------------------------------------------------------//
+void Renderer::loadMatrixToShaderSS( ngl::TransformStack &_tx,  std::string _shader)
+{
+    ngl::ShaderLib *shader=ngl::ShaderLib::instance();
+    Window *window = Window::instance();
+    int w = window->getScreenWidth();
+    int h = window->getScreenHeight();
 
+    (*shader)[_shader]->use();
 
+    ngl::Mat4 M;
+    ngl::Mat4 V;
+    ngl::Mat4 P;
+
+    ngl::Transformation newtx;
+    ngl::Vec4 inScale = _tx.getCurrentTransform().getScale();
+  //  newtx.setScale(inScale.m_x/(float)w, inScale.m_y/(float)h, inScale.m_z);
+  //  newtx.setPosition(-1,-1,-1);
+
+    newtx.setPosition(-2,-2,-2);
+    newtx.setScale(0.1,0.2,1);
+
+    M= newtx.getMatrix();
+    V= m_orthoCam->getViewMatrix();
+    P= m_orthoCam->getProjectionMatrix();
+
+    shader->setShaderParamFromMat4("MVP",M*V*P);
 }
 //-------------------------------------------------------------------//
 void Renderer::loadLightToShader(ngl::Light *_light, std::string _shader)

@@ -58,8 +58,9 @@ void Window::init()
     // now get the size of the display and create a window we need to init the video
     SDL_Rect rect;
     SDL_GetDisplayBounds(0,&rect);
-    m_width = 1000;
+    m_width = 600;
     m_height = 600;
+
 
     // now create our window
     m_window=SDL_CreateWindow("Tower Defence",
@@ -104,9 +105,11 @@ void Window::init()
     Renderer *render = Renderer::instance();
     render->init();
 
+
     m_UI = UISelectionPtr(new UISelection());
 
     m_UI->createTestMenu();
+
 
 
 
@@ -120,7 +123,7 @@ void Window::loop()
     SDL_Event event;
 
     Game *game = Game::instance();
-
+    Renderer *renderer = Renderer::instance();
 
     // ------- GAME LOOP ------- //
 
@@ -148,6 +151,12 @@ void Window::loop()
             case SDL_MOUSEBUTTONUP : mouseButtonUpEvent(event.button); break;
             case SDL_MOUSEWHEEL : mouseWheelEvent(event.wheel); break;
             //case SDL_KEYDOWN:if(event.key.keysym.sym == SDLK_s)glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
+            case SDL_WINDOWEVENT :
+              int w,h;
+              // get the new window size
+              SDL_GetWindowSize(m_window,&w,&h);
+              renderer->resize(w, h);
+            break;
 
             }
         }
@@ -169,6 +178,8 @@ void Window::loop()
         }
 
         game->draw();
+        m_UI->draw();
+
 
         SDL_GL_SwapWindow(m_window);
 
@@ -270,16 +281,21 @@ void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
         m_dolly=true;
     }
 
+
   /* -------- Testing Code -------------*/
 
   Renderer *r = Renderer::instance();
   r->prepareDrawSelection();
 
-  Game *g = Game::instance();
-  g->drawSelection();
+
+  m_UI->drawSelection();
 
   ngl::Vec3 pixel = r->readColourSelection(_event.x, _event.y);
-  std::cout<<colourToID(pixel)<<std::endl;
+  unsigned int id = colourToID(pixel);
+
+  m_UI->mouseLeftUp(id);
+
+  std::cout<<id<<std::endl;
 
   /* -------- End Testing Code -------------*/
 
@@ -292,6 +308,9 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
     m_dolly=false;
     m_oldMouseX = m_mouseX;
     m_oldMouseY = m_mouseY;
+
+    //m_clickEvent = _event;
+
 }
 
 //-------------------------------------------------------------------//

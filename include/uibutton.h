@@ -71,11 +71,10 @@ public:
     /// @brief draws the button
     //-------------------------------------------------------------------//
 
-    void draw() const;
+    void draw();
 
 
     void drawSelection();
-
 
 
 

@@ -85,6 +85,8 @@ public:
 
     unsigned int getID();
 
+
+
 protected:
     //-------------------------------------------------------------------//
     /// @brief hidden ctor
@@ -170,6 +172,8 @@ protected:
     //-------------------------------------------------------------------//
     unsigned int m_currentID;
 
+
+    SDL_MouseButtonEvent m_clickEvent;
 };
 
 #endif // WINDOW_H

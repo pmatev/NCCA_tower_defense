@@ -1,13 +1,15 @@
 #include "uiSelection.h"
-
+#include "window.h"
 #include "game.h"
+#include "fwd/entity.h"
+#include "renderer.h"
 #include "boost/lexical_cast.hpp"
 #include "window.h"
 
 
 
-
-UISelection::UISelection()
+UISelection::UISelection():
+  m_creationMode(false)
 {
 
 }
@@ -62,7 +64,14 @@ UIElementPtr UISelection::checkUIClicked(const unsigned int _ID)
 EntityPtr UISelection::checkEntityClicked(const unsigned int _ID)
 {
 
-    Game* game = Game::instance();
+    Game *game = Game::instance();
+//    Window *window = Window::instance();
+//    Renderer *r = Renderer::instance();
+
+//    game->drawSelection();
+
+//    ngl::Vec3 pixel = r->readColourSelection(_event.x, _event.y);
+//    unsigned int id = window->colourToID(pixel);
 
     return game->getEntityByID(_ID);
 
@@ -80,22 +89,28 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
 
         EntityPtr entityClick;
 
-        if(UIClick)
+        if(!UIClick)
         {
             entityClick = checkEntityClicked(_ID);
 
-            if(entityClick->getGeneralType() != NODE && entityClick)
+            if(entityClick->getGeneralType() != NODE && !entityClick)
             {
+              std::cout<<"yes tower"<<std::endl;
                 //display the upgrade menu as the tower is selected
                 //need to also boost dynamic cast into a static object
                 //as I need to make sure that it is a staticEntity
                 //so I can upgrade a tower!
             }
+            else
+            {
+              std::cout<<"no tower"<<std::endl;
+            }
 
         }
         else
         {
-            UIClick->isClicked();
+            //UIClick->isClicked();
+            std::cout<<"i am GUI"<<std::endl;
         }
     }
     else
@@ -117,7 +132,7 @@ void UISelection::draw()
         UIMenuPtr drawEl = (*it).second;
         drawEl->draw();
 
-        std::cout<<"\n"<<(drawEl)->getName()<< " drawn"<<std::endl;
+        //std::cout<<"\n"<<(drawEl)->getName()<< " drawn"<<std::endl;
     }
 
 }
@@ -134,7 +149,7 @@ void UISelection::drawSelection()
         UIElementPtr drawEl = (*it).second;
         drawEl->drawSelection();
 
-        std::cout<<"\n"<<(drawEl)->getName()<< " drawn selection"<<std::endl;
+        //std::cout<<"\n"<<(drawEl)->getName()<< " drawn selection"<<std::endl;
     }
 
 }
@@ -236,9 +251,6 @@ void UISelection::createTestMenu()
 
     getMenu("menuTest")->runCommandTest();
 
-//    draw();
-
-//    drawSelection();
 
 }
 

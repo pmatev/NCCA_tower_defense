@@ -2,6 +2,7 @@
 #define UIELEMENT_H
 
 #include <ngl/Vec2.h>
+#include <ngl/TransformStack.h>
 #include <boost/function.hpp>
 #include"smartpointers.h"
 
@@ -18,10 +19,8 @@ DECLARESMART(UIElement)
 /// @class UIElement
 //-------------------------------------------------------------------//
 
+
 class UIElement
-
-
-
 {
 
 public:
@@ -48,7 +47,7 @@ public:
     //-------------------------------------------------------------------//
     /// @brief virtual draw function passed through to other elements
     //-------------------------------------------------------------------//
-    virtual void draw() const = 0;
+    virtual void draw() = 0;
 
 
     //-------------------------------------------------------------------//
@@ -58,7 +57,7 @@ public:
     /// purposes
     //-------------------------------------------------------------------//
 
-    //virtual void generateMesh() =0;
+    virtual void generateMesh();
 
 
     virtual void drawSelection() = 0;
@@ -101,7 +100,7 @@ public:
     void percentageToPixels(int _maxX);
 
 
-    inline void setID(unsigned int _ID) {m_ID = _ID;}
+    void setID(unsigned int _ID) ;
 
 
     std::string getImagefile();
@@ -130,6 +129,10 @@ protected:
     /// @brief ID used to query whether it has been clicked or not
     //-------------------------------------------------------------------//
     unsigned int m_ID;
+
+    std::string m_IDStr;
+
+    ngl::TransformStack m_transformStack;
 
     //-------------------------------------------------------------------//
     /// @brief stores the maximum size in x direction can either be percentage

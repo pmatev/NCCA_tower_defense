@@ -1,5 +1,6 @@
 #include "uimenu.h"
 #include "game.h"
+#include "renderer.h"
 #include <iostream>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
@@ -21,6 +22,10 @@ UIElement( _pos, _imageFile, _name)
 
 
 {
+
+    //variables initialised before the constructor body
+  m_transformStack.setPosition(0,-1,0);
+
    m_parent =_parent;
 }
 
@@ -36,16 +41,19 @@ UIMenu::~UIMenu()
 
 //-------------------------------------------------------------------//
 
-void UIMenu::draw() const
+void UIMenu::draw()
 {
+    Renderer *r = Renderer::instance();
+    r->loadMatrixToShaderSS(m_transformStack, "Phong");
+    r->draw(m_IDStr, "Phong");
+
+
     for(int i=0; i<m_elements.size(); i++)
     {
         m_elements[i]->draw();
 
-
-        std::cout<<"\n drawn"<<std::endl;
+       // std::cout<<"\n drawn"<<std::endl;
     }
-
 }
 
 
@@ -53,12 +61,16 @@ void UIMenu::draw() const
 
 void UIMenu::drawSelection()
 {
+    Renderer *r = Renderer::instance();
+    r->loadMatrixToShaderSS(m_transformStack, "Colour");
+    r->drawSelection(m_ID, m_IDStr);
+
     for(int i=0; i<m_elements.size(); i++)
     {
         m_elements[i]->drawSelection();
 
 
-        std::cout<<"\n drawn Selection"<<std::endl;
+        //std::cout<<"\n drawn Selection"<<std::endl;
     }
 }
 
@@ -68,6 +80,7 @@ void UIMenu::alignBottom()
 {
    //will align the uimenu to the bottom of the window when draw has been set
    //up
+  m_transformStack.setPosition(0,-1,0);
 }
 
 

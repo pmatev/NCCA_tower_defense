@@ -41,6 +41,8 @@ public:
 
     void init();
 
+    void resize(const unsigned int _w, const unsigned int _h);
+
     void createShader(std::string _name);
 
     void createVAO(std::string _id, GLenum _drawType);
@@ -56,6 +58,7 @@ public:
     //vertData packData(const ngl::Vec3 &_vert, ngl::Vec3 &_norm);
 
     void loadMatrixToShader(ngl::TransformStack &_tx, std::string _shader);
+    void loadMatrixToShaderSS(ngl::TransformStack &_tx, std::string _shader);
     void loadLightToShader(ngl::Light *_light, std::string _shader);
 
     VAOPtr bindVAOByID(const std::string _id);
@@ -75,6 +78,7 @@ protected:
     std::map<std::string, VAOPtr> m_mapVAO;
 
     Camera *m_cam;
+    ngl::Camera *m_orthoCam;
 
 
 
