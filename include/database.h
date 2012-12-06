@@ -45,7 +45,7 @@ public: //methods
   /// @param [out] s_instance, a pointer to the database instance
   //-------------------------------------------------------------------//
 
-  static Database * create(
+  static Database * init(
         int _numCellsX,
         int _numCellsY,
         float _environMaxX,

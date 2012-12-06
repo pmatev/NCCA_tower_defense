@@ -181,6 +181,12 @@ public: //methods
   inline ngl::Vec3 getPos() const {return m_pos;}
 
   //-------------------------------------------------------------------//
+  /// @brief a method to return the bounding box of the entity's mesh
+  //-------------------------------------------------------------------//
+
+  inline BBox getMeshBBox() const {return m_lsMeshBBox;}
+
+  //-------------------------------------------------------------------//
   /// @brief a method to generate the mesh of the entity, pure virtual
   //-------------------------------------------------------------------//
 

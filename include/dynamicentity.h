@@ -56,7 +56,7 @@ public:
   void update();
 
   //-------------------------------------------------------------------//
-  /// @brief method to check whether or not an object has collided with
+  /// @brief method to check whether or not this entity has collided with
   /// a bounding box
   /// @param [in] _wsBBox the world space bounding box to test collisions
   /// against
@@ -64,7 +64,7 @@ public:
   /// has occured
   //-------------------------------------------------------------------//
 
-  bool collisionTest (BBox _wsBBox);
+  bool intersectTest (BBox _wsBBox);
 
   //-------------------------------------------------------------------//
   /// @brief a method to generate and return a code for a point based on
@@ -86,10 +86,22 @@ public:
   /// @param [out] bool value stating whether or not the line intersects
   /// the plane
   //-------------------------------------------------------------------//
+
   bool isIntersecting(
         const ngl::Vec3 &_point1,
         const ngl::Vec3 &_point2,
         BBox _planeExtents);
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to check collisions of this entity against a list
+  /// of entities retrieved from the database based on the list of types
+  /// @param [in] _types, a list of types of enemies to test collisions
+  /// against
+  /// @param [in] _radius, the area around the entity to check collisions
+  /// against
+  //-------------------------------------------------------------------//
+
+  Collision collisionTest (std::list<GeneralType> &_types, float _bBoxSize);
 
 protected:
   //-------------------------------------------------------------------//

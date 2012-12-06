@@ -38,6 +38,14 @@ public:
         float _initialVelocity,
         const ngl::Vec3 &_aim
         );
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to check collisions against enemies
+  /// @param [out] a collision struct, 0 for the id if there was no
+  /// collision
+  //-------------------------------------------------------------------//
+
+  Collision collisionDetection();
 };
 
 #endif // PROJECTILE_H

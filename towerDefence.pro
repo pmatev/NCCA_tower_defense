@@ -39,7 +39,7 @@ SOURCES += src/main.cpp \
     src/camera.cpp \
     src/renderer.cpp \
     src/window.cpp \
-    src/bullet.cpp \
+    src/concrete/bullet.cpp \
     src/environment.cpp \
     src/nodemanager.cpp \
     src/uiSelection.cpp \
@@ -72,7 +72,7 @@ HEADERS += \
     include/smartpointers.h \
     include/camera.h \
     include/renderer.h \
-    include/bullet.h \
+    include/concrete/bullet.h \
     include/environment.h \
     include/nodemanager.h \
     include/uiSelection.h \

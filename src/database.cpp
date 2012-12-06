@@ -76,7 +76,7 @@ Database::~Database()
 
 //-------------------------------------------------------------------//
 
-Database * Database::create(
+Database * Database::init(
     int _numCellsX,
     int _numCellsY,
     float _environMaxX,

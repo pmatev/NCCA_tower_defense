@@ -227,7 +227,7 @@ void DatabaseGrid::unPublish(unsigned int _id)
 
   //first cycle through each cell
 
-  int i = 0;
+  unsigned int i = 0;
 
   while ( i <= m_grid.size() && isUnregistered != true )
   {

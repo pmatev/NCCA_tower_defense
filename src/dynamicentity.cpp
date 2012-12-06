@@ -1,4 +1,6 @@
 #include "dynamicentity.h"
+#include "database.h"
+#include "game.h"
 
 //-------------------------------------------------------------------//
 
@@ -45,7 +47,7 @@ void DynamicEntity::update()
 
 //-------------------------------------------------------------------//
 
-bool DynamicEntity::collisionTest(BBox _wsBBox)
+bool DynamicEntity::intersectTest(BBox _wsBBox)
 {
   // initialise the return value
 
@@ -389,6 +391,83 @@ bool DynamicEntity::isIntersecting(
   //return result
 
   return result;
+}
+
+//-------------------------------------------------------------------//
+
+Collision DynamicEntity::collisionTest(
+    std::list<GeneralType> &_types,
+    float _bBoxSize
+    )
+{
+  //first generate a list of local entity records
+
+  Database* db = Database::instance();
+  entityRecordListPtr localEntities = db->getLocalEntities(
+        m_pos.m_x-(_bBoxSize/2),
+        m_pos.m_y-(_bBoxSize/2),
+        m_pos.m_x+(_bBoxSize/2),
+        m_pos.m_y+(_bBoxSize/2),
+        _types
+        );
+
+  //then cycle through the list
+
+  std::list<EntityRecord>::iterator listIt = localEntities->begin();
+
+  //initialise the result and the return collision
+
+  bool result = false;
+  Collision c(0,0);
+
+  while(listIt != localEntities->end() && result != true)
+  {
+    //get the id of the element pointed to by the iterator
+
+    unsigned int _id = (*listIt).m_id;
+
+    //from the id, get a pointer to the entity it relates to
+
+    Game* game = Game::instance();
+    EntityPtr e = game->getEntityByID(_id);
+
+    //get the relevant information
+
+    ngl::Vec3 _pos = e->getPos();
+    Entity::BBox _bBox = e->getMeshBBox();
+
+    //check for collisions between the entity checking and the one
+    //it's checking against
+
+    result = intersectTest(Entity::BBox(
+                             _pos.m_x + _bBox.m_minX,
+                             _pos.m_y + _bBox.m_minY,
+                             _pos.m_z + _bBox.m_minZ,
+                             _pos.m_x + _bBox.m_maxX,
+                             _pos.m_y + _bBox.m_maxY,
+                             _pos.m_z + _bBox.m_maxZ
+                             )
+                           );
+    //if there was a collision
+
+    if (result == true)
+    {
+      //set the id of the collision being returned from the null value
+      //to the one tested
+
+      c.m_id = _id;
+
+      //then set the damage value
+
+      c.m_damage = m_damage;
+    }
+    //increment the iterator
+
+    listIt++;
+  }
+  //finally return the collision struct
+
+  return c;
 }
 
 //-------------------------------------------------------------------//
