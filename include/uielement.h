@@ -38,6 +38,7 @@ public:
                std::string _imageFile,
                std::string _name);
 
+
     //-------------------------------------------------------------------//
     /// @brief the destructor
     //-------------------------------------------------------------------//
@@ -49,7 +50,16 @@ public:
     //-------------------------------------------------------------------//
     virtual void draw() const = 0;
 
+
+    //-------------------------------------------------------------------//
+    /// @brief virtual draw selection function passed through to other
+    /// elements which will implement it. This draw function will draw
+    /// the menus with a colour which will then be used for selection
+    /// purposes
+    //-------------------------------------------------------------------//
+
     //virtual void generateMesh() =0;
+
 
     virtual void drawSelection() = 0;
 
@@ -58,8 +68,8 @@ public:
     /// only elements which can interact with user will have anything
     /// implemeneted in it
     //-------------------------------------------------------------------//
-
     virtual void isClicked() = 0;
+
 
     //-------------------------------------------------------------------//
     /// @brief sets the position of the button
@@ -67,11 +77,14 @@ public:
     //-------------------------------------------------------------------//
     void setPosition(ngl::Vec2 _pos);
 
+
     //-------------------------------------------------------------------//
     /// @brief gets the name of the element
     /// @param [out] returns the name of the element
     //-------------------------------------------------------------------//
     inline const std::string getName() {return m_name;}
+
+
 
     //-------------------------------------------------------------------//
     /// @brief sets the function to run
@@ -81,10 +94,12 @@ public:
 
 
     //-------------------------------------------------------------------//
-    /// @brief converts the percentage values
+    /// @brief converts the percentage values for screen space into absolute
+    /// values
     /// @param [in] takes in a boost::function
     //-------------------------------------------------------------------//
     void percentageToPixels(int _maxX);
+
 
 
     std::string getImagefile();

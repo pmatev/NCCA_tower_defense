@@ -84,7 +84,7 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
 
             if(entityClick->getGeneralType() != NODE && entityClick)
             {
-                // display the upgrade menu as the tower is selected
+                //display the upgrade menu as the tower is selected
                 //need to also boost dynamic cast into a static object
                 //as I need to make sure that it is a staticEntity
                 //so I can upgrade a tower!
@@ -100,8 +100,6 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
     {
         //createStaticEntity(_ID);
     }
-
-
 }
 
 //-------------------------------------------------------------------//
@@ -122,11 +120,11 @@ UISelection::~UISelection()
 void UISelection::draw()
 {
 
-    for(elementsMap::iterator it = m_IDMap.begin();
-        it != m_IDMap.end();
+    for(menuMap::iterator it = m_menus.begin();
+        it != m_menus.end();
         ++it)
     {
-        UIElementPtr drawEl = (*it).second;
+        UIMenuPtr drawEl = (*it).second;
         drawEl->draw();
 
         std::cout<<"\n"<<(drawEl)->getName()<< " drawn"<<std::endl;
@@ -139,8 +137,8 @@ void UISelection::draw()
 void UISelection::drawSelection()
 {
 
-    for(elementsMap::iterator it = m_IDMap.begin();
-        it != m_IDMap.end();
+    for(menuMap::iterator it = m_menus.begin();
+        it != m_menus.end();
         ++it)
     {
         UIElementPtr drawEl = (*it).second;
@@ -149,6 +147,25 @@ void UISelection::drawSelection()
         std::cout<<"\n"<<(drawEl)->getName()<< " drawn selection"<<std::endl;
     }
 
+}
+
+
+//-------------------------------------------------------------------//
+
+UIMenuPtr UISelection::getMenu(std::string _name)
+{
+    for(menuMap::iterator it = m_menus.begin();
+        it != m_menus.end();
+        ++it)
+    {
+        UIMenuPtr drawEl = (*it).second;
+        if(drawEl->getName() == _name)
+        {
+            return drawEl;
+
+        }
+
+    }
 }
 
 
@@ -176,17 +193,17 @@ void UISelection::createStaticEntity(const unsigned int _ID)
 
 void UISelection::createTestMenu()
 {
-    m_menuTest = UIMenuPtr(new UIMenu(ngl::Vec2 (2,5), "hello", "menuTest"));
+    addMenu(UIMenuPtr(new UIMenu(ngl::Vec2 (2,5), "hello", "menuTest"))); ;
 
-    m_menuTest->addButton(UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello","buttonTest")));
+    getMenu("menuTest")->addButton(UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello","buttonTest")));
 
-    m_menuTest->addButton(UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello","buttonTest2")));
+    getMenu("menuTest")->addButton(UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello","buttonTest2")));
 
-    m_menuTest->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
+    getMenu("menuTest")->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
 
-    m_menuTest->connectEvent(boost::bind(&UISelection::printTest2, this), "buttonTest2");
+    getMenu("menuTest")->connectEvent(boost::bind(&UISelection::printTest2, this), "buttonTest2");
 
-    m_menuTest->runCommandTest();
+    getMenu("menuTest")->runCommandTest();
 
     draw();
 
@@ -218,4 +235,11 @@ void UISelection::createTower(std::string _type,
     // need to check this as jarad is unsure of creating a hard copy
     m_staticEntityTemp = EntityFactory::createStaticEntity( _type,  _node);
 
+}
+
+//-------------------------------------------------------------------//
+void UISelection::addMenu(UIMenuPtr _menu)
+{
+    m_menus[_menu->getID()] = _menu;
+    std::cout<<"\nmenu created"<<std::endl;
 }

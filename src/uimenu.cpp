@@ -26,6 +26,10 @@ UIElement( _pos, _imageFile, _name)
 
 UIMenu::~UIMenu()
 {
+    for(int i=0; i<m_elements.size(); i++)
+    {
+        std::cout<<"deleted element "<<i<<std::endl;
+    }
 
 }
 
@@ -34,7 +38,14 @@ UIMenu::~UIMenu()
 
 void UIMenu::draw() const
 {
-    //drawing method
+    for(int i=0; i<m_elements.size(); i++)
+    {
+        m_elements[i]->draw();
+
+
+        std::cout<<"\n drawn"<<std::endl;
+    }
+
 }
 
 
@@ -42,7 +53,13 @@ void UIMenu::draw() const
 
 void UIMenu::drawSelection()
 {
-    //do something
+    for(int i=0; i<m_elements.size(); i++)
+    {
+        m_elements[i]->drawSelection();
+
+
+        std::cout<<"\n drawn Selection"<<std::endl;
+    }
 }
 
 //-------------------------------------------------------------------//

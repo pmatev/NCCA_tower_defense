@@ -43,7 +43,6 @@ public:
     //-------------------------------------------------------------------//
     /// @brief draw element
     //-------------------------------------------------------------------//
-
     void draw();
 
     //-------------------------------------------------------------------//
@@ -56,8 +55,8 @@ public:
     /// @param [out] returns an element pointer which will either contain
     /// the clicked button or an empty one if none were clicked
     //-------------------------------------------------------------------//
-
     UIElementPtr checkUIClicked(const unsigned int _ID);
+
 
     //-------------------------------------------------------------------//
     /// @brief checks to see if an entity has been clicked
@@ -65,8 +64,8 @@ public:
     /// @param [out] returns a pointer to the entity that has been clicked
     /// and will return 0 if nothing is selected
     //-------------------------------------------------------------------//
-
     EntityPtr checkEntityClicked(const unsigned int _ID);
+
 
     //-------------------------------------------------------------------//
     /// @brief the function which is run when the left mouse button is
@@ -96,6 +95,11 @@ public:
     /// @param [in] takes in the node which it will be placed on
     //-------------------------------------------------------------------//
     void createTower(std::string _type, NodePtr _node);
+
+
+    void addMenu(UIMenuPtr);
+
+    UIMenuPtr getMenu(std::string _name);
 
 
 
@@ -128,8 +132,6 @@ private:
     menuMap m_menus;
 
 
-    UIMenuPtr m_menuTest;
-
     //-------------------------------------------------------------------//
     /// @brief ID Counter for distributing unique IDs to elements.
     //-------------------------------------------------------------------//
@@ -156,6 +158,7 @@ private:
     //-------------------------------------------------------------------//
     int m_creationMode;
 
+
     //-------------------------------------------------------------------//
     /// @brief when in creation mode this checks if the staticEntity can be
     /// placed on node if it can add to the list of towers else wait for
@@ -163,6 +166,17 @@ private:
     /// @param [in] takes in the _ID
     //-------------------------------------------------------------------//
     void createStaticEntity(const unsigned int _ID);
+
+
+
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+    UIMenuPtr m_menuTest;
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+    //-------------------------------------------------------------------//
+
 
 
 
