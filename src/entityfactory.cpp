@@ -1,7 +1,7 @@
 #include <boost/pointer_cast.hpp>
 
 #include "entityfactory.h"
-#include "testenemy.h"
+#include "concrete/testenemy.h"
 
 EntityFactory::DynamicEntityTypeMap EntityFactory::s_dynamicEntityTypes;
 EntityFactory::StaticEntityTypeMap EntityFactory::s_staticEntityTypes;

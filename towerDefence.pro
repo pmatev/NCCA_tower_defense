@@ -44,7 +44,7 @@ SOURCES += src/main.cpp \
     src/nodemanager.cpp \
     src/uiSelection.cpp \
     src/uibutton.cpp \
-    src/testenemy.cpp \
+    src/concrete/testenemy.cpp \
     src/enemy.cpp \
     src/projectile.cpp \
     src/wall.cpp \
@@ -77,7 +77,7 @@ HEADERS += \
     include/nodemanager.h \
     include/uiSelection.h \
     include/uibutton.h \
-    include/testenemy.h \
+    include/concrete/testenemy.h \
     include/projectile.h \
     include/wall.h \
     include/base.h \

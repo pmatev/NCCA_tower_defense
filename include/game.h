@@ -11,7 +11,7 @@
 #include "node.h"
 #include "wavemanager.h"
 #include "environment.h"
-#include "testenemy.h"
+#include "concrete/testenemy.h"
 
 
 //-------------------------------------------------------------------//

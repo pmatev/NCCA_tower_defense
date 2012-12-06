@@ -5,7 +5,7 @@
 #include "smartpointers.h"
 
 //-------------------------------------------------------------------//
-/// @file TestEnemy.h
+/// @file testEnemy.h
 /// @brief CONCRETE TYPE This is a simple example of a TestEnemy class
 /// @author Jared Auty
 /// @version 1
