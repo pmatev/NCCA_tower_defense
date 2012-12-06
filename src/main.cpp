@@ -4,6 +4,7 @@
 #include "window.h"
 
 
+
 int main(int argc, char *argv[])
 {
   // create and init the OpenGL Window
@@ -12,11 +13,21 @@ int main(int argc, char *argv[])
   w->init();
 
 
-  // start the loop
-  w->loop();
 
-  //exit and close
+
+
+
+
+
+
+
+//   start the loop
+ w->loop();
+
+//  exit and close
   w->destroy();
+
+
 }
 
 

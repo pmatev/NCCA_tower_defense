@@ -101,6 +101,8 @@ public:
     void percentageToPixels(int _maxX);
 
 
+    inline void setID(unsigned int _ID) {m_ID = _ID;}
+
 
     std::string getImagefile();
 

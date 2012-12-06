@@ -17,6 +17,7 @@ UIElement( _pos, _imageFile, _name)
 
 UIButton::~UIButton()
 {
+    std::cout<<"button dtor called"<<std::endl;
 
 }
 

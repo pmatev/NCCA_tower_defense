@@ -27,18 +27,17 @@ class UISelection
 public:
 
     //-------------------------------------------------------------------//
-    /// @brief creates an instance of the class if it does not already exist
-    /// @param [out] returns the instance of the class
+    /// @brief the default constructor
     //-------------------------------------------------------------------//
-
-    static UISelection* instance();
-
+    UISelection();
 
     //-------------------------------------------------------------------//
     /// @brief the destructor
     //-------------------------------------------------------------------//
 
     ~UISelection();
+
+
 
     //-------------------------------------------------------------------//
     /// @brief draw element
@@ -80,7 +79,7 @@ public:
     /// @param [in] takes in a new uielement
     /// @param [out] returns the id for the element
     //-------------------------------------------------------------------//
-    unsigned int registerID(UIElementPtr _e);
+    void registerID(UIElementPtr _e, unsigned int _ID);
 
 
     //-------------------------------------------------------------------//
@@ -97,10 +96,22 @@ public:
     void createTower(std::string _type, NodePtr _node);
 
 
-    void addMenu(UIMenuPtr);
+    //-------------------------------------------------------------------//
+    /// @brief creates a new menu
+    /// @param [in] takes in a uimenuptr to create a new object and store
+    /// in m_menus
+    //-------------------------------------------------------------------//
+    void createMenu(UIMenuPtr _menu);
 
+
+    //-------------------------------------------------------------------//
+    /// @brief searches the m_menus map and returns the object with the name
+    /// specified in the parameters
+    /// @param [in] takes in a string to the name of the menu you are trying
+    /// to access
+    /// @param [out] returns a UIMenuPtr with the name specified
+    //-------------------------------------------------------------------//
     UIMenuPtr getMenu(std::string _name);
-
 
 
     //-------------------------------------------------------------------//
@@ -111,6 +122,8 @@ public:
     void printTest2();
 
     void createTestMenu();
+
+    void createMenu();
     //-------------------------------------------------------------------//
     //-------------------------------------------------------------------//
     //-------------------------------------------------------------------//
@@ -121,31 +134,16 @@ private:
 
     typedef std::map<unsigned int, UIMenuPtr> menuMap;
 
-    //-------------------------------------------------------------------//
-    /// @brief the default constructor
-    //-------------------------------------------------------------------//
-    UISelection();
 
     //-------------------------------------------------------------------//
     /// @brief stores all the menus for the game
     //-------------------------------------------------------------------//
     menuMap m_menus;
 
-
-    //-------------------------------------------------------------------//
-    /// @brief ID Counter for distributing unique IDs to elements.
-    //-------------------------------------------------------------------//
-    unsigned int m_currentID;
-
     //-------------------------------------------------------------------//
     /// @brief A map of IDs to element Pointers for game object management.
     //-------------------------------------------------------------------//
     elementsMap m_IDMap;
-
-    //-------------------------------------------------------------------//
-    /// @brief stores the instance of the class
-    //-------------------------------------------------------------------//
-    static UISelection* s_instance;
 
     //-------------------------------------------------------------------//
     /// @brief temp storage for tower while it is being placed down
@@ -173,6 +171,8 @@ private:
     //-------------------------------------------------------------------//
     //-------------------------------------------------------------------//
     UIMenuPtr m_menuTest;
+
+
     //-------------------------------------------------------------------//
     //-------------------------------------------------------------------//
     //-------------------------------------------------------------------//

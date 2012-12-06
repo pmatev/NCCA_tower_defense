@@ -1,5 +1,5 @@
 #include "uielement.h"
-#include "uiSelection.h"
+
 
 //-------------------------------------------------------------------//
 
@@ -11,8 +11,7 @@ UIElement::UIElement(ngl::Vec2 _pos,
   m_name(_name)
 
 {
-    UISelection* selection = UISelection::instance();
-    m_ID = selection->registerID(UIElementPtr(this));
+
 }
 
 //-------------------------------------------------------------------//

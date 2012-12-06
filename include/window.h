@@ -7,7 +7,7 @@
 #include "fwd/window.h"
 #include <string>
 #include <ngl/Vec3.h>
-
+#include "uiSelection.h"
 //-------------------------------------------------------------------//
 /// @file window.h
 /// @brief manages the OS window and OpenGL context. Manages the Game Loop and Rendering Loop
@@ -116,6 +116,9 @@ protected:
     /// @param[in] _msg the error message to send
     //-------------------------------------------------------------------//
     void SDLErrorExit(const std::string &_msg);
+
+
+    UISelectionPtr m_UI;
 
 
     void doSelection();

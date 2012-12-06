@@ -104,6 +104,10 @@ void Window::init()
     Renderer *render = Renderer::instance();
     render->init();
 
+    m_UI = UISelectionPtr(new UISelection());
+
+    m_UI->createTestMenu();
+
 
 
 

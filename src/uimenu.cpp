@@ -1,10 +1,11 @@
 #include "uimenu.h"
 #include "game.h"
-
-
 #include <iostream>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
+#include "boost/lexical_cast.hpp"
+#include "window.h"
+#include "uiSelection.h"
 
 
 
@@ -12,24 +13,23 @@
 
 UIMenu::UIMenu(ngl::Vec2 _pos,
                std::string _imageFile,
-               std::string _name):
+               std::string _name,
+               UISelection *_parent):
 
 
 UIElement( _pos, _imageFile, _name)
 
-{
-    //variables initialised before the constructor body
-}
 
+{
+   m_parent =_parent;
+}
 
 //-------------------------------------------------------------------//
 
 UIMenu::~UIMenu()
 {
-    for(int i=0; i<m_elements.size(); i++)
-    {
-        std::cout<<"deleted element "<<i<<std::endl;
-    }
+    std::cout<<"menu dtor called"<<std::endl;
+    //m_elements.clear();
 
 }
 
@@ -76,7 +76,11 @@ void UIMenu::alignBottom()
 
 void UIMenu::addButton(UIButtonPtr _button)
 {
+    Window* window = Window::instance();
     m_elements.push_back(_button);
+    int ID = window->getID();
+    m_parent->registerID(_button, ID);
+    _button->setID(ID);
     _button->setPosition(m_pos);
     std::cout<<"\nbutton created"<<std::endl;
 }
@@ -132,6 +136,29 @@ void UIMenu::setFunction(functionPtr _func)
 
 }
 
+
+//-------------------------------------------------------------------//
+//-------------------------Test Function-----------------------------//
+//-------------------------------------------------------------------//
+
+//void UIMenu::createButtons()
+//{
+//    UISelection* selection = UISelection::instance();
+//    for(int i=0; i<10; i++)
+//    {
+//        UIButtonPtr _button = (UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello",
+//                                            "buttonTest"+boost::lexical_cast<std::string>(i))));
+//        int ID = selection->registerID(_button);
+//        _button->setID(ID);
+//        m_elements.push_back(_button);
+//        std::cout<<"\nbutton created"<<std::endl;
+//    }
+
+//}
+
+//-------------------------------------------------------------------//
+//-------------------------------------------------------------------//
+//-------------------------------------------------------------------//
 
 
 

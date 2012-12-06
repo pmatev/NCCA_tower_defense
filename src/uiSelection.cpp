@@ -1,8 +1,10 @@
 #include "uiSelection.h"
 
 #include "game.h"
+#include "boost/lexical_cast.hpp"
+#include "window.h"
 
-UISelection* UISelection::s_instance = 0;
+
 
 
 UISelection::UISelection()
@@ -11,27 +13,27 @@ UISelection::UISelection()
 }
 
 
-//-------------------------------------------------------------------//
 
-UISelection* UISelection::instance()
+
+
+//-------------------------------------------------------------------//
+UISelection::~UISelection()
 {
-    if(s_instance == 0)
-    {
-        s_instance = new UISelection();
-    }
-    return s_instance;
+    std::cout<<"dtor called"<<std::endl;
+
+
 
 }
 
+
+
 //-------------------------------------------------------------------//
 
-unsigned int UISelection::registerID(UIElementPtr _e)
+void UISelection::registerID(UIElementPtr _e, unsigned int _ID)
 {
-    m_currentID++;
 
-    m_IDMap[m_currentID] = _e;
+    m_IDMap[_ID] = _e;
 
-    return m_currentID;
 }
 
 
@@ -102,18 +104,6 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
     }
 }
 
-//-------------------------------------------------------------------//
-
-UISelection::~UISelection()
-{
-    for(elementsMap::iterator it = m_IDMap.begin();
-        it != m_IDMap.end();
-        ++it)
-    {
-
-    }
-
-}
 
 //-------------------------------------------------------------------//
 
@@ -171,9 +161,23 @@ UIMenuPtr UISelection::getMenu(std::string _name)
 
 //-------------------------------------------------------------------//
 
+void UISelection::createMenu(UIMenuPtr _menu)
+{
+    Window *window= Window::instance();
+    int ID = window->getID();
+    _menu->setID(ID);
+    registerID(_menu, ID);
+    m_menus[_menu->getID()] = _menu;
+    std::cout<<"\nmenu created"<<std::endl;
+}
+
+
+
+//-------------------------------------------------------------------//
+
 void UISelection::createStaticEntity(const unsigned int _ID)
 {
-    Game* game = Game::instance();
+//    Game* game = Game::instance();
 
 
     //get current node that mouse is on
@@ -189,31 +193,7 @@ void UISelection::createStaticEntity(const unsigned int _ID)
 
 
 
-//-------------------------------------------------------------------//
 
-void UISelection::createTestMenu()
-{
-    addMenu(UIMenuPtr(new UIMenu(ngl::Vec2 (2,5), "hello", "menuTest"))); ;
-
-    getMenu("menuTest")->addButton(UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello","buttonTest")));
-
-    getMenu("menuTest")->addButton(UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello","buttonTest2")));
-
-    getMenu("menuTest")->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
-
-    getMenu("menuTest")->connectEvent(boost::bind(&UISelection::printTest2, this), "buttonTest2");
-
-    getMenu("menuTest")->runCommandTest();
-
-    draw();
-
-    drawSelection();
-
-
-}
-
-
-//-------------------------------------------------------------------//
 void UISelection::printTest()
 {
     std::cout<<"\nthis is the test function "<<std::endl;
@@ -237,9 +217,59 @@ void UISelection::createTower(std::string _type,
 
 }
 
+
+
 //-------------------------------------------------------------------//
-void UISelection::addMenu(UIMenuPtr _menu)
+//-------------------------Test Function-----------------------------//
+//-------------------------------------------------------------------//
+
+void UISelection::createTestMenu()
 {
-    m_menus[_menu->getID()] = _menu;
-    std::cout<<"\nmenu created"<<std::endl;
+    createMenu(UIMenuPtr(new UIMenu(ngl::Vec2 (2,5), "hello", "menuTest",this)));
+
+    getMenu("menuTest")->addButton(UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello","buttonTest")));
+
+    getMenu("menuTest")->addButton(UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello","buttonTest2")));
+
+    getMenu("menuTest")->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
+
+    getMenu("menuTest")->connectEvent(boost::bind(&UISelection::printTest2, this), "buttonTest2");
+
+    getMenu("menuTest")->runCommandTest();
+
+    draw();
+
+    drawSelection();
+
 }
+
+
+//-------------------------------------------------------------------//
+//-------------------------------------------------------------------//
+//-------------------------------------------------------------------//
+
+
+//-------------------------------------------------------------------//
+//-------------------------Test Function-----------------------------//
+//-------------------------------------------------------------------//
+//void UISelection::createMenu()
+//{
+//    Window *window = Window::instance();
+
+//    for(int i=0; i<10; i++)
+//    {
+//        UIMenuPtr _menu = (UIMenuPtr(new UIMenu(ngl::Vec2 (2,5), "hello", "menuTest"+
+//                                           boost::lexical_cast<std::string>(i))));
+//        int ID = window->registerID(_menu);
+//        _menu->setID(ID);
+
+//        m_menus[_menu->getID()] = _menu;
+//        std::cout<<"\nmenu created"<<std::endl;
+//        _menu->createButtons();
+//    }
+
+//}
+//-------------------------------------------------------------------//
+//-------------------------------------------------------------------//
+//-------------------------------------------------------------------//
+
