@@ -13,6 +13,8 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize, ngl:
   //get a pointer to the game
 
   // Initialise Database
+  // calculate the width and height of the grid
+
   //Database::init(_gridHeight, _gridWidth, );
   // INITIALISE DATABASE HERE OTHERWISE STATIC ENTITIES CANNOT DESTRUCT!!!---------------------------------------
 
@@ -23,15 +25,17 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize, ngl:
   {
     for(int i = 0; i < _gridWidth; i++)
     {
+      unsigned int ID = game->getID();
       NodePtr node(
             new Node(
               ngl::Vec3(i * _hexagonSize * 0.75, 0,
                         j * (_hexagonSize * (sqrt(3)/2)) + (_hexagonSize * (sqrt(3)/2))/2 * ((i%2 != 0))
                         ) + m_origin,
               m_hexagonSize,
-              game->getID()
+              ID
               )
             );
+      game->registerID(node,ID);
       m_nodes.push_back(node);
       //std::cout<<"#"<<(_gridWidth*j) + i<<": Node "<<"("<<i<<","<<j<<")" << " has coords: ["<<i * _hexagonSize<<","<<j * (_hexagonSize * (sqrt(3)/2))<<"]"<<std::endl;
     }
