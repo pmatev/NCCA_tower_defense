@@ -480,7 +480,8 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
       {
         // Create an new PathNode that corresponds to the child node. (i.e put
         // it on the system)
-        child = PathNode::create(*it, 0, 0);
+        // Set gScore very high so it's overwritten in the next step
+        child = PathNode::create(*it, current->m_gScore + m_centerDist, 0);
         allPathNodes[*it] = child;
       }
       else
@@ -488,11 +489,14 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
         // Set child to the value in the iterator
         child = childIt->second;
       }
+      //---------------------------------------------------------------------------------------------------------
+      bool test = (*child) < (*current);
+      //---------------------------------------------------------------------------------------------------------
       if(checkListForNode(child, closedSet))
       {
         continue;
       }
-      int tentativeGScore = child->m_gScore + m_centerDist;
+      float tentativeGScore = current->m_gScore + m_centerDist;
       bool inOpenSet = checkListForNode(child, openSet);
       if(!inOpenSet || tentativeGScore <= child->m_gScore)
       {
@@ -505,7 +509,7 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
           openSet.push_back(child);
         }
         //sort the set so that the top one will be chosen
-        openSet.sort();
+        openSet.sort(PathNode::compare);
       }
     }
   }

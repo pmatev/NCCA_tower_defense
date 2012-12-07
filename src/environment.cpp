@@ -89,23 +89,6 @@ void Environment::update()
 
 //-------------------------------------------------------------------//
 
-void Environment::publish()
-{
-  // Go through all the towers and draw
-  for(
-      StaticEntityList::iterator it = m_towers.begin();
-      it != m_towers.end();
-      ++it
-      )
-  {
-    (*it)->publish();
-  }
-  // publish base details
-  m_base->publish();
-}
-
-//-------------------------------------------------------------------//
-
 void Environment::draw() const
 {
   // Go through all the towers and draw

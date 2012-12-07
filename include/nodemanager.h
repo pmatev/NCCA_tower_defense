@@ -40,8 +40,8 @@ protected:
   {
     NodePtr m_node;
     PathNodePtr m_parent;
-    int m_gScore;
-    int m_fScore;
+    float m_gScore;
+    float m_fScore;
 
     //-------------------------------------------------------------------//
     /// @brief creator
@@ -52,16 +52,28 @@ protected:
 
     static PathNodePtr create(
           NodePtr _node,
-          int _gScore,
-          int _fScore
+          float _gScore,
+          float _fScore
           )
     {
       PathNodePtr a(new PathNode(_node, _gScore, _fScore));
       return a;
     }
-    inline bool operator<(const  PathNodePtr &_test)
+    inline bool operator<(const  PathNode &_test)
     {
-      return m_fScore > _test->m_fScore;
+      return m_fScore < _test.m_fScore;
+    }
+
+    //-------------------------------------------------------------------//
+    /// @brief little wrapper so that we can sort lists of pointers
+    //-------------------------------------------------------------------//
+
+    inline static bool compare(
+          const PathNodePtr &_first,
+          const PathNodePtr &_second
+          )
+    {
+      return (*_first) < (*_second);
     }
 
   protected:
@@ -76,8 +88,8 @@ protected:
 
     PathNode(
           NodePtr _node,
-          int _gScore,
-          int _fScore
+          float _gScore,
+          float _fScore
           ):
       m_node(_node),
       m_parent(),

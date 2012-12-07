@@ -229,7 +229,7 @@ void DatabaseGrid::unPublish(unsigned int _id)
 
   unsigned int i = 0;
 
-  while ( i <= m_grid.size() && isUnregistered != true )
+  while ( i < m_grid.size() && isUnregistered != true )
   {
     //check that the cell is not empty
 

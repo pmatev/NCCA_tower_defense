@@ -14,6 +14,8 @@ StaticEntity::StaticEntity(
 {
   // tag node as occupied
   m_linkedNode->setOccupied(true);
+  //publish to the Database
+  publish();
 }
 
 //-------------------------------------------------------------------//

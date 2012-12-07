@@ -16,7 +16,7 @@ Wave::Wave(EnemyPairList _enemiesForCreation):
   // create shit load o enemies!!!
   for(int i=0; i < 10; ++i)
   {
-     addEnemy("TestEnemy", ngl::Vec3(0, 0.5, i*2), ngl::Vec3(0, 0, 0));
+     addEnemy("TestEnemy", ngl::Vec3(0, 0, 0), ngl::Vec3(0, 0, 0));
   }
   //-------------------------------------------END TEST------------------------------------------------
 }

@@ -101,6 +101,13 @@ EntityPtr Game::getEntityByID(const unsigned int _i)
 void Game::update(const double _t)
 {
     // update code by timestep _t
+  // 1. clear database records
+  // 2. publish dynamic entities (m_wavemanager & m_projectilemanager)
+  // 3. update projectiles
+  // 4. deal with collisions with enemies
+  // 5. update enemies
+  // 6. deal with collisions with base
+  // 7. update environment
   m_environment->update();
   m_waveManager->update();
 }
