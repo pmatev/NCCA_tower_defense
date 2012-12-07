@@ -5,15 +5,15 @@
 
 DatabaseGrid::DatabaseGrid(
     int _numCellsX,
-    int _numCellsY,
+    int _numCellsZ,
     float _environMaxX,
-    float _environMaxY,
+    float _environMaxZ,
     float _environMinX,
-    float _environMinY
+    float _environMinZ
     ):
   m_numCellsX(_numCellsX),
   m_environMinX(_environMinX),
-  m_environMinY(_environMinY)
+  m_environMinZ(_environMinZ)
 {
   //checks that the min values are less than the max values
   //and if not it swaps them
@@ -25,29 +25,29 @@ DatabaseGrid::DatabaseGrid(
     _environMaxX = temp;
   }
 
-  if (m_environMinY > _environMaxY)
+  if (m_environMinZ > _environMaxZ)
   {
-    float temp = m_environMinY;
-    m_environMinY = _environMaxY;
-    _environMaxY = temp;
+    float temp = m_environMinZ;
+    m_environMinZ = _environMaxZ;
+    _environMaxZ = temp;
   }
 
 
   //calculate the width and depth
 
   float width = _environMaxX - m_environMinX;
-  float depth = _environMaxY - m_environMinY;
+  float depth = _environMaxZ - m_environMinZ;
 
-  //calculate and assign the scale x and scale y values
+  //calculate and assign the scale x and scale Z values
 
   m_scaleX = 1.0/(width/m_numCellsX);
-  m_scaleY = 1.0/(depth/_numCellsY);
+  m_scaleZ = 1.0/(depth/_numCellsZ);
 
   // initialise the vector
 
   for (int i = 0; i < _numCellsX; i++)
   {
-    for (int j = 0; j < _numCellsY; j++)
+    for (int j = 0; j < _numCellsZ; j++)
     {
       entityRecordListPtr list (new std::list<EntityRecord>);
       m_grid.push_back(list);
@@ -66,20 +66,20 @@ DatabaseGrid::~DatabaseGrid()
 
 DatabaseGridPtr DatabaseGrid::create(
     int _numCellsX,
-    int _numCellsY,
+    int _numCellsZ,
     float _environMaxX,
-    float _environMaxY,
+    float _environMaxZ,
     float _environMinX,
-    float _environMinY
+    float _environMinZ
     )
 {
   DatabaseGridPtr instance(new DatabaseGrid(
                   _numCellsX,
-                  _numCellsY,
+                  _numCellsZ,
                   _environMaxX,
-                  _environMaxY,
+                  _environMaxZ,
                   _environMinX,
-                  _environMinY
+                  _environMinZ
                   ));
 
   return instance;
@@ -92,16 +92,16 @@ void DatabaseGrid::addRecord(EntityRecord _record)
   //conversion to grid space for assigning to a grid cell
 
   float gridSpaceX = (_record.m_x - m_environMinX)* m_scaleX;
-  float gridSpaceY = (_record.m_y - m_environMinY) * m_scaleY;
+  float gridSpaceZ = (_record.m_z - m_environMinZ) * m_scaleZ;
 
   //conversion from float to int
 
   int floorX = floor(gridSpaceX);
-  int floorY = floor(gridSpaceY);
+  int floorZ = floor(gridSpaceZ);
 
   //calculating the index
 
-  int index = floorX + (floorY*m_numCellsX);
+  int index = floorX + (floorZ*m_numCellsX);
 
   //store the record in the appropriate list
 
@@ -112,9 +112,9 @@ void DatabaseGrid::addRecord(EntityRecord _record)
 
 entityRecordListPtr DatabaseGrid::getLocalEntities(
     float _minX,
-    float _minY,
+    float _minZ,
     float _maxX,
-    float _maxY
+    float _maxZ
     ) const
 {
   //checks that the min values are smaller than the max values,
@@ -127,26 +127,26 @@ entityRecordListPtr DatabaseGrid::getLocalEntities(
     _maxX = temp;
   }
 
-  if(_minY > _maxY)
+  if(_minZ > _maxZ)
   {
-    float temp = _minY;
-    _minY = _maxY;
-    _maxY = temp;
+    float temp = _minZ;
+    _minZ = _maxZ;
+    _maxZ = temp;
   }
 
   //conversion of min and max values to grid space
 
   float minXGrid = (_minX - m_environMinX)* m_scaleX;
   float maxXGrid = (_maxX - m_environMinX)* m_scaleX;
-  float minYGrid = (_minY - m_environMinY)* m_scaleY;
-  float maxYGrid = (_maxY - m_environMinY)* m_scaleY;
+  float minZGrid = (_minZ - m_environMinZ)* m_scaleZ;
+  float maxZGrid = (_maxZ - m_environMinZ)* m_scaleZ;
 
   //conversion from float to int
 
   int minXId = floor(minXGrid);
   int maxXId = floor(maxXGrid);
-  int minYId = floor(minYGrid);
-  int maxYId = floor(maxYGrid);
+  int minZId = floor(minZGrid);
+  int maxZId = floor(maxZGrid);
 
   //initialise a pointer to a list of entity records
 
@@ -159,7 +159,7 @@ entityRecordListPtr DatabaseGrid::getLocalEntities(
   //loop through each index of a cell overlapped by the bounding
   //box
 
-  for (int i = minYId; i <= maxYId; i++)
+  for (int i = minZId; i <= maxZId; i++)
   {
     for (int j = minXId; j <= maxXId; j++)
     {

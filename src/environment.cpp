@@ -27,10 +27,13 @@ Environment::Environment(
 
   //create the base
 
+  unsigned int ID = game->getID();
   m_base = Base::create(
         m_nodeMap->getNodeFromCoords(_baseX, _baseY),
-        game->getID()
+        ID
         );
+
+  game->registerID(m_base,ID);
 }
 
 //-------------------------------------------------------------------//

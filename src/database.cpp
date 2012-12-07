@@ -7,11 +7,11 @@ Database * Database::s_instance =0;
 
 Database::Database(
     int _numCellsX,
-    int _numCellsY,
+    int _numCellsZ,
     float _environMaxX,
-    float _environMaxY,
+    float _environMaxZ,
     float _environMinX,
-    float _environMinY
+    float _environMinZ
     ) :
     m_base(0,BASE,0,0,0)
 {
@@ -19,47 +19,47 @@ Database::Database(
 
   m_enemyGrid = DatabaseGrid::create(
         _numCellsX,
-        _numCellsY,
+        _numCellsZ,
         _environMaxX,
-        _environMaxY,
+        _environMaxZ,
         _environMinX,
-        _environMinY
+        _environMinZ
         );
 
   m_projectileGrid = DatabaseGrid::create(
         _numCellsX,
-        _numCellsY,
+        _numCellsZ,
         _environMaxX,
-        _environMaxY,
+        _environMaxZ,
         _environMinX,
-        _environMinY
+        _environMinZ
         );
 
   m_turretGrid = DatabaseGrid::create(
         _numCellsX,
-        _numCellsY,
+        _numCellsZ,
         _environMaxX,
-        _environMaxY,
+        _environMaxZ,
         _environMinX,
-        _environMinY
+        _environMinZ
         );
 
   m_wallGrid = DatabaseGrid::create(
         _numCellsX,
-        _numCellsY,
+        _numCellsZ,
         _environMaxX,
-        _environMaxY,
+        _environMaxZ,
         _environMinX,
-        _environMinY
+        _environMinZ
         );
 
   m_nodeGrid = DatabaseGrid::create(
         _numCellsX,
-        _numCellsY,
+        _numCellsZ,
         _environMaxX,
-        _environMaxY,
+        _environMaxZ,
         _environMinX,
-        _environMinY
+        _environMinZ
         );
 
   //initialise base with null values
@@ -78,11 +78,11 @@ Database::~Database()
 
 Database * Database::init(
     int _numCellsX,
-    int _numCellsY,
+    int _numCellsZ,
     float _environMaxX,
-    float _environMaxY,
+    float _environMaxZ,
     float _environMinX,
-    float _environMinY
+    float _environMinZ
     )
 {
   //singleton patern based on code from Jon Macey's singleton template
@@ -100,11 +100,11 @@ Database * Database::init(
     {
       s_instance = (new Database(
             _numCellsX,
-            _numCellsY,
+            _numCellsZ,
             _environMaxX,
-            _environMaxY,
+            _environMaxZ,
             _environMinX,
-            _environMinY
+            _environMinZ
             ));
     }
   }
@@ -159,9 +159,9 @@ void Database::addRecord(EntityRecord _record)
 
 entityRecordListPtr Database::getLocalEntities(
     float _minX,
-    float _minY,
+    float _minZ,
     float _maxX,
-    float _maxY,
+    float _maxZ,
     std::list<GeneralType> &_typeList
     ) const
 {
@@ -194,19 +194,19 @@ entityRecordListPtr Database::getLocalEntities(
     switch ((*typeListIt))
     {
     case ENEMY:
-      tempList = m_enemyGrid->getLocalEntities(_minX,_minY,_maxX,_maxY);
+      tempList = m_enemyGrid->getLocalEntities(_minX,_minZ,_maxX,_maxZ);
       break;
     case PROJECTILE:
-      tempList = m_projectileGrid->getLocalEntities(_minX,_minY,_maxX,_maxY);
+      tempList = m_projectileGrid->getLocalEntities(_minX,_minZ,_maxX,_maxZ);
       break;
     case TURRET:
-      tempList = m_turretGrid->getLocalEntities(_minX,_minY,_maxX,_maxY);
+      tempList = m_turretGrid->getLocalEntities(_minX,_minZ,_maxX,_maxZ);
       break;
     case WALL:
-      tempList = m_wallGrid->getLocalEntities(_minX,_minY,_maxX,_maxY);
+      tempList = m_wallGrid->getLocalEntities(_minX,_minZ,_maxX,_maxZ);
       break;
     case NODE:
-      tempList = m_nodeGrid->getLocalEntities(_minX,_minY,_maxX,_maxY);
+      tempList = m_nodeGrid->getLocalEntities(_minX,_minZ,_maxX,_maxZ);
       break;
     case BASE:
       tempList->push_back(m_base);

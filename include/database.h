@@ -47,11 +47,11 @@ public: //methods
 
   static Database * init(
         int _numCellsX,
-        int _numCellsY,
+        int _numCellsZ,
         float _environMaxX,
-        float _environMaxY,
+        float _environMaxZ,
         float _environMinX,
-        float _environMinY
+        float _environMinZ
         );
 
   //-------------------------------------------------------------------//
@@ -92,7 +92,7 @@ public: //methods
         float _minX,
         float _minY,
         float _maxX,
-        float _maxY,
+        float _maxZ,
         std::list<GeneralType> &_typeList
         )const;
 
@@ -132,11 +132,11 @@ protected: //methods
 
   Database(
       int _numCellsX,
-      int _numCellsY,
+      int _numCellsZ,
       float _environMaxX,
-      float _environMaxY,
+      float _environMaxZ,
       float _environMinX,
-      float _environMinY
+      float _environMinZ
       );
 
   //-------------------------------------------------------------------//

@@ -6,6 +6,7 @@
 #include <ngl/VAOPrimitives.h>
 #include "entityfactory.h"
 #include "window.h"
+#include "database.h"
 
 Game* Game::s_instance = 0;
 
@@ -52,6 +53,12 @@ void Game::init()
 //-------------------------------------------------------------------//
 void Game::destroy()
 {
+    //call destroy on the database
+
+    Database* db = Database::instance();
+
+    db->destroy();
+
     if (s_instance)
     {
           delete s_instance;

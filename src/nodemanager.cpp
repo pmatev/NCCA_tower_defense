@@ -1,23 +1,43 @@
 #include "nodemanager.h"
+#include "database.h"
 #include "game.h"
 
 //-------------------------------------------------------------------//
 
-NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize, ngl::Vec3 _origin) :
+NodeManager::NodeManager(
+    int _gridWidth,
+    int _gridHeight,
+    int _hexagonSize,
+    ngl::Vec3 _origin
+    ) :
   m_centerDist(_hexagonSize * 1.732),
   m_gridWidth(_gridWidth),
   m_gridHeight(_gridHeight),
   m_hexagonSize(_hexagonSize),
   m_origin(_origin)
 {
-  //get a pointer to the game
+  // precalculate sqrt(3/2)
 
+  double val = (sqrt(3)/2);
   // Initialise Database
-  // calculate the width and height of the grid
+  //first calculate the maximum x and z values
 
-  //Database::init(_gridHeight, _gridWidth, );
-  // INITIALISE DATABASE HERE OTHERWISE STATIC ENTITIES CANNOT DESTRUCT!!!---------------------------------------
+  float maxX = _origin.m_x
+      + (_gridWidth-1)
+      *(_hexagonSize * 0.75)
+      +(_hexagonSize/2);
+  float maxZ = _origin.m_z + (_hexagonSize*val)*_gridHeight;
 
+  // then calculate the minimum x and z values
+
+  float minX = _origin.m_x - (_hexagonSize/2);
+  float minZ = _origin.m_z - ((_hexagonSize*val)/2);
+
+  //finally initialise the database
+
+  Database::init(_gridHeight, _gridWidth, maxX,maxZ,minX,minZ);
+
+  //get a pointer to the game
   Game* game = Game::instance();
 
   // create all the necessary node
@@ -29,7 +49,7 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize, ngl:
       NodePtr node(
             new Node(
               ngl::Vec3(i * _hexagonSize * 0.75, 0,
-                        j * (_hexagonSize * (sqrt(3)/2)) + (_hexagonSize * (sqrt(3)/2))/2 * ((i%2 != 0))
+                        j * (_hexagonSize * val) + (_hexagonSize * val)/2 * ((i%2 != 0))
                         ) + m_origin,
               m_hexagonSize,
               ID
@@ -37,7 +57,7 @@ NodeManager::NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize, ngl:
             );
       game->registerID(node,ID);
       m_nodes.push_back(node);
-      //std::cout<<"#"<<(_gridWidth*j) + i<<": Node "<<"("<<i<<","<<j<<")" << " has coords: ["<<i * _hexagonSize<<","<<j * (_hexagonSize * (sqrt(3)/2))<<"]"<<std::endl;
+      //std::cout<<"#"<<(_gridWidth*j) + i<<": Node "<<"("<<i<<","<<j<<")" << " has coords: ["<<node->getPos().m_x<<","<<node->getPos().m_z<<std::endl;
     }
   }
 

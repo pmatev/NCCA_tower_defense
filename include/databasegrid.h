@@ -30,15 +30,15 @@ public: //methods
   /// new instance of the object created from the inputs.
   /// @param [in] _environMaxX, the maximum x value of the playable
   /// environment.
-  /// @param [in] _environMaxY, the maximum y value of the playable
+  /// @param [in] _environMaxZ, the maximum Z value of the playable
   /// environment.
   /// @param [in] _environMinX, the minimum x value of the playable
   /// environment.
-  /// @param [in] _environMinY, the minimum y value of the playable
+  /// @param [in] _environMinZ, the minimum Z value of the playable
   /// environment.
   /// @param [in] _numCellsX, the desired number of cells in the x
   /// direction
-  /// @param [in] _numCellsY, the desired number of cells in the y
+  /// @param [in] _numCellsZ, the desired number of cells in the Z
   /// direction
   /// @param [out] s_instance, a smart pointer to the database grid
   /// instance
@@ -46,11 +46,11 @@ public: //methods
 
   static DatabaseGridPtr create(
         int _numCellsX,
-        int _numCellsY,
+        int _numCellsZ,
         float _environMaxX,
-        float _environMaxY,
+        float _environMaxZ,
         float _environMinX,
-        float _environMinY
+        float _environMinZ
         );
 
   //-------------------------------------------------------------------//
@@ -74,17 +74,17 @@ public: //methods
   /// the grid boundaries
   /// @param [in] _minX, the minimum x value of the bounding box provided
   /// @param [in] _maxX, the maximum x value of the bounding box provided
-  /// @param [in] _minY, the minimum y value of the bounding box provided
-  /// @param [in] _maxY, the maximum y value of the bounding box provided
-  /// @param [out] o_influenceList, a boost shared pointer to a list of
+  /// @param [in] _minZ, the minimum Z value of the bounding box provided
+  /// @param [in] _maxZ, the maximum Z value of the bounding box provided
+  /// @param [out] a boost shared pointer to a list of
   /// influences as defined
   //-------------------------------------------------------------------//
 
   entityRecordListPtr getLocalEntities(
         float _minX,
-        float _minY,
+        float _minZ,
         float _maxX,
-        float _maxY
+        float _maxZ
         )const;
 
   //-------------------------------------------------------------------//
@@ -105,25 +105,25 @@ protected: //methods
   /// @brief constructor
   /// @param [in] _environMaxX, the maximum x value of the playable
   /// environment.
-  /// @param [in] _environMaxY, the maximum y value of the playable
+  /// @param [in] _environMaxZ, the maximum Z value of the playable
   /// environment.
   /// @param [in] _environMinX, the minimum x value of the playable
   /// environment.
-  /// @param [in] _environMinY, the minimum y value of the playable
+  /// @param [in] _environMinZ, the minimum Z value of the playable
   /// environment.
   /// @param [in] _numCellsX, the desired number of cells in the x
   /// direction
-  /// @param [in] _numCellsY, the desired number of cells in the y
+  /// @param [in] _numCellsZ, the desired number of cells in the y
   /// direction
   //-------------------------------------------------------------------//
 
   DatabaseGrid(
         int _numCellsX,
-        int _numCellsY,
+        int _numCellsZ,
         float _environMaxX,
-        float _environMaxY,
+        float _environMaxZ,
         float _environMinX,
-        float _environMinY
+        float _environMinZ
         );
 
 protected: //attributes
@@ -143,11 +143,11 @@ protected: //attributes
   float m_scaleX;
 
   //-------------------------------------------------------------------//
-  /// @brief The normalisation y scale factor of grid, to enable the entity
+  /// @brief The normalisation Z scale factor of grid, to enable the entity
   /// records to be assigned a grid location based on a unit grid size
   //-------------------------------------------------------------------//
 
-  float m_scaleY;
+  float m_scaleZ;
 
   //-------------------------------------------------------------------//
   /// @brief the number of cells in X (cell width/grid width)
@@ -162,10 +162,10 @@ protected: //attributes
   float m_environMinX;
 
   //-------------------------------------------------------------------//
-  /// @brief the y value of the start point of the environment
+  /// @brief the Z value of the start point of the environment
   //-------------------------------------------------------------------//
 
-  float m_environMinY;
+  float m_environMinZ;
 };
 
 #endif // DATABASEGRID_H
