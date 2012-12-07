@@ -64,6 +64,15 @@ public:
   ngl::Vec3 getVectorToNearestNodeInPath();
 
 protected:
+
+  //-------------------------------------------------------------------//
+  /// @brief returns the path influence to be used in the brain
+  /// @param[out] an ngl::vec3 towards the next path point
+  //-------------------------------------------------------------------//
+
+  ngl::Vec3 getPathVec() const;
+
+protected:
   //-------------------------------------------------------------------//
   /// @brief a list containing all the nodes in the path
   //-------------------------------------------------------------------//
@@ -73,6 +82,14 @@ protected:
   /// @brief a list temporary location for thepath nodes
   //-------------------------------------------------------------------//
   Node::NodeList m_tempPathNodes;
+
+  //-------------------------------------------------------------------//
+  /// @brief The distance from a node at which the enemy starts following
+  /// the next node (used in getPathVec() )
+  //-------------------------------------------------------------------//
+
+  float m_pathTargetThreshold;
+
 };
 
 #endif // ENEMY_H

@@ -10,7 +10,9 @@ Enemy::Enemy(
     const ngl::Vec3 &_aim,
     unsigned int _id
     ) :
-  DynamicEntity(_pos,_aim,ENEMY, _id)
+  DynamicEntity(_pos,_aim,ENEMY, _id),
+  m_pathTargetThreshold(1.2) //THIS SHOULD BE A PROPORTION OF THE DISTANCE BETWEEN NODES!!!!!
+                             //IF ITS TOO LOW ENEMIES WILL NOT MOVE
 {
   if(generateTempPath())
   {
@@ -123,3 +125,73 @@ ngl::Vec3 Enemy::getVectorToNearestNodeInPath()
 
   return finalVector;
 }
+
+//-------------------------------------------------------------------//
+// JAREDS NEW IMPLEMENTATION OF THE ABOVE PATH VEC CALCULATION
+// (FOR TESTING PURPOSES)
+ngl::Vec3 Enemy::getPathVec() const
+{
+  // ALGORITHM: Go to nearest node unless you are within a specified distance.
+  // If within the specified distance go parent node. If on last node go to
+  // center.
+  NodePtr nearestNode;
+  NodePtr parentNode;
+  float nearestDistance = 100000;
+
+  ngl::Vec3 finalVector;
+
+  for(Node::NodeList::const_reverse_iterator it = m_pathNodes.rbegin();
+      it != m_pathNodes.rend();
+      it++)
+  {
+    //get the position of the node
+    ngl::Vec3 targetPos = (*it)->getPos();
+    //calculate the distance between that node and this one
+    float newDistance = sqrt(((targetPos.m_x - m_pos.m_x)*(targetPos.m_x - m_pos.m_x)) +
+                             ((targetPos.m_y - m_pos.m_y)*(targetPos.m_y - m_pos.m_y)) +
+                             ((targetPos.m_z - m_pos.m_z)*(targetPos.m_z - m_pos.m_z)));
+
+    if(newDistance < nearestDistance)
+    {
+      //this is the closest node we've found
+      nearestDistance = newDistance;
+      nearestNode = (*it);
+      //if the closest node is NOT at the end
+      if(boost::next(it) != m_pathNodes.rend())
+      {
+        parentNode = (*boost::next(it));
+      } else
+      {
+        parentNode.reset();
+      }
+    }
+  }
+
+  //get the parent node of the nearestNode as long as we're not at the end.
+  finalVector = nearestNode->getPos() - m_pos;
+  float len = finalVector.length();
+  if(parentNode && len < m_pathTargetThreshold)
+  {
+    //return dir vector between parentNode and nearestNode
+
+    // get distance to nearest node and check threshold
+
+    finalVector = parentNode->getPos() - m_pos;
+  }
+//  else
+//  {
+//    //as we're one from the end, return dir vec between nearestNode
+//    //and the current position
+//    finalVector = nearestNode->getPos() - m_pos;
+//  }
+
+  //std::cout<<finalVector<<std::endl;
+  if(finalVector.length())
+  {
+    finalVector.normalize();
+  }
+
+  return finalVector;
+}
+
+//-------------------------------------------------------------------//

@@ -460,7 +460,7 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
     openSet.remove(current);
     closedSet.push_back(current);
 
-    if(current->m_node->isOccupied())
+    if(current->m_node->isOccupied() && current->m_node != _start)
     {
       continue;
     }

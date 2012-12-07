@@ -16,7 +16,7 @@ Wave::Wave(EnemyPairList _enemiesForCreation):
   // create shit load o enemies!!!
   for(int i=0; i < 10; ++i)
   {
-     addEnemy("TestEnemy", ngl::Vec3(0, 0, i*2), ngl::Vec3(0, 0, 0));
+     addEnemy("TestEnemy", ngl::Vec3(20, 0, i*2), ngl::Vec3(0, 0, 0));
   }
   //-------------------------------------------END TEST------------------------------------------------
 }
@@ -34,7 +34,12 @@ WavePtr Wave::create(EnemyPairList _enemiesForCreation)
 
 Wave::~Wave()
 {
-  // default destructor
+  // remove all enemies (must use removeEnemy rather than clear as this will
+  // ensure that they are unregistered properly)
+  for(EnemyList::iterator it = m_enemies.begin(); it != m_enemies.end();)
+  {
+    it = removeEnemy(it);
+  }
 }
 
 //-------------------------------------------------------------------//
