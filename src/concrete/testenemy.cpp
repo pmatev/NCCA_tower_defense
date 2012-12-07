@@ -105,7 +105,7 @@ void TestEnemy::generateMesh()
 ngl::Vec3 TestEnemy::brain()
 {
   // TEST value (tells it to just go forward)
-  return getVectorToNearestNodeInPath() * 0.005;
+  return getVectorToNearestNodeInPath() * 0.002;
 }
 
 //-------------------------------------------------------------------//

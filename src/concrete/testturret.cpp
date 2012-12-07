@@ -57,6 +57,8 @@ void TestTurret::drawSelection()
 ngl::Vec3 TestTurret::brain()
 {
   // do something
+  // return test aim
+  return ngl::Vec3(0, 1, 0);
 }
 
 //-------------------------------------------------------------------//

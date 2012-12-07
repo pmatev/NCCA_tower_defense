@@ -456,14 +456,14 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
       return outputPath;
     }
 
+    // Take current from openSet and move it into closedSet
+    openSet.remove(current);
+    closedSet.push_back(current);
+
     if(current->m_node->isOccupied())
     {
       continue;
     }
-
-    // Take current from openSet and move it into closedSet
-    openSet.remove(current);
-    closedSet.push_back(current);
 
     // Go through children of current
     Node::NodeListPtr children = current->m_node->getChildList();

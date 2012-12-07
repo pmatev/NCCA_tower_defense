@@ -44,7 +44,7 @@ void Game::init()
 
     //Environment has to be created before the waves, as the enemies query data
     //in environment.
-    m_environment = Environment::create(10, 10, 2, ngl::Vec3(0.0, 0.0, 0.0), 8, 8); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
+    m_environment = Environment::create(20, 20, 2, ngl::Vec3(0.0, 0.0, 0.0), 19, 19); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
     m_waveManager = WaveManager::create();
 
 }
@@ -136,7 +136,7 @@ void Game::drawSelection()
 bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
 {
   // HARD CODE FALSE SO THAT IT DOESNT BREAK OTHER PEOPLES CODE DURING DEBUGGING
-  return false;
+  //return false;
   // Update all Enemy paths and check that they are all valid if _node
   // is occupied
 

@@ -16,7 +16,7 @@ Wave::Wave(EnemyPairList _enemiesForCreation):
   // create shit load o enemies!!!
   for(int i=0; i < 10; ++i)
   {
-     addEnemy("TestEnemy", ngl::Vec3(0, 0, 0), ngl::Vec3(0, 0, 0));
+     addEnemy("TestEnemy", ngl::Vec3(0, 0, i*2), ngl::Vec3(0, 0, 0));
   }
   //-------------------------------------------END TEST------------------------------------------------
 }
@@ -120,9 +120,11 @@ bool Wave::generatePaths(NodePtr _node)
 
   // 1.
   EnemyListPtr enemyList = m_pathNodes[_node];
-    //-----------------------------------------------------------------------------------------------
-    //NEED TO CHECK FAIL HERE!!!
-    //-----------------------------------------------------------------------------------------------
+  // if there are no enemies using this node
+  if(!enemyList)
+  {
+    return true;
+  }
   // 2.
   BOOST_FOREACH(EnemyPtr it, *enemyList)
   {

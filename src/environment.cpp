@@ -131,11 +131,15 @@ void Environment::createTower(
     )
 {
   // Create the new tower
-  m_towers.push_back(EntityFactory::createStaticEntity(
-                       _type,
-                       _centerNode
-                       )
-                     );
+  StaticEntityPtr newTower = EntityFactory::createStaticEntity(
+        _type,
+        _centerNode
+        );
+  // make sure it created a tower properly
+  if(newTower)
+  {
+    m_towers.push_back(newTower);
+  }
 }
 
 void Environment::removeTower(StaticEntityList::iterator _tower)

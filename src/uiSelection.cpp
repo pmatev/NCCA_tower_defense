@@ -244,7 +244,7 @@ void UISelection::placeDownStaticEntity(const std::string &_type, NodePtr _node)
 
 
 //-------------------------------------------------------------------//
-//----------------------Test Function for Jarad----------------------//
+//----------------------Test Function for Jared----------------------//
 //-------------------------------------------------------------------//
 void UISelection::mouseLeftUpTowerCreate(const unsigned int _ID)
 {
@@ -269,7 +269,7 @@ void UISelection::mouseLeftUpTowerCreate(const unsigned int _ID)
 
                 NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
 
-                bool isCreated = game->tryToCreateTower("testTower",
+                bool isCreated = game->tryToCreateTower("TestTurret",
                                                          node);
 
                 if(isCreated == true)
