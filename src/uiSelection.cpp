@@ -48,8 +48,10 @@ void UISelection::unregisterID(const unsigned int _i)
 
 
 
-//-------------------------------------------------------------------//
 
+
+
+//-------------------------------------------------------------------//
 UIElementPtr UISelection::checkUIClicked(const unsigned int _ID)
 {
     elementsMap::iterator it = m_IDMap.find(_ID);
@@ -59,6 +61,7 @@ UIElementPtr UISelection::checkUIClicked(const unsigned int _ID)
     }
     return it->second;
 }
+
 
 
 
@@ -78,10 +81,14 @@ EntityPtr UISelection::checkEntityClicked()
 
 
 
-//-------------------------------------------------------------------//
 
+
+
+//-------------------------------------------------------------------//
 void UISelection::mouseLeftUp(const unsigned int _ID)
 {
+
+
     if(m_creationMode == 0)
     {
         UIElementPtr UIClick = checkUIClicked(_ID);
@@ -115,13 +122,27 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
         }
         else
         {
-            //UIClick->isClicked();
+            UIClick->isClicked();
             std::cout<<"i am GUI"<<std::endl;
         }
     }
     else
     {
-        //createStaticEntity(_ID);
+        EntityPtr entityClick;
+
+        entityClick = checkEntityClicked();
+        if(!entityClick)
+        {
+            if(entityClick->getGeneralType() == NODE)
+            {
+
+                placeDownStaticEntity(
+                           m_staticEntityTypeTemp,
+                           boost::dynamic_pointer_cast<Node>(entityClick));
+            }
+
+        }
+
     }
 }
 
@@ -163,6 +184,11 @@ void UISelection::drawSelection()
 
 //-------------------------------------------------------------------//
 
+
+
+
+//-------------------------------------------------------------------//
+
 UIMenuPtr UISelection::getMenu(std::string _name)
 {
     for(menuMap::iterator it = m_menus.begin();
@@ -172,12 +198,15 @@ UIMenuPtr UISelection::getMenu(std::string _name)
         UIMenuPtr drawEl = (*it).second;
         if(drawEl->getName() == _name)
         {
-            return drawEl;
-
+           return drawEl;
         }
+
+        return UIMenuPtr();
 
     }
 }
+
+
 
 
 //-------------------------------------------------------------------//
@@ -196,32 +225,99 @@ void UISelection::createMenu(UIMenuPtr _menu)
 
 //-------------------------------------------------------------------//
 
-void UISelection::createStaticEntity(const unsigned int _ID)
+void UISelection::placeDownStaticEntity(const std::string &_type, NodePtr _node)
 {
-//    Game* game = Game::instance();
+    Game* game = Game::instance();
+
+    bool isCreated = game->tryToCreateTower(_type, _node);
+
+    if(isCreated == true)
+    {
+        m_creationMode = 0;
+
+        std::cout<<"tower was created properly"<<std::endl;
+    }
 
 
-    //get current node that mouse is on
-
-    //check if the static entity can be placed down
-
-    //call to environment to add entity to list
-
-    //if add was successful delete static entity
-
-    //m_creationMode = 0;
 }
 
-
-
-
-void UISelection::printTest()
-{
-    std::cout<<"\nthis is the test function "<<std::endl;
-}
 
 
 //-------------------------------------------------------------------//
+//----------------------Test Function for Jarad----------------------//
+//-------------------------------------------------------------------//
+void UISelection::mouseLeftUpTowerCreate(const unsigned int _ID)
+{
+
+    UIElementPtr UIClick = checkUIClicked(_ID);
+
+    EntityPtr entityClick;
+    std::cout<<_ID<<std::endl;
+    if(!UIClick)
+    {
+        entityClick = checkEntityClicked();
+
+        if(!entityClick)
+        {
+          std::cout<<"i am background"<<std::endl;
+        }
+        else
+        {
+            if(entityClick->getGeneralType() == NODE)
+            {
+                Game* game = Game::instance();
+
+                NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
+
+                bool isCreated = game->tryToCreateTower("testTower",
+                                                         node);
+
+                if(isCreated == true)
+                {
+                    //m_creationMode = 0;
+
+                    std::cout<<"tower was created properly"<<std::endl;
+                }
+
+            }
+            else
+            {
+                std::cout<<"i'm not a node"<<std::endl;
+            }
+
+
+        }
+
+    }
+    else
+    {
+//        UIClick->isClicked();
+        std::cout<<"i am GUI"<<std::endl;
+    }
+}
+
+//-------------------------------------------------------------------//
+//-------------------------------------------------------------------//
+//-------------------------------------------------------------------//
+
+
+
+//-------------------------------------------------------------------//
+//-------------------------Test Function-----------------------------//
+//-------------------------------------------------------------------//
+
+void UISelection::printTest()
+{
+    m_staticEntityTypeTemp = "testTurret";
+    std::cout<<m_staticEntityTypeTemp<<std::endl;
+}
+
+
+
+//-------------------------------------------------------------------//
+//-------------------------Test Function-----------------------------//
+//-------------------------------------------------------------------//
+
 void UISelection::printTest2()
 {
     std::cout<<"\nThis is test function number 2 "<<std::endl;
@@ -229,15 +325,17 @@ void UISelection::printTest2()
 
 
 //-------------------------------------------------------------------//
-void UISelection::createTower(std::string _type,
-                                  NodePtr _node)
+//-------------------------Test Function-----------------------------//
+//-------------------------------------------------------------------//
+
+void UISelection::createTestTower()
 {
 
-    // need to check this as jarad is unsure of creating a hard copy
-    m_staticEntityTemp = EntityFactory::createStaticEntity( _type,  _node);
+    m_creationMode =1;
+    m_staticEntityTypeTemp = "testTurret";
+
 
 }
-
 
 //-------------------------------------------------------------------//
 //-------------------------Test Function-----------------------------//
@@ -247,22 +345,23 @@ void UISelection::createTestMenu()
 {
     createMenu(UIMenuPtr(new UIMenu(ngl::Vec2 (2,5), "hello", "menuTest",this)));
 
-    getMenu("menuTest")->addButton(UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello","buttonTest")));
+    UIMenuPtr menu = getMenu("menuTest");
+    if(!menu)
+    {
+        std::cout<<"not a menu in UISelection"<<std::endl;
+    }
+    else
+    {
+        menu->addButton(ngl::Vec2 (5,3), "hello", "buttonTest");
 
-    getMenu("menuTest")->addButton(UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello","buttonTest2")));
+        menu->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
 
-    getMenu("menuTest")->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
+        menu->runCommandTest();
 
-    getMenu("menuTest")->connectEvent(boost::bind(&UISelection::printTest2, this), "buttonTest2");
-
-    getMenu("menuTest")->runCommandTest();
-
+    }
 
 }
 
-//-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
 
 
 //-------------------------------------------------------------------//

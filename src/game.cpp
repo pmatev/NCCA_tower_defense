@@ -135,6 +135,8 @@ void Game::drawSelection()
 
 bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
 {
+  // HARD CODE FALSE SO THAT IT DOESNT BREAK OTHER PEOPLES CODE DURING DEBUGGING
+  return false;
   // Update all Enemy paths and check that they are all valid if _node
   // is occupied
 

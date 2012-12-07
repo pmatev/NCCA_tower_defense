@@ -87,14 +87,17 @@ void UIMenu::alignBottom()
 
 //-------------------------------------------------------------------//
 
-void UIMenu::addButton(UIButtonPtr _button)
+void UIMenu::addButton(ngl::Vec2 _pos,
+                       std::string _imageFile,
+                       std::string _name)
 {
     Window* window = Window::instance();
-    m_elements.push_back(_button);
+    UIButtonPtr button = UIButtonPtr(new UIButton(_pos, _imageFile, _name));
+    m_elements.push_back(button);
     int ID = window->getID();
-    m_parent->registerID(_button, ID);
-    _button->setID(ID);
-    _button->setPosition(m_pos);
+    m_parent->registerID(button, ID);
+    button->setID(ID);
+    button->setPosition(m_pos);
     std::cout<<"\nbutton created"<<std::endl;
 }
 

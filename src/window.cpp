@@ -305,7 +305,7 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
     ngl::Vec3 pixel = r->readColourSelection(_event.x, _event.y);
     unsigned int id = colourToID(pixel);
 
-    m_UI->mouseLeftUp(id);
+    m_UI->mouseLeftUpTowerCreate(id);
 
     /* -------- End Testing Code -------------*/
 

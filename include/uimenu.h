@@ -84,10 +84,14 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief creates a button within the menu
-    /// @param [in] takes in a UIButtonPtr
+    /// @param [in] takes vec2 for button position
+    /// @param [in] string for image file path for texture
+    /// @param [in] string for name of button it wants to create
     //-------------------------------------------------------------------//
 
-    void addButton(UIButtonPtr _button);
+    void addButton(ngl::Vec2 _pos,
+                   std::string _imageFile,
+                   std::string _name);
 
     //-------------------------------------------------------------------//
     /// @brief connects functions to ui elements

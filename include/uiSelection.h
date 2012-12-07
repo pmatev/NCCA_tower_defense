@@ -24,6 +24,7 @@ DECLARESMART(UISelection)
 class UISelection
 {
     typedef std::map<unsigned int, UIElementPtr> elementsMap;
+    typedef  boost::function<void()> functionPtr;
 public:
 
     //-------------------------------------------------------------------//
@@ -93,7 +94,7 @@ public:
     /// @param [in] takes in string refering to type of staticEntity
     /// @param [in] takes in the node which it will be placed on
     //-------------------------------------------------------------------//
-    void createTower(std::string _type, NodePtr _node);
+    void createTestTower();
 
 
     //-------------------------------------------------------------------//
@@ -124,6 +125,9 @@ public:
     void createTestMenu();
 
     void createMenu();
+
+    void mouseLeftUpTowerCreate(const unsigned int _ID);
+
     //-------------------------------------------------------------------//
     //-------------------------------------------------------------------//
     //-------------------------------------------------------------------//
@@ -148,7 +152,7 @@ private:
     //-------------------------------------------------------------------//
     /// @brief temp storage for tower while it is being placed down
     //-------------------------------------------------------------------//
-    StaticEntityPtr m_staticEntityTemp;
+    std::string m_staticEntityTypeTemp;
 
 
     //-------------------------------------------------------------------//
@@ -163,7 +167,7 @@ private:
     /// do nothing until next click
     /// @param [in] takes in the _ID
     //-------------------------------------------------------------------//
-    void createStaticEntity(const unsigned int _ID);
+    void placeDownStaticEntity(const std::string &_type, NodePtr _node);
 
 
 
