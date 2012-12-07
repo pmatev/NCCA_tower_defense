@@ -53,8 +53,14 @@ public:
     /// @brief getter for time.
     //-------------------------------------------------------------------//
     inline double get_time() const {return m_time;}
+    //-------------------------------------------------------------------//
+    /// @brief getter for screen width.
+    //-------------------------------------------------------------------//
 
     inline double getScreenWidth() const {return m_width;}
+    //-------------------------------------------------------------------//
+    /// @brief getter for screen height.
+    //-------------------------------------------------------------------//
 
     inline double getScreenHeight() const {return m_height;}
 
@@ -75,8 +81,13 @@ public:
     //-------------------------------------------------------------------//
     void mouseWheelEvent(const SDL_MouseWheelEvent &_event);
 
-
+    //-------------------------------------------------------------------//
+    /// @brief convert colour ID to integer ID
+    //-------------------------------------------------------------------//
     unsigned int colourToID(ngl::Vec3 _c);
+    //-------------------------------------------------------------------//
+    /// @brief convert integer ID to colour ID
+    //-------------------------------------------------------------------//
     ngl::Vec3 IDToColour(unsigned int _id);
 
     //-------------------------------------------------------------------//
@@ -84,6 +95,14 @@ public:
     //-------------------------------------------------------------------//
 
     unsigned int getID();
+
+    //-------------------------------------------------------------------//
+    /// @brief renders the game selection buffer and returns the corresponding pixel id
+    //-------------------------------------------------------------------//
+    unsigned int getIDFromGameSelection();
+
+
+
 
 
 

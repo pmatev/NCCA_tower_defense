@@ -82,7 +82,12 @@ void Game::unregisterID(const unsigned int _i)
 //-------------------------------------------------------------------//
 EntityPtr Game::getEntityByID(const unsigned int _i)
 {
-    return m_IDMap.find(_i)->second;
+  std::map<unsigned int, EntityPtr>::iterator it = m_IDMap.find(_i);
+  if(it == m_IDMap.end())
+  {
+    return EntityPtr();
+  }
+  return it->second;
 }
 
 //-------------------------------------------------------------------//

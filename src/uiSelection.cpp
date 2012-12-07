@@ -53,7 +53,10 @@ void UISelection::unregisterID(const unsigned int _i)
 UIElementPtr UISelection::checkUIClicked(const unsigned int _ID)
 {
     elementsMap::iterator it = m_IDMap.find(_ID);
-
+    if(it == m_IDMap.end())
+    {
+      return UIElementPtr();
+    }
     return it->second;
 }
 
@@ -61,19 +64,15 @@ UIElementPtr UISelection::checkUIClicked(const unsigned int _ID)
 
 //-------------------------------------------------------------------//
 
-EntityPtr UISelection::checkEntityClicked(const unsigned int _ID)
+EntityPtr UISelection::checkEntityClicked()
 {
 
     Game *game = Game::instance();
-//    Window *window = Window::instance();
-//    Renderer *r = Renderer::instance();
+    Window *window = Window::instance();
 
-//    game->drawSelection();
+    unsigned int id = window->getIDFromGameSelection();
 
-//    ngl::Vec3 pixel = r->readColourSelection(_event.x, _event.y);
-//    unsigned int id = window->colourToID(pixel);
-
-    return game->getEntityByID(_ID);
+    return game->getEntityByID(id);
 
 }
 
@@ -88,22 +87,29 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
         UIElementPtr UIClick = checkUIClicked(_ID);
 
         EntityPtr entityClick;
-
+        std::cout<<_ID<<std::endl;
         if(!UIClick)
         {
-            entityClick = checkEntityClicked(_ID);
+            entityClick = checkEntityClicked();
 
-            if(entityClick->getGeneralType() != NODE && !entityClick)
+            if(!entityClick)
             {
-              std::cout<<"yes tower"<<std::endl;
-                //display the upgrade menu as the tower is selected
-                //need to also boost dynamic cast into a static object
-                //as I need to make sure that it is a staticEntity
-                //so I can upgrade a tower!
+              std::cout<<"i am background"<<std::endl;
             }
             else
             {
-              std::cout<<"no tower"<<std::endl;
+              switch(entityClick->getGeneralType())
+              {
+              case NODE: std::cout<<"i am node"<<std::endl; break;
+              case  ENEMY: std::cout<<"i am enemy"<<std::endl; break;
+              case  TURRET: std::cout<<"i am turret"<<std::endl;break;
+              case  BASE: std::cout<<"i am base"<<std::endl;break;
+
+
+              }//display the upgrade menu as the tower is selected
+                //need to also boost dynamic cast into a static object
+                //as I need to make sure that it is a staticEntity
+                //so I can upgrade a tower!
             }
 
         }

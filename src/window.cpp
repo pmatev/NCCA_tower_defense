@@ -282,22 +282,6 @@ void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
     }
 
 
-  /* -------- Testing Code -------------*/
-
-  Renderer *r = Renderer::instance();
-  r->prepareDrawSelection();
-
-
-  m_UI->drawSelection();
-
-  ngl::Vec3 pixel = r->readColourSelection(_event.x, _event.y);
-  unsigned int id = colourToID(pixel);
-
-  m_UI->mouseLeftUp(id);
-
-  std::cout<<id<<std::endl;
-
-  /* -------- End Testing Code -------------*/
 
 }
 //-------------------------------------------------------------------//
@@ -309,7 +293,21 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
     m_oldMouseX = m_mouseX;
     m_oldMouseY = m_mouseY;
 
-    //m_clickEvent = _event;
+    /* -------- Testing Code -------------*/
+    m_clickEvent = _event;
+
+    Renderer *r = Renderer::instance();
+    r->prepareDrawSelection();
+
+
+    m_UI->drawSelection();
+
+    ngl::Vec3 pixel = r->readColourSelection(_event.x, _event.y);
+    unsigned int id = colourToID(pixel);
+
+    m_UI->mouseLeftUp(id);
+
+    /* -------- End Testing Code -------------*/
 
 }
 
@@ -344,4 +342,16 @@ unsigned int Window::getID()
   m_currentID++;
 
   return m_currentID;
+}
+
+unsigned int Window::getIDFromGameSelection()
+{
+  Game *game = Game::instance();
+  Renderer *r = Renderer::instance();
+  game->drawSelection();
+
+  ngl::Vec3 pixel = r->readColourSelection(m_clickEvent.x, m_clickEvent.y);
+  unsigned int id = colourToID(pixel);
+
+  return id;
 }
