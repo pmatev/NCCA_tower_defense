@@ -113,6 +113,26 @@ public: //methods
 
   void unPublish (GeneralType _generalType, unsigned int _id);
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the minimum extents of the grid
+  //-------------------------------------------------------------------//
+
+  inline ngl::Vec2 getMinGridExtents() {
+    return ngl::Vec2(
+          m_environmentMinX,
+          m_environmentMinZ);
+  }
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the maximum extents of the grid
+  //-------------------------------------------------------------------//
+
+  inline ngl::Vec2 getMaxGridExtents() {
+    return ngl::Vec2(
+          m_environmentMaxX,
+          m_environmentMaxZ);
+  }
+
 protected: //methods
   //-------------------------------------------------------------------//
   /// @brief constructor
@@ -196,6 +216,30 @@ protected: //attributes
   //-------------------------------------------------------------------//
 
   static Database * s_instance;
+
+  //-------------------------------------------------------------------//
+  /// @brief a variable to store the maximum x value of the grid
+  //-------------------------------------------------------------------//
+
+  float m_environmentMaxX;
+
+  //-------------------------------------------------------------------//
+  /// @brief a variable to store the minimum x value of the grid
+  //-------------------------------------------------------------------//
+
+  float m_environmentMinX;
+
+  //-------------------------------------------------------------------//
+  /// @brief a variable to store the maximum z value of the grid
+  //-------------------------------------------------------------------//
+
+  float m_environmentMaxZ;
+
+  //-------------------------------------------------------------------//
+  /// @brief a variable to store the minimum z value of the grid
+  //-------------------------------------------------------------------//
+
+  float m_environmentMinZ;
 
 };
 

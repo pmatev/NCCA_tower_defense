@@ -37,6 +37,8 @@ void DynamicEntity::update()
   // FOR TESTING JUST HAVE IT GO EXACTLY WHERE THE BRAIN SAYS
   m_pos += brainVec;
 
+  enforceGridBoundaries();
+
   m_transformStack.setPosition(m_pos);
 }
 

@@ -2,6 +2,7 @@
 #include "nodemanager.h"
 #include "game.h"
 #include "boost/utility.hpp"
+#include "database.h"
 
 //-------------------------------------------------------------------//
 
@@ -84,9 +85,10 @@ ngl::Vec3 Enemy::getVectorToNearestNodeInPath()
     //get the position of the node
     ngl::Vec3 targetPos = (*it)->getPos();
     //calculate the distance between that node and this one
-    float newDistance = sqrt(((targetPos.m_x - m_pos.m_x)*(targetPos.m_x - m_pos.m_x)) +
-                             ((targetPos.m_y - m_pos.m_y)*(targetPos.m_y - m_pos.m_y)) +
-                             ((targetPos.m_z - m_pos.m_z)*(targetPos.m_z - m_pos.m_z)));
+    float newDistance = sqrt(
+          ((targetPos.m_x - m_pos.m_x)*(targetPos.m_x - m_pos.m_x)) +
+          ((targetPos.m_y - m_pos.m_y)*(targetPos.m_y - m_pos.m_y)) +
+          ((targetPos.m_z - m_pos.m_z)*(targetPos.m_z - m_pos.m_z)));
 
     if(newDistance < nearestDistance)
     {
@@ -125,6 +127,49 @@ ngl::Vec3 Enemy::getVectorToNearestNodeInPath()
 
   return finalVector;
 }
+
+//-------------------------------------------------------------------//
+
+void Enemy::enforceGridBoundaries()
+{
+  //get an instance of the database
+
+  Database* db = Database::instance();
+
+  //get the minimum and maximum extents of the grid
+
+  ngl::Vec2 minExts = db->getMinGridExtents();
+  ngl::Vec2 maxExts = db->getMaxGridExtents();
+
+  //check the position of the entity against the boundaries
+  //comparison between z and y because x and z are the planar
+  //axis but a vec2 has no m_z component
+
+  if (m_pos.m_x < minExts.m_x)
+  {
+    //set the x value to the minimum extents of the grid
+
+    m_pos.m_x = minExts.m_x;
+  }
+  else if (m_pos.m_x > maxExts.m_x)
+  {
+    //set it to the max
+
+    m_pos.m_x = maxExts.m_x;
+  }
+  //then check z
+
+  if (m_pos.m_z < minExts.m_y)
+  {
+    m_pos.m_z = minExts.m_y;
+  }
+  else if (m_pos.m_z > maxExts.m_y)
+  {
+    m_pos.m_z = maxExts.m_y;
+  }
+}
+
+//-------------------------------------------------------------------//
 
 //-------------------------------------------------------------------//
 // JAREDS NEW IMPLEMENTATION OF THE ABOVE PATH VEC CALCULATION

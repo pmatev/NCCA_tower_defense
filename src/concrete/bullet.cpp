@@ -54,7 +54,9 @@ void Bullet::drawSelection()
 
 ngl::Vec3 Bullet::brain()
 {
+  // for the moment just have the bullet follow it's aim
 
+  return m_aimVector;
 }
 
 //-------------------------------------------------------------------//

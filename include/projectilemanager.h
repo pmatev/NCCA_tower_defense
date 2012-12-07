@@ -38,7 +38,7 @@ public://methods
   /// @param [out] returns a list of collisions
   //-------------------------------------------------------------------//
 
-  std::list<Collision> CheckCollisions();
+  std::list<Collision> checkCollisions();
 
   //-------------------------------------------------------------------//
   /// @brief a method to call update on each of the projectiles
@@ -55,20 +55,30 @@ public://methods
   //-------------------------------------------------------------------//
   /// @brief a method to add a new projectile to the set
   /// @param[in] _type, type of projectile to create
-  /// @param[in] _damage, damage that enemy can do
-  /// @param[in] _maxVelocity, maximum velocity an enemy can travel at
   /// @param[in] _pos, initital position of enemy
-  /// @param[in] _initialVelocity, the initial velocity of the projectile
+  /// @param [in] _aim the aim vector of the projectile
   //-------------------------------------------------------------------//
 
   void addProjectile(
         std::string _type,
-        float _damage,
-        float _maxVelocity,
         const ngl::Vec3 &_pos,
-        float _initialVelocity,
         const ngl::Vec3 &_aim
         );
+
+  //-------------------------------------------------------------------//
+  /// @brief remove enemy method
+  //-------------------------------------------------------------------//
+
+  ProjectileList::iterator removeProjectile (
+        ProjectileList::iterator _listIt
+        );
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to run through the projectiles and publish their
+  /// record to the database
+  //-------------------------------------------------------------------//
+
+  void publish();
 
 protected: //methods
 

@@ -44,6 +44,12 @@ public://methods
   //-------------------------------------------------------------------//
 
   Collision collisionDetection();
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to enforce the grid boundaries
+  //-------------------------------------------------------------------//
+
+  void enforceGridBoundaries();
 };
 
 #endif // PROJECTILE_H

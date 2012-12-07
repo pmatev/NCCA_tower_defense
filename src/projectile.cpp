@@ -1,4 +1,5 @@
 #include "projectile.h"
+#include "database.h"
 
 //-------------------------------------------------------------------//
 
@@ -42,9 +43,50 @@ Collision Projectile::collisionDetection()
   std::list<GeneralType> types;
   types.push_back(ENEMY);
 
-  //finally call the collision test method and return the result
+  //call the collision test method and store the result
 
-  return collisionTest(types,bBoxSize);
+  Collision c = collisionTest(types,bBoxSize);
+
+  //check if the collision is returning a value
+
+  if (c.m_id != 0)
+  {
+    //if there is a non 0 value being returned there was a collision
+    //and the health of the projectile should be set to 0
+
+    m_health = 0;
+  }
+
+  return c;
+}
+
+//-------------------------------------------------------------------//
+
+void Projectile::enforceGridBoundaries()
+{
+  //get an instance of the database
+
+  Database* db = Database::instance();
+
+  //get the minimum and maximum extents of the grid
+
+  ngl::Vec2 minExts = db->getMinGridExtents();
+  ngl::Vec2 maxExts = db->getMaxGridExtents();
+
+  //check the position of the entity against the boundaries
+  //comparison between z and y because x and z are the planar
+  //axis but a vec2 has no m_z component
+
+  if (m_pos.m_x < minExts.m_x
+      || m_pos.m_x > maxExts.m_x
+      || m_pos.m_z < minExts.m_y
+      || m_pos.m_z > maxExts.m_y
+      )
+  {
+    // set the health to 0
+
+    m_health = 0;
+  }
 }
 
 //-------------------------------------------------------------------//

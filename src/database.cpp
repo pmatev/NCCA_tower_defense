@@ -13,7 +13,11 @@ Database::Database(
     float _environMinX,
     float _environMinZ
     ) :
-    m_base(0,BASE,0,0,0)
+  m_environmentMaxX(_environMaxX),
+  m_environmentMinX(_environMinX),
+  m_environmentMaxZ(_environMaxZ),
+  m_environmentMinZ(_environMinZ),
+  m_base(0,BASE,0,0,0)
 {
   //initialise the grids
 

@@ -101,6 +101,13 @@ public:
 
   Collision collisionTest (std::list<GeneralType> &_types, float _bBoxSize);
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to enforce the grid boundaries, pure virtual as
+  /// there are different responses to the limits for different sub classes
+  //-------------------------------------------------------------------//
+
+  virtual void enforceGridBoundaries () = 0;
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief a virtual brain method, to be implemented in children
