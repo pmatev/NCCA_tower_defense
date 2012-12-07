@@ -1,4 +1,3 @@
-#include "uimenu.h"
 #include "game.h"
 #include "renderer.h"
 #include <iostream>
@@ -7,6 +6,8 @@
 #include "boost/lexical_cast.hpp"
 #include "window.h"
 #include "uiSelection.h"
+#include "uimenu.h"
+#include "uibutton.h"
 
 
 
@@ -22,11 +23,9 @@ UIElement( _pos, _imageFile, _name)
 
 
 {
-
+  m_parent = _parent;
     //variables initialised before the constructor body
   m_transformStack.setPosition(0,-1,0);
-
-   m_parent =_parent;
 }
 
 //-------------------------------------------------------------------//
@@ -43,17 +42,16 @@ UIMenu::~UIMenu()
 
 void UIMenu::draw()
 {
+    glDisable(GL_DEPTH_TEST);
     Renderer *r = Renderer::instance();
     r->loadMatrixToShaderSS(m_transformStack, "Phong");
     r->draw(m_IDStr, "Phong");
 
-
     for(int i=0; i<m_elements.size(); i++)
     {
         m_elements[i]->draw();
-
-       // std::cout<<"\n drawn"<<std::endl;
     }
+    glEnable(GL_DEPTH_TEST);
 }
 
 
@@ -68,9 +66,6 @@ void UIMenu::drawSelection()
     for(int i=0; i<m_elements.size(); i++)
     {
         m_elements[i]->drawSelection();
-
-
-        //std::cout<<"\n drawn Selection"<<std::endl;
     }
 }
 
@@ -92,7 +87,7 @@ void UIMenu::addButton(ngl::Vec2 _pos,
                        std::string _name)
 {
     Window* window = Window::instance();
-    UIButtonPtr button = UIButtonPtr(new UIButton(_pos, _imageFile, _name));
+    UIButtonPtr button = UIButtonPtr(new UIButton(_pos, _imageFile, _name, this));
     m_elements.push_back(button);
     int ID = window->getID();
     m_parent->registerID(button, ID);

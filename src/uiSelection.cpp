@@ -1,11 +1,10 @@
-#include "uiSelection.h"
 #include "window.h"
 #include "game.h"
-#include "fwd/entity.h"
 #include "renderer.h"
 #include "boost/lexical_cast.hpp"
-#include "window.h"
-
+#include "fwd/entity.h"
+#include "uiSelection.h"
+#include "uibutton.h"
 
 
 UISelection::UISelection():
@@ -359,6 +358,7 @@ void UISelection::createTestMenu()
         menu->runCommandTest();
 
     }
+
 
 }
 

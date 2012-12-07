@@ -90,7 +90,10 @@ HEADERS += \
     include/concrete/testenemy.h \
     include/concrete/testturret.h \
     include/fwd/database.h \
-    include/projectilemanager.h
+    include/projectilemanager.h \
+    include/fwd/uimenu.h \
+    include/fwd/uibutton.h \
+    include/fwd/uiselection.h
 
 
 #including the Imath Library

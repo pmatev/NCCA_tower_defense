@@ -7,6 +7,8 @@
 #include "entityfactory.h"
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
+#include "fwd/uimenu.h"
+#include "fwd/uiselection.h"
 
 //-------------------------------------------------------------------//
 /// @file uiselection.h
@@ -19,7 +21,7 @@
 /// Initial Version 28/11/12
 /// @class UISelection
 //-------------------------------------------------------------------//
-DECLARESMART(UISelection)
+
 
 class UISelection
 {

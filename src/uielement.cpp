@@ -45,14 +45,16 @@ void UIElement::generateMesh()
                         10,0,-10,
                         10,10,-10,
                        };
-  GLfloat normals[] = { 0,1,1,
+  GLfloat normals[] = { 1,1,1,
                         0,0,1,
-                        1,0,1,
+                        0,0,1,
                         1,1,1,
                        };
 
   std::vector<vertData> quad;
   vertData d;
+
+  // pack data
   for(int j=0; j<4; j++)
   {
     d.x = vertices[j*3];

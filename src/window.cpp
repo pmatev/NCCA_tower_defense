@@ -178,7 +178,7 @@ void Window::loop()
         }
 
         game->draw();
-        m_UI->draw();
+        //m_UI->draw();
 
 
         SDL_GL_SwapWindow(m_window);

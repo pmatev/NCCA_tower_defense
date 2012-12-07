@@ -51,6 +51,7 @@ public:
     void setDataToVAO(std::string _id, unsigned int _size, GLfloat &_data, unsigned int _numIndices);
     void setIndexedDataToVAO(std::string _id, unsigned int _size, const GLfloat &_data, unsigned int _indexSize, const GLvoid *_indexData, unsigned int _numIndices);
     void draw(std::string _id, std::string _shader);
+
     void drawSelection(unsigned int _id, std::string _idStr);
     void prepareDrawSelection();
     ngl::Vec3 readColourSelection(const int _x, const int _y);
@@ -64,6 +65,7 @@ public:
     VAOPtr bindVAOByID(const std::string _id);
 
     inline Camera* getCam() const {return m_cam;}
+
 
 
 protected:

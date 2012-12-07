@@ -4,11 +4,12 @@
 
 #include <ngl/Vec2.h>
 #include "smartpointers.h"
-#include "uibutton.h"
 #include "uielement.h"
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
-
+#include "fwd/uimenu.h"
+#include "fwd/uibutton.h"
+#include "fwd/uiselection.h"
 
 
 //-------------------------------------------------------------------//
@@ -22,10 +23,8 @@
 /// Initial Version 28/11/12
 /// @class UIMenu
 //-------------------------------------------------------------------//
-DECLARESMART(UIMenu)
 
 
-class UISelection;
 
 class UIMenu : public UIElement
 
@@ -179,7 +178,7 @@ protected:
     //-------------------------------------------------------------------//
     /// @brief stores parents information
     //-------------------------------------------------------------------//
-    UISelection* m_parent;
+    UISelection *m_parent;
 
 
 

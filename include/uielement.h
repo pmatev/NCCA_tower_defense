@@ -105,6 +105,8 @@ public:
 
     std::string getImagefile();
 
+    inline ngl::TransformStack getTransformStack(){return m_transformStack;}
+
 
 
 

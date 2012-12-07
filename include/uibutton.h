@@ -5,6 +5,8 @@
 #include "uielement.h"
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
+#include "fwd/uimenu.h"
+#include "fwd/uibutton.h"
 
 //-------------------------------------------------------------------//
 /// @file uibutton.h
@@ -17,8 +19,6 @@
 /// Initial Version 03/12/12
 /// @class UIButton
 //-------------------------------------------------------------------//
-
-DECLARESMART(UIButton)
 
 
 
@@ -36,7 +36,7 @@ public:
     //-------------------------------------------------------------------//
 
     UIButton(ngl::Vec2 _pos, std::string _imageFile,
-             std::string _name);
+             std::string _name, UIMenu *_parent);
 
     //-------------------------------------------------------------------//
     /// @brief default ctor
@@ -76,11 +76,9 @@ public:
 
     void drawSelection();
 
+protected:
 
-
-
-
-
+      UIMenu *m_parent;
 
 };
 
