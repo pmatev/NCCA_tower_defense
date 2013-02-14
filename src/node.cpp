@@ -40,10 +40,10 @@ void Node::generateMesh()
                         m_hexagonSize/4, 0.0, -(std::cos(30*PI/180)*m_hexagonSize/2),
                         -m_hexagonSize/4, 0.0, -(std::cos(30*PI/180)*m_hexagonSize/2),
                        };
-  GLfloat normals[] = {1,0,0,
-                       1,0,0,
-                       0,1,0,
-                       0,1,0,
+  GLfloat normals[] = {0,0,1,
+                       0,0,1,
+                       0,1,1,
+                       0,1,1,
                        0,0,1,
                        0,0,1
                        };
@@ -67,7 +67,13 @@ void Node::generateMesh()
 
   render->createVAO(m_IDStr, GL_TRIANGLES);
 
-  render->setIndexedDataToVAO(m_IDStr,vertSize*boxData.size(), boxData[0].x, sizeof(indices), &indices[0], 12);
+  render->setIndexedDataToVAO(m_IDStr,
+                              vertSize*boxData.size(),
+                              3,
+                              boxData[0].x,
+                              sizeof(indices),
+                              &indices[0],
+                              12);
 
 }
 

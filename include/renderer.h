@@ -32,7 +32,11 @@ struct vertData
   GLfloat ny;
   GLfloat nz;
 };
-
+struct vertData2D
+{
+  GLfloat x;
+  GLfloat y;
+};
 class Renderer
 {
 public:
@@ -43,13 +47,18 @@ public:
 
     void resize(const unsigned int _w, const unsigned int _h);
 
-    void createShader(std::string _name);
+    void createShader(std::string _name, int _numAttribs);
 
     void createVAO(std::string _id, GLenum _drawType);
-
-
+    void deleteVAO(std::string _id);
+/* THESE ARE NOT WELL DESIGNED */
     void setDataToVAO(std::string _id, unsigned int _size, GLfloat &_data, unsigned int _numIndices);
-    void setIndexedDataToVAO(std::string _id, unsigned int _size, const GLfloat &_data, unsigned int _indexSize, const GLvoid *_indexData, unsigned int _numIndices);
+    void setIndexedDataToVAO(std::string _id, unsigned int _size, unsigned int _step, const GLfloat &_data, unsigned int _indexSize, const GLvoid *_indexData, unsigned int _numIndices);
+    void setIndexedData2D(std::string _id, unsigned int _size, unsigned int _step, const GLfloat &_data, unsigned int _indexSize, const GLvoid *_indexData, unsigned int _numIndices);
+/* -------------------- */
+
+    VAOPtr getVAObyID(std::string _id);
+
     void draw(std::string _id, std::string _shader);
 
     void drawSelection(unsigned int _id, std::string _idStr);
@@ -59,7 +68,8 @@ public:
     //vertData packData(const ngl::Vec3 &_vert, ngl::Vec3 &_norm);
 
     void loadMatrixToShader(ngl::TransformStack &_tx, std::string _shader);
-    void loadMatrixToShaderSS(ngl::TransformStack &_tx, std::string _shader);
+    void set2DPosToShader(ngl::Vec2 _pos, std::string _shader);
+    void setScreenSize();
     void loadLightToShader(ngl::Light *_light, std::string _shader);
 
     VAOPtr bindVAOByID(const std::string _id);

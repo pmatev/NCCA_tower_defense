@@ -13,8 +13,6 @@ UIElement::UIElement(ngl::Vec2 _pos,
   m_name(_name)
 
 {
-
-    m_transformStack;
 }
 
 
@@ -29,57 +27,56 @@ void UIElement::setID(unsigned int _ID)
 
 void UIElement::setPosition(ngl::Vec2 _pos)
 {
-    m_pos += _pos;
+    m_pos = _pos;
 }
+
 
 
 void UIElement::generateMesh()
 {
-  const static GLubyte indices[]= {
-                                    0,1,2,
-                                    2,1,3
-                                  };
 
-  GLfloat vertices[] = {0,0,-10,
-                        0,10,-10,
-                        10,0,-10,
-                        10,10,-10,
-                       };
-  GLfloat normals[] = { 1,1,1,
-                        0,0,1,
-                        0,0,1,
-                        1,1,1,
-                       };
 
-  std::vector<vertData> quad;
-  vertData d;
-
-  // pack data
-  for(int j=0; j<4; j++)
+  struct quadVertData
   {
-    d.x = vertices[j*3];
-    d.y = vertices[(j*3)+1];
-    d.z = vertices[(j*3)+2];
-    d.nx = normals[j*3];
-    d.ny = normals[(j*3)+1];
-    d.nz = normals[(j*3)+2];
+  ngl::Real x;
+  ngl::Real y;
+  };
+  // we are creating a billboard with two triangles so we only need the
+  // 6 verts, (could use index and save some space but shouldn't be too much of an
+  // issue
+  quadVertData d[6];
+  // load values for triangle 1
+  d[0].x=0;
+  d[0].y=0;
 
-    quad.push_back(d);
-  }
+  d[1].x=100;
+  d[1].y=0;
+
+  d[2].x=0;
+  d[2].y=100;
+
+  d[3].x=0;
+  d[3].y=100;
+
+
+  d[4].x=100;
+  d[4].y=0;
+
+  d[5].x=100;
+  d[5].y=100;
 
 
   Renderer *render = Renderer::instance();
 
   render->createVAO(m_IDStr, GL_TRIANGLES);
 
-  render->setIndexedDataToVAO(
-        m_IDStr,
-        sizeof(vertData)*quad.size(),
-        quad[0].x,
-        sizeof(indices),
-        &indices[0],
-        sizeof(indices)/sizeof(GLubyte)
-        );
+  VAOPtr v = render->getVAObyID(m_IDStr);
+  v->bind();
+  v->setData(6*sizeof(quadVertData),d[0].x);
+  v->setVertexAttributePointer(0,2,GL_FLOAT,sizeof(quadVertData),0);
+  v->setNumIndices(6);
+  v->unbind();
+
 }
 
 

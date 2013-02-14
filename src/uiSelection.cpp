@@ -351,11 +351,11 @@ void UISelection::createTestMenu()
     }
     else
     {
-        menu->addButton(ngl::Vec2 (5,3), "hello", "buttonTest");
+//        menu->addButton(ngl::Vec2 (5,3), "hello", "buttonTest");
 
-        menu->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
+//        menu->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
 
-        menu->runCommandTest();
+//        menu->runCommandTest();
 
     }
 

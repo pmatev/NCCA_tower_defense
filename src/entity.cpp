@@ -2,6 +2,7 @@
 #include "database.h"
 #include "boost/lexical_cast.hpp"
 #include "game.h"
+#include "renderer.h"
 
 //-------------------------------------------------------------------//
 
@@ -33,7 +34,8 @@ Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type, unsigned int _id) :
 
 Entity::~Entity()
 {
-
+  Renderer *r = Renderer::instance();
+  r->deleteVAO(m_IDStr);
 }
 
 //-------------------------------------------------------------------//

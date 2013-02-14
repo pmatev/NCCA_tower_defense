@@ -106,6 +106,7 @@ void Window::init()
     render->init();
 
 
+
     m_UI = UISelectionPtr(new UISelection());
 
     m_UI->createTestMenu();
@@ -152,10 +153,13 @@ void Window::loop()
             case SDL_MOUSEWHEEL : mouseWheelEvent(event.wheel); break;
             //case SDL_KEYDOWN:if(event.key.keysym.sym == SDLK_s)glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
             case SDL_WINDOWEVENT :
-              int w,h;
-              // get the new window size
-              SDL_GetWindowSize(m_window,&w,&h);
-              renderer->resize(w, h);
+              switch(event.window.event)
+              {
+                case SDL_WINDOWEVENT_RESIZED:
+                    m_width = event.window.data1;
+                    m_height = event.window.data2;
+                    renderer->resize(m_width, m_height);break;
+              }
             break;
 
             }
@@ -298,7 +302,6 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 
     Renderer *r = Renderer::instance();
     r->prepareDrawSelection();
-
 
     m_UI->drawSelection();
 

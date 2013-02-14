@@ -87,6 +87,7 @@ void TestTurret::generateMesh()
   render->setIndexedDataToVAO(
         m_IDStr,
         sizeof(vertData)*boxData.size(),
+        3,
         boxData[0].x,
         sizeof(indices),
         &indices[0],

@@ -26,6 +26,7 @@ UIElement( _pos, _imageFile, _name)
   m_parent = _parent;
     //variables initialised before the constructor body
   m_transformStack.setPosition(0,-1,0);
+
 }
 
 //-------------------------------------------------------------------//
@@ -44,13 +45,15 @@ void UIMenu::draw()
 {
     glDisable(GL_DEPTH_TEST);
     Renderer *r = Renderer::instance();
-    r->loadMatrixToShaderSS(m_transformStack, "Phong");
-    r->draw(m_IDStr, "Phong");
+    //r->loadMatrixToShaderSS(m_transformStack, "UI");
+    setPosition(ngl::Vec2(0,-1));
+    r->set2DPosToShader(m_pos, "UI");
+    r->draw(m_IDStr, "UI");
 
-    for(int i=0; i<m_elements.size(); i++)
-    {
-        m_elements[i]->draw();
-    }
+//    for(int i=0; i<m_elements.size(); i++)
+//    {
+//        m_elements[i]->draw();
+//    }
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -60,13 +63,13 @@ void UIMenu::draw()
 void UIMenu::drawSelection()
 {
     Renderer *r = Renderer::instance();
-    r->loadMatrixToShaderSS(m_transformStack, "Colour");
-    r->drawSelection(m_ID, m_IDStr);
+    //r->loadMatrixToShaderSS(m_transformStack, "Colour");
+    //r->drawSelection(m_ID, m_IDStr);
 
-    for(int i=0; i<m_elements.size(); i++)
-    {
-        m_elements[i]->drawSelection();
-    }
+//    for(int i=0; i<m_elements.size(); i++)
+//    {
+//        m_elements[i]->drawSelection();
+//    }
 }
 
 //-------------------------------------------------------------------//

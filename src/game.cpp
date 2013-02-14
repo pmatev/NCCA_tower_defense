@@ -34,12 +34,13 @@ Game* Game::instance()
 
 void Game::init()
 {
-//    ngl::VAOPrimitives *prim = ngl::VAOPrimitives::instance();
-//    prim->createSphere("sphere",1.0,20);
 
+
+    //create and initialize the shaders.
     Renderer *render = Renderer::instance();
-    render->createShader("Phong");
-    render->createShader("Colour");
+    render->createShader("Phong",2);
+    render->createShader("Colour",2);
+    render->createShader("UI", 1);
     //m_light = new ngl::Light(ngl::Vec3(1,2,0),ngl::Colour(1,1,1),ngl::POINTLIGHT);
 
     //Environment has to be created before the waves, as the enemies query data

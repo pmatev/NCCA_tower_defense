@@ -33,15 +33,16 @@ UIButton::~UIButton()
 
 void UIButton::draw()
 {
-//  ngl::Transformation parentTX = m_parent->getTransformStack().getCurrentTransform();
-//  m_transformStack.setGlobal(parentTX);
-//  m_transformStack.pushTransform();
-//    m_transformStack.setPosition(1.0,1.0,0.0);
-//  m_transformStack.popTransform();
+  ngl::Transformation parentTX = m_parent->getTransformStack().getCurrentTransform();
+  m_transformStack.setGlobal(parentTX);
+  m_transformStack.pushTransform();
+    m_transformStack.setPosition(1.0,0.0,-1.0);
+  m_transformStack.popTransform();
 
   Renderer *r = Renderer::instance();
-  r->loadMatrixToShaderSS(m_transformStack, "Phong");
-  r->draw(m_IDStr, "Phong");
+  //r->loadMatrixToShaderSS(m_transformStack, "Phong");
+  r->set2DPosToShader(m_pos, "UI");
+  r->draw(m_IDStr, "UI");
 
 }
 
@@ -51,6 +52,6 @@ void UIButton::draw()
 void UIButton::drawSelection()
 {
   Renderer *r = Renderer::instance();
-  r->loadMatrixToShaderSS(m_transformStack, "Colour");
+  //r->loadMatrixToShaderSS(m_transformStack, "Colour");
   r->drawSelection(m_ID, m_IDStr);
 }

@@ -123,4 +123,6 @@ OTHER_FILES += \
     shaders/Phong.vs \
     shaders/Phong.fs \
     shaders/Colour.vs \
-    shaders/Colour.fs
+    shaders/Colour.fs \
+    shaders/UI.vs \
+    shaders/UI.fs

@@ -33,6 +33,8 @@ public:
     /// @param [in] _imageFile, a string containing the image file path name
     /// @param [in] inputs a string for the name of the element
     //-------------------------------------------------------------------//
+
+    /* ADD ID TO CONSTRUCTOR + SETUP RELEVANT SYSTEMS */
     UIElement( ngl::Vec2 _pos,
                std::string _imageFile,
                std::string _name);

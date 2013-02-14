@@ -94,7 +94,13 @@ void Base::generateMesh()
 
   render->createVAO(m_IDStr, GL_TRIANGLES);
 
-  render->setIndexedDataToVAO(m_IDStr,vertSize*boxData.size(), boxData[0].x, sizeof(indices), &indices[0], 12);
+  render->setIndexedDataToVAO(m_IDStr,
+                              vertSize*boxData.size(),
+                              3,
+                              boxData[0].x,
+                              sizeof(indices),
+                              &indices[0],
+                              12);
 }
 
 //-------------------------------------------------------------------//

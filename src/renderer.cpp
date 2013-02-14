@@ -45,11 +45,7 @@ void Renderer::init()
     float w = window->getScreenWidth();
     float h = window->getScreenHeight();
 
-    // set the viewport for openGL
-    glViewport(0,0,w,h);
-    //set camera shape
-    m_cam->setShape(45,(float)w/h,0.5,150);
-    m_orthoCam->setShape(45,(float)w/h,0.5,150);
+    resize(w, h);
 
     glEnable(GL_DEPTH_TEST);
 }
@@ -61,13 +57,20 @@ void Renderer::resize(const unsigned int _w, const unsigned int _h)
   glViewport(0,0,_w,_h);
   //set camera shape
   m_cam->setShape(45,(float)_w/_h,0.5,150);
+  m_orthoCam->setShape(45,(float)_w/_h,0.5,150);
+
+  setScreenSize();
 }
 
 
 
 //-------------------------------------------------------------------//
-void Renderer::createShader(std::string _name)
+void Renderer::createShader(std::string _name, int _numAttribs)
 {
+//  GLuint prog_id = glCreateProgram();
+
+//  GLuint shader_id = glCreateShader(GL_VERTEX_SHADER);
+
     ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
     shader->createShaderProgram(_name);
@@ -84,8 +87,14 @@ void Renderer::createShader(std::string _name)
     shader->attachShaderToProgram(_name,_name+"Vertex");
     shader->attachShaderToProgram(_name,_name+"Fragment");
 
-    shader->bindAttribute(_name,0,"inVert");
-    shader->bindAttribute(_name,1,"inNormal");
+    if(_numAttribs>=1)
+    {
+      shader->bindAttribute(_name,0,"inVert");
+      if(_numAttribs>=2)
+      {
+      shader->bindAttribute(_name,1,"inNormal");
+      }
+    }
     //shader->bindAttribute(_name,1,"inUV");
 
     shader->linkProgramObject(_name);
@@ -116,21 +125,70 @@ void Renderer::setDataToVAO(std::string _id, unsigned int _size, GLfloat &_data,
   vao->unbind();
 }
 //-------------------------------------------------------------------//
-void Renderer::setIndexedDataToVAO(std::string _id, unsigned int _size, const GLfloat &_data, unsigned int _indexSize, const GLvoid *_indexData, unsigned int _numIndices)
+void Renderer::setIndexedDataToVAO(std::string _id,
+                                   unsigned int _size,
+                                   unsigned int _step,
+                                   const GLfloat &_data,
+                                   unsigned int _indexSize,
+                                   const GLvoid *_indexData,
+                                   unsigned int _numIndices)
 {
   VAOPtr vao = bindVAOByID(_id);
 
-  vao->setIndexedData(_size, _data, _indexSize, _indexData, GL_UNSIGNED_BYTE, GL_STATIC_DRAW);
+  vao->setIndexedData(_size,
+                      _data,
+                      _indexSize,
+                      _indexData,
+                      GL_UNSIGNED_BYTE,
+                      GL_STATIC_DRAW);
 
   // vert position attribute
-  vao->setVertexAttributePointer(0,3,GL_FLOAT,sizeof(vertData),0);
+  vao->setVertexAttributePointer(0,_step,GL_FLOAT,sizeof(vertData),0);
   // vert normals attribute
-  vao->setVertexAttributePointer(1,3,GL_FLOAT,sizeof(vertData),3);
+  vao->setVertexAttributePointer(1,_step,GL_FLOAT,sizeof(vertData),_step);
 
   vao->setNumIndices(_numIndices);
 
   vao->unbind();
 }
+//-------------------------------------------------------------------//
+void Renderer::setIndexedData2D(std::string _id,
+                                   unsigned int _size,
+                                   unsigned int _step,
+                                   const GLfloat &_data,
+                                   unsigned int _indexSize,
+                                   const GLvoid *_indexData,
+                                   unsigned int _numIndices)
+{
+  VAOPtr vao = bindVAOByID(_id);
+
+  vao->setIndexedData(_size,
+                      _data,
+                      _indexSize,
+                      _indexData,
+                      GL_UNSIGNED_BYTE,
+                      GL_STATIC_DRAW);
+
+  // vert position attribute
+  vao->setVertexAttributePointer(0,_step,GL_FLOAT,sizeof(vertData2D),0);
+
+  vao->setNumIndices(_numIndices);
+
+  vao->unbind();
+}
+
+
+VAOPtr Renderer::getVAObyID(std::string _id)
+{
+  std::map<std::string, VAOPtr>::iterator it = m_mapVAO.find(_id);
+  if(it == m_mapVAO.end())
+  {
+    return VAOPtr();
+  }
+  return it->second;
+}
+
+
 //-------------------------------------------------------------------//
 void Renderer::draw(std::string _id, std::string _shader)
 {
@@ -141,6 +199,11 @@ void Renderer::draw(std::string _id, std::string _shader)
 
   v->draw();
   v->unbind();
+}
+
+void Renderer::deleteVAO(std::string _id)
+{
+  m_mapVAO.erase(_id);
 }
 
 void Renderer::drawSelection(unsigned int _id, std::string _idStr)
@@ -200,33 +263,34 @@ void Renderer::loadMatrixToShader( ngl::TransformStack &_tx,  std::string _shade
     shader->setShaderParamFromMat4("MVP",M*V*P);
 }
 //-------------------------------------------------------------------//
-void Renderer::loadMatrixToShaderSS( ngl::TransformStack &_tx,  std::string _shader)
+void Renderer::set2DPosToShader(ngl::Vec2 _pos,  std::string _shader)
 {
     ngl::ShaderLib *shader=ngl::ShaderLib::instance();
-    Window *window = Window::instance();
-    int w = window->getScreenWidth();
-    int h = window->getScreenHeight();
 
     (*shader)[_shader]->use();
 
-    ngl::Mat4 M;
-    ngl::Mat4 V;
-    ngl::Mat4 P;
+    shader->setRegisteredUniform1f("xpos",_pos.m_x);
+    shader->setRegisteredUniform1f("ypos",_pos.m_y);
+    shader->setRegisteredUniform3f("colour",0.3,0.4,0.6);
 
-    ngl::Transformation newtx;
-    ngl::Vec4 inScale = _tx.getCurrentTransform().getScale();
-  //  newtx.setScale(inScale.m_x/(float)w, inScale.m_y/(float)h, inScale.m_z);
-  //  newtx.setPosition(-1,-1,-1);
-
-    newtx.setPosition(-2,-2,-2);
-    newtx.setScale(0.1,0.2,1);
-
-    M= newtx.getMatrix();
-    V= m_orthoCam->getViewMatrix();
-    P= m_orthoCam->getProjectionMatrix();
-
-    shader->setShaderParamFromMat4("MVP",M*V*P);
 }
+
+void Renderer::setScreenSize()
+{
+  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
+  Window *window = Window::instance();
+  int w = window->getScreenWidth();
+  int h = window->getScreenHeight();
+
+  (*shader)["UI"]->use();
+
+  float scaleX=2.0/w;
+  float scaleY=-2.0/h;
+
+  shader->setRegisteredUniform1f("scaleX",scaleX);
+  shader->setRegisteredUniform1f("scaleY",scaleY);
+}
+
 //-------------------------------------------------------------------//
 void Renderer::loadLightToShader(ngl::Light *_light, std::string _shader)
 {
