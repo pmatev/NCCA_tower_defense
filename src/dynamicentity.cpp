@@ -35,6 +35,7 @@ void DynamicEntity::update()
   ngl::Vec3 brainVec = brain();
   // based on brain where should it go next
   // FOR TESTING JUST HAVE IT GO EXACTLY WHERE THE BRAIN SAYS
+  m_prevPos = m_pos;
   m_pos += brainVec;
 
   enforceGridBoundaries();
@@ -48,7 +49,7 @@ bool DynamicEntity::intersectTest(BBox _wsBBox) const
 {
   // initialise the return value
 
-  bool result = true;
+  bool result = false;
 
   //first test if the bounding box passed in overlaps with the
   //bounding box of the entity doing the testing
@@ -224,8 +225,6 @@ bool DynamicEntity::intersectTest(BBox _wsBBox) const
       }
     }
   }
-  // return the result
-
   return result;
 }
 
@@ -303,7 +302,7 @@ bool DynamicEntity::isIntersecting(
 
   //if we are checking against the x plane
 
-  if (_planeExtents.m_minX == _planeExtents.m_minX)
+  if (_planeExtents.m_minX == _planeExtents.m_maxX)
   {
     //initialise the variable to store the distance along the line
     //that it intersects. working from the known intersection value x
@@ -331,7 +330,7 @@ bool DynamicEntity::isIntersecting(
 
   //if we are checking against the y plane
 
-  else if (_planeExtents.m_minY == _planeExtents.m_minY)
+  else if (_planeExtents.m_minY == _planeExtents.m_maxY)
   {
     //initialise the variable to store the distance along the line
     //that it intersects. working from the known intersection value y
@@ -359,7 +358,7 @@ bool DynamicEntity::isIntersecting(
 
   //if we are checking against the z plane
 
-  else if (_planeExtents.m_minZ == _planeExtents.m_minZ)
+  else if (_planeExtents.m_minZ == _planeExtents.m_maxZ)
   {
     //initialise the variable to store the distance along the line
     //that it intersects. working from the known intersection value z
@@ -401,10 +400,10 @@ Collision DynamicEntity::collisionTest(
   //first generate a list of local entity records
   Database* db = Database::instance();
   entityRecordListPtr localEntities = db->getLocalEntities(
-        m_pos.m_x-(_bBoxSize/2),
-        m_pos.m_y-(_bBoxSize/2),
-        m_pos.m_x+(_bBoxSize/2),
-        m_pos.m_y+(_bBoxSize/2),
+        m_pos.m_x-(_bBoxSize),
+        m_pos.m_y-(_bBoxSize),
+        m_pos.m_x+(_bBoxSize),
+        m_pos.m_y+(_bBoxSize),
         _types
         );
 
@@ -431,19 +430,19 @@ Collision DynamicEntity::collisionTest(
 
       //get the relevant information
 
-      ngl::Vec3 _pos = e->getPos();
-      Entity::BBox _bBox = e->getMeshBBox();
+      ngl::Vec3 pos = e->getPos();
+      Entity::BBox bBox = e->getMeshBBox();
 
       //check for collisions between the entity checking and the one
       //it's checking against
 
       result = intersectTest(Entity::BBox(
-                               _pos.m_x + _bBox.m_minX,
-                               _pos.m_y + _bBox.m_minY,
-                               _pos.m_z + _bBox.m_minZ,
-                               _pos.m_x + _bBox.m_maxX,
-                               _pos.m_y + _bBox.m_maxY,
-                               _pos.m_z + _bBox.m_maxZ
+                               pos.m_x + bBox.m_minX,
+                               pos.m_y + bBox.m_minY,
+                               pos.m_z + bBox.m_minZ,
+                               pos.m_x + bBox.m_maxX,
+                               pos.m_y + bBox.m_maxY,
+                               pos.m_z + bBox.m_maxZ
                                )
                              );
       //if there was a collision
@@ -488,11 +487,11 @@ Collision DynamicEntity::collisionDetection(std::list<GeneralType> _types) const
 
   if (xDist > yDist)
   {
-    bBoxSize = xDist*2;
+    bBoxSize = xDist;
   }
   else
   {
-    bBoxSize = yDist*2;
+    bBoxSize = yDist;
   }
 
   //call the collision test method and store the result
