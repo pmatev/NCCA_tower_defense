@@ -85,6 +85,9 @@ void TestEnemy::generateMesh()
   }
 
 
+  //call to generate the bounding box
+
+  generateLsBBox(boxData);
   Renderer *render = Renderer::instance();
 
   render->createVAO(m_IDStr, GL_TRIANGLES);

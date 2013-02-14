@@ -71,7 +71,7 @@ std::list<Collision> ProjectileManager::checkCollisions()
     if (c.m_id != 0)
     {
       //if there was, add it to the list
-      //(*listIt)->kill();
+      (*listIt)->kill();
       collisionList.push_back(c);
     }
   }

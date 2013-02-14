@@ -96,4 +96,77 @@ void Entity::clearLocalEntities()
 
 //-------------------------------------------------------------------//
 
+void Entity::generateLsBBox(std::vector <vertData> _meshData)
+{
+  //set an iterator for the list of vertData objects
+
+  std::vector<vertData>::iterator vertIt = _meshData.begin();
+
+  //set the bounding box to initially start as the same as the first vert
+
+  m_lsMeshBBox.m_maxX = (*vertIt).x;
+  m_lsMeshBBox.m_minX = (*vertIt).x;
+  m_lsMeshBBox.m_maxY = (*vertIt).y;
+  m_lsMeshBBox.m_minY = (*vertIt).y;
+  m_lsMeshBBox.m_maxZ = (*vertIt).z;
+  m_lsMeshBBox.m_minZ = (*vertIt).z;
+
+  //then increment the iterator
+
+  vertIt++;
+
+  //then cycle through the rest of the vert points
+
+  while (vertIt != _meshData.end())
+  {
+    //check if the x value is less than the minimum x value
+
+    if ((*vertIt).x < m_lsMeshBBox.m_minX)
+    {
+      //set the new min value
+
+      m_lsMeshBBox.m_minX = (*vertIt).x;
+    }
+
+    //if not check if it's greater than the max x value
+
+    else if ((*vertIt).x > m_lsMeshBBox.m_maxX)
+    {
+      //set the new max value
+
+      m_lsMeshBBox.m_maxX = (*vertIt).x;
+    }
+
+    //repeat for y
+
+    if ((*vertIt).y < m_lsMeshBBox.m_minY)
+    {
+      m_lsMeshBBox.m_minY = (*vertIt).y;
+    }
+
+    else if ((*vertIt).y > m_lsMeshBBox.m_maxY)
+    {
+      m_lsMeshBBox.m_maxY = (*vertIt).y;
+    }
+
+    //and z
+
+    if ((*vertIt).z < m_lsMeshBBox.m_minZ)
+    {
+      m_lsMeshBBox.m_minZ = (*vertIt).z;
+    }
+
+    else if ((*vertIt).z > m_lsMeshBBox.m_maxZ)
+    {
+      m_lsMeshBBox.m_maxZ = (*vertIt).z;
+    }
+
+    //finally increment the counter
+
+    vertIt++;
+  }
+}
+
+//-------------------------------------------------------------------//
+
 

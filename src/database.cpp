@@ -13,11 +13,11 @@ Database::Database(
     float _environMinX,
     float _environMinZ
     ) :
+  m_base(0,BASE,0,0,0),
   m_environmentMaxX(_environMaxX),
   m_environmentMinX(_environMinX),
   m_environmentMaxZ(_environMaxZ),
-  m_environmentMinZ(_environMinZ),
-  m_base(0,BASE,0,0,0)
+  m_environmentMinZ(_environMinZ)
 {
   //initialise the grids
 
@@ -129,7 +129,7 @@ void Database::destroy()
   delete s_instance;
 }
 
-//-------------------------------------------------------------------//
+//-------------------------------------file:///usr/share/doc/HTML/index.html------------------------------//
 
 void Database::addRecord(EntityRecord _record)
 {

@@ -80,6 +80,10 @@ void TestTurret::generateMesh()
   }
 
 
+  //call top generate the mesh bounding box
+
+  generateLsBBox(boxData);
+
   Renderer *render = Renderer::instance();
 
   render->createVAO(m_IDStr, GL_TRIANGLES);

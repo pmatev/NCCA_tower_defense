@@ -7,6 +7,7 @@
 #include "smartpointers.h"
 #include "fwd/database.h"
 #include "fwd/entity.h"
+#include "renderer.h"
 #include "ngl/TransformStack.h"
 
 //-------------------------------------------------------------------//
@@ -209,6 +210,15 @@ public: //methods
   //-------------------------------------------------------------------//
 
   virtual void generateMesh() = 0;
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to calculate the local space bounding box of the
+  /// entity
+  /// @param [in] _meshData, a list of vertData structs from which to
+  /// calculate the bounding box
+  //-------------------------------------------------------------------//
+
+  void generateLsBBox(std::vector<vertData> _meshData);
 
 protected: //attributes
 
