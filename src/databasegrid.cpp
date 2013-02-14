@@ -12,6 +12,7 @@ DatabaseGrid::DatabaseGrid(
     float _environMinZ
     ):
   m_numCellsX(_numCellsX),
+  m_numCellsZ(_numCellsZ),
   m_environMinX(_environMinX),
   m_environMinZ(_environMinZ)
 {
@@ -136,17 +137,17 @@ entityRecordListPtr DatabaseGrid::getLocalEntities(
 
   //conversion of min and max values to grid space
 
-  float minXGrid = (_minX - m_environMinX)* m_scaleX;
-  float maxXGrid = (_maxX - m_environMinX)* m_scaleX;
+  float minXGrid = ( _minX - m_environMinX)* m_scaleX;
+  float maxXGrid = ( _maxX - m_environMinX)* m_scaleX;
   float minZGrid = (_minZ - m_environMinZ)* m_scaleZ;
   float maxZGrid = (_maxZ - m_environMinZ)* m_scaleZ;
 
   //conversion from float to int
 
-  int minXId = floor(minXGrid);
-  int maxXId = floor(maxXGrid);
-  int minZId = floor(minZGrid);
-  int maxZId = floor(maxZGrid);
+  int minXId = std::max(0, int(minXGrid));
+  int maxXId = std::min(m_numCellsX, int(maxXGrid));
+  int minZId = std::max(0, int(minZGrid));
+  int maxZId = std::min(m_numCellsZ, int(maxZGrid));
 
   //initialise a pointer to a list of entity records
 

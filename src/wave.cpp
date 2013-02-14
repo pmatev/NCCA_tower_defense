@@ -216,4 +216,39 @@ void Wave::addToPathNodes(EnemyPtr _enemy)
   }
 }
 
+std::list<Collision> Wave::checkCollisions()
+{
+  //initialise a list of collisions to return
+
+  std::list<Collision> collisionList;
+
+  // cycle through all of the projectiles stored
+
+  for (
+       EnemyList::iterator listIt = m_enemies.begin();
+       listIt != m_enemies.end();
+       listIt++
+       )
+  {
+    //call call collision detection on the projectiles
+    std::list<GeneralType> types;
+    types.push_back(TURRET);
+//    types.push_back(BASE);
+    Collision c = (*listIt)->collisionDetection(types);
+
+    //check if there was a collision
+
+    if (c.m_id != 0)
+    {
+      //if there was, add it to the list
+      // This needs to call damage deal and pass in the damage from the collision ----------
+      (*listIt)->kill();
+      collisionList.push_back(c);
+    }
+  }
+  //finally return the resulting list
+
+  return collisionList;
+}
+
 

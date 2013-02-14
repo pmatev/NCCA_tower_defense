@@ -29,8 +29,8 @@ DynamicEntity::~DynamicEntity()
 
 void DynamicEntity::update()
 {
-//  std::cout<<"updating dynamic entity"<<std::endl;
-//  std::cout<<"now at position"<<m_pos<<std::endl;
+  std::cout<<"updating dynamic entity with id"<<m_ID<<std::endl;
+  std::cout<<"now at position"<<m_pos<<std::endl;
   // get the brain vector
   ngl::Vec3 brainVec = brain();
   // based on brain where should it go next
@@ -44,7 +44,7 @@ void DynamicEntity::update()
 
 //-------------------------------------------------------------------//
 
-bool DynamicEntity::intersectTest(BBox _wsBBox)
+bool DynamicEntity::intersectTest(BBox _wsBBox) const
 {
   // initialise the return value
 
@@ -231,7 +231,7 @@ bool DynamicEntity::intersectTest(BBox _wsBBox)
 
 //-------------------------------------------------------------------//
 
-char DynamicEntity::genClippingCode(const ngl::Vec3 &_point, BBox _wsBBox)
+char DynamicEntity::genClippingCode(const ngl::Vec3 &_point, BBox _wsBBox) const
 {
   //initialise the variable to return
 
@@ -295,7 +295,7 @@ bool DynamicEntity::isIntersecting(
     const ngl::Vec3 &_point1,
     const ngl::Vec3 &_point2,
     BBox _planeExtents
-    )
+    ) const
 {
   //set the return value
 
@@ -395,10 +395,10 @@ bool DynamicEntity::isIntersecting(
 Collision DynamicEntity::collisionTest(
     std::list<GeneralType> &_types,
     float _bBoxSize
-    )
+    ) const
 {
-  //first generate a list of local entity records
 
+  //first generate a list of local entity records
   Database* db = Database::instance();
   entityRecordListPtr localEntities = db->getLocalEntities(
         m_pos.m_x-(_bBoxSize/2),
@@ -421,45 +421,47 @@ Collision DynamicEntity::collisionTest(
   {
     //get the id of the element pointed to by the iterator
 
-    unsigned int _id = (*listIt).m_id;
-
-    //from the id, get a pointer to the entity it relates to
-
-    Game* game = Game::instance();
-    EntityPtr e = game->getEntityByID(_id);
-
-    //get the relevant information
-
-    ngl::Vec3 _pos = e->getPos();
-    Entity::BBox _bBox = e->getMeshBBox();
-
-    //check for collisions between the entity checking and the one
-    //it's checking against
-
-    result = intersectTest(Entity::BBox(
-                             _pos.m_x + _bBox.m_minX,
-                             _pos.m_y + _bBox.m_minY,
-                             _pos.m_z + _bBox.m_minZ,
-                             _pos.m_x + _bBox.m_maxX,
-                             _pos.m_y + _bBox.m_maxY,
-                             _pos.m_z + _bBox.m_maxZ
-                             )
-                           );
-    //if there was a collision
-
-    if (result == true)
+    unsigned int id = (*listIt).m_id;
+    if(id != m_ID)
     {
-      //set the id of the collision being returned from the null value
-      //to the one tested
+      //from the id, get a pointer to the entity it relates to
 
-      c.m_id = _id;
+      Game* game = Game::instance();
+      EntityPtr e = game->getEntityByID(id);
 
-      //then set the damage value
+      //get the relevant information
 
-      c.m_damage = m_damage;
+      ngl::Vec3 _pos = e->getPos();
+      Entity::BBox _bBox = e->getMeshBBox();
+
+      //check for collisions between the entity checking and the one
+      //it's checking against
+
+      result = intersectTest(Entity::BBox(
+                               _pos.m_x + _bBox.m_minX,
+                               _pos.m_y + _bBox.m_minY,
+                               _pos.m_z + _bBox.m_minZ,
+                               _pos.m_x + _bBox.m_maxX,
+                               _pos.m_y + _bBox.m_maxY,
+                               _pos.m_z + _bBox.m_maxZ
+                               )
+                             );
+      //if there was a collision
+
+      if (result == true)
+      {
+        //set the id of the collision being returned from the null value
+        //to the one tested
+
+        c.m_id = id;
+
+        //then set the damage value
+
+        c.m_damage = m_damage;
+      }
+
     }
     //increment the iterator
-
     listIt++;
   }
   //finally return the collision struct
@@ -468,3 +470,37 @@ Collision DynamicEntity::collisionTest(
 }
 
 //-------------------------------------------------------------------//
+
+Collision DynamicEntity::collisionDetection(std::list<GeneralType> _types) const
+{
+  //calculate the desired size of the box to use as the initial filter of
+  //entities
+
+  //first calculate the distance travelled in the x direction since the
+  //last update and the equivalent y distance
+
+  float xDist = abs(m_pos.m_x - m_prevPos.m_x);
+  float yDist = abs(m_pos.m_y - m_prevPos.m_y);
+
+  //then select the largest to be the bBoxSize
+
+  float bBoxSize;
+
+  if (xDist > yDist)
+  {
+    bBoxSize = xDist*2;
+  }
+  else
+  {
+    bBoxSize = yDist*2;
+  }
+
+  //call the collision test method and store the result
+
+  Collision c = collisionTest(_types,bBoxSize);
+
+  return c;
+}
+
+//-------------------------------------------------------------------//
+

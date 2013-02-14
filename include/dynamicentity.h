@@ -54,6 +54,25 @@ public:
   void update();
 
   //-------------------------------------------------------------------//
+  /// @brief a method to check collisions against enemies
+  /// @param [out] a collision struct, 0 for the id if there was no
+  /// collision
+  //-------------------------------------------------------------------//
+
+  Collision collisionDetection(std::list<GeneralType> _types) const;
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to enforce the grid boundaries, pure virtual as
+  /// there are different responses to the limits for different sub classes
+  //-------------------------------------------------------------------//
+
+  virtual void enforceGridBoundaries () = 0;
+
+
+
+protected:
+
+  //-------------------------------------------------------------------//
   /// @brief method to check whether or not this entity has collided with
   /// a bounding box
   /// @param [in] _wsBBox the world space bounding box to test collisions
@@ -62,7 +81,7 @@ public:
   /// has occured
   //-------------------------------------------------------------------//
 
-  bool intersectTest (BBox _wsBBox);
+  bool intersectTest (BBox _wsBBox) const;
 
   //-------------------------------------------------------------------//
   /// @brief a method to generate and return a code for a point based on
@@ -72,7 +91,7 @@ public:
   /// @param [out]
   //-------------------------------------------------------------------//
 
-  char genClippingCode(const ngl::Vec3& _point, BBox _wsBBox);
+  char genClippingCode(const ngl::Vec3& _point, BBox _wsBBox) const;
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the point of intersection of a line with
@@ -88,7 +107,7 @@ public:
   bool isIntersecting(
         const ngl::Vec3 &_point1,
         const ngl::Vec3 &_point2,
-        BBox _planeExtents);
+        BBox _planeExtents) const;
 
   //-------------------------------------------------------------------//
   /// @brief a method to check collisions of this entity against a list
@@ -99,16 +118,11 @@ public:
   /// against
   //-------------------------------------------------------------------//
 
-  Collision collisionTest (std::list<GeneralType> &_types, float _bBoxSize);
+  Collision collisionTest (
+        std::list<GeneralType> &_types,
+        float _bBoxSize
+        ) const;
 
-  //-------------------------------------------------------------------//
-  /// @brief a method to enforce the grid boundaries, pure virtual as
-  /// there are different responses to the limits for different sub classes
-  //-------------------------------------------------------------------//
-
-  virtual void enforceGridBoundaries () = 0;
-
-protected:
   //-------------------------------------------------------------------//
   /// @brief a virtual brain method, to be implemented in children
   /// @param [out] a vector which will be used to define the behaviour

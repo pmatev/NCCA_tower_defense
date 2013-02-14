@@ -77,7 +77,7 @@ protected:
 
   ngl::Vec3 brain();
 
-  bool m_active;
+//  bool m_active;
 };
 
 #endif // TESTENEMY_H

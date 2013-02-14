@@ -68,6 +68,13 @@ public:
 
   bool generatePaths(NodePtr _node);
 
+  //-------------------------------------------------------------------//
+  /// @brief check for collisions with static objects
+  /// @param[out] list of Collisions with objects
+  //-------------------------------------------------------------------//
+
+  std::list<Collision> checkCollisions() const;
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief ctor

@@ -11,6 +11,7 @@
 #include "node.h"
 #include "wavemanager.h"
 #include "environment.h"
+#include "projectilemanager.h"
 #include "concrete/testenemy.h"
 
 
@@ -18,7 +19,7 @@
 /// @file game.h
 /// @brief a class to manage the game state and other game managers
 /// to other managers
-/// @author Peter Matev
+/// @author Peter Matev, Jared Auty
 /// @version 1.2
 /// @date 04/12/12
 /// Revision History :
@@ -79,7 +80,7 @@ public:
     //-------------------------------------------------------------------//
     /// @brief return Smart Pointer to Entity via ID.
     //-------------------------------------------------------------------//
-    EntityPtr getEntityByID(const unsigned int _i);
+    EntityPtr getEntityByID(const unsigned int _i) const;
 
     //-------------------------------------------------------------------//
     /// @brief try to create a tower on the specified node with the specified
@@ -114,6 +115,14 @@ protected:
     //-------------------------------------------------------------------//
     ~Game();
 
+    //-------------------------------------------------------------------//
+    /// @brief apply collision damage
+    /// @param[in] _collisionList, is of all the entities that have been
+    /// collided and the damage to be dealt.
+    //-------------------------------------------------------------------//
+
+    void dealDamage(std::list<Collision> _collisionList);
+
 protected:
 
     //-------------------------------------------------------------------//
@@ -132,6 +141,12 @@ protected:
     //-------------------------------------------------------------------//
 
     EnvironmentPtr m_environment;
+
+    //-------------------------------------------------------------------//
+    /// @brief pointer to the projectile manager
+    //-------------------------------------------------------------------//
+
+    ProjectileManagerPtr m_projectileManager;
 
 private:
     //-------------------------------------------------------------------//

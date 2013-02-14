@@ -10,54 +10,7 @@ Projectile::Projectile(
     ) :
   DynamicEntity(_pos,_aim,PROJECTILE, _id)
 {
-
-}
-
-//-------------------------------------------------------------------//
-
-Collision Projectile::collisionDetection()
-{
-  //calculate the desired size of the box to use as the initial filter of
-  //entities
-
-  //first calculate the distance travelled in the x direction since the
-  //last update and the equivalent y distance
-
-  float xDist = abs(m_pos.m_x - m_prevPos.m_x);
-  float yDist = abs(m_pos.m_y - m_prevPos.m_y);
-
-  //then select the largest to be the bBoxSize
-
-  float bBoxSize;
-
-  if (xDist > yDist)
-  {
-    bBoxSize = xDist*2;
-  }
-  else
-  {
-    bBoxSize = yDist*2;
-  }
-  //create a list of types with just the enemy type in it
-
-  std::list<GeneralType> types;
-  types.push_back(ENEMY);
-
-  //call the collision test method and store the result
-
-  Collision c = collisionTest(types,bBoxSize);
-
-  //check if the collision is returning a value
-
-  if (c.m_id != 0)
-  {
-    //if there is a non 0 value being returned there was a collision
-    //and the health of the projectile should be set to 0
-
-    m_health = 0;
-  }
-
-  return c;
+  ;
 }
 
 //-------------------------------------------------------------------//

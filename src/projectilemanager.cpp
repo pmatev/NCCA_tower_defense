@@ -3,6 +3,13 @@
 #include "game.h"
 
 //-------------------------------------------------------------------//
+ProjectileManagerPtr ProjectileManager::create()
+{
+  ProjectileManagerPtr a(new ProjectileManager());
+  return a;
+}
+
+//-------------------------------------------------------------------//
 
 ProjectileManager::ProjectileManager()
 {
@@ -43,30 +50,29 @@ std::list<Collision> ProjectileManager::checkCollisions()
 
   std::list<Collision> collisionList;
 
-  //if there are projectiles
 
-  if (m_projectiles.size() != 0)
+
+  // cycle through all of the projectiles stored
+
+  for (
+       ProjectileList::iterator listIt = m_projectiles.begin();
+       listIt != m_projectiles.end();
+       listIt++
+       )
   {
-    //initialise the iterator
+    //call call collision detection on the projectiles
+    std::list<GeneralType> types;
+    types.push_back(ENEMY);
+    types.push_back(TURRET);
+    Collision c = (*listIt)->collisionDetection(types);
 
-    ProjectileList::iterator listIt = m_projectiles.begin();
+    //check if there was a collision
 
-    // cycle through all of the projectiles stored
-
-    for (; listIt != m_projectiles.end(); listIt++)
+    if (c.m_id != 0)
     {
-      //call call collision detection on the projectiles
-
-      Collision c = (*listIt)->collisionDetection();
-
-      //check if there was a collision
-
-      if (c.m_id != 0)
-      {
-        //if there was, add it to the list
-
-        collisionList.push_back(c);
-      }
+      //if there was, add it to the list
+      //(*listIt)->kill();
+      collisionList.push_back(c);
     }
   }
   //finally return the resulting list

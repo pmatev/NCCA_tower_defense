@@ -47,6 +47,7 @@ void Game::init()
     //in environment.
     m_environment = Environment::create(20, 20, 2, ngl::Vec3(0.0, 0.0, 0.0), 0, 0); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
     m_waveManager = WaveManager::create();
+    m_projectileManager = ProjectileManager::create();
 
 }
 
@@ -88,9 +89,9 @@ void Game::unregisterID(const unsigned int _i)
 }
 
 //-------------------------------------------------------------------//
-EntityPtr Game::getEntityByID(const unsigned int _i)
+EntityPtr Game::getEntityByID(const unsigned int _i) const
 {
-  std::map<unsigned int, EntityPtr>::iterator it = m_IDMap.find(_i);
+  std::map<unsigned int, EntityPtr>::const_iterator it = m_IDMap.find(_i);
   if(it == m_IDMap.end())
   {
     return EntityPtr();
@@ -109,8 +110,22 @@ void Game::update(const double _t)
   // 5. update enemies
   // 6. deal with collisions with base
   // 7. update environment
-  m_environment->update();
+
+  // 1 //
+  Database::instance()->clearRecords();
+  // 2 //
+  m_waveManager->publish();
+  m_projectileManager->publish();
+  // 3 //
+  m_projectileManager->update();
+  // 4 //
+  dealDamage(m_projectileManager->checkCollisions());
+  // 5 //
   m_waveManager->update();
+  // 6 //
+  dealDamage(m_waveManager->checkCollisions());
+  // 7 //
+  m_environment->update();
 }
 //-------------------------------------------------------------------//
 void Game::draw()
@@ -173,6 +188,23 @@ EnvironmentWeakPtr Game::getEnvironmentWeakPtr()
   //EnvironmentWeakPtr a(m_environment);
   EnvironmentWeakPtr a(m_environment);
   return a;
+}
+
+void Game::dealDamage(std::list<Collision> _collisionList)
+{
+  for(
+      std::list<Collision>::iterator it = _collisionList.begin();
+      it != _collisionList.end();
+      ++it
+      )
+  {
+    // Get smart pointer to object
+    EntityPtr entity = getEntityByID(it->m_id);
+    if(entity)
+    {
+      entity->dealDamage(it->m_damage);
+    }
+  }
 }
 
 

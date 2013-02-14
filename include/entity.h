@@ -147,6 +147,25 @@ public: //methods
   inline float getHealth() const {return m_health;}
 
   //-------------------------------------------------------------------//
+  /// @brief Deal a certain amount of damage to the entity.
+  /// @param[in] _damage, the amount of damage to deal
+  //-------------------------------------------------------------------//
+
+  inline void dealDamage(float _damage)
+  {
+    m_health-= _damage;
+  }
+
+  //-------------------------------------------------------------------//
+  /// @brief Kill the entity by reducing it's health to 0
+  //-------------------------------------------------------------------//
+
+  inline void kill()
+  {
+    m_health = 0;
+  }
+
+  //-------------------------------------------------------------------//
   /// @brief method to get the ID of the entity
   /// @param [out] m_ID, the ID of the entity
   //-------------------------------------------------------------------//

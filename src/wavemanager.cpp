@@ -50,3 +50,10 @@ bool WaveManager::generatePaths(NodePtr _node)
 {
   return m_wave->generatePaths(_node);
 }
+
+//-------------------------------------------------------------------//
+
+std::list<Collision> WaveManager::checkCollisions() const
+{
+  return m_wave->checkCollisions();
+}
