@@ -179,7 +179,7 @@ bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
 
 ngl::Vec3 Game::getBasePos() const
 {
-  return m_environment->getBasePos();
+   return m_environment->getBasePos();
 }
 
 //-------------------------------------------------------------------//

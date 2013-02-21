@@ -100,6 +100,10 @@ void DatabaseGrid::addRecord(EntityRecord _record)
   int floorX = floor(gridSpaceX);
   int floorZ = floor(gridSpaceZ);
 
+  // clamp values to num cells
+  floorX = floorX < 0 ? 0 : floorX > m_numCellsX - 1 ? m_numCellsX -1 : floorX;
+  floorZ = floorZ < 0 ? 0 : floorZ > m_numCellsZ - 1 ? m_numCellsZ -1 : floorZ;
+
   //calculating the index
 
   int index = floorX + (floorZ*m_numCellsX);
@@ -145,9 +149,9 @@ entityRecordListPtr DatabaseGrid::getLocalEntities(
   //conversion from float to int
 
   int minXId = std::max(0, int(minXGrid));
-  int maxXId = std::min(m_numCellsX, int(maxXGrid));
+  int maxXId = std::min(m_numCellsX - 1, int(maxXGrid));
   int minZId = std::max(0, int(minZGrid));
-  int maxZId = std::min(m_numCellsZ, int(maxZGrid));
+  int maxZId = std::min(m_numCellsZ - 1, int(maxZGrid));
 
   //initialise a pointer to a list of entity records
 
@@ -166,7 +170,7 @@ entityRecordListPtr DatabaseGrid::getLocalEntities(
     {
       //if there are elements in the selected cell
 
-      if ((*m_grid[j+(i*m_numCellsX)]).size()!=0)
+      if ((*m_grid[j+(i*(m_numCellsX - 1))]).size()!=0)
       {
         //and if the return list is empty
 
@@ -187,8 +191,8 @@ entityRecordListPtr DatabaseGrid::getLocalEntities(
 
         returnList->insert(
               returnListIt,
-              (*m_grid[j+(i*m_numCellsX)]).begin(),
-              (*m_grid[j+(i*m_numCellsX)]).end()
+              (*m_grid[j+(i*(m_numCellsX - 1))]).begin(),
+              (*m_grid[j+(i*(m_numCellsX - 1))]).end()
               );
       }
     }

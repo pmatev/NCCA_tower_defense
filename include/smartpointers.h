@@ -45,5 +45,14 @@
   typedef std::list< X ## Ptr > X ## List; \
   typedef boost::shared_ptr< X ## List > X ## ListPtr;\
 
+//-------------------------------------------------------------------//
+/// @brief preprocessor macro to aid in the creation of lists of shared pointer
+//-------------------------------------------------------------------//
+
+#define DECLARESMARTVEC(X) \
+  DECLARESMART(X); \
+  typedef std::vector< X ## Ptr > X ## Vec; \
+  typedef boost::shared_ptr< X ## Vec > X ## VecPtr;\
+
 
 #endif // SMARTPOINTERS_H

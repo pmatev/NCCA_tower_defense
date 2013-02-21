@@ -124,14 +124,14 @@ public:
   /// @brief Find a path between two nodes ( A* search algorithm)
   //-------------------------------------------------------------------//
 
-  Node::NodeList findPath(NodePtr _start, NodePtr _goal) const;
+  bool getAStar(Node::NodeList &o_newPath, NodePtr _start, NodePtr _goal) const;
 
   //-------------------------------------------------------------------//
-  /// @brief Wraps the findPath method so that coordinates can be
+  /// @brief Wraps the getAStar method so that coordinates can be
   /// passed in instead of NodePtrs.
   //-------------------------------------------------------------------//
 
-  Node::NodeList findPathFromPos(ngl::Vec3 _start, ngl::Vec3 goal) const;
+  bool findPathFromPos(Node::NodeList &o_newPath, ngl::Vec3 _start, ngl::Vec3 _goal) const;
 
   //-------------------------------------------------------------------//
   /// @brief Finds the NodePtr closest to the position passed in
@@ -169,10 +169,10 @@ protected:
   /// @param[out] the ordered list of nodes that make up the path
   //-------------------------------------------------------------------//
 
-  Node::NodeList reconstructPath(
-        PathNodePtr _current,
-        NodePtr _start,
-        Node::NodeList _currentList = Node::NodeList()
+  void reconstructPath(
+        Node::NodeList &io_newPath,
+        NodeManager::PathNodePtr _current,
+        NodePtr _start = NodePtr()
         ) const;
 
   //-------------------------------------------------------------------//
@@ -187,6 +187,11 @@ protected:
 
 
 protected:
+
+  //-------------------------------------------------------------------//
+  /// @brief static member for caching hexagon factor sqrt(3)/2
+  //-------------------------------------------------------------------//
+  static float s_hexFactor;
 
   //-------------------------------------------------------------------//
   /// @brief list of nodes
@@ -222,7 +227,7 @@ protected:
   /// @brief distance between the centers of any two adjacent nodes
   //-------------------------------------------------------------------//
 
-  float m_centerDist;
+  float m_centerSqrDist;
 
 
 private:

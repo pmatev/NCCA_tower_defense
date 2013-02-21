@@ -1,7 +1,7 @@
 #include "wave.h"
 
 #include <boost/foreach.hpp>
-
+#include <omp.h>
 #include "entityfactory.h"
 #include "node.h"
 #include "game.h"
@@ -14,9 +14,12 @@ Wave::Wave(EnemyPairList _enemiesForCreation):
   // ctor
   //---------------------------------------------TEST--------------------------------------------------
   // create shit load o enemies!!!
-  for(int i=0; i < 10; ++i)
+  int numEnemies = 100;
+  for(int i=0; i < numEnemies; ++i)
   {
-     addEnemy("TestEnemy", ngl::Vec3(20, 0, i*2), ngl::Vec3(0, 0, 0));
+    float randomX = std::rand() / float(RAND_MAX);
+    float randomZ = std::rand() / float(RAND_MAX);
+    addEnemy("TestEnemy", ngl::Vec3((10 * randomX) + 20, 0, i*(40.0/numEnemies)* randomZ), ngl::Vec3(0, 0, 0));
   }
   //-------------------------------------------END TEST------------------------------------------------
 }
@@ -36,7 +39,7 @@ Wave::~Wave()
 {
   // remove all enemies (must use removeEnemy rather than clear as this will
   // ensure that they are unregistered properly)
-  for(EnemyList::iterator it = m_enemies.begin(); it != m_enemies.end();)
+  for(EnemyVec::iterator it = m_enemies.begin(); it != m_enemies.end();)
   {
     it = removeEnemy(it);
   }
@@ -46,9 +49,10 @@ Wave::~Wave()
 
 void Wave::update()
 {
-//  std::cout<<"updating wave"<<std::endl;
+  //  std::cout<<"updating wave"<<std::endl;
+
   for(
-      EnemyList::iterator it = m_enemies.begin();
+      EnemyVec::iterator it = m_enemies.begin();
       it != m_enemies.end();
       )
   {
@@ -60,9 +64,20 @@ void Wave::update()
     }
     else
     {
-      // update enemy
-      (*it)->update();
       ++it;
+    }
+  }
+#pragma omp parallel
+  {
+#pragma omp for
+    for(
+        unsigned long int i = 0;
+        i < m_enemies.size();
+        ++i
+        )
+    {
+      // update enemy
+      (m_enemies[i])->update();
     }
   }
   brain();
@@ -74,7 +89,7 @@ void Wave::publish()
 {
   // Go through all the enemies and call their publish
   for(
-      EnemyList::iterator it = m_enemies.begin();
+      EnemyVec::iterator it = m_enemies.begin();
       it != m_enemies.end();
       ++it
       )
@@ -89,7 +104,7 @@ void Wave::draw()
 {
   // Go through all the enemies and call their publish
   for(
-      EnemyList::iterator it = m_enemies.begin();
+      EnemyVec::iterator it = m_enemies.begin();
       it != m_enemies.end();
       ++it
       )
@@ -103,7 +118,7 @@ void Wave::drawSelection()
 {
   // Go through all the enemies and call their publish
   for(
-      EnemyList::iterator it = m_enemies.begin();
+      EnemyVec::iterator it = m_enemies.begin();
       it != m_enemies.end();
       ++it
       )
@@ -120,23 +135,38 @@ bool Wave::generatePaths(NodePtr _node)
   // 1. Find all Enemies affected by _node
   // 2. Go through each Enemy and tell it to generate a new temporary path
   // 3. If all the paths were created successfully tell all enemies to update
-        // their paths and return true, else return false
+  // their paths and return true, else return false
   // 4. Update the map with the new node values
 
   // 1.
-  EnemyListPtr enemyList = m_pathNodes[_node];
+  EnemyVecPtr enemyList = m_pathNodes[_node];
   // if there are no enemies using this node
   if(!enemyList)
   {
     return true;
   }
   // 2.
-  BOOST_FOREACH(EnemyPtr it, *enemyList)
+  bool invalidPath = false;
+#pragma omp parallel
   {
-    if(!it->generateTempPath())
+#pragma omp for
+    for(unsigned long int i = 0; i < enemyList->size(); ++i)
     {
-      return false;
+      // This is set to skip computation so that we can shortcut to the end
+      // without breaking (breaking doesn't work with "omp for")
+      if(invalidPath)
+      {
+        continue;
+      }
+      if(!(*enemyList)[i]->generateTempPath())
+      {
+        invalidPath = true;
+      }
     }
+  }
+  if(invalidPath)
+  {
+    return false;
   }
   // 3.
   BOOST_FOREACH(EnemyPtr it, *enemyList)
@@ -166,11 +196,11 @@ void Wave::addEnemy(
   // use EntityFactory to create enemy then save it in m_enemies
   EnemyPtr newEnemy = boost::dynamic_pointer_cast<Enemy>(
         EntityFactory::createDynamicEntity(
-        _type,
-        _pos,
-        _aim
-      )
-    );
+          _type,
+          _pos,
+          _aim
+          )
+        );
   m_enemies.push_back(newEnemy);
   addToPathNodes(newEnemy);
 
@@ -178,7 +208,7 @@ void Wave::addEnemy(
 
 //-------------------------------------------------------------------//
 
-EnemyList::iterator Wave::removeEnemy(EnemyList::iterator _it)
+EnemyVec::iterator Wave::removeEnemy(EnemyVec::iterator _it)
 {
   // unregister from game so that the smartptr is freed
   Game::instance()->unregisterID((*_it)->getID());
@@ -209,7 +239,7 @@ void Wave::addToPathNodes(EnemyPtr _enemy)
     if(m_pathNodes.find(node) == m_pathNodes.end())
     {
       // Add to map
-      m_pathNodes[node] = EnemyListPtr(new EnemyList());
+      m_pathNodes[node] = EnemyVecPtr(new EnemyVec());
     }
     // Add to the enemy to the list
     m_pathNodes[node]->push_back(_enemy);
@@ -225,7 +255,7 @@ std::list<Collision> Wave::checkCollisions()
   // cycle through all of the projectiles stored
 
   for (
-       EnemyList::iterator listIt = m_enemies.begin();
+       EnemyVec::iterator listIt = m_enemies.begin();
        listIt != m_enemies.end();
        listIt++
        )
@@ -233,7 +263,7 @@ std::list<Collision> Wave::checkCollisions()
     //call call collision detection on the projectiles
     std::list<GeneralType> types;
     types.push_back(TURRET);
-//    types.push_back(BASE);
+    //    types.push_back(BASE);
     Collision c = (*listIt)->collisionDetection(types);
 
     //check if there was a collision
@@ -243,7 +273,8 @@ std::list<Collision> Wave::checkCollisions()
       //if there was, add it to the list
       // This needs to call damage deal and pass in the damage from the collision ----------
       (*listIt)->kill();
-      collisionList.push_back(c);    }
+      collisionList.push_back(c);
+    }
   }
   //finally return the resulting list
 

@@ -4,21 +4,21 @@
 
 //-------------------------------------------------------------------//
 
+float NodeManager::s_hexFactor = 0.866025404;
+
+//-------------------------------------------------------------------//
 NodeManager::NodeManager(
     int _gridWidth,
     int _gridHeight,
     int _hexagonSize,
     ngl::Vec3 _origin
     ) :
-  m_centerDist(_hexagonSize * 1.732),
+  m_centerSqrDist((_hexagonSize * _hexagonSize * 2.999824)), // (sqrt(2/3)/4)
   m_gridWidth(_gridWidth),
   m_gridHeight(_gridHeight),
   m_hexagonSize(_hexagonSize),
   m_origin(_origin)
-{
-  // precalculate sqrt(3/2)
-
-  double val = (sqrt(3)/2);
+{  
   // Initialise Database
   //first calculate the maximum x and z values
 
@@ -26,12 +26,12 @@ NodeManager::NodeManager(
       + (_gridWidth-1)
       *(_hexagonSize * 0.75)
       +(_hexagonSize/2);
-  float maxZ = _origin.m_z + (_hexagonSize*val)*_gridHeight;
+  float maxZ = _origin.m_z + (_hexagonSize*s_hexFactor)*_gridHeight;
 
   // then calculate the minimum x and z values
 
   float minX = _origin.m_x - (_hexagonSize/2);
-  float minZ = _origin.m_z - ((_hexagonSize*val)/2);
+  float minZ = _origin.m_z - ((_hexagonSize*s_hexFactor)/2);
 
   //finally initialise the database
 
@@ -49,7 +49,7 @@ NodeManager::NodeManager(
       NodePtr node(
             new Node(
               ngl::Vec3(i * _hexagonSize * 0.75, 0,
-                        j * (_hexagonSize * val) + (_hexagonSize * val)/2 * ((i%2 != 0))
+                        j * (_hexagonSize * s_hexFactor) + (_hexagonSize * s_hexFactor)/2 * ((i%2 != 0))
                         ) + m_origin,
               m_hexagonSize,
               ID
@@ -422,7 +422,7 @@ void NodeManager::drawSelection()
 
 //-------------------------------------------------------------------//
 
-Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
+bool NodeManager::getAStar(Node::NodeList &o_newPath, NodePtr _start, NodePtr _goal) const
 {
   // From http://en.wikipedia.org/wiki/A*_search_algorithm
   // THIS FUNCTION COULD PROBABLY BE SIMPLIFIED
@@ -451,9 +451,8 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
     // If we've found the goal
     if(current->m_node == _goal)
     {
-      // Generate path and return
-      Node::NodeList outputPath = reconstructPath(current, _start);
-      return outputPath;
+      reconstructPath(o_newPath, current, _start);
+      return true;
     }
 
     // Take current from openSet and move it into closedSet
@@ -481,7 +480,7 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
         // Create an new PathNode that corresponds to the child node. (i.e put
         // it on the system)
         // Set gScore very high so it's overwritten in the next step
-        child = PathNode::create(*it, current->m_gScore + m_centerDist, 0);
+        child = PathNode::create(*it, current->m_gScore + m_centerSqrDist, 0);
         allPathNodes[*it] = child;
       }
       else
@@ -489,20 +488,17 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
         // Set child to the value in the iterator
         child = childIt->second;
       }
-      //---------------------------------------------------------------------------------------------------------
-      bool test = (*child) < (*current);
-      //---------------------------------------------------------------------------------------------------------
       if(checkListForNode(child, closedSet))
       {
         continue;
       }
-      float tentativeGScore = current->m_gScore + m_centerDist;
+      float tentativeGScore = current->m_gScore + m_centerSqrDist;
       bool inOpenSet = checkListForNode(child, openSet);
       if(!inOpenSet || tentativeGScore <= child->m_gScore)
       {
         child->m_parent = current;
         child->m_gScore = tentativeGScore;
-        child->m_fScore = tentativeGScore + heuristicPath(child->m_node, _goal);
+        child->m_fScore = tentativeGScore + 3*heuristicPath(child->m_node, _goal);
         if(!inOpenSet)
         {
           //Add to openSet
@@ -515,7 +511,7 @@ Node::NodeList NodeManager::findPath(NodePtr _start, NodePtr _goal) const
   }
 
   // Failed to find a valid path
-  return Node::NodeList();
+  return false;
 }
 
 //-------------------------------------------------------------------//
@@ -524,27 +520,30 @@ float NodeManager::heuristicPath(NodePtr _start, NodePtr _goal) const
 {
 
   ngl::Vec3 distVec =  _start->getPos() - _goal->getPos();
-  // THIS SHOULD USE SQUARED DISTANCE FOR SPEED INCREASE
-  return distVec.length();
+  float sqrDist =
+      (distVec.m_x * distVec.m_x) +
+      (distVec.m_y * distVec.m_y) +
+      (distVec.m_z * distVec.m_z);
+  return sqrDist;
 }
 
-Node::NodeList NodeManager::reconstructPath(
+void NodeManager::reconstructPath(
+    Node::NodeList &io_newPath,
     PathNodePtr _current,
-    NodePtr _start,
-    Node::NodeList _currentList
+    NodePtr _start
     ) const
 {
   // Add the current node to the list
-  _currentList.push_back(_current->m_node);
+  io_newPath.push_back(_current->m_node);
   // if we've got back to the start
   if(_current->m_node == _start)
   {
     // Finish
-    return _currentList;
+    return;
   }
   // Keep searching from the parent
-  _currentList = reconstructPath(_current->m_parent, _start, _currentList);
-  return _currentList;
+  reconstructPath(io_newPath, _current->m_parent, _start);
+  return;
 }
 
 //-------------------------------------------------------------------//
@@ -570,7 +569,8 @@ bool NodeManager::checkListForNode(PathNodePtr _node, PathNodeList _list) const
 
 //-------------------------------------------------------------------//
 
-Node::NodeList NodeManager::findPathFromPos(
+bool NodeManager::findPathFromPos(
+    Node::NodeList &o_newPath,
     ngl::Vec3 _start,
     ngl::Vec3 _goal) const
 {
@@ -578,7 +578,7 @@ Node::NodeList NodeManager::findPathFromPos(
   NodePtr start = getNodeFromPos(_start);
   NodePtr goal = getNodeFromPos(_goal);
 
-  return findPath(start, goal);
+  return getAStar(o_newPath, start, goal);
 }
 
 NodePtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
@@ -586,17 +586,17 @@ NodePtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
   float x = _pos.m_x - m_origin.m_x;
   float y = _pos.m_z - m_origin.m_z;
 
-  //clamp between values within the grid
-  x = x < 0 ? 0 : (x > (m_gridWidth-1)*m_hexagonSize ? (m_gridWidth-1)*m_hexagonSize : x);
-  y = y < 0 ? 0 : (y > (m_gridHeight-1)*(m_hexagonSize * (sqrt(3)/2)) ? (m_gridHeight-1)*(m_hexagonSize * (sqrt(3)/2)) : y);
-
   //transform into coordinate space
   x /= m_hexagonSize*0.75;
-  y /= (m_hexagonSize*(sqrt(3)/2));
+  y /= (m_hexagonSize*(s_hexFactor));
 
   //round to nearest int
   x = floor(x + 0.5);
   y = floor(y + 0.5);
+
+  //clamp between values within the grid
+  x = x < 0 ? 0 : x > m_gridWidth - 1 ? m_gridWidth - 1 : x;
+  y = y < 0 ? 0 : y > m_gridHeight-1 ? m_gridHeight-1 : y;
 
   //calculate the index of the nearest based on x and y
   int index = (y * m_gridWidth) + x;

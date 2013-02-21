@@ -19,6 +19,8 @@
 
 DECLARESMARTLIST(Enemy)
 
+DECLARESMARTVEC(Enemy)
+
 class Enemy : public DynamicEntity
 {
 public:

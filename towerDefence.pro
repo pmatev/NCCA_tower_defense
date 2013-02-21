@@ -12,7 +12,7 @@ QT       += core \
 TARGET = towerDefence
 CONFIG   += console
 CONFIG   -= app_bundle
-
+#QMAKE_CXX=clang++  -fdiagnostics-fixit-info
 TEMPLATE = app
 
 #setting up project directories
@@ -110,6 +110,9 @@ message(output from sdl2-config --cflags added to CXXFLAGS= $$QMAKE_CXXFLAGS)
 LIBS+=$$system($$(HOME)/SDL2.0/bin/sdl2-config  --libs)
 message(output from sdl2-config --libs added to LIB=$$LIBS)
 
+#include for threading
+QMAKE_CXXFLAGS += -fopenmp
+QMAKE_CXXFLAGS += -lgomp
 
 INCLUDEPATH += $$(HOME)/NGL/include/
 DEPENDPATH += $$(HOME)/NGL/include/
@@ -118,6 +121,10 @@ DEFINES +=NGL_DEBUG
 
 LIBS += -L/usr/local/lib
 LIBS +=  -L/$(HOME)/NGL/lib -l NGL
+
+#include for threading
+LIBS += -fopenmp
+LIBS += -lgomp
 
 OTHER_FILES += \
     shaders/Phong.vs \

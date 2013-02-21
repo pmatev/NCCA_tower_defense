@@ -108,8 +108,8 @@ public:
   std::list<Collision> checkCollisions();
 
 protected:
-  //typedef std::list<DynamicEntityPtr> EnemyList;
-  //typedef boost::shared_ptr<EnemyList> EnemyListPtr;
+  //typedef std::list<DynamicEntityPtr> EnemyVec;
+  //typedef boost::shared_ptr<EnemyVec> EnemyVecPtr;
 protected:
 
   //-------------------------------------------------------------------//
@@ -148,7 +148,7 @@ protected:
   /// element has been removed
   //-------------------------------------------------------------------//
 
-  EnemyList::iterator removeEnemy(EnemyList::iterator _it);
+  EnemyVec::iterator removeEnemy(EnemyVec::iterator _it);
 
   //-------------------------------------------------------------------//
   /// @brief goes through all the Enemies, asks for their paths and compiles
@@ -169,7 +169,7 @@ protected:
   /// @brief list of all currently active enemies
   //-------------------------------------------------------------------//
 
-  EnemyList m_enemies;
+  EnemyVec m_enemies;
 
   //-------------------------------------------------------------------//
   /// @brief list of possible enemy types
@@ -183,7 +183,7 @@ protected:
   /// an enemy updates it's path
   //-------------------------------------------------------------------//
 
-  std::map<NodePtr, EnemyListPtr> m_pathNodes;
+  std::map<NodePtr, EnemyVecPtr> m_pathNodes;
 
 };
 

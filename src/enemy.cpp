@@ -19,13 +19,13 @@ Enemy::Enemy(
   {
     finalisePath();
 
-    std::cout<<"Path is of size: "<< m_pathNodes.size() <<std::endl;
-    std::cout<<"Base is: "<< Game::instance()->getBasePos() <<std::endl;
-    std::cout<<"Start is: "<< m_pos <<std::endl;
-    for(Node::NodeList::iterator i = m_pathNodes.begin(); i != m_pathNodes.end(); i++)
-    {
-      std::cout<<"#"<< (*i)->getID()<<" "<<(*i)->getPos()<<std::endl;
-    }
+//    std::cout<<"Path is of size: "<< m_pathNodes.size() <<std::endl;
+//    std::cout<<"Base is: "<< Game::instance()->getBasePos() <<std::endl;
+//    std::cout<<"Start is: "<< m_pos <<std::endl;
+//    for(Node::NodeList::iterator i = m_pathNodes.begin(); i != m_pathNodes.end(); i++)
+//    {
+//      std::cout<<"#"<< (*i)->getID()<<" "<<(*i)->getPos()<<std::endl;
+//    }
   }
   //Get an initial path for the entity
   //m_pathNodes = updatePath();
@@ -42,15 +42,15 @@ bool Enemy::generateTempPath()
 {
   EnvironmentPtr env = Game::instance()->getEnvironmentWeakPtr().lock();
   NodeManagerPtr nm = env->getNodeManagerWeakPtr().lock();
-  m_tempPathNodes = nm->findPathFromPos(
-        m_pos,
-        Game::instance()->getBasePos());
-
-  if(m_tempPathNodes.empty())
+  if(env && nm)
   {
-    return false;
+    return nm->findPathFromPos(
+          m_tempPathNodes,
+          m_pos,
+          Game::instance()->getBasePos()
+          );
   }
-  return true;
+  return false;
 }
 
 //-------------------------------------------------------------------//
@@ -74,7 +74,7 @@ ngl::Vec3 Enemy::getVectorToNearestNodeInPath()
 {
   NodePtr nearestNode;
   NodePtr parentNode;
-  float nearestDistance = 100000;
+  float nearestSqrDistance = 100000;
 
   ngl::Vec3 finalVector;
 
@@ -85,21 +85,22 @@ ngl::Vec3 Enemy::getVectorToNearestNodeInPath()
     //get the position of the node
     ngl::Vec3 targetPos = (*it)->getPos();
     //calculate the distance between that node and this one
-    float newDistance = sqrt(
+    float newSqrDistance =
           ((targetPos.m_x - m_pos.m_x)*(targetPos.m_x - m_pos.m_x)) +
           ((targetPos.m_y - m_pos.m_y)*(targetPos.m_y - m_pos.m_y)) +
-          ((targetPos.m_z - m_pos.m_z)*(targetPos.m_z - m_pos.m_z)));
+          ((targetPos.m_z - m_pos.m_z)*(targetPos.m_z - m_pos.m_z));
 
-    if(newDistance < nearestDistance)
+    if(newSqrDistance < nearestSqrDistance)
     {
       //this is the closest node we've found
-      nearestDistance = newDistance;
+      nearestSqrDistance = newSqrDistance;
       nearestNode = (*it);
       //if the closest node is NOT at the end
       if(boost::next(it) != m_pathNodes.rend())
       {
         parentNode = (*boost::next(it));
-      } else
+      }
+      else
       {
         parentNode.reset();
       }
@@ -112,7 +113,8 @@ ngl::Vec3 Enemy::getVectorToNearestNodeInPath()
     //return dir vector between parentNode and nearestNode
 
     finalVector = parentNode->getPos() - nearestNode->getPos();
-  } else
+  }
+  else
   {
     //as we're one from the end, return dir vec between nearestNode
     //and the current position
@@ -120,9 +122,10 @@ ngl::Vec3 Enemy::getVectorToNearestNodeInPath()
   }
 
   //std::cout<<finalVector<<std::endl;
-  if(finalVector.length())
+  float len = finalVector.length();
+  if(len)
   {
-    finalVector.normalize();
+    finalVector/=len;
   }
 
   return finalVector;
@@ -181,7 +184,7 @@ ngl::Vec3 Enemy::getPathVec() const
   // center.
   NodePtr nearestNode;
   NodePtr parentNode;
-  float nearestDistance = 100000;
+  float nearestSqrDistance = 10000000000;
 
   ngl::Vec3 finalVector;
 
@@ -192,20 +195,22 @@ ngl::Vec3 Enemy::getPathVec() const
     //get the position of the node
     ngl::Vec3 targetPos = (*it)->getPos();
     //calculate the distance between that node and this one
-    float newDistance = sqrt(((targetPos.m_x - m_pos.m_x)*(targetPos.m_x - m_pos.m_x)) +
-                             ((targetPos.m_y - m_pos.m_y)*(targetPos.m_y - m_pos.m_y)) +
-                             ((targetPos.m_z - m_pos.m_z)*(targetPos.m_z - m_pos.m_z)));
+    ngl::Vec3 relVec = targetPos - m_pos;
+    float newSqrDistance = ((relVec.m_x)*(relVec.m_x)) +
+                             ((relVec.m_y)*(relVec.m_y)) +
+                             ((relVec.m_z)*(relVec.m_z));
 
-    if(newDistance < nearestDistance)
+    if(newSqrDistance < nearestSqrDistance)
     {
       //this is the closest node we've found
-      nearestDistance = newDistance;
+      nearestSqrDistance = newSqrDistance;
       nearestNode = (*it);
       //if the closest node is NOT at the end
       if(boost::next(it) != m_pathNodes.rend())
       {
         parentNode = (*boost::next(it));
-      } else
+      }
+      else
       {
         parentNode.reset();
       }
@@ -231,9 +236,10 @@ ngl::Vec3 Enemy::getPathVec() const
 //  }
 
   //std::cout<<finalVector<<std::endl;
-  if(finalVector.length())
+  float newLen = finalVector.length();
+  if(newLen)
   {
-    finalVector.normalize();
+    finalVector/=newLen;
   }
 
   return finalVector;
