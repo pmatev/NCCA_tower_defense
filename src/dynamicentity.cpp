@@ -29,8 +29,6 @@ DynamicEntity::~DynamicEntity()
 
 void DynamicEntity::update()
 {
-  std::cout<<"updating dynamic entity with id"<<m_ID<<std::endl;
-  std::cout<<"now at position"<<m_pos<<std::endl;
   // get the brain vector
   ngl::Vec3 brainVec = brain();
   // based on brain where should it go next
@@ -400,10 +398,10 @@ Collision DynamicEntity::collisionTest(
   //first generate a list of local entity records
   Database* db = Database::instance();
   entityRecordListPtr localEntities = db->getLocalEntities(
-        m_pos.m_x-(_bBoxSize),
-        m_pos.m_y-(_bBoxSize),
-        m_pos.m_x+(_bBoxSize),
-        m_pos.m_y+(_bBoxSize),
+        m_pos.m_x+2*m_lsMeshBBox.m_minX,
+        m_pos.m_z+2*m_lsMeshBBox.m_minZ,
+        m_pos.m_x+2*m_lsMeshBBox.m_maxX,
+        m_pos.m_z+2*m_lsMeshBBox.m_maxZ,
         _types
         );
 
@@ -433,18 +431,19 @@ Collision DynamicEntity::collisionTest(
       ngl::Vec3 pos = e->getPos();
       Entity::BBox bBox = e->getMeshBBox();
 
+      //convert the bBox to local space
+
+      bBox.m_minX += pos.m_x;
+      bBox.m_minY += pos.m_y;
+      bBox.m_minZ += pos.m_z;
+      bBox.m_maxX += pos.m_x;
+      bBox.m_maxY += pos.m_y;
+      bBox.m_maxZ += pos.m_z;
+
       //check for collisions between the entity checking and the one
       //it's checking against
 
-      result = intersectTest(Entity::BBox(
-                               pos.m_x + bBox.m_minX,
-                               pos.m_y + bBox.m_minY,
-                               pos.m_z + bBox.m_minZ,
-                               pos.m_x + bBox.m_maxX,
-                               pos.m_y + bBox.m_maxY,
-                               pos.m_z + bBox.m_maxZ
-                               )
-                             );
+      result = intersectTest(bBox);
       //if there was a collision
 
       if (result == true)

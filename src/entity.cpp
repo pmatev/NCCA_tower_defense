@@ -104,12 +104,12 @@ void Entity::generateLsBBox(std::vector <vertData> _meshData)
 
   //set the bounding box to initially start as the same as the first vert
 
-  m_lsMeshBBox.m_maxX = (*vertIt).x;
-  m_lsMeshBBox.m_minX = (*vertIt).x;
-  m_lsMeshBBox.m_maxY = (*vertIt).y;
-  m_lsMeshBBox.m_minY = (*vertIt).y;
-  m_lsMeshBBox.m_maxZ = (*vertIt).z;
-  m_lsMeshBBox.m_minZ = (*vertIt).z;
+  m_lsMeshBBox.m_maxX = vertIt->x;
+  m_lsMeshBBox.m_minX = vertIt->x;
+  m_lsMeshBBox.m_maxY = vertIt->y;
+  m_lsMeshBBox.m_minY = vertIt->y;
+  m_lsMeshBBox.m_maxZ = vertIt->z;
+  m_lsMeshBBox.m_minZ = vertIt->z;
 
   //then increment the iterator
 

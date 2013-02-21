@@ -243,8 +243,7 @@ std::list<Collision> Wave::checkCollisions()
       //if there was, add it to the list
       // This needs to call damage deal and pass in the damage from the collision ----------
       (*listIt)->kill();
-      collisionList.push_back(c);
-    }
+      collisionList.push_back(c);    }
   }
   //finally return the resulting list
 

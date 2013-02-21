@@ -35,7 +35,7 @@ NodeManager::NodeManager(
 
   //finally initialise the database
 
-  Database::init(_gridHeight, _gridWidth, maxX,maxZ,minX,minZ);
+  Database::init(int(_gridHeight/2), int(_gridWidth/2), maxX,maxZ,minX,minZ);
 
   //get a pointer to the game
   Game* game = Game::instance();

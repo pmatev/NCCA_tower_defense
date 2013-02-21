@@ -51,14 +51,14 @@ void TestEnemy::generateMesh()
                                       1,5,2,2,6,5
                                    };
 
-  GLfloat vertices[] = {-1,1,-1,
-                        1,1,-1,
-                        1,1,1,
-                        -1,1,1,
-                        -1,-1,-1,
-                        1,-1,-1,
-                        1,-1,1,
-                        -1,-1,1
+  GLfloat vertices[] = {-0.3,0.3,-0.3,
+                        0.3,0.3,-0.3,
+                        0.3,0.3,0.3,
+                        -0.3,0.3,0.3,
+                        -0.3,-0.3,-0.3,
+                        0.3,-0.3,-0.3,
+                        0.3,-0.3,0.3,
+                        -0.3,-0.3,0.3
                        };
   GLfloat normals[] = {-1,1,-1,
                         1,1,-1,
@@ -116,7 +116,7 @@ ngl::Vec3 TestEnemy::brain()
 void TestEnemy::draw()
 {
     Renderer *r = Renderer::instance();
-    m_transformStack.setScale(0.3, 0.3, 0.3);
+    //m_transformStack.setScale(0.3, 0.3, 0.3);
     r->loadMatrixToShader(m_transformStack, "Phong");
 
     r->draw(m_IDStr, "Phong");
@@ -128,7 +128,7 @@ void TestEnemy::draw()
 void TestEnemy::drawSelection()
 {
   Renderer *r = Renderer::instance();
-  m_transformStack.setScale(0.3, 0.3, 0.3);
+  //m_transformStack.setScale(0.3, 0.3, 0.3);
   r->loadMatrixToShader(m_transformStack, "Colour");
 
   r->drawSelection(m_ID, m_IDStr);
