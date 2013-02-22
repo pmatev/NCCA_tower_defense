@@ -1,12 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-
-
 #include <ngl/Camera.h>
-#include <ngl/TransformStack.h>
-#include <ngl/Vec3.h>
-#include <ngl/Vec4.h>
+//#include <ngl/TransformStack.h>
 #include "fwd/window.h"
 
 /// @file Camera.h

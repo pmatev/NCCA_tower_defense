@@ -1,12 +1,13 @@
-#include "include/game.h"
-#include <iostream>
 #include <ngl/Camera.h>
-#include <ngl/NGLInit.h>
 #include "renderer.h"
+#include <ngl/NGLInit.h>
 #include <ngl/VAOPrimitives.h>
 #include "entityfactory.h"
 #include "window.h"
 #include "database.h"
+#include <iostream>
+#include "include/game.h"
+#include "ngl/ShaderLib.h"
 
 Game* Game::s_instance = 0;
 
@@ -38,7 +39,32 @@ void Game::init()
     Renderer *render = Renderer::instance();
     render->createShader("Phong",2);
     render->createShader("Colour",2);
-    render->createShader("UI", 1);
+
+    ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+
+    shader->createShaderProgram("UI");
+
+    shader->attachShader("UIVertex",ngl::VERTEX);
+    shader->attachShader("UIFragment",ngl::FRAGMENT);
+    shader->loadShaderSource("UIVertex", "shaders/UI.vs");
+    shader->loadShaderSource("UIFragment","shaders/UI.fs");
+
+    shader->compileShader("UIVertex");
+    shader->compileShader("UIFragment");
+
+    shader->attachShaderToProgram("UI","UIVertex");
+    shader->attachShaderToProgram("UI","UIFragment");
+
+    shader->bindAttribute("UI", 0, "inVert");
+    shader->bindAttribute("UI",1,"inUV");
+    shader->linkProgramObject("UI");
+
+
+//    glBindFragDataLocation(shader->getProgramID("UI"), 0, "fragColour");
+
+
+    std::cerr<<glGetError()<<std::endl;
+
     //m_light = new ngl::Light(ngl::Vec3(1,2,0),ngl::Colour(1,1,1),ngl::POINTLIGHT);
 
     setupScene();

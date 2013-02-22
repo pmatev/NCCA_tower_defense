@@ -1,9 +1,11 @@
 #version 150
+uniform sampler2D tex;
 
+in vec2 vertUV;
 out vec4 fragColour;
-uniform vec3 colour;
 
 void main()
 {
-    fragColour= vec4(1,1,1,1);
+    vec4 text=texture(tex,vertUV.st);
+    fragColour= text;
 }

@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <list>
-#include <ngl/Vec3.h>
 #include <QMutexLocker>
 
 #include "smartpointers.h"

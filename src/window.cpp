@@ -1,10 +1,13 @@
-#include "include/window.h"
-#include "game.h"
-#include <string>
-#include <iostream>
 #include "renderer.h"
+#include "window.h"
 #include "ngl/NGLInit.h"
+
+#include <iostream>
+#include <string>
+
+#include "game.h"
 #include "uiSelection.h"
+#include "boost/lexical_cast.hpp"
 
 Window* Window::s_instance = 0;
 
@@ -19,9 +22,9 @@ Window::Window():
 //-------------------------------------------------------------------//
 Window::~Window()
 {
-    ngl::NGLInit *Init = ngl::NGLInit::instance();
+//    ngl::NGLInit *Init = ngl::NGLInit::instance();
     SDL_Quit();
-    Init->NGLQuit();
+//    Init->NGLQuit();
 }
 //-------------------------------------------------------------------//
 
@@ -69,13 +72,15 @@ void Window::init()
 
     m_window = SDL_SetVideoMode(m_width, m_height, 16, SDL_OPENGL | SDL_RESIZABLE);
 
-
     ngl::NGLInit *Init = ngl::NGLInit::instance();
 
     Init->initGlew();
-    #ifdef WIN32
+     #ifdef WIN32
       glewInit(); // need a local glew init as well as lib one for windows
     #endif
+
+    Renderer *render = Renderer::instance();
+    render->init();
 
     // Init factory
     EntityFactory::initialiseFactory();
@@ -83,8 +88,6 @@ void Window::init()
     Game *game = Game::instance(); //initialize the game on creation
     game->init();
 
-    Renderer *render = Renderer::instance();
-    render->init();
 
 
 
@@ -111,7 +114,7 @@ void Window::loop()
 
 
     m_time = 0.0;
-    const double dt = 1; // update interval
+    const double dt = 10; // update interval
 
     double currentTime = SDL_GetTicks();
     double accumulator = 0.0;
@@ -119,6 +122,9 @@ void Window::loop()
     // flag to indicate if we need to exit
 
     bool quit=false;
+
+    int frameCount = 0;
+    float avgFPS = 0;
 
     while(!quit)
     {
@@ -142,7 +148,17 @@ void Window::loop()
         double frameTime = newTime - currentTime;
         currentTime = newTime;
 
-        if(frameTime>80)frameTime=80; // cap simulation if frame is taking too long
+        if(frameTime>1000/15.0)frameTime=1000/15.0; // cap simulation if frame is taking too long
+
+        if(frameCount % 20 == 0)
+        {
+          std::string fpsStr = boost::lexical_cast<std::string>(int(avgFPS/20));
+          SDL_WM_SetCaption(&fpsStr[0], "Cap");
+          avgFPS = 0;
+        }
+        float fps = 1000.0/frameTime;
+        avgFPS += fps;
+
 
         accumulator += frameTime;
 
@@ -155,12 +171,12 @@ void Window::loop()
         }
 
         game->draw();
+        m_UI->draw();
+
 
         SDL_GL_SwapBuffers();
+        frameCount++;
 
-//        game->drawSelection();
-
-        //m_UI->draw();
     }
 }
 
@@ -201,8 +217,6 @@ void Window::SDLErrorExit(const std::string &_msg)
   SDL_Quit();
   exit(EXIT_FAILURE);
 }
-
-
 
 
 //-------------------------------------------------------------------//
@@ -278,6 +292,7 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
     m_oldMouseY = m_mouseY;
 
     /* -------- Testing Code -------------*/
+
     m_clickEvent = _event;
 
     Renderer *r = Renderer::instance();
@@ -293,11 +308,6 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
           m_UI->mouseLeftUpTowerCreate(id);
     }
 
-
-
-
-//    Game *game = Game::instance();
-//    game->reset();
 
     /* -------- End Testing Code -------------*/
 

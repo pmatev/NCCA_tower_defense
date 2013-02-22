@@ -61,7 +61,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief returns an aim vector aiming towards the nearest node
   /// in the path
-  /// @param[out] an ngl::vec3
+  /// @param[out] an ngl::Vec3
   //-------------------------------------------------------------------//
   ngl::Vec3 getVectorToNearestNodeInPath();
 
@@ -75,7 +75,7 @@ protected:
 
   //-------------------------------------------------------------------//
   /// @brief returns the path influence to be used in the brain
-  /// @param[out] an ngl::vec3 towards the next path point
+  /// @param[out] an ngl::Vec3 towards the next path point
   //-------------------------------------------------------------------//
 
   ngl::Vec3 getPathVec() const;

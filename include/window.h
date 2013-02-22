@@ -1,13 +1,13 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "smartpointers.h"
-#include <SDL.h>
-#include "fwd/game.h"
 #include "fwd/window.h"
+#include "fwd/game.h"
+#include "fwd/uiselection.h"
 #include <string>
-#include <ngl/Vec3.h>
-#include "uiSelection.h"
+#include <SDL.h>
+#include "renderer.h"
+
 //-------------------------------------------------------------------//
 /// @file window.h
 /// @brief manages the OS window and OpenGL context. Manages the Game Loop and Rendering Loop

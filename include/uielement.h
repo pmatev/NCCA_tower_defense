@@ -1,10 +1,10 @@
 #ifndef UIELEMENT_H
 #define UIELEMENT_H
 
-#include <ngl/Vec2.h>
 #include <ngl/TransformStack.h>
 #include <boost/function.hpp>
 #include"smartpointers.h"
+#include <QString>
 
 DECLARESMART(UIElement)
 
@@ -36,7 +36,6 @@ public:
 
     /* ADD ID TO CONSTRUCTOR + SETUP RELEVANT SYSTEMS */
     UIElement( ngl::Vec2 _pos,
-               std::string _imageFile,
                std::string _name);
 
 
@@ -60,7 +59,6 @@ public:
     //-------------------------------------------------------------------//
 
     virtual void generateMesh();
-
 
     virtual void drawSelection() = 0;
 
@@ -113,16 +111,15 @@ public:
 
 
 protected:
+    //-------------------------------------------------------------------//
+    /// @brief stores the name of the element
+    //-------------------------------------------------------------------//
+    std::string m_name;
 
     //-------------------------------------------------------------------//
     /// @brief position of uielement in 2d space
     //-------------------------------------------------------------------//
     ngl::Vec2 m_pos;
-
-    //-------------------------------------------------------------------//
-    /// @brief image file used for the button
-    //-------------------------------------------------------------------//
-    std::string m_imageFile;
 
     //-------------------------------------------------------------------//
     /// @brief stores the elements function
@@ -150,10 +147,6 @@ protected:
     //-------------------------------------------------------------------//
     float m_maxBoundsY;
 
-    //-------------------------------------------------------------------//
-    /// @brief stores the name of the element
-    //-------------------------------------------------------------------//
-    std::string m_name;
 };
 
 

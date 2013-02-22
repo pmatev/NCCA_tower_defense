@@ -1,12 +1,15 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "ngl/Util.h"
-#include "SDL/SDL_opengl.h"
-#include "ngl/ShaderLib.h"
+//#include "SDL/SDL_opengl.h"
+//#include "ngl/ShaderLib.h"
+#include "ngl/Types.h"
 #include "ngl/Light.h"
 #include "camera.h"
 #include "ngl/VertexArrayObject.h"
+#include "ngl/TransformStack.h"
+
+
 
 //-------------------------------------------------------------------//
 /// @file renderer.h
@@ -87,7 +90,6 @@ public:
     VAOPtr bindVAOByID(const std::string _id);
 
     inline Camera* getCam() const {return m_cam;}
-
 
 
 protected:

@@ -1,10 +1,4 @@
-#include <iostream>
-#include <SDL.h>
-
 #include "window.h"
-#include "database.h"
-#include "fwd/database.h"
-
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +15,5 @@ int main(int argc, char *argv[])
   //   start the loop
   w->loop();
 
-  //  exit and close
   w->destroy();
 }

@@ -35,8 +35,10 @@ public:
     /// @param [in] inputs a string for the name of the element
     //-------------------------------------------------------------------//
 
-    UIButton(ngl::Vec2 _pos, std::string _imageFile,
-             std::string _name, UIMenu *_parent);
+    UIButton(ngl::Vec2 _pos,
+             std::string _imageFile,
+             std::string _name,
+             UIMenu *_parent);
 
     //-------------------------------------------------------------------//
     /// @brief default ctor
@@ -73,6 +75,7 @@ public:
 
     void draw();
 
+    void generateMesh();
 
     void drawSelection();
 
@@ -80,6 +83,7 @@ protected:
 
       UIMenu *m_parent;
 
+      std::string m_imageFile;
 };
 
 #endif // UIBUTTON_H

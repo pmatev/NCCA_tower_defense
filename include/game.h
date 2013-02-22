@@ -97,7 +97,7 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief return base position
-    /// @param[out] an ngl::vec3
+    /// @param[out] an ngl::Vec3
     //-------------------------------------------------------------------//
     ngl::Vec3 getBasePos() const;
 

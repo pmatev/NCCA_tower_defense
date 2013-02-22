@@ -88,6 +88,7 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
         std::cout<<_ID<<std::endl;
         if(!UIClick)
         {
+
             entityClick = checkEntityClicked().lock();
 
             if(!entityClick)
@@ -112,6 +113,7 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
                 //as I need to make sure that it is a staticEntity
                 //so I can upgrade a tower!
             }
+
         }
         else
         {
@@ -122,6 +124,7 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
 
     else
     {
+
         EntityPtr entityClick;
 
         entityClick = checkEntityClicked().lock();
@@ -136,6 +139,7 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
                             );
             }
         }
+
     }
 }
 
@@ -310,7 +314,6 @@ void UISelection::mouseLeftUpTowerCreate(const unsigned int _ID)
             }
 
         }
-
     }
     else
     {
@@ -364,7 +367,7 @@ void UISelection::createTestTower()
 
 void UISelection::createTestMenu()
 {
-    createMenu(UIMenuPtr(new UIMenu(ngl::Vec2 (2,5), "hello", "menuTest",this)));
+    createMenu(UIMenuPtr(new UIMenu(ngl::Vec2 (0,0), "menuTest",this)));
 
     UIMenuPtr menu = getMenu("menuTest");
     if(!menu)
@@ -373,11 +376,12 @@ void UISelection::createTestMenu()
     }
     else
     {
-//        menu->addButton(ngl::Vec2 (5,3), "hello", "buttonTest");
+        menu->addButton(ngl::Vec2 (10,10), "textures/default_texture.jpg", "buttonTest");
+        menu->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
+        menu->runCommandTest();
 
-//        menu->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
+        menu->addButton(ngl::Vec2 (250,150), "textures/grid.jpg", "newButton");
 
-//        menu->runCommandTest();
     }
 }
 

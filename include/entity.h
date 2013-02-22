@@ -1,7 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <ngl/Vec3.h>
+#include "ngl/Vec3.h"
 #include <list>
 
 #include "smartpointers.h"

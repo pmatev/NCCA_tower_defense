@@ -5,7 +5,6 @@
 #-------------------------------------------------
 
 QT       += core \
-            gui  \
             opengl
 
 
@@ -23,6 +22,7 @@ MOC_DIR=./moc/
 #project files
 
 SOURCES += src/main.cpp \
+    src/renderer.cpp \
     src/entity.cpp \
     src/staticentity.cpp \
     src/node.cpp \
@@ -37,7 +37,6 @@ SOURCES += src/main.cpp \
     src/uimenu.cpp \
     src/game.cpp \
     src/camera.cpp \
-    src/renderer.cpp \
     src/window.cpp \
     src/concrete/bullet.cpp \
     src/environment.cpp \
@@ -55,57 +54,49 @@ SOURCES += src/main.cpp \
 
 
 HEADERS += \
-    include/entity.h \
-    include/staticentity.h \
-    include/node.h \
-    include/dynamicentity.h \
-    include/turret.h \
-    include/database.h \
     include/window.h \
+    include/renderer.h \
+    include/smartpointers.h \
+    include/game.h \
+    include/entity.h \
+    include/node.h \
+    include/turret.h \
+    include/staticentity.h \
+    include/dynamicentity.h \
+    include/database.h \
     include/wave.h \
     include/wavemanager.h \
     include/entityfactory.h \
     include/enemy.h \
-    include/uiwindow.h \
-    include/uielement.h \
-    include/uimenu.h \
-    include/smartpointers.h \
-    include/game.h \
-    include/smartpointers.h \
     include/camera.h \
-    include/renderer.h \
-    include/concrete/bullet.h \
     include/environment.h \
     include/nodemanager.h \
     include/uiSelection.h \
     include/uibutton.h \  
+    include/uiwindow.h \
+    include/uielement.h \
+    include/uimenu.h \
     include/projectile.h \
+    include/projectilemanager.h \
     include/wall.h \
-    include/concrete/base.h \
-    include/window.h \
-    include/fwd/window.h \
-    include/fwd/game.h \
-    include/fwd/entity.h \
     include/databasegrid.h \
+    include/concrete/bullet.h \
+    include/concrete/base.h \
     include/concrete/testenemy.h \
     include/concrete/testturret.h \
     include/fwd/database.h \
-    include/projectilemanager.h \
+    include/fwd/entity.h \
+    include/fwd/game.h \
     include/fwd/uimenu.h \
     include/fwd/uibutton.h \
-    include/fwd/uiselection.h
+    include/fwd/uiselection.h \
+    include/fwd/window.h
 
-
-#including the Imath Library
-
-#LIBS += -L/usr/lib64 -lImath
-#INCLUDEPATH += /usr/local/include/OpenEXR
-#DEPENDPATH += /usr/lib64
 
 #including the NGL library
 
 QMAKE_CXXFLAGS+=$$system($$(HOME)/SDL1/bin/sdl-config  --cflags)
-message(output from sdl2-config --cflags added to CXXFLAGS= $$QMAKE_CXXFLAGS)
+message(output from sdl-config --cflags added to CXXFLAGS= $$QMAKE_CXXFLAGS)
 
 LIBS+=$$system($$(HOME)/SDL1/bin/sdl-config  --libs)
 message(output from sdl-config --libs added to LIB=$$LIBS)
@@ -114,13 +105,25 @@ message(output from sdl-config --libs added to LIB=$$LIBS)
 QMAKE_CXXFLAGS += -fopenmp
 QMAKE_CXXFLAGS += -lgomp
 
+
+#including the NGL library
 INCLUDEPATH += $$(HOME)/NGL/include/
 DEPENDPATH += $$(HOME)/NGL/include/
 
 DEFINES +=NGL_DEBUG
 
 LIBS += -L/usr/local/lib
-LIBS +=  -L/$(HOME)/NGL/lib -l NGL
+LIBS +=  -L/$(HOME)/NGL/lib -lNGL
+
+linux-g++* {
+    DEFINES += LINUX
+    LIBS+= -lGLEW
+}
+linux-clang* {
+    DEFINES += LINUX
+    LIBS+= -lGLEW
+}
+
 
 #include for threading
 LIBS += -fopenmp
@@ -133,4 +136,6 @@ OTHER_FILES += \
     shaders/Colour.vs \
     shaders/Colour.fs \
     shaders/UI.vs \
-    shaders/UI.fs
+    shaders/UI.fs \
+    textures/grid.png \
+    textures/default_texture.jpg

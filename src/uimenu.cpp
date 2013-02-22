@@ -14,18 +14,17 @@
 //-------------------------------------------------------------------//
 
 UIMenu::UIMenu(ngl::Vec2 _pos,
-               std::string _imageFile,
                std::string _name,
                UISelection *_parent):
 
 
-UIElement( _pos, _imageFile, _name)
+UIElement( _pos, _name)
 
 
 {
   m_parent = _parent;
     //variables initialised before the constructor body
-  m_transformStack.setPosition(0,-1,0);
+  m_transformStack.setPosition(0,0,0);
 
 }
 
@@ -42,18 +41,10 @@ UIMenu::~UIMenu()
 
 void UIMenu::draw()
 {
-    glDisable(GL_DEPTH_TEST);
-    Renderer *r = Renderer::instance();
-    //r->loadMatrixToShaderSS(m_transformStack, "UI");
-    setPosition(ngl::Vec2(0,-1));
-    r->set2DPosToShader(m_pos, "UI");
-    r->draw(m_IDStr, "UI");
-
-//    for(int i=0; i<m_elements.size(); i++)
-//    {
-//        m_elements[i]->draw();
-//    }
-    glEnable(GL_DEPTH_TEST);
+    for(std::vector<UIElementPtr>::iterator it=m_elements.begin(); it!=m_elements.end(); it++)
+    {
+      (*it)->draw();
+    }
 }
 
 
@@ -63,8 +54,6 @@ void UIMenu::drawSelection()
 {
     Renderer *r = Renderer::instance();
 
-
-
     //Q unused to remove warnings, will be replaced if used
 
     Q_UNUSED(r);
@@ -72,11 +61,11 @@ void UIMenu::drawSelection()
     //r->loadMatrixToShaderSS(m_transformStack, "Colour");
     //r->drawSelection(m_ID, m_IDStr);
 
+    for(std::vector<UIElementPtr>::iterator it=m_elements.begin(); it!=m_elements.end(); it++)
+    {
+      (*it)->drawSelection();
+    }
 
-//    for(int i=0; i<m_elements.size(); i++)
-//    {
-//        m_elements[i]->drawSelection();
-//    }
 }
 
 //-------------------------------------------------------------------//
@@ -85,7 +74,7 @@ void UIMenu::alignBottom()
 {
    //will align the uimenu to the bottom of the window when draw has been set
    //up
-  m_transformStack.setPosition(0,-1,0);
+//  m_transformStack.setPosition(0,-1,0);
 }
 
 
@@ -98,12 +87,18 @@ void UIMenu::addButton(ngl::Vec2 _pos,
 {
     Window* window = Window::instance();
     UIButtonPtr button = UIButtonPtr(new UIButton(_pos, _imageFile, _name, this));
-    m_elements.push_back(button);
+
     int ID = window->getID();
+
     m_parent->registerID(button, ID);
     button->setID(ID);
-    button->setPosition(m_pos);
-    std::cout<<"\nbutton created"<<std::endl;
+
+//    button->setPosition(m_pos);
+
+    m_elements.push_back(button);
+
+
+    std::cout<<"button created"<<std::endl;
 }
 
 //-------------------------------------------------------------------//
@@ -152,31 +147,6 @@ void UIMenu::setFunction(functionPtr _func)
     //displays that this function will not do anything as menus do not have functions
     std::cout<<_func<<"\nyou cannot add a function to a menu class stupid"<<std::endl;
 }
-
-
-//-------------------------------------------------------------------//
-//-------------------------Test Function-----------------------------//
-//-------------------------------------------------------------------//
-
-//void UIMenu::createButtons()
-//{
-//    UISelection* selection = UISelection::instance();
-//    for(int i=0; i<10; i++)
-//    {
-//        UIButtonPtr _button = (UIButtonPtr(new UIButton(ngl::Vec2 (5,8), "hello",
-//                                            "buttonTest"+boost::lexical_cast<std::string>(i))));
-//        int ID = selection->registerID(_button);
-//        _button->setID(ID);
-//        m_elements.push_back(_button);
-//        std::cout<<"\nbutton created"<<std::endl;
-//    }
-
-//}
-
-//-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
-
 
 
 

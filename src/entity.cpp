@@ -3,6 +3,8 @@
 #include "boost/lexical_cast.hpp"
 #include "game.h"
 #include "renderer.h"
+#include "ngl/Vec3.h"
+#include "ngl/TransformStack.h"
 
 //-------------------------------------------------------------------//
 

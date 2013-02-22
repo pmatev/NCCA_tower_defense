@@ -1,16 +1,14 @@
 #include "uielement.h"
 #include "uiSelection.h"
 #include "renderer.h"
-#include "boost/lexical_cast.hpp"
-
+#include <boost/lexical_cast.hpp>
+#include <QImage>
 //-------------------------------------------------------------------//
 
 UIElement::UIElement(ngl::Vec2 _pos,
-                     std::string _imageFile,
                      std::string _name):
-  m_pos(_pos),
-  m_imageFile(_imageFile),
-  m_name(_name)
+  m_name(_name),
+  m_pos(_pos)
 
 {
 }
@@ -80,12 +78,6 @@ void UIElement::generateMesh()
 
 
 //-------------------------------------------------------------------//
-
-
-std::string UIElement::getImagefile()
-{
-    return m_imageFile;
-}
 
 
 UIElement::~UIElement()

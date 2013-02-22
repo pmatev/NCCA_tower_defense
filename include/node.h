@@ -1,8 +1,8 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <ngl/Vec3.h>
 
+#include "ngl/Vec3.h"
 #include "smartpointers.h"
 #include "entity.h"
 
@@ -37,6 +37,7 @@ public:
   typedef boost::shared_ptr<NodeWList> NodeWListPtr;
 
 public:
+
   static NodePtr create(const ngl::Vec3 &_pos, float _hexagonSize);
 
   //-------------------------------------------------------------------//
