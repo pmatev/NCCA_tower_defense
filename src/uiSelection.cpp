@@ -110,6 +110,9 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
               case  ENEMY: std::cout<<"i am enemy"<<std::endl; break;
               case  TURRET: std::cout<<"i am turret"<<std::endl;break;
               case  BASE: std::cout<<"i am base"<<std::endl;break;
+              case PROJECTILE: break;
+              case WALL: break;
+
 
 
               }//display the upgrade menu as the tower is selected
@@ -203,6 +206,8 @@ UIMenuPtr UISelection::getMenu(std::string _name)
         return UIMenuPtr();
 
     }
+
+    return UIMenuPtr();
 }
 
 

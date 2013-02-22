@@ -29,6 +29,9 @@ BasePtr Base::create(NodePtr _linkedNode, unsigned int _id)
 
 void Base::update(const double _dt)
 {
+  //Q unused to remove warnings, will be replaced if used
+
+  Q_UNUSED(_dt);
   // do something
 }
 

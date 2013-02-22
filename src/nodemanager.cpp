@@ -404,7 +404,7 @@ NodeManager::~NodeManager()
 
 void NodeManager::update(const double _dt)
 {
-  for(int i = 0; i < m_nodes.size(); i++)
+  for(unsigned int i = 0; i < m_nodes.size(); i++)
   {
     m_nodes[i]->update(_dt);
   }
@@ -414,7 +414,7 @@ void NodeManager::update(const double _dt)
 
 void NodeManager::draw()
 {
-  for(int i = 0; i < m_nodes.size(); i++)
+  for(unsigned int i = 0; i < m_nodes.size(); i++)
   {
     m_nodes[i]->draw();
   }
@@ -424,7 +424,7 @@ void NodeManager::draw()
 
 void NodeManager::drawSelection()
 {
-  for(int i = 0; i < m_nodes.size(); i++)
+  for(unsigned int i = 0; i < m_nodes.size(); i++)
   {
     m_nodes[i]->drawSelection();
   }
@@ -542,7 +542,10 @@ float NodeManager::heuristicPath(NodeWPtr _start, NodeWPtr _goal) const
         (distVec.m_z * distVec.m_z);
     return sqrDist;
   }
-
+  else
+  {
+    return INFINITY;
+  }
 }
 
 void NodeManager::reconstructPath(

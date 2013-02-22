@@ -63,6 +63,11 @@ void UIMenu::draw()
 void UIMenu::drawSelection()
 {
     Renderer *r = Renderer::instance();
+
+    //Q unused to remove warnings, will be replaced if used
+
+    Q_UNUSED(r);
+
     //r->loadMatrixToShaderSS(m_transformStack, "Colour");
     //r->drawSelection(m_ID, m_IDStr);
 

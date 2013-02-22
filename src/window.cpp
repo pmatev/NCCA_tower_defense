@@ -322,7 +322,9 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 //-------------------------------------------------------------------//
 void Window::mouseWheelEvent(const SDL_MouseWheelEvent &_event)
 {
+  //Q unused to remove warnings, will be replaced if used
 
+  Q_UNUSED(_event)
 }
 
 unsigned int Window::colourToID(ngl::Vec3 _c)

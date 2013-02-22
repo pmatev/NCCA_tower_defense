@@ -30,6 +30,10 @@ Turret::~Turret()
 
 void Turret::update(const double _dt)
 {
+  //Q unused to remove warnings, will be replaced if used
+
+  Q_UNUSED(_dt);
+
   // TEST
   // just do whatever the brain says
   m_aim = brain();

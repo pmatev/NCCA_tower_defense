@@ -102,7 +102,9 @@ void Node::generateMesh()
 
 void Node::update(const double _dt)
 {
+  //Q unused to remove warnings, will be replaced if used
 
+  Q_UNUSED(_dt);
 }
 
 //-------------------------------------------------------------------//
