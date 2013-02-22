@@ -70,9 +70,10 @@ public:
   //-------------------------------------------------------------------//
   /// @brief update all the enemies currently in play and work out
   /// which new enemies need creating
+  /// @param [in] _dt, the timestep
   //-------------------------------------------------------------------//
 
-  void update();
+  void update(const double _dt);
 
   //-------------------------------------------------------------------//
   /// @brief call all enemies to publish their state to the database

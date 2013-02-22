@@ -22,9 +22,9 @@ WaveManager::~WaveManager()
 }
 
 //-------------------------------------------------------------------//
-void WaveManager::update()
+void WaveManager::update(const double _dt)
 {
-  m_wave->update();
+  m_wave->update(_dt);
 }
 
 //-------------------------------------------------------------------//

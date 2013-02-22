@@ -406,11 +406,11 @@ NodeManager::~NodeManager()
 
 //-------------------------------------------------------------------//
 
-void NodeManager::update()
+void NodeManager::update(const double _dt)
 {
   for(int i = 0; i < m_nodes.size(); i++)
   {
-    m_nodes[i]->update();
+    m_nodes[i]->update(_dt);
   }
 }
 

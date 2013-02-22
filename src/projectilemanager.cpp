@@ -81,7 +81,7 @@ std::list<Collision> ProjectileManager::checkCollisions()
 
 //-------------------------------------------------------------------//
 
-void ProjectileManager::update()
+void ProjectileManager::update(const double _dt)
 {
   //if there are projectiles
 
@@ -97,7 +97,7 @@ void ProjectileManager::update()
     {
       //call update on the projectiles
 
-      (*listIt)->update();
+      (*listIt)->update(_dt);
     }
   }
 }

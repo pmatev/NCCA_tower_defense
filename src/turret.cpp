@@ -28,7 +28,7 @@ Turret::~Turret()
 
 //-------------------------------------------------------------------//
 
-void Turret::update()
+void Turret::update(const double _dt)
 {
   // TEST
   // just do whatever the brain says

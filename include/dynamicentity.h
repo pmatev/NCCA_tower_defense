@@ -49,9 +49,10 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief update the objects position based on the brain output
+  /// @param [in] _dt, the timestep
   //-------------------------------------------------------------------//
 
-  void update();
+  void update(const double _dt);
 
   //-------------------------------------------------------------------//
   /// @brief a method to check collisions against enemies

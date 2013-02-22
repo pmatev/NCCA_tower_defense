@@ -26,7 +26,7 @@ public:
 
   static BasePtr create(NodePtr _linkedNode, unsigned int _id);
 
-  void update();
+  void update(const double _dt);
   void draw();
   void drawSelection();
   void generateMesh();

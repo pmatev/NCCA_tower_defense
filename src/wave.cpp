@@ -47,7 +47,7 @@ Wave::~Wave()
 
 //-------------------------------------------------------------------//
 
-void Wave::update()
+void Wave::update(const double _dt)
 {
   //  std::cout<<"updating wave"<<std::endl;
 
@@ -77,7 +77,7 @@ void Wave::update()
         )
     {
       // update enemy
-      (m_enemies[i])->update();
+      (m_enemies[i])->update(_dt);
     }
   }
   brain();

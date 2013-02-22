@@ -27,7 +27,7 @@ DynamicEntity::~DynamicEntity()
 
 //-------------------------------------------------------------------//
 
-void DynamicEntity::update()
+void DynamicEntity::update(const double _dt)
 {
   // get the brain vector
   ngl::Vec3 brainVec = brain();

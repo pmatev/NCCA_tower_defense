@@ -48,9 +48,10 @@ public://methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to call update on each of the projectiles
+  /// @param [in] _dt, the timestep
   //-------------------------------------------------------------------//
 
-  void update();
+  void update(const double _dt);
 
   //-------------------------------------------------------------------//
   /// @brief a method to deal with any projectiles that have hit

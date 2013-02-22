@@ -118,7 +118,7 @@ public:
 
   ~NodeManager();
 
-  void update();
+  void update(const double _dt);
 
   void draw();
 

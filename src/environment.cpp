@@ -73,7 +73,7 @@ Environment::~Environment()
 
 //-------------------------------------------------------------------//
 
-void Environment::update()
+void Environment::update(const double _dt)
 {
   //--------------------------------------------------------------------------------------------------------
   //createTower("TestTurret", m_nodeMap->getNodeFromCoords(0, 0));
@@ -85,11 +85,11 @@ void Environment::update()
       ++it
       )
   {
-    (*it)->update();
+    (*it)->update(_dt);
   }
   // update base
-  m_base->update();
-  m_nodeMap->update();
+  m_base->update(_dt);
+  m_nodeMap->update(_dt);
   //--------------------------------------------------------------------------------------------------------
   //removeTower(m_towers.begin());
   //--------------------------------------------------------------------------------------------------------

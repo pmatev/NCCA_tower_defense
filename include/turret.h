@@ -53,9 +53,10 @@ public:
   //-------------------------------------------------------------------//
   /// @brief updates the turret, taking the value returned by brain() into
   /// account.
+  /// @param [in] _dt, the timestep
   //-------------------------------------------------------------------//
 
-  void update();
+  void update(const double _dt);
 
   //-------------------------------------------------------------------//
   /// @brief brain must be implemented in concrete types and returns the

@@ -27,7 +27,7 @@ BasePtr Base::create(NodePtr _linkedNode, unsigned int _id)
 
 //-------------------------------------------------------------------//
 
-void Base::update()
+void Base::update(const double _dt)
 {
   // do something
 }

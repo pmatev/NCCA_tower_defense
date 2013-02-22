@@ -117,7 +117,7 @@ public: //methods
   /// implemented in child classes
   //-------------------------------------------------------------------//
 
-  virtual void update() = 0;
+  virtual void update(const double _dt) = 0;
 
   //-------------------------------------------------------------------//
   /// @brief a virtual method which will draw the entity when
