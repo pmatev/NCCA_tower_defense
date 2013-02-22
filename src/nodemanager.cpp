@@ -11,7 +11,9 @@ NodeManager::NodeManager(
     int _gridWidth,
     int _gridHeight,
     int _hexagonSize,
-    ngl::Vec3 _origin
+    ngl::Vec3 _origin,
+    int _dbGridSizeX,
+    int _dbGridSizeZ
     ) :
   m_centerSqrDist((_hexagonSize * _hexagonSize * 2.999824)), // (sqrt(2/3)/4)
   m_gridWidth(_gridWidth),
@@ -25,17 +27,20 @@ NodeManager::NodeManager(
   float maxX = _origin.m_x
       + (_gridWidth-1)
       *(_hexagonSize * 0.75)
-      +(_hexagonSize/2);
-  float maxZ = _origin.m_z + (_hexagonSize*s_hexFactor)*_gridHeight;
+      +(_hexagonSize);
+  float maxZ = _origin.m_z
+      +(_hexagonSize*s_hexFactor)/2
+      +(_hexagonSize*s_hexFactor)
+      *(_gridHeight-1);
 
   // then calculate the minimum x and z values
 
   float minX = _origin.m_x - (_hexagonSize/2);
-  float minZ = _origin.m_z - ((_hexagonSize*s_hexFactor)/2);
+  float minZ = _origin.m_z - ((_hexagonSize*s_hexFactor/2));
 
   //finally initialise the database
 
-  Database::init(int(_gridHeight/2), int(_gridWidth/2), maxX,maxZ,minX,minZ);
+  Database::init(_dbGridSizeX,_dbGridSizeZ, maxX,maxZ,minX,minZ);
 
   //get a pointer to the game
   Game* game = Game::instance();
@@ -379,9 +384,16 @@ NodeManagerPtr NodeManager::create(
     int _gridWidth,
     int _gridHeight,
     int _hexagonSize,
-    ngl::Vec3 _origin)
+    ngl::Vec3 _origin,
+    int _dbGridSizeX,
+    int _dbGridSizeZ)
 {
-  NodeManagerPtr a(new NodeManager(_gridWidth, _gridHeight, _hexagonSize, _origin));
+  NodeManagerPtr a(new NodeManager(_gridWidth,
+                                   _gridHeight,
+                                   _hexagonSize,
+                                   _origin,
+                                   _dbGridSizeX,
+                                   _dbGridSizeZ));
   return a;
 }
 

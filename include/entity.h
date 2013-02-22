@@ -218,7 +218,7 @@ public: //methods
   /// calculate the bounding box
   //-------------------------------------------------------------------//
 
-  void generateLsBBox(std::vector<vertData> _meshData);
+  void generateLsBBox(const std::vector<vertData> & _meshData);
 
 protected: //attributes
 

@@ -11,12 +11,16 @@ Environment::Environment(
     int _hexagonSize,
     ngl::Vec3 _origin,
     int _baseX,
-    int _baseY):
+    int _baseY,
+    int _dbGridSizeX,
+    int _dbGridSizeZ):
   m_nodeMap(NodeManager::create(
               _gridWidth,
               _gridHeight,
               _hexagonSize,
-              _origin))
+              _origin,
+              _dbGridSizeX,
+              _dbGridSizeZ))
 {
 
   // base needs to be initialised here as it fails when putting it in the
@@ -44,7 +48,9 @@ EnvironmentPtr Environment::create(
     int _hexagonSize,
     ngl::Vec3 _origin,
     int _baseX,
-    int _baseY)
+    int _baseY,
+    int _dbGridSizeX,
+    int _dbGridSizeZ)
 {
   EnvironmentPtr a(new Environment(
                      _gridWidth,
@@ -52,7 +58,9 @@ EnvironmentPtr Environment::create(
                      _hexagonSize,
                      _origin,
                      _baseX,
-                     _baseY));
+                     _baseY,
+                     _dbGridSizeX,
+                     _dbGridSizeZ));
   return a;
 }
 

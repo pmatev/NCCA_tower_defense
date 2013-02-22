@@ -73,7 +73,7 @@ public: //methods
   /// @param [in] _pos, an ngl vec3 defining the position of the entity
   //-------------------------------------------------------------------//
 
-  void addRecord (EntityRecord _record);
+  void addRecord (EntityRecord &_record);
 
   //-------------------------------------------------------------------//
   /// @brief a method to return a list of entities that are possible
@@ -90,7 +90,7 @@ public: //methods
 
   entityRecordListPtr getLocalEntities (
         float _minX,
-        float _minY,
+        float _minZ,
         float _maxX,
         float _maxZ,
         std::list<GeneralType> &_typeList

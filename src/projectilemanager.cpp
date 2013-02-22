@@ -155,7 +155,7 @@ void ProjectileManager::addProjectile(
           )
         );
 
-  //add the projectiel to the list of projectiles
+  //add the projectile to the list of projectiles
 
   m_projectiles.push_back(newProjectile);
 }

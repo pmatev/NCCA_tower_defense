@@ -37,7 +37,9 @@ public:
         int _hexagonSize,
         ngl::Vec3 _origin,
         int _baseX,
-        int _baseY);
+        int _baseY,
+        int _dbGridSizeX,
+        int _dbGridSizeZ);
 
   //-------------------------------------------------------------------//
   /// @brief dtor
@@ -118,7 +120,9 @@ private:
         int _hexagonSize,
         ngl::Vec3 _origin,
         int _baseX,
-        int _baseY);
+        int _baseY,
+        int _dbGridSizeX,
+        int _dbGridSizeZ);
 };
 
 #endif // ENVIRONMENT_H

@@ -13,7 +13,7 @@ Database::Database(
     float _environMinX,
     float _environMinZ
     ) :
-  m_base(0,BASE,0,0,0),
+  m_base(0,BASE,0,0,0,0,0,0,0,0,0),
   m_environmentMaxX(_environMaxX),
   m_environmentMinX(_environMinX),
   m_environmentMaxZ(_environMaxZ),
@@ -131,7 +131,7 @@ void Database::destroy()
 
 //-------------------------------------file:///usr/share/doc/HTML/index.html------------------------------//
 
-void Database::addRecord(EntityRecord _record)
+void Database::addRecord(EntityRecord &_record)
 {
   //check the type of the enemy and set it according to that variable
 

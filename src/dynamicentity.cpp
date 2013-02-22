@@ -390,18 +390,17 @@ bool DynamicEntity::isIntersecting(
 //-------------------------------------------------------------------//
 
 Collision DynamicEntity::collisionTest(
-    std::list<GeneralType> &_types,
-    float _bBoxSize
+    std::list<GeneralType> &_types
     ) const
 {
 
   //first generate a list of local entity records
   Database* db = Database::instance();
   entityRecordListPtr localEntities = db->getLocalEntities(
-        m_pos.m_x+2*m_lsMeshBBox.m_minX,
-        m_pos.m_z+2*m_lsMeshBBox.m_minZ,
-        m_pos.m_x+2*m_lsMeshBBox.m_maxX,
-        m_pos.m_z+2*m_lsMeshBBox.m_maxZ,
+        m_pos.m_x+m_lsMeshBBox.m_minX-0.5,
+        m_pos.m_z+m_lsMeshBBox.m_minZ-0.5,
+        m_pos.m_x+m_lsMeshBBox.m_maxX+0.5,
+        m_pos.m_z+m_lsMeshBBox.m_maxZ+0.5,
         _types
         );
 
@@ -418,27 +417,19 @@ Collision DynamicEntity::collisionTest(
   {
     //get the id of the element pointed to by the iterator
 
-    unsigned int id = (*listIt).m_id;
+    unsigned int id = listIt->m_id;
     if(id != m_ID)
     {
-      //from the id, get a pointer to the entity it relates to
-
-      Game* game = Game::instance();
-      EntityPtr e = game->getEntityByID(id);
 
       //get the relevant information
 
-      ngl::Vec3 pos = e->getPos();
-      Entity::BBox bBox = e->getMeshBBox();
-
-      //convert the bBox to local space
-
-      bBox.m_minX += pos.m_x;
-      bBox.m_minY += pos.m_y;
-      bBox.m_minZ += pos.m_z;
-      bBox.m_maxX += pos.m_x;
-      bBox.m_maxY += pos.m_y;
-      bBox.m_maxZ += pos.m_z;
+      //ngl::Vec3 pos (listIt->m_x,listIt->m_y,listIt->m_z);
+      Entity::BBox bBox (listIt->m_minX,
+                         listIt->m_minY,
+                         listIt->m_minZ,
+                         listIt->m_maxX,
+                         listIt->m_maxY,
+                         listIt->m_maxZ);
 
       //check for collisions between the entity checking and the one
       //it's checking against
@@ -471,31 +462,9 @@ Collision DynamicEntity::collisionTest(
 
 Collision DynamicEntity::collisionDetection(std::list<GeneralType> _types) const
 {
-  //calculate the desired size of the box to use as the initial filter of
-  //entities
-
-  //first calculate the distance travelled in the x direction since the
-  //last update and the equivalent y distance
-
-  float xDist = abs(m_pos.m_x - m_prevPos.m_x);
-  float yDist = abs(m_pos.m_y - m_prevPos.m_y);
-
-  //then select the largest to be the bBoxSize
-
-  float bBoxSize;
-
-  if (xDist > yDist)
-  {
-    bBoxSize = xDist;
-  }
-  else
-  {
-    bBoxSize = yDist;
-  }
-
   //call the collision test method and store the result
 
-  Collision c = collisionTest(_types,bBoxSize);
+  Collision c = collisionTest(_types);
 
   return c;
 }

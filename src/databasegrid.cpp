@@ -41,8 +41,8 @@ DatabaseGrid::DatabaseGrid(
 
   //calculate and assign the scale x and scale Z values
 
-  m_scaleX = 1.0/(width/m_numCellsX);
-  m_scaleZ = 1.0/(depth/_numCellsZ);
+  m_scaleX = m_numCellsX/width;
+  m_scaleZ = _numCellsZ/depth;
 
   // initialise the vector
 
@@ -88,7 +88,7 @@ DatabaseGridPtr DatabaseGrid::create(
 
 //-------------------------------------------------------------------//
 
-void DatabaseGrid::addRecord(EntityRecord _record)
+void DatabaseGrid::addRecord(EntityRecord &_record)
 {
   //conversion to grid space for assigning to a grid cell
 
@@ -168,9 +168,12 @@ entityRecordListPtr DatabaseGrid::getLocalEntities(
   {
     for (int j = minXId; j <= maxXId; j++)
     {
+      //calculate the cell number to check
+
+      int id = j+(i*(m_numCellsX));
       //if there are elements in the selected cell
 
-      if ((*m_grid[j+(i*(m_numCellsX - 1))]).size()!=0)
+      if ((*m_grid[id]).size()!=0)
       {
         //and if the return list is empty
 
@@ -191,8 +194,8 @@ entityRecordListPtr DatabaseGrid::getLocalEntities(
 
         returnList->insert(
               returnListIt,
-              (*m_grid[j+(i*(m_numCellsX - 1))]).begin(),
-              (*m_grid[j+(i*(m_numCellsX - 1))]).end()
+              (*m_grid[j+(i*(m_numCellsX))]).begin(),
+              (*m_grid[j+(i*(m_numCellsX))]).end()
               );
       }
     }
@@ -267,3 +270,5 @@ void DatabaseGrid::unPublish(unsigned int _id)
     i++;
   }
 }
+
+//-------------------------------------------------------------------//

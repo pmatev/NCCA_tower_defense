@@ -16,6 +16,7 @@ TestTurret::TestTurret(
   m_maxRotationSpeed = 3;
   // pass everything into the turret
   generateMesh();
+  publish();
 }
 
 //-------------------------------------------------------------------//

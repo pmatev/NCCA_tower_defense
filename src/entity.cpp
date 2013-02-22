@@ -48,15 +48,20 @@ void Entity::publish()
 
   //add the record
 
-  db->addRecord(
-        EntityRecord(
-          m_ID,
-          m_generalType,
-          m_pos.m_x,
-          m_pos.m_y,
-          m_pos.m_z
-          )
-        );
+  EntityRecord r(m_ID,
+                 m_generalType,
+                 m_pos.m_x,
+                 m_pos.m_y,
+                 m_pos.m_z,
+                 m_lsMeshBBox.m_minX + m_pos.m_x,
+                 m_lsMeshBBox.m_maxX + m_pos.m_x,
+                 m_lsMeshBBox.m_minY + m_pos.m_y,
+                 m_lsMeshBBox.m_maxY + m_pos.m_y,
+                 m_lsMeshBBox.m_minZ + m_pos.m_z,
+                 m_lsMeshBBox.m_maxZ + m_pos.m_z
+                 );
+
+  db->addRecord(r);
 }
 
 //-------------------------------------------------------------------//
@@ -96,11 +101,11 @@ void Entity::clearLocalEntities()
 
 //-------------------------------------------------------------------//
 
-void Entity::generateLsBBox(std::vector <vertData> _meshData)
+void Entity::generateLsBBox(const std::vector <vertData> & _meshData)
 {
   //set an iterator for the list of vertData objects
 
-  std::vector<vertData>::iterator vertIt = _meshData.begin();
+  std::vector<vertData>::const_iterator vertIt = _meshData.begin();
 
   //set the bounding box to initially start as the same as the first vert
 

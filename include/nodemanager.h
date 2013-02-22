@@ -107,7 +107,9 @@ public:
         int _gridWidth,
         int _gridHeight,
         int _hexagonSize,
-        ngl::Vec3 _origin
+        ngl::Vec3 _origin,
+        int _dbGridSizeX,
+        int _dbGridSizeZ
         );
 
   //-------------------------------------------------------------------//
@@ -236,7 +238,12 @@ private:
   /// @brief default ctor
   //-------------------------------------------------------------------//
 
-  NodeManager(int _gridWidth, int _gridHeight, int _hexagonSize, ngl::Vec3 _origin);
+  NodeManager(int _gridWidth,
+              int _gridHeight,
+              int _hexagonSize,
+              ngl::Vec3 _origin,
+              int _dbGridSizeX,
+              int _dbGridSizeZ);
 };
 
 #endif // NODEMANAGER_H

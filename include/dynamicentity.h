@@ -114,13 +114,10 @@ protected:
   /// of entities retrieved from the database based on the list of types
   /// @param [in] _types, a list of types of enemies to test collisions
   /// against
-  /// @param [in] _radius, the area around the entity to check collisions
-  /// against
   //-------------------------------------------------------------------//
 
   Collision collisionTest (
-        std::list<GeneralType> &_types,
-        float _bBoxSize
+        std::list<GeneralType> &_types
         ) const;
 
   //-------------------------------------------------------------------//

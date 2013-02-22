@@ -42,6 +42,17 @@ struct EntityRecord
   float m_z;
 
   //-------------------------------------------------------------------//
+  /// @brief the bounding box of the enemy
+  //-------------------------------------------------------------------//
+
+  float m_minX;
+  float m_maxX;
+  float m_minY;
+  float m_maxY;
+  float m_minZ;
+  float m_maxZ;
+
+  //-------------------------------------------------------------------//
   /// @brief constructor
   /// @param [in] _type, the string entity type
   /// @param [in] _x, the x position of the entity
@@ -54,13 +65,25 @@ struct EntityRecord
         GeneralType _type,
         float _x,
         float _y,
-        float _z
+        float _z,
+        float _minX,
+        float _maxX,
+        float _minY,
+        float _maxY,
+        float _minZ,
+        float _maxZ
         ):
     m_id(_id),
     m_generalType(_type),
     m_x(_x),
     m_y(_y),
-    m_z(_z)
+    m_z(_z),
+    m_minX(_minX),
+    m_maxX(_maxX),
+    m_minY(_minY),
+    m_maxY(_maxY),
+    m_minZ(_minZ),
+    m_maxZ(_maxZ)
   {}
 };
 

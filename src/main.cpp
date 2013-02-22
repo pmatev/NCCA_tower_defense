@@ -2,7 +2,8 @@
 #include <SDL.h>
 
 #include "window.h"
-
+#include "database.h"
+#include "fwd/database.h"
 
 
 int main(int argc, char *argv[])
@@ -12,22 +13,9 @@ int main(int argc, char *argv[])
 
   w->init();
 
+  //   start the loop
+  w->loop();
 
-
-
-
-
-
-
-
-
-//   start the loop
- w->loop();
-
-//  exit and close
+  //  exit and close
   w->destroy();
-
-
 }
-
-
