@@ -79,7 +79,17 @@ public:
     //-------------------------------------------------------------------//
     /// @brief function triggered on mouse wheel event
     //-------------------------------------------------------------------//
-    void mouseWheelEvent(const SDL_MouseWheelEvent &_event);
+    //void mouseWheelEvent(const SDL_MouseWheelEvent &_event);
+
+    //-------------------------------------------------------------------//
+    /// @brief function called on resize event
+    //-------------------------------------------------------------------//
+    void windowResizeEvent(const SDL_ResizeEvent &_event, Renderer *_renderer);
+
+    //-------------------------------------------------------------------//
+    /// @brief funcation called for key event
+    //-------------------------------------------------------------------//
+    void keyEvent(const SDL_KeyboardEvent &_event);
 
     //-------------------------------------------------------------------//
     /// @brief convert colour ID to integer ID
@@ -125,12 +135,7 @@ protected:
     //-------------------------------------------------------------------//
     /// @brief Smart Pointer to the internal SDL window
     //-------------------------------------------------------------------//
-    SDL_Window *m_window;
-
-    //-------------------------------------------------------------------//
-    /// @brief initialize OpenGL Context
-    //-------------------------------------------------------------------//
-    SDL_GLContext createOpenGLContext( SDL_Window *_window);
+    SDL_Surface *m_window;
 
     //-------------------------------------------------------------------//
     /// @brief function to quit SDL with error message
@@ -191,8 +196,23 @@ protected:
     //-------------------------------------------------------------------//
     unsigned int m_currentID;
 
-
+    //-------------------------------------------------------------------//
+    /// @brief stores mouse click events
+    //-------------------------------------------------------------------//
     SDL_MouseButtonEvent m_clickEvent;
+
+    //-------------------------------------------------------------------//
+    /// @brief stores mouse motion events
+    //-------------------------------------------------------------------//
+    SDL_MouseMotionEvent m_motionEvent;
+
+    //-------------------------------------------------------------------//
+    /// @brief stores the sdl event
+    //-------------------------------------------------------------------//
+    SDL_Event m_event;
+
+
+
 };
 
 #endif // WINDOW_H

@@ -9,21 +9,16 @@
 
 UISelection::UISelection():
   m_creationMode(false)
+//  m_selectedNode(NodePtr())
 {
 
 }
-
-
-
 
 
 //-------------------------------------------------------------------//
 UISelection::~UISelection()
 {
     std::cout<<"dtor called"<<std::endl;
-
-
-
 }
 
 
@@ -32,9 +27,7 @@ UISelection::~UISelection()
 
 void UISelection::registerID(UIElementPtr _e, unsigned int _ID)
 {
-
     m_IDMap[_ID] = _e;
-
 }
 
 
@@ -75,7 +68,6 @@ EntityWPtr UISelection::checkEntityClicked()
     unsigned int id = window->getIDFromGameSelection();
 
     return game->getEntityByID(id);
-
 }
 
 
@@ -120,7 +112,6 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
                 //as I need to make sure that it is a staticEntity
                 //so I can upgrade a tower!
             }
-
         }
         else
         {
@@ -128,23 +119,23 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
             std::cout<<"i am GUI"<<std::endl;
         }
     }
+
     else
     {
         EntityPtr entityClick;
 
         entityClick = checkEntityClicked().lock();
+
         if(!entityClick)
         {
             if(entityClick->getGeneralType() == NODE)
             {
-
                 placeDownStaticEntity(
                            m_staticEntityTypeTemp,
-                           boost::dynamic_pointer_cast<Node>(entityClick));
+                           boost::dynamic_pointer_cast<Node>(entityClick)
+                            );
             }
-
         }
-
     }
 }
 
@@ -163,7 +154,6 @@ void UISelection::draw()
 
         //std::cout<<"\n"<<(drawEl)->getName()<< " drawn"<<std::endl;
     }
-
 }
 
 //-------------------------------------------------------------------//
@@ -180,11 +170,8 @@ void UISelection::drawSelection()
 
         //std::cout<<"\n"<<(drawEl)->getName()<< " drawn selection"<<std::endl;
     }
-
 }
 
-
-//-------------------------------------------------------------------//
 
 
 
@@ -204,11 +191,11 @@ UIMenuPtr UISelection::getMenu(std::string _name)
         }
 
         return UIMenuPtr();
-
     }
 
     return UIMenuPtr();
 }
+
 
 
 
@@ -237,13 +224,48 @@ void UISelection::placeDownStaticEntity(const std::string &_type, NodePtr _node)
 
     if(isCreated == true)
     {
-        m_creationMode = 0;
+        m_creationMode = false;
 
         std::cout<<"tower was created properly"<<std::endl;
     }
-
-
 }
+
+
+//-------------------------------------------------------------------//
+
+void UISelection::mouseMoveEvent()
+{
+    if(m_creationMode == true)
+    {
+        EntityPtr entityClick;
+
+        entityClick = checkEntityClicked().lock();
+
+        if(entityClick)
+        {
+            int id = entityClick->getID();
+
+            if(entityClick->getGeneralType() == NODE &&
+                    id != m_highlightedNode)
+            {
+
+                std::cout<<entityClick->getID()<<std::endl;
+
+                //grab instance of game
+                Game* game = Game::instance();
+
+                //set existing nodes flag to false
+                game->setNodehighlighted(m_highlightedNode, false);
+
+                //set new nodes flag to true
+                game->setNodehighlighted(id, true);
+
+                m_highlightedNode = id;
+            }
+        }
+    }
+}
+
 
 
 
@@ -288,7 +310,6 @@ void UISelection::mouseLeftUpTowerCreate(const unsigned int _ID)
             {
                 std::cout<<"i'm not a node"<<std::endl;
             }
-
 
         }
 
@@ -335,10 +356,8 @@ void UISelection::printTest2()
 void UISelection::createTestTower()
 {
 
-    m_creationMode =1;
+    m_creationMode = true;
     m_staticEntityTypeTemp = "testTurret";
-
-
 }
 
 //-------------------------------------------------------------------//
@@ -361,35 +380,9 @@ void UISelection::createTestMenu()
 //        menu->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
 
 //        menu->runCommandTest();
-
     }
-
-
 }
 
 
 
-//-------------------------------------------------------------------//
-//-------------------------Test Function-----------------------------//
-//-------------------------------------------------------------------//
-//void UISelection::createMenu()
-//{
-//    Window *window = Window::instance();
-
-//    for(int i=0; i<10; i++)
-//    {
-//        UIMenuPtr _menu = (UIMenuPtr(new UIMenu(ngl::Vec2 (2,5), "hello", "menuTest"+
-//                                           boost::lexical_cast<std::string>(i))));
-//        int ID = window->registerID(_menu);
-//        _menu->setID(ID);
-
-//        m_menus[_menu->getID()] = _menu;
-//        std::cout<<"\nmenu created"<<std::endl;
-//        _menu->createButtons();
-//    }
-
-//}
-//-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
 

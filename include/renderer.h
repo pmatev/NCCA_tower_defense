@@ -62,6 +62,7 @@ public:
     void draw(std::string _id, std::string _shader);
 
     void drawSelection(unsigned int _id, std::string _idStr);
+
     void prepareDrawSelection();
     ngl::Vec3 readColourSelection(const int _x, const int _y);
 
@@ -71,6 +72,17 @@ public:
     void set2DPosToShader(ngl::Vec2 _pos, std::string _shader);
     void setScreenSize();
     void loadLightToShader(ngl::Light *_light, std::string _shader);
+
+    //-------------------------------------------------------------------//
+    /// @brief creates a frame buffer object
+    //-------------------------------------------------------------------//
+    //void createFramebufferObject();
+
+    //-------------------------------------------------------------------//
+    /// @brief binds the frame buffer object
+    /// @param [in] bool, used to determine which frame buffer object we need
+    //-------------------------------------------------------------------//
+    //void setFboState(bool _fbo);
 
     VAOPtr bindVAOByID(const std::string _id);
 
@@ -91,6 +103,11 @@ protected:
 
     Camera *m_cam;
     ngl::Camera *m_orthoCam;
+
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief our FBO id used by the FBO
+    //----------------------------------------------------------------------------------------------------------------------
+    //GLuint m_fboID;
 
 
 

@@ -51,7 +51,8 @@ SOURCES += src/main.cpp \
     src/databasegrid.cpp \
     src/concrete/testenemy.cpp \
     src/concrete/testturret.cpp \
-    src/projectilemanager.cpp
+    src/projectilemanager.cpp \
+    src/user.cpp
 
 
 HEADERS += \
@@ -93,7 +94,8 @@ HEADERS += \
     include/projectilemanager.h \
     include/fwd/uimenu.h \
     include/fwd/uibutton.h \
-    include/fwd/uiselection.h
+    include/fwd/uiselection.h \
+    include/user.h
 
 
 #including the Imath Library
@@ -104,11 +106,11 @@ HEADERS += \
 
 #including the NGL library
 
-QMAKE_CXXFLAGS+=$$system($$(HOME)/SDL2.0/bin/sdl2-config  --cflags)
+QMAKE_CXXFLAGS+=$$system($$(HOME)/SDL1/bin/sdl-config  --cflags)
 message(output from sdl2-config --cflags added to CXXFLAGS= $$QMAKE_CXXFLAGS)
 
-LIBS+=$$system($$(HOME)/SDL2.0/bin/sdl2-config  --libs)
-message(output from sdl2-config --libs added to LIB=$$LIBS)
+LIBS+=$$system($$(HOME)/SDL1/bin/sdl-config  --libs)
+message(output from sdl-config --libs added to LIB=$$LIBS)
 
 #include for threading
 QMAKE_CXXFLAGS += -fopenmp
@@ -125,6 +127,7 @@ LIBS +=  -L/$(HOME)/NGL/lib -l NGL
 #include for threading
 LIBS += -fopenmp
 LIBS += -lgomp
+
 
 OTHER_FILES += \
     shaders/Phong.vs \

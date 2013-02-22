@@ -76,7 +76,6 @@ void UIElement::generateMesh()
   v->setVertexAttributePointer(0,2,GL_FLOAT,sizeof(quadVertData),0);
   v->setNumIndices(6);
   v->unbind();
-
 }
 
 

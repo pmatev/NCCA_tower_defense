@@ -15,6 +15,7 @@ Window::Window():
 
 
 }
+
 //-------------------------------------------------------------------//
 Window::~Window()
 {
@@ -55,38 +56,18 @@ void Window::init()
       SDLErrorExit("Unable to initialize SDL");
     }
 
-    // now get the size of the display and create a window we need to init the video
-    SDL_Rect rect;
-    SDL_GetDisplayBounds(0,&rect);
+
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+
+    // set size of initial window
+
     m_width = 600;
     m_height = 600;
 
+    //initialize openGl Window
 
-    // now create our window
-    m_window=SDL_CreateWindow("Tower Defence",
-                                        SDL_WINDOWPOS_CENTERED,
-                                        SDL_WINDOWPOS_CENTERED,
-                                        m_width,
-                                        m_height,
-                                        SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
-                                       );
-    // check to see if that worked or exit
-    if (!m_window)
-    {
-      SDLErrorExit("Unable to create window");
-    }
-
-    SDL_GLContext glContext=createOpenGLContext(m_window);
-    if(!glContext)
-    {
-      SDLErrorExit("Problem creating OpenGL context");
-    }
-
-    // make this our current GL context (we can have more than one window but in this case not)
-    SDL_GL_MakeCurrent(m_window, glContext);
-
-    /* This makes our buffer swap syncronized with the monitor's vertical refresh */
-    SDL_GL_SetSwapInterval(1);
+    m_window = SDL_SetVideoMode(m_width, m_height, 16, SDL_OPENGL | SDL_RESIZABLE);
 
 
     ngl::NGLInit *Init = ngl::NGLInit::instance();
@@ -112,16 +93,14 @@ void Window::init()
     m_UI->createTestMenu();
 
 
-
-
-
 }
 
 
 //-------------------------------------------------------------------//
 void Window::loop()
 {
-    SDL_Event event;
+
+
 
     Game *game = Game::instance();
     Renderer *renderer = Renderer::instance();
@@ -138,31 +117,23 @@ void Window::loop()
     double accumulator = 0.0;
 
     // flag to indicate if we need to exit
+
     bool quit=false;
 
     while(!quit)
     {
-        while (SDL_PollEvent(&event))
+        //event handling by SDL
+
+        while (SDL_PollEvent(&m_event))
         {
-            switch(event.type)
+            switch(m_event.type)
             {
             case SDL_QUIT : quit = true; break;
-            case SDL_MOUSEMOTION : mouseMotionEvent(event.motion); break;
-            case SDL_MOUSEBUTTONDOWN : mouseButtonDownEvent(event.button); break;
-            case SDL_MOUSEBUTTONUP : mouseButtonUpEvent(event.button); break;
-            case SDL_MOUSEWHEEL : mouseWheelEvent(event.wheel); break;
-            case SDL_KEYDOWN:
-            case SDL_KEYUP: break;
-            //case SDL_KEYDOWN:if(event.key.keysym.sym == SDLK_s)glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
-            case SDL_WINDOWEVENT :
-              switch(event.window.event)
-              {
-                case SDL_WINDOWEVENT_RESIZED:
-                    m_width = event.window.data1;
-                    m_height = event.window.data2;
-                    renderer->resize(m_width, m_height);break;
-              }
-            break;
+            case SDL_MOUSEMOTION : mouseMotionEvent(m_event.motion); break;
+            case SDL_MOUSEBUTTONDOWN : mouseButtonDownEvent(m_event.button); break;
+            case SDL_MOUSEBUTTONUP : mouseButtonUpEvent(m_event.button); break;
+            case SDL_VIDEORESIZE :windowResizeEvent(m_event.resize, renderer);break;
+            case SDL_KEYUP : keyEvent(m_event.key); break;
 
             }
         }
@@ -184,45 +155,42 @@ void Window::loop()
         }
 
         game->draw();
+
+        SDL_GL_SwapBuffers();
+
+//        game->drawSelection();
+
         //m_UI->draw();
+    }
+}
 
 
-        SDL_GL_SwapWindow(m_window);
+//-------------------------------------------------------------------//
 
+void Window::keyEvent(const SDL_KeyboardEvent &_event)
+{
+    Game *game = Game::instance();
+
+    if(_event.keysym.sym == SDLK_r)
+    {
+       game->reset();
     }
 }
 
 //-------------------------------------------------------------------//
 
-SDL_GLContext Window::createOpenGLContext(SDL_Window *_window)
+void Window::windowResizeEvent(const SDL_ResizeEvent &_event, Renderer *_renderer)
 {
-    //***** Based on Jon Macey's SDLNGL demo ******//
+    m_width = _event.w;
+    m_height = _event.h;
 
-  // Request an opengl 3.2 context first we setup our attributes, if you need any
-  // more just add them here before the call to create the context
-  // SDL doesn't have the ability to choose which profile at this time of writing,
-  // but it should default to the core profile
-  // for some reason we need this for mac but linux crashes on the latest nvidia drivers
-  // under centos
-  #ifdef DARWIN
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-  #endif
-  // set multi sampling else we get really bad graphics that aliasr
-  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,4);
-  // Turn on double buffering with a 24bit Z buffer.
-  // You may need to change this to 16 or 32 for your system
-  // on mac up to 32 will work but under linux centos build only 16
-  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-  // enable double buffering (should be on by default)
-  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-  //
-  return SDL_GL_CreateContext(_window);
+    SDL_SetVideoMode(m_width, m_height, 16, SDL_OPENGL | SDL_RESIZABLE);
+    _renderer->resize(m_width, m_height);
 
 }
+
+
+
 //-------------------------------------------------------------------//
 void Window::SDLErrorExit(const std::string &_msg)
 {
@@ -233,7 +201,9 @@ void Window::SDLErrorExit(const std::string &_msg)
   SDL_Quit();
   exit(EXIT_FAILURE);
 }
-//-------------------------------------------------------------------//
+
+
+
 
 //-------------------------------------------------------------------//
 void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
@@ -243,6 +213,8 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
 
     Renderer *render = Renderer::instance();
     Camera *cam = render->getCam();
+
+    m_motionEvent = _event;
 
     // Left Mouse Tumble
     if(m_rotate)
@@ -264,6 +236,9 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
 
     m_oldMouseX = m_mouseX;
     m_oldMouseY = m_mouseY;
+
+
+    m_UI->mouseMoveEvent();
 
 }
 //-------------------------------------------------------------------//
@@ -288,9 +263,12 @@ void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
     }
 
 
-
 }
+
+
+
 //-------------------------------------------------------------------//
+
 void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 {
     m_rotate=false;
@@ -307,10 +285,16 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 
     m_UI->drawSelection();
 
-    ngl::Vec3 pixel = r->readColourSelection(_event.x, _event.y);
-    unsigned int id = colourToID(pixel);
 
-    m_UI->mouseLeftUpTowerCreate(id);
+    unsigned int id = getIDFromGameSelection();
+
+    if(_event.button == SDL_BUTTON_LEFT)
+    {
+          m_UI->mouseLeftUpTowerCreate(id);
+    }
+
+
+
 
 //    Game *game = Game::instance();
 //    game->reset();
@@ -319,13 +303,18 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 
 }
 
-//-------------------------------------------------------------------//
-void Window::mouseWheelEvent(const SDL_MouseWheelEvent &_event)
-{
-  //Q unused to remove warnings, will be replaced if used
 
-  Q_UNUSED(_event)
-}
+
+
+//-------------------------------------------------------------------//
+
+//void Window::mouseWheelEvent(const SDL_MouseWheelEvent &_event)
+//{
+//  //Q unused to remove warnings, will be replaced if used
+
+//  Q_UNUSED(_event)
+//}
+
 
 unsigned int Window::colourToID(ngl::Vec3 _c)
 {
@@ -334,6 +323,9 @@ unsigned int Window::colourToID(ngl::Vec3 _c)
   return i;
 }
 
+
+
+//-------------------------------------------------------------------//
 ngl::Vec3 Window::IDToColour(unsigned int _id)
 {
   ngl::Vec3 c;
@@ -354,14 +346,29 @@ unsigned int Window::getID()
   return m_currentID;
 }
 
+
+//-------------------------------------------------------------------//
+
 unsigned int Window::getIDFromGameSelection()
 {
   Game *game = Game::instance();
   Renderer *r = Renderer::instance();
   game->drawSelection();
+  unsigned int id;
+  ngl::Vec3 pixel;
 
-  ngl::Vec3 pixel = r->readColourSelection(m_clickEvent.x, m_clickEvent.y);
-  unsigned int id = colourToID(pixel);
+//checks which event it is in order to give the correct selection
+
+  switch(m_event.type)
+  {
+  case SDL_MOUSEMOTION : pixel = r->readColourSelection(
+                         m_motionEvent.x, m_motionEvent.y);
+                         id = colourToID(pixel); break;
+
+  case SDL_MOUSEBUTTONUP : pixel = r->readColourSelection(
+                  m_clickEvent.x, m_clickEvent.y);
+                  id = colourToID(pixel); break;
+  }
 
   return id;
 }

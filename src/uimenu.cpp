@@ -35,7 +35,6 @@ UIMenu::~UIMenu()
 {
     std::cout<<"menu dtor called"<<std::endl;
     //m_elements.clear();
-
 }
 
 
@@ -64,12 +63,15 @@ void UIMenu::drawSelection()
 {
     Renderer *r = Renderer::instance();
 
+
+
     //Q unused to remove warnings, will be replaced if used
 
     Q_UNUSED(r);
 
     //r->loadMatrixToShaderSS(m_transformStack, "Colour");
     //r->drawSelection(m_ID, m_IDStr);
+
 
 //    for(int i=0; i<m_elements.size(); i++)
 //    {
@@ -120,7 +122,6 @@ void UIMenu::connectEvent(functionPtr _func, std::string _name)
         it != m_elements.end();
         ++it)
     {
-
         if(_name == (*it)->getName())
         {
 
@@ -128,7 +129,6 @@ void UIMenu::connectEvent(functionPtr _func, std::string _name)
             std::cout<<"\nfunction set"<<std::endl;
             break;
         }
-
     }
 }
 
@@ -142,7 +142,6 @@ void UIMenu::runCommandTest()
     {
 
         (*it)->isClicked();
-
     }
 }
 
@@ -152,7 +151,6 @@ void UIMenu::setFunction(functionPtr _func)
 {
     //displays that this function will not do anything as menus do not have functions
     std::cout<<_func<<"\nyou cannot add a function to a menu class stupid"<<std::endl;
-
 }
 
 

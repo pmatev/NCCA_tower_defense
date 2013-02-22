@@ -11,7 +11,8 @@
 Node::Node(const ngl::Vec3 &_pos, float _hexagonSize, unsigned int _id):
   Entity(_pos, NODE,_id),
   m_isOccupied(false),
-  m_hexagonSize(_hexagonSize)
+  m_hexagonSize(_hexagonSize),
+  m_highlighted(false)
 {
   //variables initialised before constructor body called
   m_transformStack.setPosition(m_pos);
@@ -97,6 +98,8 @@ void Node::generateMesh()
 
 }
 
+
+
 //-------------------------------------------------------------------//
 
 
@@ -113,8 +116,21 @@ void Node::draw()
 {
   Renderer *r = Renderer::instance();
   r->loadMatrixToShader(m_transformStack, "Phong");
-  r->draw(m_IDStr, "Phong");
-  //std::cout<<"POS: "<<m_transformStack<<std::endl;
+  if(m_highlighted == false)
+  {
+      r->draw(m_IDStr, "Phong");
+      //std::cout<<"POS: "<<m_transformStack<<std::endl;
+  }
+  else
+  {
+      std::cout<<"rendering selected node "<<m_ID<<std::endl;
+      r->draw(m_IDStr, "Phong"); //change either shader or colour
+
+      //need to change this system for changing highlighted back
+      // at uiselection level
+
+  }
+
 
 
 }

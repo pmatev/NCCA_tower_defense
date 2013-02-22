@@ -2,6 +2,7 @@
 #include "window.h"
 #include "game.h"
 
+
 Renderer* Renderer::s_instance = 0;
 //-------------------------------------------------------------------//
 Renderer::Renderer()
@@ -48,6 +49,8 @@ void Renderer::init()
     resize(w, h);
 
     glEnable(GL_DEPTH_TEST);
+
+
 }
 //-------------------------------------------------------------------//
 
@@ -178,6 +181,8 @@ void Renderer::setIndexedData2D(std::string _id,
 }
 
 
+//-------------------------------------------------------------------//
+
 VAOPtr Renderer::getVAObyID(std::string _id)
 {
   std::map<std::string, VAOPtr>::iterator it = m_mapVAO.find(_id);
@@ -201,10 +206,28 @@ void Renderer::draw(std::string _id, std::string _shader)
   v->unbind();
 }
 
+
+//-------------------------------------------------------------------//
 void Renderer::deleteVAO(std::string _id)
 {
   m_mapVAO.erase(_id);
 }
+
+
+//-------------------------------------------------------------------//
+
+/*---------------taken from Jon Macy SimpleFBO Demo-----------*/
+
+//void Renderer::createFramebufferObject()
+//{
+//  //create a framebuffer object this is deleted in the dtor
+//  glGenFramebuffersEXT(1, &m_fboID);
+//  glBindFramebufferEXT(GL_FRAMEBUFFER, m_fboID);
+//  glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
+
+//}
+
+//-------------------------------------------------------------------//
 
 void Renderer::drawSelection(unsigned int _id, std::string _idStr)
 {
@@ -231,8 +254,16 @@ void Renderer::prepareDrawSelection()
   glDisable(GL_TEXTURE_2D);
   glDisable(GL_FOG);
 }
+
+//-------------------------------------------------------------------//
+
 ngl::Vec3 Renderer::readColourSelection(const int _x, const int _y)
-{
+{    
+  //BIND GLBUFFER FOR SELECTION IN HERE I THINK!!!!
+
+  //setFboState(1);
+
+
   // get color information from frame buffer
   unsigned char pixel[3];
   // get the viweport
@@ -243,8 +274,27 @@ ngl::Vec3 Renderer::readColourSelection(const int _x, const int _y)
   // now loop for each object and see if the colour matches
   // need to use a reference object as we will change the class Active value
   ngl::Vec3 p(pixel[0], pixel[1], pixel[2]);
+
+  //setFboState(0);
+
   return p;
 }
+
+
+//-------------------------------------------------------------------//
+
+//void Renderer::setFboState(bool _fbo)
+//{
+////    if(_fbo == 1)
+////    {
+////         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,m_fboID);
+////    }
+////    else
+////    {
+////         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+////    }
+
+//}
 
 //-------------------------------------------------------------------//
 void Renderer::loadMatrixToShader( ngl::TransformStack &_tx,  std::string _shader)
@@ -262,6 +312,8 @@ void Renderer::loadMatrixToShader( ngl::TransformStack &_tx,  std::string _shade
 
     shader->setShaderParamFromMat4("MVP",M*V*P);
 }
+
+
 //-------------------------------------------------------------------//
 void Renderer::set2DPosToShader(ngl::Vec2 _pos,  std::string _shader)
 {
@@ -275,6 +327,8 @@ void Renderer::set2DPosToShader(ngl::Vec2 _pos,  std::string _shader)
 
 }
 
+
+//-------------------------------------------------------------------//
 void Renderer::setScreenSize()
 {
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();

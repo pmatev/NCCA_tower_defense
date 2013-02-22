@@ -194,12 +194,14 @@ bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
 
 }
 
+
 //-------------------------------------------------------------------//
 
 ngl::Vec3 Game::getBasePos() const
 {
    return m_environment->getBasePos();
 }
+
 
 //-------------------------------------------------------------------//
 EnvironmentWPtr Game::getEnvironmentWeakPtr()
@@ -209,7 +211,9 @@ EnvironmentWPtr Game::getEnvironmentWeakPtr()
   return a;
 }
 
+
 //-------------------------------------------------------------------//
+
 
 void Game::dealDamage(std::list<Collision> _collisionList)
 {
@@ -238,5 +242,26 @@ ProjectileManagerWPtr Game::getProjectileManagerWeakPtr()
 }
 
 //-------------------------------------------------------------------//
+
+//-------------------------------------------------------------------//
+
+void Game::setNodehighlighted(int _id, bool _highlighted)
+{
+    EntityPtr entityClick = getEntityByID(_id).lock();
+
+    Q_UNUSED(_highlighted);
+    Q_UNUSED(entityClick);
+
+//    NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
+
+
+//    if(node) // check that it is a valid node
+//    {
+//        node->setHighlighted(_highlighted); //change highlighted flag
+
+//    }
+
+}
+
 
 

@@ -50,6 +50,7 @@ public:
   //-------------------------------------------------------------------//
   void generateMesh();
 
+
   //-------------------------------------------------------------------//
   /// @brief virtual update method
   /// @param [in] _dt, the timestep
@@ -81,6 +82,14 @@ public:
   //-------------------------------------------------------------------//
 
   inline void setOccupied(bool _isOccupied) {m_isOccupied = _isOccupied;}
+
+  //-------------------------------------------------------------------//
+  /// @brief set method for the m_isHighlighted variable
+  /// @param [in] _isHighlighted, a boolean value to set the occupied flag
+  /// to
+  //-------------------------------------------------------------------//
+  inline void setHighlighted(bool _isHighlighted){
+                                    m_highlighted = _isHighlighted;}
 
   //-------------------------------------------------------------------//
   /// @brief get the list of children that a node is linked to
@@ -130,6 +139,13 @@ protected:
   //-------------------------------------------------------------------//
 
   float m_hexagonSize;
+
+  //-------------------------------------------------------------------//
+  /// @brief if the node is moved over when in creation mode flag will
+  /// be set to true and the node will be rendered differently
+  //-------------------------------------------------------------------//
+
+  bool m_highlighted;
 
 
 

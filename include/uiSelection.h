@@ -7,8 +7,8 @@
 #include "entityfactory.h"
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
-#include "fwd/uimenu.h"
-#include "fwd/uiselection.h"
+#include "uimenu.h"
+#include "uiSelection.h"
 
 //-------------------------------------------------------------------//
 /// @file uiselection.h
@@ -78,6 +78,12 @@ public:
 
 
     //-------------------------------------------------------------------//
+    /// @brief the function which is run when the mouse is moved
+    //-------------------------------------------------------------------//
+    void mouseMoveEvent();
+
+
+    //-------------------------------------------------------------------//
     /// @brief register UIElement into IDMap
     /// @param [in] takes in a new uielement
     /// @param [out] returns the id for the element
@@ -126,8 +132,6 @@ public:
 
     void createTestMenu();
 
-    void createMenu();
-
     void mouseLeftUpTowerCreate(const unsigned int _ID);
 
     //-------------------------------------------------------------------//
@@ -164,6 +168,12 @@ private:
 
 
     //-------------------------------------------------------------------//
+    /// @brief stores id to highlighted node for selection
+    //-------------------------------------------------------------------//
+    int m_highlightedNode;
+
+
+    //-------------------------------------------------------------------//
     /// @brief when in creation mode this checks if the staticEntity can be
     /// placed on node if it can add to the list of towers else wait for
     /// do nothing until next click
@@ -177,6 +187,11 @@ private:
     //-------------------------------------------------------------------//
     //-------------------------------------------------------------------//
     UIMenuPtr m_menuTest;
+
+
+
+
+
 
 
     //-------------------------------------------------------------------//
