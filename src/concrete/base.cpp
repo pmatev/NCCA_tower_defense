@@ -1,4 +1,4 @@
-#include "base.h"
+#include "concrete/base.h"
 #include "renderer.h"
 
 //---TEST CODE (replace when generateMesh properly implemented)---//
@@ -13,7 +13,7 @@ Base::Base(
   StaticEntity(_linkedNode,BASE, _id)
 {
   generateMesh();
-
+  publish();
 
 }
 
@@ -104,6 +104,8 @@ void Base::generateMesh()
                               sizeof(indices),
                               &indices[0],
                               12);
+
+  generateLsBBox(boxData);
 }
 
 //-------------------------------------------------------------------//

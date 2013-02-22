@@ -189,8 +189,6 @@ UIMenuPtr UISelection::getMenu(std::string _name)
         {
            return drawEl;
         }
-
-        return UIMenuPtr();
     }
 
     return UIMenuPtr();

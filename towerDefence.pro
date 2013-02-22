@@ -47,12 +47,11 @@ SOURCES += src/main.cpp \
     src/enemy.cpp \
     src/projectile.cpp \
     src/wall.cpp \
-    src/base.cpp \
+    src/concrete/base.cpp \
     src/databasegrid.cpp \
     src/concrete/testenemy.cpp \
     src/concrete/testturret.cpp \
-    src/projectilemanager.cpp \
-    src/user.cpp
+    src/projectilemanager.cpp
 
 
 HEADERS += \
@@ -82,7 +81,7 @@ HEADERS += \
     include/uibutton.h \  
     include/projectile.h \
     include/wall.h \
-    include/base.h \
+    include/concrete/base.h \
     include/window.h \
     include/fwd/window.h \
     include/fwd/game.h \
@@ -94,8 +93,7 @@ HEADERS += \
     include/projectilemanager.h \
     include/fwd/uimenu.h \
     include/fwd/uibutton.h \
-    include/fwd/uiselection.h \
-    include/user.h
+    include/fwd/uiselection.h
 
 
 #including the Imath Library

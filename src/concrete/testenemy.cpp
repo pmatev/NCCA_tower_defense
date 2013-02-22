@@ -12,7 +12,7 @@ TestEnemy::TestEnemy(
   // ctor just passes everything to parent class
   // HACKY TESTING HERE
   generateMesh();
-//  m_active = false;
+  //  m_active = false;
 
   m_damage = 100;
   m_currentVelocity = 0;

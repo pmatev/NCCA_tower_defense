@@ -5,7 +5,7 @@
 
 #include "staticentity.h"
 #include "nodemanager.h"
-#include "base.h"
+#include "concrete/base.h"
 
 //-------------------------------------------------------------------//
 /// @file environment.h

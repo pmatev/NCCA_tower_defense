@@ -17,6 +17,7 @@ Node::Node(const ngl::Vec3 &_pos, float _hexagonSize, unsigned int _id):
   //variables initialised before constructor body called
   m_transformStack.setPosition(m_pos);
   generateMesh();
+  publish();
 }
 
 //-------------------------------------------------------------------//
