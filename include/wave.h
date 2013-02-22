@@ -99,7 +99,7 @@ public:
   /// @param[out] whether all the paths were successful or not
   //-------------------------------------------------------------------//
 
-  bool generatePaths(NodePtr _node);
+  bool generatePaths(NodeWPtr _node);
 
   //-------------------------------------------------------------------//
   /// @brief check for collisions with static objects
@@ -184,7 +184,7 @@ protected:
   /// an enemy updates it's path
   //-------------------------------------------------------------------//
 
-  std::map<NodePtr, EnemyVecPtr> m_pathNodes;
+  std::map<NodeWPtr, EnemyWVecPtr> m_pathNodes;
 
 };
 

@@ -65,7 +65,7 @@ protected:
   /// static entity
   //-------------------------------------------------------------------//
 
-  NodePtr m_linkedNode;
+  NodeWPtr m_linkedNode;
 };
 
 #endif // STATICENTITY_H

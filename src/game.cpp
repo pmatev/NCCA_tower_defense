@@ -34,8 +34,6 @@ Game* Game::instance()
 
 void Game::init()
 {
-
-
     //create and initialize the shaders.
     Renderer *render = Renderer::instance();
     render->createShader("Phong",2);
@@ -43,16 +41,34 @@ void Game::init()
     render->createShader("UI", 1);
     //m_light = new ngl::Light(ngl::Vec3(1,2,0),ngl::Colour(1,1,1),ngl::POINTLIGHT);
 
-    //Environment has to be created before the waves, as the enemies query data
-    //in environment.
-    m_environment = Environment::create(20, 20, 2, ngl::Vec3(0.0, 0.0, 0.0), 0, 0,10,10); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
-    m_waveManager = WaveManager::create();
-    m_projectileManager = ProjectileManager::create();
-
+    setupScene();
 }
 
+//-------------------------------------------------------------------//
+
+void Game::reset()
+{
+  // In the future this may need some other code to clear things
+//  m_environment.reset();
+//  m_waveManager.reset();
+//  m_projectileManager.reset();
+  m_IDMap.clear();
+  setupScene();
+}
 
 //-------------------------------------------------------------------//
+
+void Game::setupScene()
+{
+  //Environment has to be created before the waves, as the enemies query data
+  //in environment.
+  m_environment = Environment::create(20, 20, 2, ngl::Vec3(0.0, 0.0, 0.0), 0, 0,10,10); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
+  m_waveManager = WaveManager::create();
+  m_projectileManager = ProjectileManager::create();
+}
+
+//-------------------------------------------------------------------//
+
 void Game::destroy()
 {
     //call destroy on the database
@@ -89,14 +105,14 @@ void Game::unregisterID(const unsigned int _i)
 }
 
 //-------------------------------------------------------------------//
-EntityPtr Game::getEntityByID(const unsigned int _i) const
+EntityWPtr Game::getEntityByID(const unsigned int _i) const
 {
-  std::map<unsigned int, EntityPtr>::const_iterator it = m_IDMap.find(_i);
+  std::map<unsigned int, EntityWPtr>::const_iterator it = m_IDMap.find(_i);
   if(it == m_IDMap.end())
   {
-    return EntityPtr();
+    return EntityWPtr();
   }
-  return it->second;
+  return EntityWPtr(it->second);
 }
 
 //-------------------------------------------------------------------//
@@ -166,7 +182,7 @@ bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
   }
   // set node to occupied
   _node->setOccupied(true);
-  if(m_waveManager->generatePaths(_node))
+  if(m_waveManager->generatePaths(NodeWPtr(_node)))
   {
     // Tell the environment to create a tower
     m_environment->createTower(_type, _node);
@@ -186,10 +202,10 @@ ngl::Vec3 Game::getBasePos() const
 }
 
 //-------------------------------------------------------------------//
-EnvironmentWeakPtr Game::getEnvironmentWeakPtr()
+EnvironmentWPtr Game::getEnvironmentWeakPtr()
 {
-  //EnvironmentWeakPtr a(m_environment);
-  EnvironmentWeakPtr a(m_environment);
+  //EnvironmentWPtr a(m_environment);
+  EnvironmentWPtr a(m_environment);
   return a;
 }
 
@@ -204,7 +220,7 @@ void Game::dealDamage(std::list<Collision> _collisionList)
       )
   {
     // Get smart pointer to object
-    EntityPtr entity = getEntityByID(it->m_id);
+    EntityPtr entity = getEntityByID(it->m_id).lock();
     if(entity)
     {
       entity->dealDamage(it->m_damage);
@@ -214,9 +230,9 @@ void Game::dealDamage(std::list<Collision> _collisionList)
 
 //-------------------------------------------------------------------//
 
-ProjectileManagerWeakPtr Game::getProjectileManagerPtr()
+ProjectileManagerWPtr Game::getProjectileManagerWeakPtr()
 {
-  ProjectileManagerWeakPtr a(m_projectileManager);
+  ProjectileManagerWPtr a(m_projectileManager);
 
   return a;
 }

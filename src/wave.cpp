@@ -130,7 +130,7 @@ void Wave::drawSelection()
 
 //-------------------------------------------------------------------//
 
-bool Wave::generatePaths(NodePtr _node)
+bool Wave::generatePaths(NodeWPtr _node)
 {
   // 1. Find all Enemies affected by _node
   // 2. Go through each Enemy and tell it to generate a new temporary path
@@ -139,7 +139,7 @@ bool Wave::generatePaths(NodePtr _node)
   // 4. Update the map with the new node values
 
   // 1.
-  EnemyVecPtr enemyList = m_pathNodes[_node];
+  EnemyWVecPtr enemyList = m_pathNodes[_node];
   // if there are no enemies using this node
   if(!enemyList)
   {
@@ -158,7 +158,15 @@ bool Wave::generatePaths(NodePtr _node)
       {
         continue;
       }
-      if(!(*enemyList)[i]->generateTempPath())
+      EnemyPtr enemy = (*enemyList)[i].lock();
+      if(enemy)
+      {
+        if(!enemy->generateTempPath())
+        {
+          invalidPath = true;
+        }
+      }
+      else
       {
         invalidPath = true;
       }
@@ -169,9 +177,13 @@ bool Wave::generatePaths(NodePtr _node)
     return false;
   }
   // 3.
-  BOOST_FOREACH(EnemyPtr it, *enemyList)
+  BOOST_FOREACH(EnemyWPtr enemyWeak, *enemyList)
   {
-    it->finalisePath();
+    EnemyPtr enemy = enemyWeak.lock();
+    if(enemy)
+    {
+      enemy->finalisePath();
+    }
   }
   // 4.
   // clear list and rebuild
@@ -232,14 +244,14 @@ void Wave::rebuildPathNodes()
 void Wave::addToPathNodes(EnemyPtr _enemy)
 {
   // Find path
-  Node::NodeList path = _enemy->getPath();
-  BOOST_FOREACH(NodePtr node, path)
+  Node::NodeWList path = _enemy->getPath();
+  BOOST_FOREACH(NodeWPtr node, path)
   {
     // Check if Node is in map
     if(m_pathNodes.find(node) == m_pathNodes.end())
     {
       // Add to map
-      m_pathNodes[node] = EnemyVecPtr(new EnemyVec());
+      m_pathNodes[node] = EnemyWVecPtr(new EnemyWVec());
     }
     // Add to the enemy to the list
     m_pathNodes[node]->push_back(_enemy);

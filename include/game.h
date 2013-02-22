@@ -37,8 +37,12 @@ public:
     //-------------------------------------------------------------------//
     static Game* instance();
 
-
     void init();
+
+    //-------------------------------------------------------------------//
+    /// @brief clear everything and run sceneSetup()
+    //-------------------------------------------------------------------//
+    void reset();
 
     //-------------------------------------------------------------------//
     /// @brief returns instance of singleton
@@ -80,7 +84,7 @@ public:
     //-------------------------------------------------------------------//
     /// @brief return Smart Pointer to Entity via ID.
     //-------------------------------------------------------------------//
-    EntityPtr getEntityByID(const unsigned int _i) const;
+    EntityWPtr getEntityByID(const unsigned int _i) const;
 
     //-------------------------------------------------------------------//
     /// @brief try to create a tower on the specified node with the specified
@@ -100,8 +104,8 @@ public:
     //-------------------------------------------------------------------//
     /// @brief return weak smart pointer to the environment
     //-------------------------------------------------------------------//
+    EnvironmentWPtr getEnvironmentWeakPtr();
 
-    EnvironmentWeakPtr getEnvironmentWeakPtr();
 
     //-------------------------------------------------------------------//
     /// @brief a method to return a smart weak pointer to the projectile
@@ -109,7 +113,7 @@ public:
     /// @param [out] pointer to the projectile manager
     //-------------------------------------------------------------------//
 
-    ProjectileManagerWeakPtr getProjectileManagerPtr();
+    ProjectileManagerWPtr getProjectileManagerWeakPtr();
 
 protected:
     //-------------------------------------------------------------------//
@@ -130,12 +134,19 @@ protected:
 
     void dealDamage(std::list<Collision> _collisionList);
 
+    //-------------------------------------------------------------------//
+    /// @brief setup the whole scene. This is where any scene information
+    /// should be read from file, interpreted and initialisd.
+    //-------------------------------------------------------------------//
+
+    void setupScene();
+
 protected:
 
     //-------------------------------------------------------------------//
     /// @brief A map of IDs to Entity Pointers for game object management.
     //-------------------------------------------------------------------//
-    std::map<unsigned int, EntityPtr> m_IDMap;
+    std::map<unsigned int, EntityWPtr> m_IDMap;
 
     //-------------------------------------------------------------------//
     /// @brief pointer to the wavemanager

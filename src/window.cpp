@@ -312,6 +312,9 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 
     m_UI->mouseLeftUpTowerCreate(id);
 
+//    Game *game = Game::instance();
+//    game->reset();
+
     /* -------- End Testing Code -------------*/
 
 }

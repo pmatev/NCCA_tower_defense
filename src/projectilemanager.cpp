@@ -139,7 +139,7 @@ void ProjectileManager::checkDeaths()
 //-------------------------------------------------------------------//
 
 void ProjectileManager::addProjectile(
-    std::string &_type,
+    const std::string &_type,
     const ngl::Vec3 &_pos,
     const ngl::Vec3 &_aim
     )

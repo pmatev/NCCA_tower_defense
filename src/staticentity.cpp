@@ -10,10 +10,12 @@ StaticEntity::StaticEntity(
     ):
   Entity(_linkedNode->getPos(),_type,_id),
   m_level(0),
-  m_linkedNode(_linkedNode)
+  m_linkedNode(NodeWPtr(_linkedNode))
 {
   // tag node as occupied
-  m_linkedNode->setOccupied(true);
+  _linkedNode->setOccupied(true);
+  //publish to the Database
+  publish();
 }
 
 //-------------------------------------------------------------------//
@@ -28,7 +30,11 @@ StaticEntity::~StaticEntity()
 
   db->unPublish(getGeneralType(),m_ID);
   // release node occupation
-  m_linkedNode->setOccupied(false);
+  NodePtr linkedNode = m_linkedNode.lock();
+  if(linkedNode)
+  {
+    linkedNode->setOccupied(false);
+  }
 }
 
 //-------------------------------------------------------------------//

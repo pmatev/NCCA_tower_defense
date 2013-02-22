@@ -420,7 +420,6 @@ Collision DynamicEntity::collisionTest(
     unsigned int id = listIt->m_id;
     if(id != m_ID)
     {
-
       //get the relevant information
 
       //ngl::Vec3 pos (listIt->m_x,listIt->m_y,listIt->m_z);
@@ -439,14 +438,24 @@ Collision DynamicEntity::collisionTest(
 
       if (result == true)
       {
-        //set the id of the collision being returned from the null value
-        //to the one tested
+        //check for collisions between the entity checking and the one
+        //it's checking against
 
-        c.m_id = id;
+        result = intersectTest(bBox);
+        //if there was a collision
 
-        //then set the damage value
+        if (result == true)
+        {
+          //set the id of the collision being returned from the null value
+          //to the one tested
 
-        c.m_damage = m_damage;
+          c.m_id = id;
+
+          //then set the damage value
+
+          c.m_damage = m_damage;
+        }
+
       }
 
     }

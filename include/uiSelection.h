@@ -66,7 +66,7 @@ public:
     /// @param [out] returns a pointer to the entity that has been clicked
     /// and will return 0 if nothing is selected
     //-------------------------------------------------------------------//
-    EntityPtr checkEntityClicked();
+    EntityWPtr checkEntityClicked();
 
 
     //-------------------------------------------------------------------//

@@ -2,6 +2,7 @@
 #include "entity.h"
 #include "node.h"
 #include "renderer.h"
+#include "game.h"
 
 #define PI 3.14159265
 
@@ -19,9 +20,28 @@ Node::Node(const ngl::Vec3 &_pos, float _hexagonSize, unsigned int _id):
 
 //-------------------------------------------------------------------//
 
+NodePtr Node::create(const ngl::Vec3 &_pos, float _hexagonSize)
+{
+  //get a pointer to the game
+  Game* game = Game::instance();
+  unsigned int id = game->getID();
+  NodePtr a(
+        new Node(
+          _pos,
+          _hexagonSize,
+          id
+          )
+        );
+  game->registerID(a, id);
+  return a;
+}
+
+//-------------------------------------------------------------------//
+
 Node::~Node()
 {
   //currently using default destructor
+  std::cout<<"deleting node "<<m_ID<<std::endl;
 }
 
 void Node::generateMesh()

@@ -100,7 +100,7 @@ public:
   /// removed
   //-------------------------------------------------------------------//
 
-  static void unregisterDynamicEntity(const std::string _type);
+  static void unregisterDynamicEntity(const std::string &_type);
 
   //-------------------------------------------------------------------//
   /// @brief remove the specified type from the list of possible types
@@ -108,7 +108,7 @@ public:
   /// removed
   //-------------------------------------------------------------------//
 
-  static void unregisterStaticEntity(const std::string _type);
+  static void unregisterStaticEntity(const std::string &_type);
 
   //-------------------------------------------------------------------//
   /// @brief create DynamicEntity and return pointer to it
@@ -116,7 +116,7 @@ public:
   /// @param[in] _pos, initital position of enemy
   //-------------------------------------------------------------------//
   static DynamicEntityPtr createDynamicEntity(
-        std::string _type,
+        const std::string &_type,
         const ngl::Vec3 &_pos,
         const ngl::Vec3 &_aim
         );
@@ -128,7 +128,7 @@ public:
   //-------------------------------------------------------------------//
 
   static StaticEntityPtr createStaticEntity(
-        std::string _type,
+        const std::string &_type,
         NodePtr _node
         );
 

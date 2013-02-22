@@ -8,7 +8,7 @@ Turret::Turret(
     unsigned int _id,
     std::string _projectileType
     ):
-  StaticEntity(_linkedNode,TURRET,_id),
+  StaticEntity(_linkedNode, TURRET,_id),
   m_fov(360),
   m_viewDistance(20),
   m_maxRotationSpeed(20),
@@ -46,17 +46,12 @@ void Turret::fire()
 
   //get a weak pointer to the projectile manager
 
-  ProjectileManagerWeakPtr pmWeak = game->getProjectileManagerPtr();
-
-  //add a projectile
-
-  ProjectileManagerPtr pm = pmWeak.lock();
+  ProjectileManagerPtr pm = game->getProjectileManagerWeakPtr().lock();
   if(pm)
   {
     //add a projectile, at the moment starts it at the centre of the turret
     //might need to add some way of setting where the end of the turret's
     //barrel is
-
     pm->addProjectile(m_projectileType,m_pos,m_aim);
   }
 }

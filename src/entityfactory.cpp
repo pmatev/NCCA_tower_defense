@@ -50,12 +50,12 @@ void EntityFactory::registerStaticEntity(
 }
 
 
-void EntityFactory::unregisterDynamicEntity(const std::string _type)
+void EntityFactory::unregisterDynamicEntity(const std::string &_type)
 {
   s_dynamicEntityTypes.erase(_type);
 }
 
-void EntityFactory::unregisterStaticEntity(const std::string _type)
+void EntityFactory::unregisterStaticEntity(const std::string &_type)
 {
   s_staticEntityTypes.erase(_type);
 }
@@ -65,7 +65,7 @@ void EntityFactory::unregisterStaticEntity(const std::string _type)
 //-------------------------------------------------------------------//
 
 DynamicEntityPtr EntityFactory::createDynamicEntity(
-    std::string _type,
+    const std::string &_type,
     const ngl::Vec3 &_pos,
     const ngl::Vec3 &_aim
     )
@@ -105,7 +105,7 @@ DynamicEntityPtr EntityFactory::createDynamicEntity(
 
 
 StaticEntityPtr EntityFactory::createStaticEntity(
-    std::string _type,
+    const std::string &_type,
     NodePtr _node
     )
 {
@@ -131,10 +131,11 @@ StaticEntityPtr EntityFactory::createStaticEntity(
     //register the entity with the game
 
     game->registerID(se,id);
-
     //then return the pointer
 
     return se;
+
+
   }
   return StaticEntityPtr();
 }

@@ -42,26 +42,33 @@ NodeManager::NodeManager(
 
   Database::init(_dbGridSizeX,_dbGridSizeZ, maxX,maxZ,minX,minZ);
 
-  //get a pointer to the game
-  Game* game = Game::instance();
+//  //get a pointer to the game
+//  Game* game = Game::instance();
 
   // create all the necessary node
   for(int j = 0; j < _gridHeight; j++)
   {
     for(int i = 0; i < _gridWidth; i++)
     {
-      unsigned int ID = game->getID();
-      NodePtr node(
-            new Node(
+//      unsigned int ID = game->getID();
+//      NodePtr node(
+//            new Node(
+//              ngl::Vec3(i * _hexagonSize * 0.75, 0,
+//                        j * (_hexagonSize * s_hexFactor) + (_hexagonSize * s_hexFactor)/2 * ((i%2 != 0))
+//                        ) + m_origin,
+//              m_hexagonSize,
+//              ID
+      //              )
+      //            );
+//      game->registerID(node,ID);
+      m_nodes.push_back(
+            Node::create(
               ngl::Vec3(i * _hexagonSize * 0.75, 0,
                         j * (_hexagonSize * s_hexFactor) + (_hexagonSize * s_hexFactor)/2 * ((i%2 != 0))
                         ) + m_origin,
-              m_hexagonSize,
-              ID
+              m_hexagonSize
               )
             );
-      game->registerID(node,ID);
-      m_nodes.push_back(node);
       //std::cout<<"#"<<(_gridWidth*j) + i<<": Node "<<"("<<i<<","<<j<<")" << " has coords: ["<<node->getPos().m_x<<","<<node->getPos().m_z<<std::endl;
     }
   }
@@ -71,7 +78,7 @@ NodeManager::NodeManager(
   {
     for(int i = 0; i < _gridWidth; i++)
     {
-      Node::NodeListPtr neighbours(new Node::NodeList());
+      Node::NodeWListPtr neighbours(new Node::NodeWList());
 
       int x = 0;
       int y = 0;
@@ -84,11 +91,11 @@ NodeManager::NodeManager(
         {
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
         }
 
         //Mid left
@@ -96,19 +103,19 @@ NodeManager::NodeManager(
         {
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
         }
 
         //Bottom left
@@ -116,15 +123,15 @@ NodeManager::NodeManager(
         {
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
         }
       }
 
@@ -139,11 +146,11 @@ NodeManager::NodeManager(
           {
             x = i - 1;
             y = j;
-            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+            neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
             x = i;
             y = j + 1;
-            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+            neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
           }
 
           //Lower top right
@@ -151,15 +158,15 @@ NodeManager::NodeManager(
           {
             x = i - 1;
             y = j;
-            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+            neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
             x = i - 1;
             y = j + 1;
-            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+            neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
             x = i;
             y = j + 1;
-            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+            neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
           }
         }
 
@@ -168,19 +175,19 @@ NodeManager::NodeManager(
         {
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i - 1;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
         }
 
         //Bottom right
@@ -191,26 +198,26 @@ NodeManager::NodeManager(
           {
             x = i - 1;
             y = j;
-            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+            neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
             x = i - 1;
             y = j - 1;
-            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+            neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
             x = i;
             y = j - 1;
-            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+            neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
           }
           //Bottom right lower
           else
           {
             x = i;
             y = j - 1;
-            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+            neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
             x = i - 1;
             y = j;
-            neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+            neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
           }
         }
       }
@@ -223,23 +230,23 @@ NodeManager::NodeManager(
         {
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i - 1;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
         }
 
         //Upper top
@@ -247,15 +254,15 @@ NodeManager::NodeManager(
         {
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
         }
       }
 
@@ -267,15 +274,15 @@ NodeManager::NodeManager(
         {
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
         }
 
         //Upper bottom
@@ -283,23 +290,23 @@ NodeManager::NodeManager(
         {
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i - 1;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
         }
       }
 
@@ -311,27 +318,27 @@ NodeManager::NodeManager(
         {
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i - 1;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
         }
 
         //enclosed even
@@ -339,43 +346,32 @@ NodeManager::NodeManager(
         {
           x = i - 1;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j - 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i + 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i;
           y = j + 1;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
 
           x = i - 1;
           y = j;
-          neighbours->push_back(m_nodes[(_gridWidth*y) + x]);
+          neighbours->push_back(NodeWPtr(m_nodes[(_gridWidth*y) + x]));
         }
       }
       m_nodes[(j*_gridWidth) + i]->setChildList(neighbours);
     }
   }
-
-//  for(int i = 0; i < m_nodes.size(); i++)
-//  {
-//    std::cout<<(*m_nodes[i]).getID()<< " has neighbours:"<<std::endl;
-//    for(Node::NodeList::iterator it = m_nodes[i]->getChildList()->begin(); it != m_nodes[i]->getChildList()->end(); it++)
-//    {
-//      std::cout<<(*it)->getID()<<std::endl;
-//    }
-//    std::cout<<std::endl;
-//  }
-
 }
 
 //-------------------------------------------------------------------//
@@ -424,6 +420,8 @@ void NodeManager::draw()
   }
 }
 
+//-------------------------------------------------------------------//
+
 void NodeManager::drawSelection()
 {
   for(int i = 0; i < m_nodes.size(); i++)
@@ -434,7 +432,7 @@ void NodeManager::drawSelection()
 
 //-------------------------------------------------------------------//
 
-bool NodeManager::getAStar(Node::NodeList &o_newPath, NodePtr _start, NodePtr _goal) const
+bool NodeManager::getAStar(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr _goal) const
 {
   // From http://en.wikipedia.org/wiki/A*_search_algorithm
   // THIS FUNCTION COULD PROBABLY BE SIMPLIFIED
@@ -442,7 +440,7 @@ bool NodeManager::getAStar(Node::NodeList &o_newPath, NodePtr _start, NodePtr _g
   // this keeps track of which nodes relate to which paths, this way we can
   // access PathNode data via the Node. This is useful as children are stored
   // as Nodes rather than path nodes
-  std::map<NodePtr, PathNodePtr> allPathNodes;
+  std::map<NodeWPtr, PathNodePtr> allPathNodes;
 
   PathNodePtr start = PathNode::create(
                       _start,
@@ -461,7 +459,7 @@ bool NodeManager::getAStar(Node::NodeList &o_newPath, NodePtr _start, NodePtr _g
     PathNodePtr current = *openSet.begin();
 
     // If we've found the goal
-    if(current->m_node == _goal)
+    if(*current == _goal)
     {
       reconstructPath(o_newPath, current, _start);
       return true;
@@ -470,54 +468,57 @@ bool NodeManager::getAStar(Node::NodeList &o_newPath, NodePtr _start, NodePtr _g
     // Take current from openSet and move it into closedSet
     openSet.remove(current);
     closedSet.push_back(current);
-
-    if(current->m_node->isOccupied() && current->m_node != _start)
+    NodePtr currentNode = current->m_node.lock();
+    if(currentNode)
     {
-      continue;
-    }
-
-    // Go through children of current
-    Node::NodeListPtr children = current->m_node->getChildList();
-    for(
-        Node::NodeList::iterator it = children->begin();
-        it != children->end();
-        ++it)
-    {
-      PathNodePtr child;
-      //Get PathNode affiliated with node
-      std::map<NodePtr, PathNodePtr>::iterator childIt = allPathNodes.find(*it);
-      //If it couldn't find it create one and insert into map
-      if(childIt == allPathNodes.end())
-      {
-        // Create an new PathNode that corresponds to the child node. (i.e put
-        // it on the system)
-        // Set gScore very high so it's overwritten in the next step
-        child = PathNode::create(*it, current->m_gScore + m_centerSqrDist, 0);
-        allPathNodes[*it] = child;
-      }
-      else
-      {
-        // Set child to the value in the iterator
-        child = childIt->second;
-      }
-      if(checkListForNode(child, closedSet))
+      if(currentNode->isOccupied() && !(*current == _start))
       {
         continue;
       }
-      float tentativeGScore = current->m_gScore + m_centerSqrDist;
-      bool inOpenSet = checkListForNode(child, openSet);
-      if(!inOpenSet || tentativeGScore <= child->m_gScore)
+
+      // Go through children of current
+      Node::NodeWListPtr children = currentNode->getChildList();
+      for(
+          Node::NodeWList::iterator it = children->begin();
+          it != children->end();
+          ++it)
       {
-        child->m_parent = current;
-        child->m_gScore = tentativeGScore;
-        child->m_fScore = tentativeGScore + 3*heuristicPath(child->m_node, _goal);
-        if(!inOpenSet)
+        PathNodePtr child;
+        //Get PathNode affiliated with node
+        std::map<NodeWPtr, PathNodePtr>::iterator childIt = allPathNodes.find(*it);
+        //If it couldn't find it create one and insert into map
+        if(childIt == allPathNodes.end())
         {
-          //Add to openSet
-          openSet.push_back(child);
+          // Create an new PathNode that corresponds to the child node. (i.e put
+          // it on the system)
+          // Set gScore very high so it's overwritten in the next step
+          child = PathNode::create(*it, current->m_gScore + m_centerSqrDist, 0);
+          allPathNodes[*it] = child;
         }
-        //sort the set so that the top one will be chosen
-        openSet.sort(PathNode::compare);
+        else
+        {
+          // Set child to the value in the iterator
+          child = childIt->second;
+        }
+        if(checkListForNode(child, closedSet))
+        {
+          continue;
+        }
+        float tentativeGScore = current->m_gScore + m_centerSqrDist;
+        bool inOpenSet = checkListForNode(child, openSet);
+        if(!inOpenSet || tentativeGScore <= child->m_gScore)
+        {
+          child->m_parent = current;
+          child->m_gScore = tentativeGScore;
+          child->m_fScore = tentativeGScore + 3*heuristicPath(child->m_node, _goal);
+          if(!inOpenSet)
+          {
+            //Add to openSet
+            openSet.push_back(child);
+          }
+          //sort the set so that the top one will be chosen
+          openSet.sort(PathNode::compare);
+        }
       }
     }
   }
@@ -528,33 +529,42 @@ bool NodeManager::getAStar(Node::NodeList &o_newPath, NodePtr _start, NodePtr _g
 
 //-------------------------------------------------------------------//
 
-float NodeManager::heuristicPath(NodePtr _start, NodePtr _goal) const
+float NodeManager::heuristicPath(NodeWPtr _start, NodeWPtr _goal) const
 {
+  NodePtr start = _start.lock();
+  NodePtr goal = _goal.lock();
+  if(start && goal)
+  {
+    ngl::Vec3 distVec =  start->getPos() - goal->getPos();
+    float sqrDist =
+        (distVec.m_x * distVec.m_x) +
+        (distVec.m_y * distVec.m_y) +
+        (distVec.m_z * distVec.m_z);
+    return sqrDist;
+  }
 
-  ngl::Vec3 distVec =  _start->getPos() - _goal->getPos();
-  float sqrDist =
-      (distVec.m_x * distVec.m_x) +
-      (distVec.m_y * distVec.m_y) +
-      (distVec.m_z * distVec.m_z);
-  return sqrDist;
 }
 
 void NodeManager::reconstructPath(
-    Node::NodeList &io_newPath,
-    PathNodePtr _current,
-    NodePtr _start
+    Node::NodeWList &io_newPath,
+    PathNodeWPtr _current,
+    NodeWPtr _start
     ) const
 {
-  // Add the current node to the list
-  io_newPath.push_back(_current->m_node);
-  // if we've got back to the start
-  if(_current->m_node == _start)
+  PathNodePtr current = _current.lock();
+  if(current)
   {
-    // Finish
-    return;
+    // Add the current node to the list
+    io_newPath.push_back(current->m_node);
+    // if we've got back to the start
+    if(*current == _start)
+    {
+      // Finish
+      return;
+    }
+    // Keep searching from the parent
+    reconstructPath(io_newPath, current->m_parent, _start);
   }
-  // Keep searching from the parent
-  reconstructPath(io_newPath, _current->m_parent, _start);
   return;
 }
 
@@ -582,18 +592,18 @@ bool NodeManager::checkListForNode(PathNodePtr _node, PathNodeList _list) const
 //-------------------------------------------------------------------//
 
 bool NodeManager::findPathFromPos(
-    Node::NodeList &o_newPath,
+    Node::NodeWList &o_newPath,
     ngl::Vec3 _start,
     ngl::Vec3 _goal) const
 {
   //need to find the start and finish nodes in m_nodes from the vec3s.
-  NodePtr start = getNodeFromPos(_start);
-  NodePtr goal = getNodeFromPos(_goal);
+  NodeWPtr start = getNodeFromPos(_start);
+  NodeWPtr goal = getNodeFromPos(_goal);
 
   return getAStar(o_newPath, start, goal);
 }
 
-NodePtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
+NodeWPtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
 {
   float x = _pos.m_x - m_origin.m_x;
   float y = _pos.m_z - m_origin.m_z;
@@ -616,7 +626,7 @@ NodePtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
   return m_nodes[index];
 }
 
-NodePtr NodeManager::getNodeFromCoords(int _x, int _y) const
+NodeWPtr NodeManager::getNodeFromCoords(int _x, int _y) const
 {
   return m_nodes[(_y*m_gridWidth) + _x];
 }

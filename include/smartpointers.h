@@ -4,6 +4,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <list>
+#include <vector>
 
 //-------------------------------------------------------------------//
 /// @file smartpointers.h
@@ -24,19 +25,9 @@
 #define DECLARESMART(X) \
   class X; \
   typedef boost::shared_ptr< X > X ## Ptr; \
-  typedef boost::shared_ptr< const X > X ## CPtr;\
   typedef boost::weak_ptr< X > X ## WPtr; \
+  typedef boost::shared_ptr< const X > X ## CPtr;\
   typedef boost::weak_ptr< const X > X ## WCPtr;\
-
-//-------------------------------------------------------------------//
-/// @brief preprocessor macro to aid in the creation of boost::weak_ptrs
-//-------------------------------------------------------------------//
-
-#define DECLAREWEAKSMART(X) \
-  class X; \
-  typedef boost::weak_ptr< X > X ## WeakPtr; \
-  typedef boost::weak_ptr< const X > X ## WeakCPtr;\
-
 
 //-------------------------------------------------------------------//
 /// @brief preprocessor macro to aid in the creation of lists of shared pointer
@@ -55,6 +46,10 @@
   DECLARESMART(X); \
   typedef std::vector< X ## Ptr > X ## Vec; \
   typedef boost::shared_ptr< X ## Vec > X ## VecPtr;\
+  typedef std::vector< X ## WPtr > X ## WVec; \
+  typedef boost::shared_ptr< X ## WVec > X ## WVecPtr;\
+
+
 
 
 #endif // SMARTPOINTERS_H

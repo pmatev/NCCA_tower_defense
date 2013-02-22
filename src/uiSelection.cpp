@@ -66,7 +66,7 @@ UIElementPtr UISelection::checkUIClicked(const unsigned int _ID)
 
 //-------------------------------------------------------------------//
 
-EntityPtr UISelection::checkEntityClicked()
+EntityWPtr UISelection::checkEntityClicked()
 {
 
     Game *game = Game::instance();
@@ -96,7 +96,7 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
         std::cout<<_ID<<std::endl;
         if(!UIClick)
         {
-            entityClick = checkEntityClicked();
+            entityClick = checkEntityClicked().lock();
 
             if(!entityClick)
             {
@@ -129,7 +129,7 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
     {
         EntityPtr entityClick;
 
-        entityClick = checkEntityClicked();
+        entityClick = checkEntityClicked().lock();
         if(!entityClick)
         {
             if(entityClick->getGeneralType() == NODE)
@@ -254,7 +254,7 @@ void UISelection::mouseLeftUpTowerCreate(const unsigned int _ID)
     std::cout<<_ID<<std::endl;
     if(!UIClick)
     {
-        entityClick = checkEntityClicked();
+        entityClick = checkEntityClicked().lock();
 
         if(!entityClick)
         {

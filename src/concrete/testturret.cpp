@@ -28,25 +28,27 @@ EntityPtr TestTurret::create(
     )
 {
   // pass everything to the ctor
-  EntityPtr a(new TestTurret(
-                    _linkedNode,
-                    _id
-                    )
-                  );
+  EntityPtr a(
+        new TestTurret(
+          _linkedNode,
+          _id
+          )
+        );
   return a;
+
 }
 //-------------------------------------------------------------------//
 
 void TestTurret::generateMesh()
 {
   const static GLubyte indices[]=  {
-                                      0,1,5,0,4,5, // back
-                                      3,2,6,7,6,3, // front
-                                      0,1,2,3,2,0, // top
-                                      4,5,6,7,6,4, // bottom
-                                      0,3,4,4,7,3,
-                                      1,5,2,2,6,5
-                                   };
+    0,1,5,0,4,5, // back
+    3,2,6,7,6,3, // front
+    0,1,2,3,2,0, // top
+    4,5,6,7,6,4, // bottom
+    0,3,4,4,7,3,
+    1,5,2,2,6,5
+  };
 
   GLfloat vertices[] = {-0.5,0.5,-0.5,
                         0.5,0.5,-0.5,
@@ -58,14 +60,14 @@ void TestTurret::generateMesh()
                         -0.5,-0.5,0.5
                        };
   GLfloat normals[] = {0,1,-1,
-                        0,1,-1,
-                        0,1,1,
+                       0,1,-1,
                        0,1,1,
-                        0,-1,-1,
-                        0,-1,-1,
-                        0,-1,1,
-                        0,-1,1
-                       };
+                       0,1,1,
+                       0,-1,-1,
+                       0,-1,-1,
+                       0,-1,1,
+                       0,-1,1
+                      };
 
   std::vector<vertData> boxData;
   vertData d;

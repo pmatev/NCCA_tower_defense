@@ -20,7 +20,6 @@
 //-------------------------------------------------------------------//
 
 DECLARESMART(Environment)
-DECLAREWEAKSMART(Environment)
 
 class Environment
 {
@@ -82,7 +81,7 @@ public:
 
   ngl::Vec3 getBasePos();
 
-  NodeManagerWeakPtr getNodeManagerWeakPtr();
+  NodeManagerWPtr getNodeManagerWeakPtr();
 
 protected:
 

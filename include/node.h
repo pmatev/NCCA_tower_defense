@@ -30,19 +30,14 @@ public:
   /// @brief typedefs for list of nodes
   //-------------------------------------------------------------------//
 
-  typedef std::list<NodePtr> NodeList;
+  typedef std::list<NodeWPtr> NodeWList;
+  typedef std::vector<NodeWPtr> NodeWVec;
   typedef std::vector<NodePtr> NodeVec;
 
-  typedef boost::shared_ptr<NodeList> NodeListPtr;
+  typedef boost::shared_ptr<NodeWList> NodeWListPtr;
 
 public:
-  //-------------------------------------------------------------------//
-  /// @brief parameterised constructor
-  /// @param [in] _pos, a const reference to an ngl vector containing the
-  /// position with which to create the node
-  //-------------------------------------------------------------------//
-
-  Node(const ngl::Vec3 & _pos, float _hexagonSize, unsigned int _id);
+  static NodePtr create(const ngl::Vec3 &_pos, float _hexagonSize);
 
   //-------------------------------------------------------------------//
   /// @brief destructor
@@ -92,20 +87,29 @@ public:
   /// @param [out] m_children, list of child nodes
   //-------------------------------------------------------------------//
 
-  inline NodeListPtr getChildList() {return m_children;}
+  inline NodeWListPtr getChildList() {return m_children;}
 
   //-------------------------------------------------------------------//
   /// @brief set the list of children that a node is linked to
   /// @param [in] _children, list of child nodes
   //-------------------------------------------------------------------//
 
-  inline void setChildList(NodeListPtr _children) {m_children = _children;}
+  inline void setChildList(NodeWListPtr _children) {m_children = _children;}
 
   //-------------------------------------------------------------------//
   /// @brief destroy method
   //-------------------------------------------------------------------//
 
   void destroy();
+
+protected:
+  //-------------------------------------------------------------------//
+  /// @brief parameterised constructor
+  /// @param [in] _pos, a const reference to an ngl vector containing the
+  /// position with which to create the node
+  //-------------------------------------------------------------------//
+
+  Node(const ngl::Vec3 & _pos, float _hexagonSize, unsigned int _id);
 
 protected:
   //-------------------------------------------------------------------//
@@ -119,7 +123,7 @@ protected:
   /// @brief List of children for traversal
   //-------------------------------------------------------------------//
 
-  NodeListPtr m_children;
+  NodeWListPtr m_children;
 
   //-------------------------------------------------------------------//
   /// @brief Size of the hexagon this node represents

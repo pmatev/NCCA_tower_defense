@@ -19,7 +19,6 @@
 #include "node.h"
 
 DECLARESMART(NodeManager)
-DECLAREWEAKSMART(NodeManager)
 
 class NodeManager
 {
@@ -38,8 +37,8 @@ protected:
 
   struct PathNode
   {
-    NodePtr m_node;
-    PathNodePtr m_parent;
+    NodeWPtr m_node;
+    PathNodeWPtr m_parent;
     float m_gScore;
     float m_fScore;
 
@@ -51,7 +50,7 @@ protected:
     //-------------------------------------------------------------------//
 
     static PathNodePtr create(
-          NodePtr _node,
+          NodeWPtr _node,
           float _gScore,
           float _fScore
           )
@@ -62,6 +61,16 @@ protected:
     inline bool operator<(const  PathNode &_test)
     {
       return m_fScore < _test.m_fScore;
+    }
+    inline bool operator==(const NodeWPtr _nodeTest)
+    {
+      NodePtr node = m_node.lock();
+      NodePtr nodeTest = _nodeTest.lock();
+      if(node && nodeTest)
+      {
+        return node == nodeTest;
+      }
+      return false;
     }
 
     //-------------------------------------------------------------------//
@@ -87,7 +96,7 @@ protected:
     //-------------------------------------------------------------------//
 
     PathNode(
-          NodePtr _node,
+          NodeWPtr _node,
           float _gScore,
           float _fScore
           ):
@@ -126,14 +135,14 @@ public:
   /// @brief Find a path between two nodes ( A* search algorithm)
   //-------------------------------------------------------------------//
 
-  bool getAStar(Node::NodeList &o_newPath, NodePtr _start, NodePtr _goal) const;
+  bool getAStar(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr _goal) const;
 
   //-------------------------------------------------------------------//
   /// @brief Wraps the getAStar method so that coordinates can be
   /// passed in instead of NodePtrs.
   //-------------------------------------------------------------------//
 
-  bool findPathFromPos(Node::NodeList &o_newPath, ngl::Vec3 _start, ngl::Vec3 _goal) const;
+  bool findPathFromPos(Node::NodeWList &o_newPath, ngl::Vec3 _start, ngl::Vec3 _goal) const;
 
   //-------------------------------------------------------------------//
   /// @brief Finds the NodePtr closest to the position passed in
@@ -141,7 +150,7 @@ public:
   /// @param[out] the node closest to the pos passed in
   //-------------------------------------------------------------------//
 
-  NodePtr getNodeFromPos(ngl::Vec3 _pos) const;
+  NodeWPtr getNodeFromPos(ngl::Vec3 _pos) const;
 
   //-------------------------------------------------------------------//
   /// @brief Gets node from grid coords
@@ -149,7 +158,7 @@ public:
   /// @param[out] the node with grids coords _coords
   //-------------------------------------------------------------------//
 
-  NodePtr getNodeFromCoords(int _x, int _y) const;
+  NodeWPtr getNodeFromCoords(int _x, int _y) const;
 
   void drawSelection();
 
@@ -159,7 +168,7 @@ protected:
   /// @brief Shortest possible distance between two nodes
   //-------------------------------------------------------------------//
 
-  float heuristicPath(NodePtr _start, NodePtr _goal) const;
+  float heuristicPath(NodeWPtr _start, NodeWPtr _goal) const;
 
   //-------------------------------------------------------------------//
   /// @brief trace through node parents to create an ordered list of all
@@ -172,9 +181,9 @@ protected:
   //-------------------------------------------------------------------//
 
   void reconstructPath(
-        Node::NodeList &io_newPath,
-        NodeManager::PathNodePtr _current,
-        NodePtr _start = NodePtr()
+        Node::NodeWList &io_newPath,
+        NodeManager::PathNodeWPtr _current,
+        NodeWPtr _start = NodeWPtr()
         ) const;
 
   //-------------------------------------------------------------------//

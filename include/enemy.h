@@ -56,7 +56,7 @@ public:
   /// @brief updates path from node manager
   /// @param[out] the NodeList containing the nodes in the path
   //-------------------------------------------------------------------//
-  Node::NodeList getPath() const;
+  Node::NodeWList getPath() const;
 
   //-------------------------------------------------------------------//
   /// @brief returns an aim vector aiming towards the nearest node
@@ -84,12 +84,12 @@ protected:
   //-------------------------------------------------------------------//
   /// @brief a list containing all the nodes in the path
   //-------------------------------------------------------------------//
-  Node::NodeList m_pathNodes;
+  Node::NodeWList m_pathNodes;
 
   //-------------------------------------------------------------------//
   /// @brief a list temporary location for thepath nodes
   //-------------------------------------------------------------------//
-  Node::NodeList m_tempPathNodes;
+  Node::NodeWList m_tempPathNodes;
 
   //-------------------------------------------------------------------//
   /// @brief The distance from a node at which the enemy starts following

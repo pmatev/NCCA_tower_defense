@@ -32,12 +32,16 @@ Environment::Environment(
   //create the base
 
   unsigned int ID = game->getID();
-  m_base = Base::create(
-        m_nodeMap->getNodeFromCoords(_baseX, _baseY),
-        ID
-        );
+  NodePtr linkedNode = m_nodeMap->getNodeFromCoords(_baseX, _baseY).lock();
+  if(linkedNode)
+  {
+    m_base = Base::create(
+          linkedNode,
+          ID
+          );
 
-  game->registerID(m_base,ID);
+    game->registerID(m_base,ID);
+  }
 }
 
 //-------------------------------------------------------------------//
@@ -171,8 +175,8 @@ ngl::Vec3 Environment::getBasePos()
 
 //-------------------------------------------------------------------//
 
-NodeManagerWeakPtr Environment::getNodeManagerWeakPtr()
+NodeManagerWPtr Environment::getNodeManagerWeakPtr()
 {
-  NodeManagerWeakPtr a(m_nodeMap);
+  NodeManagerWPtr a(m_nodeMap);
   return a;
 }
