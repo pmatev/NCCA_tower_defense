@@ -63,7 +63,6 @@ std::list<Collision> ProjectileManager::checkCollisions()
     //call call collision detection on the projectiles
     std::list<GeneralType> types;
     types.push_back(ENEMY);
-    types.push_back(TURRET);
     Collision c = (*listIt)->collisionDetection(types);
 
     //check if there was a collision
@@ -140,7 +139,7 @@ void ProjectileManager::checkDeaths()
 //-------------------------------------------------------------------//
 
 void ProjectileManager::addProjectile(
-    std::string _type,
+    std::string &_type,
     const ngl::Vec3 &_pos,
     const ngl::Vec3 &_aim
     )
@@ -200,3 +199,19 @@ void ProjectileManager::publish()
 }
 
 //-------------------------------------------------------------------//
+
+void ProjectileManager::draw()
+{
+  // Go through all the enemies and call their publish
+  for(
+      ProjectileList::iterator it = m_projectiles.begin();
+      it != m_projectiles.end();
+      ++it
+      )
+  {
+    (*it)->draw();
+  }
+}
+
+//-------------------------------------------------------------------//
+

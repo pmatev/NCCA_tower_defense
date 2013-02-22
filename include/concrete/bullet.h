@@ -30,7 +30,7 @@ public: //methods
   /// @param[in] _aim, the initial direction of travel of the bullet
   //-------------------------------------------------------------------//
 
-  static BulletPtr create(
+  static EntityPtr create(
         const ngl::Vec3 &_pos,
         const ngl::Vec3 &_aim,
         unsigned int _id

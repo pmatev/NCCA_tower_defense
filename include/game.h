@@ -100,9 +100,16 @@ public:
     //-------------------------------------------------------------------//
     /// @brief return weak smart pointer to the environment
     //-------------------------------------------------------------------//
+
     EnvironmentWeakPtr getEnvironmentWeakPtr();
 
+    //-------------------------------------------------------------------//
+    /// @brief a method to return a smart weak pointer to the projectile
+    /// manager
+    /// @param [out] pointer to the projectile manager
+    //-------------------------------------------------------------------//
 
+    ProjectileManagerWeakPtr getProjectileManagerPtr();
 
 protected:
     //-------------------------------------------------------------------//

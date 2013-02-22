@@ -2,6 +2,7 @@
 #define TURRET_H
 
 #include "staticentity.h"
+#include <string>
 
 
 //-------------------------------------------------------------------//
@@ -39,7 +40,8 @@ public:
 
   Turret(
         NodePtr _linkedNode,
-        unsigned int _id
+        unsigned int _id,
+        std::string _projectileType
         );
 
   //-------------------------------------------------------------------//
@@ -62,6 +64,12 @@ public:
   //-------------------------------------------------------------------//
 
   virtual ngl::Vec3 brain() = 0;
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to fire a projectile
+  //-------------------------------------------------------------------//
+
+  void fire();
 
 protected:
 
@@ -88,6 +96,12 @@ protected:
   //-------------------------------------------------------------------//
 
   ngl::Vec3 m_aim;
+
+  //-------------------------------------------------------------------//
+  /// @brief a string to store the type of projectile that the turret shoots
+  //-------------------------------------------------------------------//
+
+  std::string m_projectileType;
 };
 
 #endif // TURRET_H

@@ -25,6 +25,8 @@
   class X; \
   typedef boost::shared_ptr< X > X ## Ptr; \
   typedef boost::shared_ptr< const X > X ## CPtr;\
+  typedef boost::weak_ptr< X > X ## WPtr; \
+  typedef boost::weak_ptr< const X > X ## WCPtr;\
 
 //-------------------------------------------------------------------//
 /// @brief preprocessor macro to aid in the creation of boost::weak_ptrs

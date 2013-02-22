@@ -8,7 +8,8 @@ TestTurret::TestTurret(
     ):
   Turret(
     _linkedNode,
-    _id
+    _id,
+    std::string("Bullet")
     )
 {
   m_fov = 90;
@@ -128,7 +129,7 @@ ngl::Vec3 TestTurret::brain()
 {
   // do something
   // return test aim
-  return ngl::Vec3(0, 1, 0);
+  return ngl::Vec3(0.01,0, 0);
 }
 
 //-------------------------------------------------------------------//

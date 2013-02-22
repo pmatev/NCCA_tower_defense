@@ -17,6 +17,7 @@
 //-------------------------------------------------------------------//
 
 DECLARESMART(ProjectileManager)
+DECLAREWEAKSMART(ProjectileManager)
 
 class ProjectileManager
 {
@@ -65,7 +66,7 @@ public://methods
   //-------------------------------------------------------------------//
 
   void addProjectile(
-        std::string _type,
+        std::string &_type,
         const ngl::Vec3 &_pos,
         const ngl::Vec3 &_aim
         );
@@ -84,6 +85,12 @@ public://methods
   //-------------------------------------------------------------------//
 
   void publish();
+
+  //-------------------------------------------------------------------//
+  /// @brief draws the current game state
+  //-------------------------------------------------------------------//
+
+  void draw();
 
 protected: //methods
 

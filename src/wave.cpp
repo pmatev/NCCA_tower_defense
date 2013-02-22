@@ -102,7 +102,7 @@ void Wave::publish()
 
 void Wave::draw()
 {
-  // Go through all the enemies and call their publish
+  // Go through all the enemies and draw
   for(
       EnemyVec::iterator it = m_enemies.begin();
       it != m_enemies.end();

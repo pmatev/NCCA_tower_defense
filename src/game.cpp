@@ -120,6 +120,8 @@ void Game::update(const double _t)
   m_projectileManager->update();
   // 4 //
   dealDamage(m_projectileManager->checkCollisions());
+
+  m_projectileManager->checkDeaths();
   // 5 //
   m_waveManager->update();
   // 6 //
@@ -135,6 +137,7 @@ void Game::draw()
 
     m_environment->draw();
     m_waveManager->draw();
+    m_projectileManager->draw();
 }
 //-------------------------------------------------------------------//
 
@@ -190,6 +193,8 @@ EnvironmentWeakPtr Game::getEnvironmentWeakPtr()
   return a;
 }
 
+//-------------------------------------------------------------------//
+
 void Game::dealDamage(std::list<Collision> _collisionList)
 {
   for(
@@ -207,5 +212,15 @@ void Game::dealDamage(std::list<Collision> _collisionList)
   }
 }
 
+//-------------------------------------------------------------------//
+
+ProjectileManagerWeakPtr Game::getProjectileManagerPtr()
+{
+  ProjectileManagerWeakPtr a(m_projectileManager);
+
+  return a;
+}
+
+//-------------------------------------------------------------------//
 
 
