@@ -3,20 +3,20 @@
 #include "renderer.h"
 #include "boost/lexical_cast.hpp"
 #include "fwd/entity.h"
-#include "uiSelection.h"
+#include "ui.h"
 #include "uibutton.h"
 
 
-UISelection::UISelection():
+UI::UI():
   m_creationMode(false)
-//  m_selectedNode(NodePtr())
+
 {
 
 }
 
 
 //-------------------------------------------------------------------//
-UISelection::~UISelection()
+UI::~UI()
 {
     std::cout<<"dtor called"<<std::endl;
 }
@@ -25,7 +25,7 @@ UISelection::~UISelection()
 
 //-------------------------------------------------------------------//
 
-void UISelection::registerID(UIElementPtr _e, unsigned int _ID)
+void UI::registerID(UIElementPtr _e, unsigned int _ID)
 {
     m_IDMap[_ID] = _e;
 }
@@ -33,7 +33,7 @@ void UISelection::registerID(UIElementPtr _e, unsigned int _ID)
 
 //-------------------------------------------------------------------//
 
-void UISelection::unregisterID(const unsigned int _i)
+void UI::unregisterID(const unsigned int _i)
 {
     m_IDMap.erase(_i);
 }
@@ -44,7 +44,7 @@ void UISelection::unregisterID(const unsigned int _i)
 
 
 //-------------------------------------------------------------------//
-UIElementPtr UISelection::checkUIClicked(const unsigned int _ID)
+UIElementPtr UI::checkUIClicked(const unsigned int _ID)
 {
     elementsMap::iterator it = m_IDMap.find(_ID);
     if(it == m_IDMap.end())
@@ -59,7 +59,7 @@ UIElementPtr UISelection::checkUIClicked(const unsigned int _ID)
 
 //-------------------------------------------------------------------//
 
-EntityWPtr UISelection::checkEntityClicked()
+EntityWPtr UI::checkEntityClicked()
 {
 
     Game *game = Game::instance();
@@ -76,10 +76,8 @@ EntityWPtr UISelection::checkEntityClicked()
 
 
 //-------------------------------------------------------------------//
-void UISelection::mouseLeftUp(const unsigned int _ID)
+void UI::mouseLeftUp(const unsigned int _ID)
 {
-
-
     if(m_creationMode == 0)
     {
         UIElementPtr UIClick = checkUIClicked(_ID);
@@ -88,7 +86,6 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
         std::cout<<_ID<<std::endl;
         if(!UIClick)
         {
-
             entityClick = checkEntityClicked().lock();
 
             if(!entityClick)
@@ -107,13 +104,11 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
               case WALL: break;
 
 
-
               }//display the upgrade menu as the tower is selected
                 //need to also boost dynamic cast into a static object
                 //as I need to make sure that it is a staticEntity
                 //so I can upgrade a tower!
             }
-
         }
         else
         {
@@ -124,7 +119,6 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
 
     else
     {
-
         EntityPtr entityClick;
 
         entityClick = checkEntityClicked().lock();
@@ -139,14 +133,13 @@ void UISelection::mouseLeftUp(const unsigned int _ID)
                             );
             }
         }
-
     }
 }
 
 
 //-------------------------------------------------------------------//
 
-void UISelection::draw()
+void UI::draw()
 {
 
     for(menuMap::iterator it = m_menus.begin();
@@ -162,7 +155,7 @@ void UISelection::draw()
 
 //-------------------------------------------------------------------//
 
-void UISelection::drawSelection()
+void UI::drawSelection()
 {
 
     for(menuMap::iterator it = m_menus.begin();
@@ -182,7 +175,7 @@ void UISelection::drawSelection()
 
 //-------------------------------------------------------------------//
 
-UIMenuPtr UISelection::getMenu(std::string _name)
+UIMenuPtr UI::getMenu(std::string _name)
 {
     for(menuMap::iterator it = m_menus.begin();
         it != m_menus.end();
@@ -193,6 +186,8 @@ UIMenuPtr UISelection::getMenu(std::string _name)
         {
            return drawEl;
         }
+
+
     }
 
     return UIMenuPtr();
@@ -204,21 +199,21 @@ UIMenuPtr UISelection::getMenu(std::string _name)
 
 //-------------------------------------------------------------------//
 
-void UISelection::createMenu(UIMenuPtr _menu)
+void UI::createMenu(UIMenuPtr _menu)
 {
     Window *window= Window::instance();
     int ID = window->getID();
     _menu->setID(ID);
     registerID(_menu, ID);
     m_menus[_menu->getID()] = _menu;
-    std::cout<<"\nmenu created"<<std::endl;
+    std::cout<<"menu created"<<std::endl;
 }
 
 
 
 //-------------------------------------------------------------------//
 
-void UISelection::placeDownStaticEntity(const std::string &_type, NodePtr _node)
+void UI::placeDownStaticEntity(const std::string &_type, NodePtr _node)
 {
     Game* game = Game::instance();
 
@@ -235,7 +230,7 @@ void UISelection::placeDownStaticEntity(const std::string &_type, NodePtr _node)
 
 //-------------------------------------------------------------------//
 
-void UISelection::mouseMoveEvent()
+void UI::mouseMoveEvent()
 {
     if(m_creationMode == true)
     {
@@ -274,7 +269,7 @@ void UISelection::mouseMoveEvent()
 //-------------------------------------------------------------------//
 //----------------------Test Function for Jared----------------------//
 //-------------------------------------------------------------------//
-void UISelection::mouseLeftUpTowerCreate(const unsigned int _ID)
+void UI::mouseLeftUpTowerCreate(const unsigned int _ID)
 {
 
     UIElementPtr UIClick = checkUIClicked(_ID);
@@ -314,6 +309,7 @@ void UISelection::mouseLeftUpTowerCreate(const unsigned int _ID)
             }
 
         }
+
     }
     else
     {
@@ -332,7 +328,7 @@ void UISelection::mouseLeftUpTowerCreate(const unsigned int _ID)
 //-------------------------Test Function-----------------------------//
 //-------------------------------------------------------------------//
 
-void UISelection::printTest()
+void UI::printTest()
 {
     m_staticEntityTypeTemp = "testTurret";
     std::cout<<m_staticEntityTypeTemp<<std::endl;
@@ -344,7 +340,7 @@ void UISelection::printTest()
 //-------------------------Test Function-----------------------------//
 //-------------------------------------------------------------------//
 
-void UISelection::printTest2()
+void UI::printTest2()
 {
     std::cout<<"\nThis is test function number 2 "<<std::endl;
 }
@@ -354,7 +350,7 @@ void UISelection::printTest2()
 //-------------------------Test Function-----------------------------//
 //-------------------------------------------------------------------//
 
-void UISelection::createTestTower()
+void UI::createTestTower()
 {
 
     m_creationMode = true;
@@ -365,7 +361,7 @@ void UISelection::createTestTower()
 //-------------------------Test Function-----------------------------//
 //-------------------------------------------------------------------//
 
-void UISelection::createTestMenu()
+void UI::createTestMenu()
 {
     createMenu(UIMenuPtr(new UIMenu(ngl::Vec2 (0,0), "menuTest",this)));
 
@@ -377,13 +373,13 @@ void UISelection::createTestMenu()
     else
     {
         menu->addButton(ngl::Vec2 (10,10), "textures/default_texture.jpg", "buttonTest");
-        menu->connectEvent(boost::bind(&UISelection::printTest, this), "buttonTest");
+        menu->connectEvent(boost::bind(&UI::printTest, this), "buttonTest");
         menu->runCommandTest();
 
         menu->addButton(ngl::Vec2 (250,150), "textures/grid.jpg", "newButton");
-
     }
 }
+
 
 
 

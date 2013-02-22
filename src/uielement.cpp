@@ -1,5 +1,4 @@
 #include "uielement.h"
-#include "uiSelection.h"
 #include "renderer.h"
 #include <boost/lexical_cast.hpp>
 #include <QImage>

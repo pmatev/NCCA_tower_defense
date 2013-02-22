@@ -8,10 +8,10 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include "uimenu.h"
-#include "uiSelection.h"
+#include "ui.h"
 
 //-------------------------------------------------------------------//
-/// @file uiselection.h
+/// @file ui.h
 /// @brief the ui class manages the creation of all the ui aspects
 /// and windows
 /// @author Luke Gravett
@@ -19,11 +19,11 @@
 /// @date 28/11/12
 /// Revision History :
 /// Initial Version 28/11/12
-/// @class UISelection
+/// @class UI
 //-------------------------------------------------------------------//
 
 
-class UISelection
+class UI
 {
     typedef std::map<unsigned int, UIElementPtr> elementsMap;
     typedef  boost::function<void()> functionPtr;
@@ -32,13 +32,13 @@ public:
     //-------------------------------------------------------------------//
     /// @brief the default constructor
     //-------------------------------------------------------------------//
-    UISelection();
+    UI();
 
     //-------------------------------------------------------------------//
     /// @brief the destructor
     //-------------------------------------------------------------------//
 
-    ~UISelection();
+    ~UI();
 
 
 

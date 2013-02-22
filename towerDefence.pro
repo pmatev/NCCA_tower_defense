@@ -38,19 +38,22 @@ SOURCES += src/main.cpp \
     src/game.cpp \
     src/camera.cpp \
     src/window.cpp \
-    src/concrete/bullet.cpp \
     src/environment.cpp \
     src/nodemanager.cpp \
-    src/uiSelection.cpp \
     src/uibutton.cpp \ 
+    src/ui.cpp \
     src/enemy.cpp \
     src/projectile.cpp \
+    src/projectilemanager.cpp \
     src/wall.cpp \
-    src/concrete/base.cpp \
     src/databasegrid.cpp \
+    src/concrete/bullet.cpp \
+    src/concrete/base.cpp \
     src/concrete/testenemy.cpp \
     src/concrete/testturret.cpp \
-    src/projectilemanager.cpp
+    #src/user.cpp \
+
+
 
 
 HEADERS += \
@@ -71,11 +74,11 @@ HEADERS += \
     include/camera.h \
     include/environment.h \
     include/nodemanager.h \
-    include/uiSelection.h \
     include/uibutton.h \  
     include/uiwindow.h \
     include/uielement.h \
     include/uimenu.h \
+    include/ui.h \
     include/projectile.h \
     include/projectilemanager.h \
     include/wall.h \
@@ -89,9 +92,8 @@ HEADERS += \
     include/fwd/game.h \
     include/fwd/uimenu.h \
     include/fwd/uibutton.h \
-    include/fwd/uiselection.h \
-    include/fwd/window.h
-
+    #include/user.h \
+    include/fwd/ui.h
 
 #including the NGL library
 

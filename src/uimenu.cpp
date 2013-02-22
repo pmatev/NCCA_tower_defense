@@ -5,7 +5,7 @@
 #include <boost/bind.hpp>
 #include "boost/lexical_cast.hpp"
 #include "window.h"
-#include "uiSelection.h"
+#include "ui.h"
 #include "uimenu.h"
 #include "uibutton.h"
 
@@ -15,7 +15,7 @@
 
 UIMenu::UIMenu(ngl::Vec2 _pos,
                std::string _name,
-               UISelection *_parent):
+               UI *_parent):
 
 
 UIElement( _pos, _name)

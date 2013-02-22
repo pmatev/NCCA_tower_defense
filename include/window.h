@@ -3,10 +3,12 @@
 
 #include "fwd/window.h"
 #include "fwd/game.h"
-#include "fwd/uiselection.h"
 #include <string>
+#include <ngl/Vec3.h>
+#include "ui.h"
 #include <SDL.h>
 #include "renderer.h"
+
 
 //-------------------------------------------------------------------//
 /// @file window.h
@@ -144,7 +146,7 @@ protected:
     void SDLErrorExit(const std::string &_msg);
 
 
-    UISelectionPtr m_UI;
+    UIPtr m_UI;
 
 
     void doSelection();

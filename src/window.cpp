@@ -1,13 +1,12 @@
 #include "renderer.h"
 #include "window.h"
 #include "ngl/NGLInit.h"
-
+#include "ui.h"
 #include <iostream>
 #include <string>
-
 #include "game.h"
-#include "uiSelection.h"
 #include "boost/lexical_cast.hpp"
+
 
 Window* Window::s_instance = 0;
 
@@ -91,7 +90,7 @@ void Window::init()
 
 
 
-    m_UI = UISelectionPtr(new UISelection());
+    m_UI = UIPtr(new UI());
 
     m_UI->createTestMenu();
 
