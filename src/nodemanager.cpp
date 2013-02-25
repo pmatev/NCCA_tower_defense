@@ -422,7 +422,7 @@ NodeManager::~NodeManager()
 
 void NodeManager::update(const double _dt)
 {
-  for(unsigned int i = 0; i < m_nodes.size(); i++)
+  for(unsigned long int i = 0; i < m_nodes.size(); i++)
   {
     m_nodes[i]->update(_dt);
   }
@@ -432,7 +432,7 @@ void NodeManager::update(const double _dt)
 
 void NodeManager::draw()
 {
-  for(unsigned int i = 0; i < m_nodes.size(); i++)
+  for(unsigned long int i = 0; i < m_nodes.size(); i++)
   {
     m_nodes[i]->draw();
   }
@@ -442,7 +442,7 @@ void NodeManager::draw()
 
 void NodeManager::drawSelection()
 {
-  for(unsigned int i = 0; i < m_nodes.size(); i++)
+  for(unsigned long int i = 0; i < m_nodes.size(); i++)
   {
     m_nodes[i]->drawSelection();
   }
@@ -452,10 +452,164 @@ void NodeManager::resetPathNodes()
 {
   BOOST_FOREACH(PathNodeMap::value_type pathNode, m_pathNodeMap)
   {
-#pragma omp critical
     pathNode.second->m_hasSuccessfulPath = false;
 
   }
+}
+
+//-------------------------------------------------------------------//
+
+void NodeManager::recalculateSearchTree(NodeWPtr _goal)
+{
+  // Go through each node and it's children in a depth first search to
+  // storing the depth values as it goes
+
+  // reset nodes
+  BOOST_FOREACH(NodePtr node, m_nodes)
+  {
+    node->resetSearchInfo();
+  }
+  // start at the goal and spread out
+  // do the first iteration seperate from recalculateChildren since otherwise
+  // it will stop immediately because the first node is occupied by the base
+  NodePtr goal = _goal.lock();
+  if(goal)
+  {
+    int depth = 0;
+    Node::NodeWListPtr currentList(new Node::NodeWList);
+    Node::NodeWListPtr nextList(new Node::NodeWList);
+    currentList->push_back(_goal);
+    while(currentList->size() != 0)
+    {
+      // Go through currentList setting each nodes depth to depth
+      BOOST_FOREACH(NodeWPtr nodeWeak, *currentList)
+      {
+        NodePtr node = nodeWeak.lock();
+        if(node)
+        {
+          if(node->isFound())
+          {
+            continue;
+          }
+          else
+          {
+            node->setFound(true);
+          }
+          node->setSearchDepth(depth);
+          // Put each nodes valid children into the nextList
+          BOOST_FOREACH(NodeWPtr childWeak, *node->getChildList())
+          {
+            NodePtr child = childWeak.lock();
+            if(child && !child->isFound() && !child->isOccupied())
+            {
+              nextList->push_back(child);
+            }
+          }
+        }
+      }
+      // set currentList to be nextList
+      currentList = nextList;
+      nextList = Node::NodeWListPtr(new Node::NodeWList);
+      ++depth;
+    }
+//    goal->setSearchDepth(0);
+//    goal->setFound(true);
+//    Node::NodeWListPtr children = goal->getChildList();
+//    BOOST_FOREACH(NodeWPtr childWeak, *children)
+//    {
+//      recalculateChildren(childWeak, 0);
+//    }
+  }
+}
+
+//-------------------------------------------------------------------//
+
+bool NodeManager::getSearchTreePath(
+    Node::NodeWList &o_newPath,
+    NodeWPtr _start,
+    NodeWPtr _goal
+    )
+{
+  // Start at start and go through node tree always picking the node with lowest
+  // search depth
+
+  // check that it's possible from this point
+  NodePtr start = _start.lock();
+  if(start)
+  {
+    // Make sure all nodes are marked as not found
+    BOOST_FOREACH(NodePtr node, m_nodes)
+    {
+      node->setFound(false);
+    }
+    return traverseChildren(o_newPath, _goal, _start);
+  }
+  return true;
+}
+
+bool NodeManager::traverseChildren(
+    Node::NodeWList &o_newPath,
+    NodeWPtr _goal,
+    NodeWPtr _current,
+    bool _isStart
+    )
+{
+  NodePtr current = _current.lock();
+  NodePtr goal = _goal.lock();
+  if(current && goal)
+  {
+      if(current->isFound())
+      {
+        return true;
+      }
+      else
+      {
+        current->setFound(true);
+      }
+      o_newPath.push_back(_current);
+      // go through children
+      // 1. find child with lowest search depth
+      // 2. add child to o_newPath
+      // 3. continue searching
+      Node::NodeWListPtr children = current->getChildList();
+      int lowestDepth = current->getSearchDepth();
+      if(lowestDepth == -1)
+      {
+        lowestDepth = 10000;
+      }
+      bool foundSomething = false;
+      NodePtr bestChild;
+      BOOST_FOREACH(NodeWPtr childWeak, *children)
+      {
+        NodePtr child = childWeak.lock();
+        if(child)
+        {
+          if(child == goal)
+          {
+            o_newPath.push_back(child);
+            return true;
+          }
+          if(!child->isOccupied())
+          {
+            if(child->getSearchDepth() <= lowestDepth)
+            {
+              lowestDepth = child->getSearchDepth();
+              bestChild = child;
+              foundSomething = true;
+            }
+          }
+        }
+      }
+      if(!_isStart && lowestDepth == -1)
+      {
+        return false;
+      }
+      if (foundSomething)
+      {
+        return traverseChildren(o_newPath, _goal,bestChild, false);
+      }
+  }
+  return true;
 }
 
 //-------------------------------------------------------------------//
@@ -685,9 +839,10 @@ bool NodeManager::findPathFromPos(
   //need to find the start and finish nodes in m_nodes from the vec3s.
   NodeWPtr start = getNodeFromPos(_start);
   NodeWPtr goal = getNodeFromPos(_goal);
-
-  return getAStar(o_newPath, start, goal);
+  return getSearchTreePath(o_newPath, start, goal);
 }
+
+//-------------------------------------------------------------------//
 
 NodeWPtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
 {

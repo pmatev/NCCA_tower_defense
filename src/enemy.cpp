@@ -186,8 +186,8 @@ ngl::Vec3 Enemy::getPathVec() const
 
   ngl::Vec3 finalVector;
 
-  for(Node::NodeWList::const_reverse_iterator it = m_pathNodes.rbegin();
-      it != m_pathNodes.rend();
+  for(Node::NodeWList::const_iterator it = m_pathNodes.begin();
+      it != m_pathNodes.end();
       it++)
   {
     NodePtr currentNode = it->lock();
@@ -207,7 +207,7 @@ ngl::Vec3 Enemy::getPathVec() const
         nearestSqrDistance = newSqrDistance;
         nearestNode = currentNode;
         //if the closest node is NOT at the end
-        if(boost::next(it) != m_pathNodes.rend())
+        if(boost::next(it) != m_pathNodes.end())
         {
           parentNode = (*boost::next(it)).lock();
         }
@@ -223,15 +223,18 @@ ngl::Vec3 Enemy::getPathVec() const
   }
 
   //get the parent node of the nearestNode as long as we're not at the end.
-  finalVector = nearestNode->getPos() - m_pos;
-  float len = finalVector.length();
-  if(parentNode && len < m_pathTargetThreshold)
+  if(nearestNode)
   {
-    //return dir vector between parentNode and nearestNode
+    finalVector = nearestNode->getPos() - m_pos;
+    float len = finalVector.length();
+    if(parentNode && len < m_pathTargetThreshold)
+    {
+      //return dir vector between parentNode and nearestNode
 
-    // get distance to nearest node and check threshold
+      // get distance to nearest node and check threshold
 
-    finalVector = parentNode->getPos() - m_pos;
+      finalVector = parentNode->getPos() - m_pos;
+    }
   }
 //  else
 //  {

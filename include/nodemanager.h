@@ -137,10 +137,25 @@ public:
   void resetPathNodes();
 
   //-------------------------------------------------------------------//
+  /// @brief recalculate the search depth for each node. This should be run
+  /// whenever a static entity is put down or removed. The search tree is
+  /// stored in the nodes themselves in the form of int values (number of hops
+  /// till goal) and is used when calculating new paths.
+  //-------------------------------------------------------------------//
+
+  void recalculateSearchTree(NodeWPtr _goal);
+
+  //-------------------------------------------------------------------//
   /// @brief Find a path between two nodes ( A* search algorithm)
   //-------------------------------------------------------------------//
 
   bool getAStar(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr _goal);
+
+  //-------------------------------------------------------------------//
+  /// @brief Find a path between two nodes using search tree
+  //-------------------------------------------------------------------//
+
+  bool getSearchTreePath(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr _goal);
 
   //-------------------------------------------------------------------//
   /// @brief Wraps the getAStar method so that coordinates can be
@@ -168,6 +183,21 @@ public:
   void drawSelection();
 
 protected:
+  //-------------------------------------------------------------------//
+  /// @brief traverse node tree from _node and continue the search on the
+  /// child with best search depth.
+  /// @param[out] o_newPath add to this list as you go.
+  /// @param[in] _depth current depth
+  /// @param[in] _node current node we are working on
+  //-------------------------------------------------------------------//
+
+  bool traverseChildren(
+        Node::NodeWList &o_newPath,
+        NodeWPtr _goal,
+        NodeWPtr _current,
+        bool _isStart = true
+        );
+
   //-------------------------------------------------------------------//
   /// @brief Create the map between nodes and their path-finding counterparts
   //-------------------------------------------------------------------//

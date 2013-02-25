@@ -12,7 +12,9 @@ Node::Node(const ngl::Vec3 &_pos, float _hexagonSize, unsigned int _id):
   Entity(_pos, NODE,_id),
   m_isOccupied(false),
   m_hexagonSize(_hexagonSize),
-  m_highlighted(false)
+  m_highlighted(false),
+  m_isFound(false),
+  m_searchDepth(-1)
 {
   //variables initialised before constructor body called
   m_transformStack.setPosition(m_pos);
@@ -143,6 +145,16 @@ void Node::drawSelection()
   Renderer *r = Renderer::instance();
   r->loadMatrixToShader(m_transformStack, "Colour");
   r->drawSelection(m_ID, m_IDStr);
+}
+
+//-------------------------------------------------------------------//
+
+void Node::resetSearchInfo()
+{
+  m_isFound = false;
+  // This is set to -1 so that if it is not found when we search tree we know
+  // that there is no valid path from here to the goal
+  m_searchDepth = -1;
 }
 
 //-------------------------------------------------------------------//

@@ -112,6 +112,37 @@ public:
 
   void destroy();
 
+  //-------------------------------------------------------------------//
+  /// @brief return wether the node has been found during this search
+  //-------------------------------------------------------------------//
+
+  inline bool isFound() const {return m_isFound;}
+
+  //-------------------------------------------------------------------//
+  /// @brief tell the node that it has been found
+  //-------------------------------------------------------------------//
+
+  inline void setFound(bool _found) {m_isFound = _found;}
+
+  //-------------------------------------------------------------------//
+  /// @brief find goal search depth of the node (how far to the goal)
+  //-------------------------------------------------------------------//
+
+  inline int getSearchDepth() const {return m_searchDepth;}
+
+  //-------------------------------------------------------------------//
+  /// @brief set the new search depth for the node
+  //-------------------------------------------------------------------//
+
+  inline void setSearchDepth(int _searchDepth) {m_searchDepth = _searchDepth;}
+
+  //-------------------------------------------------------------------//
+  /// @brief reset the node's path details. This should be run on all nodes
+  /// before search depths are calculated.
+  //-------------------------------------------------------------------//
+
+  void resetSearchInfo();
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief parameterised constructor
@@ -148,7 +179,19 @@ protected:
 
   bool m_highlighted;
 
+  // PATH FINDING
 
+  //-------------------------------------------------------------------//
+  /// @brief has this node been recursed during the current search
+  //-------------------------------------------------------------------//
+
+  bool m_isFound;
+
+  //-------------------------------------------------------------------//
+  /// @brief ammount of nodes between this node and the goal
+  //-------------------------------------------------------------------//
+
+  int m_searchDepth;
 
 };
 

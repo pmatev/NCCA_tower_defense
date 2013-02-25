@@ -27,7 +27,7 @@ void Normal::execute(EntityWPtr _enemy)
   {
     DynamicEntityPtr dyn_entity = boost::dynamic_pointer_cast<DynamicEntity>(strong_entity);
     dyn_entity->getSteeringBehaviours()->enable("FollowPath");
-    dyn_entity->getSteeringBehaviours()->enable("test");
+    //dyn_entity->getSteeringBehaviours()->enable("test");
   }
 }
 

@@ -123,9 +123,10 @@ void TestEnemy::generateMesh()
 
 ngl::Vec3 TestEnemy::brain()
 {
-  ngl::Vec3 steeringDirection = m_steering->calculate();
+  //ngl::Vec3 steeringDirection = m_steering->calculate();
   // TEST value (tells it to just go forward)
-  return steeringDirection;
+  return getPathVec() * 0.01;
+  //return steeringDirection;
 }
 
 //-------------------------------------------------------------------//

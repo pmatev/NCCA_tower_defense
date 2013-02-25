@@ -14,7 +14,7 @@ Wave::Wave(EnemyPairList _enemiesForCreation):
   // ctor
   //---------------------------------------------TEST--------------------------------------------------
   // create shit load o enemies!!!
-  int numEnemies = 1;
+  int numEnemies = 1000;
   for(int i=0; i < numEnemies; ++i)
   {
     float randomX = std::rand() / float(RAND_MAX);
@@ -136,11 +136,7 @@ bool Wave::generatePaths(NodeWPtr _node)
   EnvironmentPtr env = Game::instance()->getEnvironmentWeakPtr().lock();
   if(env)
   {
-    NodeManagerPtr nm = env->getNodeManagerWeakPtr().lock();
-    if(nm)
-    {
-      nm->resetPathNodes();
-    }
+    env->recalculateSearchTree();
   }
 
   // 1. Find all Enemies affected by _node
@@ -288,7 +284,7 @@ std::list<Collision> Wave::checkCollisions()
     {
       //if there was, add it to the list
       // This needs to call damage deal and pass in the damage from the collision ----------
-      (*listIt)->kill();
+      //(*listIt)->kill();
       collisionList.push_back(c);
     }
   }

@@ -53,6 +53,12 @@ public:
 
   inline void decrementLevel () {m_level--;}
 
+  //-------------------------------------------------------------------//
+  /// @brief get the node that the entity is sitting on
+  //-------------------------------------------------------------------//
+
+  inline NodeWPtr getLinkedNode() const {return m_linkedNode;}
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief The upgrade level of the static entity

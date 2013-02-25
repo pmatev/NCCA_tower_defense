@@ -22,7 +22,6 @@ Environment::Environment(
               _dbGridSizeX,
               _dbGridSizeZ))
 {
-
   // base needs to be initialised here as it fails when putting it in the
   // inititalisation list
   //get an instance of the game
@@ -42,6 +41,9 @@ Environment::Environment(
 
     game->registerID(m_base,ID);
   }
+  // Do first pass at scene graph, this is so objects can find initial paths when
+  // they are constructed.
+  m_nodeMap->recalculateSearchTree(NodeWPtr(linkedNode));
 }
 
 //-------------------------------------------------------------------//
@@ -179,4 +181,10 @@ NodeManagerWPtr Environment::getNodeManagerWeakPtr()
 {
   NodeManagerWPtr a(m_nodeMap);
   return a;
+}
+
+
+void Environment::recalculateSearchTree()
+{
+  m_nodeMap->recalculateSearchTree(m_base->getLinkedNode());
 }
