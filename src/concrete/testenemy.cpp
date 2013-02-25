@@ -1,5 +1,6 @@
 #include "concrete/testenemy.h"
 #include "renderer.h"
+#include "fsm/states/enemystates.h"
 //-------------------------------------------------------------------//
 
 TestEnemy::TestEnemy(
@@ -16,7 +17,8 @@ TestEnemy::TestEnemy(
 
   m_damage = 100;
   m_currentVelocity = 0;
-  m_maxVelocity = 1;
+  m_maxVelocity = 0.0025;
+  m_maxForce = ngl::Vec3(0.02, 0.02, 0.02);
 }
 
 //-------------------------------------------------------------------//
@@ -24,6 +26,18 @@ TestEnemy::TestEnemy(
 TestEnemy::~TestEnemy()
 {
   //currently using default
+}
+
+void TestEnemy::init()
+{
+  //state machine
+  m_stateMachine = new StateMachine(EntityWPtr(shared_from_this()));
+  m_stateMachine->setCurrentState(Normal::instance());
+  m_stateMachine->setPreviousState(Normal::instance());
+  m_stateMachine->setGlobalState(0);
+
+  //steering behaviours
+  m_steering = new SteeringBehaviours(EntityWPtr(shared_from_this()));
 }
 
 //-------------------------------------------------------------------//
@@ -35,6 +49,8 @@ EntityPtr TestEnemy::create(
     )
 {
   EntityPtr a(new TestEnemy(_pos,_aim, _id));
+  a->init();
+
   return a;
 }
 
@@ -107,8 +123,9 @@ void TestEnemy::generateMesh()
 
 ngl::Vec3 TestEnemy::brain()
 {
+  ngl::Vec3 steeringDirection = m_steering->calculate();
   // TEST value (tells it to just go forward)
-  return getPathVec() * 0.002;
+  return steeringDirection;
 }
 
 //-------------------------------------------------------------------//

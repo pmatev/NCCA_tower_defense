@@ -34,6 +34,9 @@ void Turret::update(const double _dt)
 
   Q_UNUSED(_dt);
 
+  //update the state machine
+  //m_stateMachine->update();
+
   // TEST
   // just do whatever the brain says
   m_aim = brain();

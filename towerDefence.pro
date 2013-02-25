@@ -51,6 +51,10 @@ SOURCES += src/main.cpp \
     src/concrete/base.cpp \
     src/concrete/testenemy.cpp \
     src/concrete/testturret.cpp \
+    #src/user.cpp \
+    src/fsm/statemachine.cpp \
+    src/fsm/states/enemystates.cpp \
+    src/ai/steeringbehaviours.cpp \
     src/player.cpp
 
 
@@ -91,6 +95,12 @@ HEADERS += \
     include/fwd/game.h \
     include/fwd/uimenu.h \
     include/fwd/uibutton.h \
+    #include/user.h \
+    include/fwd/ui.h \
+    include/fsm/statemachine.h \
+    include/fsm/state.h \
+    include/fsm/states/enemystates.h \
+    include/ai/steeringbehaviours.h \
     include/fwd/ui.h \
     include/player.h
 

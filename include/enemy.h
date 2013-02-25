@@ -71,6 +71,12 @@ public:
 
   void enforceGridBoundaries();
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to enforce the grid boundaries
+  //-------------------------------------------------------------------//
+
+  inline float getPathTargetThreshold(){return m_pathTargetThreshold;}
+
 protected:
 
   //-------------------------------------------------------------------//

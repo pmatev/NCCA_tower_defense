@@ -15,6 +15,10 @@ Bullet::Bullet(
   generateMesh();
 }
 
+void Bullet::init()
+{
+}
+
 //-------------------------------------------------------------------//
 
 EntityPtr Bullet::create(

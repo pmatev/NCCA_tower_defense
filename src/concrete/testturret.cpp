@@ -20,6 +20,10 @@ TestTurret::TestTurret(
   publish();
 }
 
+void TestTurret::init()
+{
+}
+
 //-------------------------------------------------------------------//
 
 EntityPtr TestTurret::create(

@@ -17,6 +17,11 @@ Base::Base(
 
 }
 
+void Base::init()
+{
+
+}
+
 //-------------------------------------------------------------------//
 
 BasePtr Base::create(NodePtr _linkedNode, unsigned int _id)

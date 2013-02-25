@@ -376,6 +376,7 @@ void UI::createTestMenu()
 //        menu->connectEvent(boost::bind(&UI::printTest, this), "buttonTest");
 //        menu->runCommandTest();
 
+
         //menu->addButton(ngl::Vec2 (250,150), "textures/grid.jpg", "newButton");
     }
 }

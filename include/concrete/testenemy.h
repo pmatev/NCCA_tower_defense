@@ -40,6 +40,8 @@ public:
 
   ~TestEnemy();
 
+  void init();
+
   void generateMesh();
 
 

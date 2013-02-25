@@ -42,6 +42,8 @@ public:
         unsigned int _id
         );
 
+  void init();
+
   void generateMesh();
 
   //-------------------------------------------------------------------//

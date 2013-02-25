@@ -3,12 +3,14 @@
 
 #include "ngl/Vec3.h"
 #include <list>
+#include "boost/enable_shared_from_this.hpp"
 
 #include "smartpointers.h"
 #include "fwd/database.h"
 #include "fwd/entity.h"
 #include "renderer.h"
 #include "ngl/TransformStack.h"
+#include "fsm/statemachine.h"
 
 //-------------------------------------------------------------------//
 /// @file entity.h
@@ -21,8 +23,9 @@
 /// @class Entity
 //-------------------------------------------------------------------//
 
+class StateMachine;
 
-class Entity
+class Entity : public boost::enable_shared_from_this<Entity>
 {
 public: //typedefs and structs
   //-------------------------------------------------------------------//
@@ -111,6 +114,11 @@ public: //methods
   //-------------------------------------------------------------------//
 
   ~Entity();
+
+  //-------------------------------------------------------------------//
+  /// @brief called after the constructor
+  //-------------------------------------------------------------------//
+  virtual void init();
 
   //-------------------------------------------------------------------//
   /// @brief a virtual method which will update the entity when
@@ -220,6 +228,11 @@ public: //methods
 
   void generateLsBBox(const std::vector<vertData> & _meshData);
 
+  //-------------------------------------------------------------------//
+  /// @brief gets the statemachine, obviously.
+  //-------------------------------------------------------------------//
+  inline StateMachine* getStateMachine() const {return m_stateMachine;}
+
 protected: //attributes
 
   //-------------------------------------------------------------------//
@@ -247,6 +260,12 @@ protected: //attributes
   //-------------------------------------------------------------------//
 
   entityRecordListPtr m_localEntities;
+
+  //-------------------------------------------------------------------//
+  /// @brief the statemachine.
+  //-------------------------------------------------------------------//
+  StateMachine *m_stateMachine;
+
 
   //-------------------------------------------------------------------//
   /// @brief a variable storing the bounding box of the entity's view

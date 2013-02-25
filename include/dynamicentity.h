@@ -4,6 +4,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "entity.h"
+#include "ai/steeringbehaviours.h"
 
 //-------------------------------------------------------------------//
 /// @file dynamicentity.h
@@ -69,6 +70,15 @@ public:
 
   virtual void enforceGridBoundaries () = 0;
 
+  //-------------------------------------------------------------------//
+  /// @brief returns the steering behaviours object
+  //-------------------------------------------------------------------//
+  inline SteeringBehaviours* getSteeringBehaviours() const {return m_steering;}
+
+  //-------------------------------------------------------------------//
+  /// @brief returns the max force
+  //-------------------------------------------------------------------//
+  inline ngl::Vec3 getMaxForce(){return m_maxForce;}
 
 
 protected:
@@ -137,28 +147,51 @@ protected:
   float m_damage;
 
   //-------------------------------------------------------------------//
-  /// @brief The the aim vector of the dynamic entity
+  /// @brief The heading vector of the dynamic entity
   //-------------------------------------------------------------------//
 
   ngl::Vec3 m_aimVector;
 
   //-------------------------------------------------------------------//
-  /// @brief The maximum velocity of the dynamic entity
+  /// @brief Perpendicular to m_aimVector. Defines a local coord space.
   //-------------------------------------------------------------------//
 
-  float m_maxVelocity;
+  ngl::Vec3 m_side;
+
+  //-------------------------------------------------------------------//
+  /// @brief the mass of the entity
+  //-------------------------------------------------------------------//
+
+  float m_mass;
 
   //-------------------------------------------------------------------//
   /// @brief the current velocity of the dynamic entity
   //-------------------------------------------------------------------//
 
-  float m_currentVelocity;
+  ngl::Vec3 m_currentVelocity;
+
+  //-------------------------------------------------------------------//
+  /// @brief the max velocity of the entity
+  //-------------------------------------------------------------------//
+
+  float m_maxVelocity;
+
+  //-------------------------------------------------------------------//
+  /// @brief the max force of the entity
+  //-------------------------------------------------------------------//
+
+  ngl::Vec3 m_maxForce;
 
   //-------------------------------------------------------------------//
   /// @brief a vector storing the previous position of the dynamic entity
   //-------------------------------------------------------------------//
 
   ngl::Vec3 m_prevPos;
+
+  //-------------------------------------------------------------------//
+  /// @brief stores the steering behaviours
+  //-------------------------------------------------------------------//
+  SteeringBehaviours *m_steering;
 };
 
 

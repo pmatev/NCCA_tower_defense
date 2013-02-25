@@ -16,6 +16,8 @@ DynamicEntity::DynamicEntity(
 
 {
   //variables initialised before the constructor body
+  m_mass = 10.0;
+  m_currentVelocity = ngl::Vec3(0.0, 0.0, 0.0);
 }
 
 //-------------------------------------------------------------------//
@@ -30,12 +32,24 @@ DynamicEntity::~DynamicEntity()
 void DynamicEntity::update(const double _dt)
 {
 
-  // get the brain vector
-  ngl::Vec3 brainVec = brain();
-  // based on brain where should it go next
-  // FOR TESTING JUST HAVE IT GO EXACTLY WHERE THE BRAIN SAYS
+  //Q unused to remove warnings, will be replaced if used
+  Q_UNUSED(_dt);
+
+  //update the state machine
+  m_stateMachine->update();
+
+  ngl::Vec3 steeringForce = brain();
+  ngl::Vec3 acceleration = steeringForce / m_mass;
+  m_currentVelocity += acceleration;
+
+  //truncate velocity to max speed
+  float diff = m_maxVelocity / m_currentVelocity.length();
+  float scaleFactor = (diff < 1.0) ? diff : 1.0;
+  m_currentVelocity *= scaleFactor;
+
+  //update position
   m_prevPos = m_pos;
-  m_pos += brainVec * _dt;
+  m_pos += m_currentVelocity * _dt;
 
   enforceGridBoundaries();
 

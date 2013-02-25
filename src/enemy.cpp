@@ -3,6 +3,7 @@
 #include "game.h"
 #include "boost/utility.hpp"
 #include "database.h"
+#include "fsm/states/enemystates.h"
 
 //-------------------------------------------------------------------//
 
