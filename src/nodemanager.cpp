@@ -16,11 +16,11 @@ NodeManager::NodeManager(
     int _dbGridSizeX,
     int _dbGridSizeZ
     ) :
-  m_centerSqrDist((_hexagonSize * _hexagonSize * 2.999824)), // (sqrt(2/3)/4)
+  m_hexagonSize(_hexagonSize),
   m_gridWidth(_gridWidth),
   m_gridHeight(_gridHeight),
-  m_hexagonSize(_hexagonSize),
-  m_origin(_origin)
+  m_origin(_origin),
+  m_centerSqrDist((_hexagonSize * _hexagonSize * 2.999824)) // (sqrt(2/3)/4)
 {  
   // Initialise Database
   //first calculate the maximum x and z values
@@ -422,7 +422,7 @@ NodeManager::~NodeManager()
 
 void NodeManager::update(const double _dt)
 {
-  for(int i = 0; i < m_nodes.size(); i++)
+  for(unsigned int i = 0; i < m_nodes.size(); i++)
   {
     m_nodes[i]->update(_dt);
   }
@@ -432,7 +432,7 @@ void NodeManager::update(const double _dt)
 
 void NodeManager::draw()
 {
-  for(int i = 0; i < m_nodes.size(); i++)
+  for(unsigned int i = 0; i < m_nodes.size(); i++)
   {
     m_nodes[i]->draw();
   }
@@ -442,7 +442,7 @@ void NodeManager::draw()
 
 void NodeManager::drawSelection()
 {
-  for(int i = 0; i < m_nodes.size(); i++)
+  for(unsigned int i = 0; i < m_nodes.size(); i++)
   {
     m_nodes[i]->drawSelection();
   }

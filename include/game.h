@@ -12,7 +12,7 @@
 #include "wavemanager.h"
 #include "environment.h"
 #include "projectilemanager.h"
-#include "concrete/testenemy.h"
+#include "player.h"
 
 
 //-------------------------------------------------------------------//
@@ -170,15 +170,19 @@ protected:
 
     ProjectileManagerPtr m_projectileManager;
 
+    //-------------------------------------------------------------------//
+    /// @brief pointer to the player object
+    //-------------------------------------------------------------------//
+
+    PlayerPtr m_player;
 private:
     //-------------------------------------------------------------------//
     /// @brief instance pointer for singleton
     //-------------------------------------------------------------------//
+
     static Game* s_instance;
 
     ngl::Light *m_light;
-
-    TestEnemyPtr m_testEnemy;
 
 };
 

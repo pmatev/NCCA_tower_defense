@@ -51,6 +51,9 @@ SOURCES += src/main.cpp \
     src/concrete/base.cpp \
     src/concrete/testenemy.cpp \
     src/concrete/testturret.cpp \
+    src/player.cpp
+
+
 
 HEADERS += \
     include/window.h \
@@ -88,7 +91,9 @@ HEADERS += \
     include/fwd/game.h \
     include/fwd/uimenu.h \
     include/fwd/uibutton.h \
-    include/fwd/ui.h
+    include/fwd/ui.h \
+    include/player.h
+
 
 
 #including the Imath Library

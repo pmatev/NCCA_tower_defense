@@ -88,6 +88,7 @@ void Game::setupScene()
   m_environment = Environment::create(20, 20, 2, ngl::Vec3(0.0, 0.0, 0.0), 10, 10,10,10); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
   m_waveManager = WaveManager::create();
   m_projectileManager = ProjectileManager::create();
+  m_player = Player::create(1000); //Hard coded now, should probably be set from a file
 }
 
 //-------------------------------------------------------------------//
