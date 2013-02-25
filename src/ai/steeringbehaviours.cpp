@@ -23,6 +23,7 @@ SteeringBehaviours::SteeringBehaviours(EntityWPtr _entity):
 
 ngl::Vec3 SteeringBehaviours::calculate()
 {
+  return FollowPath();
   //reset the steering force
   m_steeringForce.null();
 
@@ -41,6 +42,7 @@ ngl::Vec3 SteeringBehaviours::calculate()
       //grab its force
       force = (*this.*f)();
 
+      //return force;
       //if accumulateForce returns false, then there's no
       //more frorce left so return the current steering force.
       if(!accumulateForce(force))
@@ -49,8 +51,6 @@ ngl::Vec3 SteeringBehaviours::calculate()
       }
     }
   }
-
-  std::cout << std::endl;
 
   return m_steeringForce;
 }
@@ -119,8 +119,8 @@ ngl::Vec3 SteeringBehaviours::FollowPath()
 
   ngl::Vec3 finalVector;
 
-  for(Node::NodeWList::const_reverse_iterator it = nodePath.rbegin();
-      it != nodePath.rend();
+  for(Node::NodeWList::const_iterator it = nodePath.begin();
+      it != nodePath.end();
       it++)
   {
     NodePtr currentNode = it->lock();
@@ -140,7 +140,7 @@ ngl::Vec3 SteeringBehaviours::FollowPath()
         nearestSqrDistance = newSqrDistance;
         nearestNode = currentNode;
         //if the closest node is NOT at the end
-        if(boost::next(it) != enemyPtr->getPath().rend())
+        if(boost::next(it) != nodePath.end())
         {
           parentNode = (*boost::next(it)).lock();
         }
@@ -156,15 +156,18 @@ ngl::Vec3 SteeringBehaviours::FollowPath()
   }
 
   //get the parent node of the nearestNode as long as we're not at the end.
-  finalVector = nearestNode->getPos() - enemyPtr->getPos();
-  float len = finalVector.length();
-  if(parentNode && len < enemyPtr->getPathTargetThreshold())
+  if(nearestNode)
   {
-    //return dir vector between parentNode and nearestNode
+    finalVector = nearestNode->getPos() - enemyPtr->getPos();
+    float len = finalVector.length();
+    if(parentNode && len < enemyPtr->getPathTargetThreshold())
+    {
+      //return dir vector between parentNode and nearestNode
 
-    // get distance to nearest node and check threshold
+      // get distance to nearest node and check threshold
 
-    finalVector = parentNode->getPos() - enemyPtr->getPos();
+      finalVector = parentNode->getPos() - enemyPtr->getPos();
+    }
   }
 //  else
 //  {
@@ -185,7 +188,7 @@ ngl::Vec3 SteeringBehaviours::FollowPath()
 
 ngl::Vec3 SteeringBehaviours::test()
 {
-  return ngl::Vec3(0.0, -0.5, 0.0);
+  return ngl::Vec3(0.0, 2.0, 0.0);
 }
 
 

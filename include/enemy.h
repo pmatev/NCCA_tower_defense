@@ -59,13 +59,6 @@ public:
   Node::NodeWList getPath() const;
 
   //-------------------------------------------------------------------//
-  /// @brief returns an aim vector aiming towards the nearest node
-  /// in the path
-  /// @param[out] an ngl::Vec3
-  //-------------------------------------------------------------------//
-  ngl::Vec3 getVectorToNearestNodeInPath();
-
-  //-------------------------------------------------------------------//
   /// @brief a method to enforce the grid boundaries
   //-------------------------------------------------------------------//
 
@@ -76,15 +69,6 @@ public:
   //-------------------------------------------------------------------//
 
   inline float getPathTargetThreshold(){return m_pathTargetThreshold;}
-
-protected:
-
-  //-------------------------------------------------------------------//
-  /// @brief returns the path influence to be used in the brain
-  /// @param[out] an ngl::Vec3 towards the next path point
-  //-------------------------------------------------------------------//
-
-  ngl::Vec3 getPathVec() const;
 
 protected:
   //-------------------------------------------------------------------//

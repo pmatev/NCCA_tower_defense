@@ -18,7 +18,7 @@ TestEnemy::TestEnemy(
   m_damage = 100;
   m_currentVelocity = 0;
   m_maxVelocity = 0.0025;
-  m_maxForce = ngl::Vec3(0.02, 0.02, 0.02);
+  m_maxForce = ngl::Vec3(0.2, 0.2, 0.2);
 }
 
 //-------------------------------------------------------------------//
@@ -123,10 +123,10 @@ void TestEnemy::generateMesh()
 
 ngl::Vec3 TestEnemy::brain()
 {
-  //ngl::Vec3 steeringDirection = m_steering->calculate();
+  ngl::Vec3 steeringDirection = m_steering->calculate();
   // TEST value (tells it to just go forward)
-  return getPathVec() * 0.01;
-  //return steeringDirection;
+  //return getPathVec() * 0.01;
+  return steeringDirection;
 }
 
 //-------------------------------------------------------------------//
