@@ -372,11 +372,11 @@ void UI::createTestMenu()
     }
     else
     {
-        menu->addButton(ngl::Vec2 (10,10), "textures/default_texture.jpg", "buttonTest");
-        menu->connectEvent(boost::bind(&UI::printTest, this), "buttonTest");
-        menu->runCommandTest();
+//        menu->addButton(ngl::Vec2 (10,10), "textures/default_texture.jpg", "buttonTest");
+//        menu->connectEvent(boost::bind(&UI::printTest, this), "buttonTest");
+//        menu->runCommandTest();
 
-        menu->addButton(ngl::Vec2 (250,150), "textures/grid.jpg", "newButton");
+        //menu->addButton(ngl::Vec2 (250,150), "textures/grid.jpg", "newButton");
     }
 }
 

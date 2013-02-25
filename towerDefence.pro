@@ -51,10 +51,6 @@ SOURCES += src/main.cpp \
     src/concrete/base.cpp \
     src/concrete/testenemy.cpp \
     src/concrete/testturret.cpp \
-    #src/user.cpp \
-
-
-
 
 HEADERS += \
     include/window.h \
@@ -92,8 +88,14 @@ HEADERS += \
     include/fwd/game.h \
     include/fwd/uimenu.h \
     include/fwd/uibutton.h \
-    #include/user.h \
     include/fwd/ui.h
+
+
+#including the Imath Library
+
+#LIBS += -L/usr/lib64 -lImath
+#INCLUDEPATH += /usr/local/include/OpenEXR
+#DEPENDPATH += /usr/lib64
 
 #including the NGL library
 

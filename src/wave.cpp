@@ -132,11 +132,23 @@ void Wave::drawSelection()
 
 bool Wave::generatePaths(NodeWPtr _node)
 {
+  // Reset path nodes (for path optimisation)
+  EnvironmentPtr env = Game::instance()->getEnvironmentWeakPtr().lock();
+  if(env)
+  {
+    NodeManagerPtr nm = env->getNodeManagerWeakPtr().lock();
+    if(nm)
+    {
+      nm->resetPathNodes();
+    }
+  }
+
   // 1. Find all Enemies affected by _node
   // 2. Go through each Enemy and tell it to generate a new temporary path
   // 3. If all the paths were created successfully tell all enemies to update
   // their paths and return true, else return false
   // 4. Update the map with the new node values
+
 
   // 1.
   EnemyWVecPtr enemyList = m_pathNodes[_node];
@@ -147,31 +159,25 @@ bool Wave::generatePaths(NodeWPtr _node)
   }
   // 2.
   bool invalidPath = false;
-#pragma omp parallel
+
+  for(unsigned long int i = 0; i < enemyList->size(); ++i)
   {
-#pragma omp for
-    for(unsigned long int i = 0; i < enemyList->size(); ++i)
+    // This is set to skip computation so that we can shortcut to the end
+    // without breaking (breaking doesn't work with "omp for")
+    if(invalidPath)
     {
-      // This is set to skip computation so that we can shortcut to the end
-      // without breaking (breaking doesn't work with "omp for")
-      if(invalidPath)
-      {
-        continue;
-      }
-      EnemyPtr enemy = (*enemyList)[i].lock();
-      if(enemy)
-      {
-        if(!enemy->generateTempPath())
-        {
-          invalidPath = true;
-        }
-      }
-      else
+      continue;
+    }
+    EnemyPtr enemy = (*enemyList)[i].lock();
+    if(enemy)
+    {
+      if(!enemy->generateTempPath())
       {
         invalidPath = true;
       }
     }
   }
+
   if(invalidPath)
   {
     return false;
@@ -235,8 +241,6 @@ void Wave::rebuildPathNodes()
   // go through all Enemies
   BOOST_FOREACH(EnemyPtr enemy, m_enemies)
   {
-    // THIS SHOULD BE CHANGED SO THAT ENEMIES IS STORED AS
-    // A LIST OF ENEMIES RATHER THAN HAVING TO CAST IT EVERY TIME!!!
     addToPathNodes(enemy);
   }
 }
@@ -247,7 +251,7 @@ void Wave::addToPathNodes(EnemyPtr _enemy)
   Node::NodeWList path = _enemy->getPath();
   BOOST_FOREACH(NodeWPtr node, path)
   {
-    // Check if Node is in map
+    // Check if Node is not in map
     if(m_pathNodes.find(node) == m_pathNodes.end())
     {
       // Add to map

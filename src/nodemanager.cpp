@@ -1,6 +1,7 @@
 #include "nodemanager.h"
 #include "database.h"
 #include "game.h"
+#include <boost/foreach.hpp>
 
 //-------------------------------------------------------------------//
 
@@ -372,6 +373,23 @@ NodeManager::NodeManager(
       m_nodes[(j*_gridWidth) + i]->setChildList(neighbours);
     }
   }
+  createPathNodes();
+}
+
+//-------------------------------------------------------------------//
+
+void NodeManager::createPathNodes()
+{
+  BOOST_FOREACH(NodePtr node, m_nodes)
+  {
+    PathNodePtr pathNode = PathNode::create(
+          NodeWPtr(node),
+          0,
+          0
+          );
+    m_pathNodeMap[node] = pathNode;
+    m_pathNodes.push_back(pathNode);
+  }
 }
 
 //-------------------------------------------------------------------//
@@ -404,7 +422,7 @@ NodeManager::~NodeManager()
 
 void NodeManager::update(const double _dt)
 {
-  for(unsigned int i = 0; i < m_nodes.size(); i++)
+  for(int i = 0; i < m_nodes.size(); i++)
   {
     m_nodes[i]->update(_dt);
   }
@@ -414,7 +432,7 @@ void NodeManager::update(const double _dt)
 
 void NodeManager::draw()
 {
-  for(unsigned int i = 0; i < m_nodes.size(); i++)
+  for(int i = 0; i < m_nodes.size(); i++)
   {
     m_nodes[i]->draw();
   }
@@ -424,15 +442,25 @@ void NodeManager::draw()
 
 void NodeManager::drawSelection()
 {
-  for(unsigned int i = 0; i < m_nodes.size(); i++)
+  for(int i = 0; i < m_nodes.size(); i++)
   {
     m_nodes[i]->drawSelection();
   }
 }
 
+void NodeManager::resetPathNodes()
+{
+  BOOST_FOREACH(PathNodeMap::value_type pathNode, m_pathNodeMap)
+  {
+#pragma omp critical
+    pathNode.second->m_hasSuccessfulPath = false;
+
+  }
+}
+
 //-------------------------------------------------------------------//
 
-bool NodeManager::getAStar(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr _goal) const
+bool NodeManager::getAStar(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr _goal)
 {
   // From http://en.wikipedia.org/wiki/A*_search_algorithm
   // THIS FUNCTION COULD PROBABLY BE SIMPLIFIED
@@ -440,123 +468,145 @@ bool NodeManager::getAStar(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr
   // this keeps track of which nodes relate to which paths, this way we can
   // access PathNode data via the Node. This is useful as children are stored
   // as Nodes rather than path nodes
-  std::map<NodeWPtr, PathNodePtr> allPathNodes;
+  //std::map<NodeWPtr, PathNodePtr> m_pathNodeMap;
 
-  PathNodePtr start = PathNode::create(
-                      _start,
-                      0,
-                      heuristicPath(_start, _goal)
-                      );
-  allPathNodes[_start] = start;
-  PathNodeList closedSet;
-  PathNodeList openSet;
-
-  openSet.push_back(start);
-  while(openSet.size() > 0)
+//  PathNodePtr start = PathNode::create(
+//                      _start,
+//                      0,
+//                      heuristicPath(_start, _goal)
+//                      );
+  //m_pathNodeMap[_start] = start;
+  PathNodePtr start = m_pathNodeMap[_start];
+  PathNodePtr goal = m_pathNodeMap[_goal];
+  if(start && goal)
   {
-    // Current node to work on. This should be the node with the lowest fScore
-    // in the openSet
-    PathNodePtr current = *openSet.begin();
+    PathNodeList closedSet;
+    PathNodeList openSet;
+    int numSteps = 0;
 
-    // If we've found the goal
-    if(*current == _goal)
+    openSet.push_back(start);
+    while(openSet.size() > 0)
     {
-      reconstructPath(o_newPath, current, _start);
-      return true;
-    }
+      // Current node to work on. This should be the node with the lowest fScore
+      // in the openSet
+      PathNodePtr current = *openSet.begin();
 
-    // Take current from openSet and move it into closedSet
-    openSet.remove(current);
-    closedSet.push_back(current);
-    NodePtr currentNode = current->m_node.lock();
-    if(currentNode)
-    {
-      if(currentNode->isOccupied() && !(*current == _start))
+      // If we've found the goal
+      if(*current == _goal)
       {
-        continue;
+        #pragma omp critical
+        {
+          reconstructPath(o_newPath, current, _start);
+        }
+        std::cout<<"Completed path in "<<numSteps<<" steps"<<std::endl;
+        return true;
       }
 
-      // Go through children of current
-      Node::NodeWListPtr children = currentNode->getChildList();
-      for(
-          Node::NodeWList::iterator it = children->begin();
-          it != children->end();
-          ++it)
+//      // If there's a successful path from the current point use the rest of it
+//      // and return
+//      if(current->m_hasSuccessfulPath)
+//      {
+//        // clear open set and continue, this should shortcut to the end
+//        openSet.clear();
+//        PathNodePtr child = current->m_child.lock();
+
+//        if(child)
+//        {
+//          child->m_parent = PathNodePtr(current);
+//          openSet.push_back(child);
+//        }
+//        continue;
+//      }
+
+      // Take current from openSet and move it into closedSet
+      openSet.remove(current);
+      closedSet.push_back(current);
+      NodePtr currentNode = current->m_node.lock();
+      if(currentNode)
       {
-        PathNodePtr child;
-        //Get PathNode affiliated with node
-        std::map<NodeWPtr, PathNodePtr>::iterator childIt = allPathNodes.find(*it);
-        //If it couldn't find it create one and insert into map
-        if(childIt == allPathNodes.end())
-        {
-          // Create an new PathNode that corresponds to the child node. (i.e put
-          // it on the system)
-          // Set gScore very high so it's overwritten in the next step
-          child = PathNode::create(*it, current->m_gScore + m_centerSqrDist, 0);
-          allPathNodes[*it] = child;
-        }
-        else
-        {
-          // Set child to the value in the iterator
-          child = childIt->second;
-        }
-        if(checkListForNode(child, closedSet))
+        if(currentNode->isOccupied() && !(*current == _start))
         {
           continue;
         }
-        float tentativeGScore = current->m_gScore + m_centerSqrDist;
-        bool inOpenSet = checkListForNode(child, openSet);
-        if(!inOpenSet || tentativeGScore <= child->m_gScore)
+
+        // Go through children of current
+        Node::NodeWListPtr children = currentNode->getChildList();
+        for(
+            Node::NodeWList::iterator it = children->begin();
+            it != children->end();
+            ++it)
         {
-          child->m_parent = current;
-          child->m_gScore = tentativeGScore;
-          child->m_fScore = tentativeGScore + 3*heuristicPath(child->m_node, _goal);
-          if(!inOpenSet)
+          PathNodePtr child;
+          child = m_pathNodeMap[*it];
+          if(checkListForNode(child, closedSet))
           {
-            //Add to openSet
-            openSet.push_back(child);
+            continue;
           }
-          //sort the set so that the top one will be chosen
-          openSet.sort(PathNode::compare);
+          float tentativeGScore = current->m_gScore + m_centerSqrDist;
+          bool inOpenSet = checkListForNode(child, openSet);
+          if(!inOpenSet || tentativeGScore <= child->m_gScore)
+          {
+            child->m_parent = current;
+            child->m_gScore = tentativeGScore;
+            child->m_fScore = tentativeGScore + heuristicPath(m_pathNodeMap[child->m_node], goal);
+            if(!inOpenSet)
+            {
+              //Add to openSet
+              openSet.push_back(child);
+            }
+            //sort the set so that the top one will be chosen
+            openSet.sort(PathNode::compare);
+          }
         }
       }
+      ++numSteps;
     }
   }
-
   // Failed to find a valid path
   return false;
 }
 
 //-------------------------------------------------------------------//
 
-float NodeManager::heuristicPath(NodeWPtr _start, NodeWPtr _goal) const
+float NodeManager::heuristicPath(PathNodeWPtr _start, PathNodeWPtr _goal) const
 {
-  NodePtr start = _start.lock();
-  NodePtr goal = _goal.lock();
+  PathNodePtr start = _start.lock();
+  PathNodePtr goal = _goal.lock();
   if(start && goal)
   {
-    ngl::Vec3 distVec =  start->getPos() - goal->getPos();
-    float sqrDist =
-        (distVec.m_x * distVec.m_x) +
-        (distVec.m_y * distVec.m_y) +
-        (distVec.m_z * distVec.m_z);
-    return sqrDist;
+    if(start->m_hasSuccessfulPath)
+    {
+      return start->m_successfulPathFScore;
+    }
+    NodePtr startNode = start->m_node.lock();
+    NodePtr goalNode = goal->m_node.lock();
+    if(startNode && goalNode)
+    {
+      ngl::Vec3 distVec =  startNode->getPos() - goalNode->getPos();
+      float sqrDist =
+          (distVec.m_x * distVec.m_x) +
+          (distVec.m_y * distVec.m_y) +
+          (distVec.m_z * distVec.m_z);
+      return sqrDist;
+    }
+    return 0;
   }
-  else
-  {
-    return INFINITY;
-  }
+  return 0;
 }
 
 void NodeManager::reconstructPath(
     Node::NodeWList &io_newPath,
     PathNodeWPtr _current,
-    NodeWPtr _start
+    NodeWPtr _start,
+    float _fScore
     ) const
 {
   PathNodePtr current = _current.lock();
   if(current)
   {
+    current->m_hasSuccessfulPath = true;
+    current->m_successfulPathFScore = _fScore;
+    _fScore+=m_centerSqrDist;
     // Add the current node to the list
     io_newPath.push_back(current->m_node);
     // if we've got back to the start
@@ -565,8 +615,41 @@ void NodeManager::reconstructPath(
       // Finish
       return;
     }
+
+    // save child for caching
+    PathNodePtr parent = current->m_parent.lock();
+    if(parent)
+    {
+      parent->m_child = _current;
+    }
+
     // Keep searching from the parent
-    reconstructPath(io_newPath, current->m_parent, _start);
+    reconstructPath(io_newPath, current->m_parent, _start, _fScore);
+  }
+  return;
+
+}
+
+//-------------------------------------------------------------------//
+
+void NodeManager::reconstructOptimisedPath(
+    Node::NodeWList &io_newPath,
+    NodeManager::PathNodeWPtr _current,
+    NodeWPtr _goal
+    ) const
+{
+  PathNodePtr current = _current.lock();
+  if(current)
+  {
+    io_newPath.push_back(current->m_node);
+    // if we've got to the goal
+    if(*current == _goal)
+    {
+      // Finish
+      return;
+    }
+    // Keep searching from the parent
+    reconstructOptimisedPath(io_newPath, current->m_child, _goal);
   }
   return;
 }
@@ -597,7 +680,7 @@ bool NodeManager::checkListForNode(PathNodePtr _node, PathNodeList _list) const
 bool NodeManager::findPathFromPos(
     Node::NodeWList &o_newPath,
     ngl::Vec3 _start,
-    ngl::Vec3 _goal) const
+    ngl::Vec3 _goal)
 {
   //need to find the start and finish nodes in m_nodes from the vec3s.
   NodeWPtr start = getNodeFromPos(_start);

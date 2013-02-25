@@ -30,16 +30,12 @@ DynamicEntity::~DynamicEntity()
 void DynamicEntity::update(const double _dt)
 {
 
-  //Q unused to remove warnings, will be replaced if used
-
-  Q_UNUSED(_dt);
-
   // get the brain vector
   ngl::Vec3 brainVec = brain();
   // based on brain where should it go next
   // FOR TESTING JUST HAVE IT GO EXACTLY WHERE THE BRAIN SAYS
   m_prevPos = m_pos;
-  m_pos += brainVec;
+  m_pos += brainVec * _dt;
 
   enforceGridBoundaries();
 

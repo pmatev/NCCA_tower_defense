@@ -66,7 +66,6 @@ void Game::init()
     std::cerr<<glGetError()<<std::endl;
 
     //m_light = new ngl::Light(ngl::Vec3(1,2,0),ngl::Colour(1,1,1),ngl::POINTLIGHT);
-
     setupScene();
 }
 
@@ -75,9 +74,6 @@ void Game::init()
 void Game::reset()
 {
   // In the future this may need some other code to clear things
-//  m_environment.reset();
-//  m_waveManager.reset();
-//  m_projectileManager.reset();
   m_IDMap.clear();
   setupScene();
 }
@@ -88,7 +84,8 @@ void Game::setupScene()
 {
   //Environment has to be created before the waves, as the enemies query data
   //in environment.
-  m_environment = Environment::create(20, 20, 2, ngl::Vec3(0.0, 0.0, 0.0), 0, 0,10,10); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
+  //if(!m_environment) // FOR TESTING SO THAT TOWERS ARE NOT REMOVED
+  m_environment = Environment::create(20, 20, 2, ngl::Vec3(0.0, 0.0, 0.0), 10, 10,10,10); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
   m_waveManager = WaveManager::create();
   m_projectileManager = ProjectileManager::create();
 }

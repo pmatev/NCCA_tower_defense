@@ -39,8 +39,11 @@ protected:
   {
     NodeWPtr m_node;
     PathNodeWPtr m_parent;
+    PathNodeWPtr m_child;
     float m_gScore;
     float m_fScore;
+    bool m_hasSuccessfulPath;
+    float m_successfulPathFScore;
 
     //-------------------------------------------------------------------//
     /// @brief creator
@@ -86,8 +89,6 @@ protected:
     }
 
   protected:
-
-
     //-------------------------------------------------------------------//
     /// @brief ctor
     /// @param[in] _node, node that it wraps around
@@ -102,8 +103,10 @@ protected:
           ):
       m_node(_node),
       m_parent(),
+      m_child(),
       m_gScore(_gScore),
-      m_fScore(_fScore)
+      m_fScore(_fScore),
+      m_hasSuccessfulPath(false)
     {}
   };
 
@@ -131,18 +134,20 @@ public:
 
   void draw();
 
+  void resetPathNodes();
+
   //-------------------------------------------------------------------//
   /// @brief Find a path between two nodes ( A* search algorithm)
   //-------------------------------------------------------------------//
 
-  bool getAStar(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr _goal) const;
+  bool getAStar(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr _goal);
 
   //-------------------------------------------------------------------//
   /// @brief Wraps the getAStar method so that coordinates can be
   /// passed in instead of NodePtrs.
   //-------------------------------------------------------------------//
 
-  bool findPathFromPos(Node::NodeWList &o_newPath, ngl::Vec3 _start, ngl::Vec3 _goal) const;
+  bool findPathFromPos(Node::NodeWList &o_newPath, ngl::Vec3 _start, ngl::Vec3 _goal);
 
   //-------------------------------------------------------------------//
   /// @brief Finds the NodePtr closest to the position passed in
@@ -163,12 +168,17 @@ public:
   void drawSelection();
 
 protected:
+  //-------------------------------------------------------------------//
+  /// @brief Create the map between nodes and their path-finding counterparts
+  //-------------------------------------------------------------------//
+
+  void createPathNodes();
 
   //-------------------------------------------------------------------//
   /// @brief Shortest possible distance between two nodes
   //-------------------------------------------------------------------//
 
-  float heuristicPath(NodeWPtr _start, NodeWPtr _goal) const;
+  float heuristicPath(PathNodeWPtr _start, PathNodeWPtr _goal) const;
 
   //-------------------------------------------------------------------//
   /// @brief trace through node parents to create an ordered list of all
@@ -183,7 +193,25 @@ protected:
   void reconstructPath(
         Node::NodeWList &io_newPath,
         NodeManager::PathNodeWPtr _current,
-        NodeWPtr _start = NodeWPtr()
+        NodeWPtr _start = NodeWPtr(),
+        float _fScore = 0.0f
+        ) const;
+
+  //-------------------------------------------------------------------//
+  /// @brief trace through node children to create an ordered list of all
+  /// the nodes within the path from the current point to the goal. This
+  /// is used so that path finding can share cached paths between nodes.
+  /// @param[in] _current, the current PathNode we are working on
+  /// @param[in] _start, the smart pointer to the start node
+  /// @param[in] _currentList, the current ordered list of all nodes within
+  /// the path
+  /// @param[out] the ordered list of nodes that make up the path
+  //-------------------------------------------------------------------//
+
+  void reconstructOptimisedPath(
+        Node::NodeWList &io_newPath,
+        NodeManager::PathNodeWPtr _current,
+        NodeWPtr _goal = NodeWPtr()
         ) const;
 
   //-------------------------------------------------------------------//
@@ -196,6 +224,9 @@ protected:
 
   bool checkListForNode(PathNodePtr _node, PathNodeList _list) const;
 
+protected:
+
+  typedef std::map<NodeWPtr, PathNodePtr> PathNodeMap;
 
 protected:
 
@@ -211,10 +242,23 @@ protected:
   Node::NodeVec m_nodes;
 
   //-------------------------------------------------------------------//
-  /// @brief distance between the centers of any two adjacent nodes
+  /// @brief map of nodes to path nodes. Path nodes are used as a wrapper
+  /// around nodes to give extra functionality for path finding.
   //-------------------------------------------------------------------//
 
-  float m_centerSqrDist;
+  std::map<NodeWPtr, PathNodePtr> m_pathNodeMap;
+
+  //-------------------------------------------------------------------//
+  /// @brief all the path nodes. These are used for path finding.
+  //-------------------------------------------------------------------//
+
+  PathNodeList m_pathNodes;
+
+  //-------------------------------------------------------------------//
+  /// @brief size of hexagons
+  //-------------------------------------------------------------------//
+
+  int m_hexagonSize;
 
   //-------------------------------------------------------------------//
   /// @brief grid width
@@ -229,16 +273,17 @@ protected:
   int m_gridHeight;
 
   //-------------------------------------------------------------------//
-  /// @brief size of hexagons
-  //-------------------------------------------------------------------//
-
-  int m_hexagonSize;
-
-  //-------------------------------------------------------------------//
   /// @brief origin
   //-------------------------------------------------------------------//
 
   ngl::Vec3 m_origin;
+
+  //-------------------------------------------------------------------//
+  /// @brief distance between the centers of any two adjacent nodes
+  //-------------------------------------------------------------------//
+
+  float m_centerSqrDist;
+
 
 private:
 

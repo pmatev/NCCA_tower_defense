@@ -25,15 +25,20 @@ Enemy::Enemy(
 
 bool Enemy::generateTempPath()
 {
+  // THIS IS REALLY MESSY AND NEEDS A COMPLETE REFACTOR, ENEMIES SHOULD NOT HAVE
+  // TO ACCESS THE NODEMANAGER!
   EnvironmentPtr env = Game::instance()->getEnvironmentWeakPtr().lock();
-  NodeManagerPtr nm = env->getNodeManagerWeakPtr().lock();
-  if(env && nm)
+  if(env)
   {
-    return nm->findPathFromPos(
-          m_tempPathNodes,
-          m_pos,
-          Game::instance()->getBasePos()
-          );
+    NodeManagerPtr nm = env->getNodeManagerWeakPtr().lock();
+    if(nm)
+    {
+      return nm->findPathFromPos(
+            m_tempPathNodes,
+            m_pos,
+            Game::instance()->getBasePos()
+            );
+    }
   }
   return false;
 }
