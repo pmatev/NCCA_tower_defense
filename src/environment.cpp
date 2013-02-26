@@ -91,6 +91,7 @@ void Environment::update(const double _dt)
       ++it
       )
   {
+    (*it)->prepareForUpdate();
     (*it)->update(_dt);
   }
   // update base

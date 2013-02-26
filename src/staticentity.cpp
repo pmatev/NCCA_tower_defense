@@ -42,6 +42,8 @@ StaticEntity::~StaticEntity()
 
 void StaticEntity::prepareForUpdate()
 {
+  //generate the viewBox
+  generateViewBBox();
   // Get the local entities
   std::list<GeneralType> types;
   types.push_back(ENEMY);
@@ -49,6 +51,8 @@ void StaticEntity::prepareForUpdate()
   calculateLocalEntities(*m_localEntities, types);
   // Filter the entities
   filterViewVolume(*m_localEntities);
+
+
 }
 
 //-------------------------------------------------------------------//

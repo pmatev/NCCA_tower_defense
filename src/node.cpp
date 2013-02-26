@@ -167,3 +167,18 @@ void Node::filterViewVolume(EntityRecordList &o_localEntities)
 }
 
 //-------------------------------------------------------------------//
+
+void Node::generateViewBBox()
+{
+  // initialise world space view box
+  m_wsViewBBox = BBox(
+        m_lsMeshBBox.m_minX*5 + m_pos.m_x,
+        m_lsMeshBBox.m_minY*5 + m_pos.m_y,
+        m_lsMeshBBox.m_minZ*5 + m_pos.m_z,
+        m_lsMeshBBox.m_maxX*5 + m_pos.m_x,
+        m_lsMeshBBox.m_maxY*5 + m_pos.m_y,
+        m_lsMeshBBox.m_maxZ*5 + m_pos.m_z
+        );
+}
+
+//-------------------------------------------------------------------//

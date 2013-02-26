@@ -1,4 +1,5 @@
 #include "concrete/bullet.h"
+#include"include/fsm/states/projectilestates.h"
 
 //-------------------------------------------------------------------//
 
@@ -9,14 +10,10 @@ Bullet::Bullet(
     ) :
   Projectile(_pos,_aim, _id)
 {
-  m_damage = 20;
+  m_damage =100;
   m_maxVelocity = 10;
-  m_velocity = 2;
+  m_velocity = 15*m_aimVector;
   generateMesh();
-}
-
-void Bullet::init()
-{
 }
 
 //-------------------------------------------------------------------//
@@ -30,10 +27,28 @@ EntityPtr Bullet::create(
   //create and return a smart pointer to the bullet
 
   EntityPtr bullet(new Bullet(_pos,_aim, _id));
+  bullet->init();
   return bullet;
 }
 
 //-------------------------------------------------------------------//
+
+void Bullet::init()
+{
+  //state machine
+  m_stateMachine = new StateMachine(EntityWPtr(shared_from_this()));
+  m_stateMachine->setCurrentState(Move::instance());
+  m_stateMachine->setPreviousState(Move::instance());
+  m_stateMachine->setGlobalState(0);
+}
+
+//-------------------------------------------------------------------//
+
+void Bullet::draw()
+{
+  Renderer *r = Renderer::instance();
+  //m_transformStack.setScale(0.3, 0.3, 0.3);
+  r->loadMatrixToShader(m_transformStack, "Phong");
 
 //void Bullet::draw()
 //{
@@ -41,8 +56,9 @@ EntityPtr Bullet::create(
 //  //m_transformStack.setScale(0.3, 0.3, 0.3);
 //  r->loadMatrixToShader(m_transformStack, "Phong");
 
-//  r->draw(m_IDStr, "Phong");
-//}
+
+  r->draw(m_IDStr, "Phong");
+}
 
 //-------------------------------------------------------------------//
 
@@ -126,7 +142,9 @@ ngl::Vec3 Bullet::brain()
 {
   // for the moment just have the bullet follow it's aim
 
-  return m_aimVector;
+  return ngl::Vec3();
+
+  //return m_aimVector;
 }
 
 //-------------------------------------------------------------------//

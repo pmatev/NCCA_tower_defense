@@ -55,7 +55,9 @@ SOURCES += src/main.cpp \
     src/fsm/statemachine.cpp \
     src/fsm/states/enemystates.cpp \
     src/ai/steeringbehaviours.cpp \
-    src/player.cpp
+    src/player.cpp \
+    src/fsm/states/turretstates.cpp \
+    src/fsm/states/projectilestates.cpp
 
 
 
@@ -102,7 +104,10 @@ HEADERS += \
     include/fsm/state.h \
     include/fsm/states/enemystates.h \
     include/ai/steeringbehaviours.h \
-    include/player.h
+    include/player.h \
+    include/fsm/states/turretstates.h \
+    include/fsm/states/projectilestates.h
+
 
 
 

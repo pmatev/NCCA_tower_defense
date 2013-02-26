@@ -42,6 +42,26 @@ public://methods
   //-------------------------------------------------------------------//
 
   void enforceGridBoundaries();
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to get the emmiter Id
+  //-------------------------------------------------------------------//
+
+  inline int getEmitterID() const {return m_emitterID;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to set the emitter id
+  //-------------------------------------------------------------------//
+
+  inline void setEmitterID(int _ID) {m_emitterID = _ID;}
+
+  protected:
+
+    //-------------------------------------------------------------------//
+    /// @brief a variable to store the emitter turret
+    //-------------------------------------------------------------------//
+
+    int m_emitterID;
 };
 
 #endif // PROJECTILE_H

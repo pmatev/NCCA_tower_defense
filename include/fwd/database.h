@@ -4,6 +4,8 @@
 #include <boost/shared_ptr.hpp>
 #include <fwd/entity.h>
 
+DECLARESMART(EntityRecord)
+
 //-------------------------------------------------------------------//
 /// @struct a data structure to store information about a given entity
 /// in the database
@@ -46,6 +48,7 @@ struct EntityRecord
       float m_z;
 
     };
+    float m_pos[3];
   };
 
   union
@@ -133,6 +136,27 @@ struct EntityRecord
     m_maxY(_maxY),
     m_minZ(_minZ),
     m_maxZ(_maxZ)
+  {}
+
+  //-------------------------------------------------------------------//
+  /// @brief constructor
+  //-------------------------------------------------------------------//
+
+  EntityRecord():
+    m_id(0),
+    m_generalType(ENEMY),
+    m_x(0),
+    m_y(0),
+    m_z(0),
+    m_velX(0),
+    m_velY(0),
+    m_velZ(0),
+    m_minX(0),
+    m_maxX(0),
+    m_minY(0),
+    m_maxY(0),
+    m_minZ(0),
+    m_maxZ(0)
   {}
 };
 

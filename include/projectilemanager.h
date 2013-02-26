@@ -68,7 +68,8 @@ public://methods
   void addProjectile(
         const std::string &_type,
         const ngl::Vec3 &_pos,
-        const ngl::Vec3 &_aim
+        const ngl::Vec3 &_aim,
+        int _emitterID
         );
 
   //-------------------------------------------------------------------//

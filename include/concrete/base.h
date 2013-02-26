@@ -33,6 +33,12 @@ public:
   void generateMesh();
   void filterViewVolume(EntityRecordList &o_localEntities);
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to generate the view box
+  //-------------------------------------------------------------------//
+
+  void generateViewBBox();
+
 protected:
 
   //-------------------------------------------------------------------//

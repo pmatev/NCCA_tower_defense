@@ -31,16 +31,10 @@ DynamicEntity::~DynamicEntity()
 
 void DynamicEntity::prepareForUpdate()
 {
-  // initialise world space view box
-  // THIS NEEDS TO BE REDONE WHEN WE WORK OUT VIEW STUFF!!! -----------------------------
-  m_wsViewBBox = BBox(
-        m_lsMeshBBox.m_minX*5 + m_pos.m_x,
-        m_lsMeshBBox.m_minY*5 + m_pos.m_y,
-        m_lsMeshBBox.m_minZ*5 + m_pos.m_z,
-        m_lsMeshBBox.m_maxX*5 + m_pos.m_x,
-        m_lsMeshBBox.m_maxY*5 + m_pos.m_y,
-        m_lsMeshBBox.m_maxZ*5 + m_pos.m_z
-        );
+
+  //generate the view box
+
+  generateViewBBox();
 
   // Get the local entities
   std::list<GeneralType> types;
@@ -58,34 +52,35 @@ void DynamicEntity::prepareForUpdate()
 void DynamicEntity::update(const double _dt)
 {
   //In seconds
-    float dt = _dt / 1000;
+  float dt = _dt / 1000;
 
-    //update the state machine
-    m_stateMachine->update();
+  //update the state machine
+  m_stateMachine->update();
 
-    ngl::Vec3 steeringForce = brain();
-    ngl::Vec3 acceleration = steeringForce / m_mass;
-    float maxAcceleration = 0.1;
+  ngl::Vec3 steeringForce = brain();
+  ngl::Vec3 acceleration = steeringForce / m_mass;
+  float maxAcceleration = 0.1;
 
-    //truncate acceleration to max acc
-    float accDiff = maxAcceleration / acceleration.length(); //COULD FAIL IF 0
-    float accScaleFactor = (accDiff < 1.0) ? accDiff : 1.0;
-    acceleration *= accScaleFactor;
+  //truncate acceleration to max acc
+  float accDiff = maxAcceleration / acceleration.length(); //COULD FAIL IF 0
+  float accScaleFactor = (accDiff < 1.0) ? accDiff : 1.0;
+  acceleration *= accScaleFactor;
 
-    m_velocity += acceleration;
+  m_velocity += acceleration;
 
-    //truncate velocity to max speed
-    float diff = m_maxVelocity / m_velocity.length(); //COULD FAIL IF 0
-    float scaleFactor = (diff < 1.0) ? diff : 1.0;
-    m_velocity *= scaleFactor;
+  //truncate velocity to max speed
+  float diff = m_maxVelocity / m_velocity.length(); //COULD FAIL IF 0
+  float scaleFactor = (diff < 1.0) ? diff : 1.0;
+  m_velocity *= scaleFactor;
 
-    //update position
-    m_prevPos = m_pos;
-    m_pos += m_velocity * dt;
+  //update position
+  m_prevPos = m_pos;
+  m_pos += m_velocity * dt;
 
-    enforceGridBoundaries();
+  enforceGridBoundaries();
 
-    m_transformStack.setPosition(m_pos);
+  m_transformStack.setPosition(m_pos);
+
 }
 
 //-------------------------------------------------------------------//
@@ -528,3 +523,17 @@ Collision DynamicEntity::collisionDetection(std::list<GeneralType> _types) const
 
 //-------------------------------------------------------------------//
 
+void DynamicEntity::generateViewBBox()
+{
+  // initialise world space view box
+  m_wsViewBBox = BBox(
+        m_lsMeshBBox.m_minX*5 + m_pos.m_x,
+        m_lsMeshBBox.m_minY*5 + m_pos.m_y,
+        m_lsMeshBBox.m_minZ*5 + m_pos.m_z,
+        m_lsMeshBBox.m_maxX*5 + m_pos.m_x,
+        m_lsMeshBBox.m_maxY*5 + m_pos.m_y,
+        m_lsMeshBBox.m_maxZ*5 + m_pos.m_z
+        );
+}
+
+//-------------------------------------------------------------------//

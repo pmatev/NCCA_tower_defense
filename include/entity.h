@@ -277,6 +277,13 @@ protected:
 
   virtual void prepareForUpdate() = 0;
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to generate the view box, must be implemented in
+  /// concrete types so that there can be variation on the view bboxes
+  //-------------------------------------------------------------------//
+
+  virtual void generateViewBBox() = 0;
+
 
 
 protected: //attributes
@@ -316,6 +323,7 @@ protected: //attributes
   //-------------------------------------------------------------------//
   /// @brief the statemachine.
   //-------------------------------------------------------------------//
+
   StateMachine *m_stateMachine;
 
 

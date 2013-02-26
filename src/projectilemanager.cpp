@@ -141,7 +141,8 @@ void ProjectileManager::checkDeaths()
 void ProjectileManager::addProjectile(
     const std::string &_type,
     const ngl::Vec3 &_pos,
-    const ngl::Vec3 &_aim
+    const ngl::Vec3 &_aim,
+    int _emitterID
     )
 {
   //create a new type
@@ -155,7 +156,7 @@ void ProjectileManager::addProjectile(
         );
 
   //add the projectile to the list of projectiles
-
+  newProjectile->setEmitterID(_emitterID);
   m_projectiles.push_back(newProjectile);
 }
 

@@ -72,6 +72,90 @@ public:
 
   void fire();
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the doShot boolean
+  //-------------------------------------------------------------------//
+
+  inline bool getDoShot() const {return m_doShot;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to set the doShot boolean
+  //-------------------------------------------------------------------//
+
+  inline void setDoShot(bool _newVal) {m_doShot = _newVal;}
+
+  //-------------------------------------------------------------------//
+  /// @brief addDtSinceShot method, adds a double value to the dt since
+  /// shot variable
+  //-------------------------------------------------------------------//
+
+  inline void addDtSinceShot(double _dt) {m_dtSinceLastShot += _dt;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to set the time since the last shot
+  //-------------------------------------------------------------------//
+
+  inline void setDtSinceShot(double _dt) {m_dtSinceLastShot = _dt;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the time since the last shot
+  //-------------------------------------------------------------------//
+
+  inline double getDtSinceShot() const {return m_dtSinceLastShot;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to get the min time between shots
+  //-------------------------------------------------------------------//
+
+  inline double getShotWaitTime() const {return m_shotWaitTime;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the vector required to aim at an inputted
+  /// position
+  /// @param [in] _pos the position to aim at
+  /// @param [out] the required vector to aim at the position
+  //-------------------------------------------------------------------//
+
+  ngl::Vec3 getAimVec(const ngl::Vec3 &_pos) const;
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to update the shot position
+  //-------------------------------------------------------------------//
+
+  virtual void updateShotPos() = 0;
+
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to get a record from the local entities
+  /// list by it's ID
+  /// @param [in] _ID the id to search by
+  /// @param [out] reference to the entity record
+  //-------------------------------------------------------------------//
+
+  void getLocalRecordByID(unsigned int _ID, EntityRecord & o_record);
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to get a record from the local entities
+  /// list by it's ID
+  /// @param [out] a reference to the entity record
+  //-------------------------------------------------------------------//
+
+  void getNearestLocalRecord(EntityRecord & o_record);
+
+  //-------------------------------------------------------------------//
+  /// @brief a method  to set the aim value of the turret
+  /// @param [in] _aim the input vector defines the aim
+  //-------------------------------------------------------------------//
+
+  void setAim(const ngl::Vec3 &_aim);
+
+  //-------------------------------------------------------------------//
+  /// @brief prepare for update method, overloaded so that it has access
+  /// to the fire variables and methods
+  //-------------------------------------------------------------------//
+
+  void prepareForUpdate();
+
 protected:
 
   //-------------------------------------------------------------------//
@@ -103,6 +187,38 @@ protected:
   //-------------------------------------------------------------------//
 
   std::string m_projectileType;
+
+  //-------------------------------------------------------------------//
+  /// @brief a boolean to store whether or not to fire at the next
+  /// round of updates
+  //-------------------------------------------------------------------//
+
+  bool m_doShot;
+
+  //-------------------------------------------------------------------//
+  /// @brief the time since the last shot
+  //-------------------------------------------------------------------//
+
+  double m_dtSinceLastShot;
+
+  //-------------------------------------------------------------------//
+  /// @brief a variable defining how often a turret can shoot
+  //-------------------------------------------------------------------//
+
+  double m_shotWaitTime;
+
+  //-------------------------------------------------------------------//
+  /// @brief fire position
+  //-------------------------------------------------------------------//
+
+  ngl::Vec3 m_shotPos;
+
+  //-------------------------------------------------------------------//
+  /// @brief the ID of the target
+  //-------------------------------------------------------------------//
+
+  int m_targetID;
+
 };
 
 #endif // TURRET_H

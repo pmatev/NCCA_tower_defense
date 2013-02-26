@@ -1,4 +1,5 @@
 #include "include/concrete/testturret.h"
+#include "include/fsm/states/turretstates.h"
 #include "renderer.h"
 
 //-------------------------------------------------------------------//
@@ -20,10 +21,6 @@ TestTurret::TestTurret(
   publish();
 }
 
-void TestTurret::init()
-{
-}
-
 //-------------------------------------------------------------------//
 
 EntityPtr TestTurret::create(
@@ -38,9 +35,21 @@ EntityPtr TestTurret::create(
           _id
           )
         );
-  return a;
+  a->init();
 
+  return a;
 }
+
+//-------------------------------------------------------------------//
+
+void TestTurret::init()
+{
+  m_stateMachine = new StateMachine(EntityWPtr(shared_from_this()));
+  m_stateMachine->setCurrentState(LockOn::instance());
+  m_stateMachine->setPreviousState(LockOn::instance());
+  m_stateMachine->setGlobalState(0);
+}
+
 //-------------------------------------------------------------------//
 
 void TestTurret::generateMesh()
@@ -141,7 +150,8 @@ ngl::Vec3 TestTurret::brain()
 {
   // do something
   // return test aim
-  return ngl::Vec3(0.01,0, 0);
+  m_stateMachine->update();
+  return m_aim;
 }
 
 //-------------------------------------------------------------------//
@@ -150,3 +160,28 @@ void TestTurret::filterViewVolume(EntityRecordList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
 }
+
+//-------------------------------------------------------------------//
+
+void TestTurret::updateShotPos()
+{
+  // currently just seting the position to the position of the turret
+
+  m_shotPos = m_pos;
+}
+
+//-------------------------------------------------------------------//
+
+void TestTurret::generateViewBBox()
+{
+  // initialise world space view box
+  m_wsViewBBox = BBox(
+        m_lsMeshBBox.m_minX*10 + m_pos.m_x,
+        m_lsMeshBBox.m_minY*10 + m_pos.m_y,
+        m_lsMeshBBox.m_minZ*10 + m_pos.m_z,
+        m_lsMeshBBox.m_maxX*10 + m_pos.m_x,
+        m_lsMeshBBox.m_maxY*10 + m_pos.m_y,
+        m_lsMeshBBox.m_maxZ*10 + m_pos.m_z
+        );
+}
+//-------------------------------------------------------------------//
