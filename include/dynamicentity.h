@@ -81,12 +81,16 @@ public:
   inline ngl::Vec3 getMaxForce(){return m_maxForce;}
 
   //-------------------------------------------------------------------//
+  /// @brief returns the max force
+  //-------------------------------------------------------------------//
+  inline ngl::Vec3 getVelocity(){return m_velocity;}
+
+  //-------------------------------------------------------------------//
   /// @brief prepare for update. This should update the local entites and
   /// anything else that needs doing outside the update loop.
   //-------------------------------------------------------------------//
 
   void prepareForUpdate();
-
 
 protected:
 

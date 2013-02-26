@@ -15,6 +15,24 @@ SteeringBehaviours::SteeringBehaviours(EntityWPtr _entity):
   fp_info.enabled = false;
   m_registeredBehaviours["FollowPath"] = fp_info;
 
+  //register the behaviours
+  BehaviourInfo sep_info;
+  sep_info.function = &SteeringBehaviours::Seperation;
+  sep_info.enabled = false;
+  m_registeredBehaviours["Seperation"] = sep_info;
+
+  //register the behaviours
+  BehaviourInfo co_info;
+  co_info.function = &SteeringBehaviours::Cohesion;
+  co_info.enabled = false;
+  m_registeredBehaviours["Cohesion"] = co_info;
+
+  //register the behaviours
+  BehaviourInfo ali_info;
+  ali_info.function = &SteeringBehaviours::Alignment;
+  ali_info.enabled = false;
+  m_registeredBehaviours["Alignment"] = ali_info;
+
 }
 
 ngl::Vec3 SteeringBehaviours::calculate()
@@ -48,7 +66,6 @@ ngl::Vec3 SteeringBehaviours::calculate()
         //grab its force
         force = (*this.*f)();
 
-        //return force;
         //if accumulateForce returns false, then there's no
         //more frorce left so return the current steering force.
         if(!accumulateForce(force))
@@ -193,20 +210,114 @@ ngl::Vec3 SteeringBehaviours::FollowPath()
   return finalVector;
 }
 
+//Object avoidance
+ngl::Vec3 SteeringBehaviours::ObstacleAvoidance()
+{
+
+}
+
 //Seperation
 ngl::Vec3 SteeringBehaviours::Seperation()
 {
-//  ngl::Vec3 total_repulsion = ngl::Vec3(0.0, 0.0, 0.0);
+  //The total repulsion will be a reunning total of the repulsions
+  //found for each neighbour
+  ngl::Vec3 totalRepulsion = ngl::Vec3(0.0, 0.0, 0.0);
 
-//  EntityRecordListPtr localStrongEntities = m_localEntities.lock();
+  EntityRecordListPtr localStrongEntities = m_localEntities.lock();
 
-//  std::list<EntityRecord>::const_iterator iterator;
-//  for(iterator = localStrongEntities->begin();
-//      iterator < localStrongEntities->end();
-//      ++iterator)
-//  {
+  EntityPtr strongEntity = m_entity.lock();
+  EnemyPtr enemyPtr = boost::dynamic_pointer_cast<Enemy>(strongEntity);
+  ngl::Vec3 enemyPos = enemyPtr->getPos();
 
-//  }
+  //Iterate over the neighbours.
+  std::list<EntityRecord>::const_iterator iterator;
+  for(iterator = localStrongEntities->begin();
+      iterator != localStrongEntities->end();
+      ++iterator)
+  {
+    //Grab the positions of the neighbour we're looking at.
+    ngl::Vec3 neighbourPos = ngl::Vec3(iterator->m_x, iterator->m_y, iterator->m_z);
+
+    //Find the vector between the two positions
+    ngl::Vec3 repulsion = enemyPos - neighbourPos;
+
+    float repulsionLength = repulsion.length();
+    if(repulsionLength)
+    {
+      repulsion = repulsion / repulsionLength;
+
+      float squaredDistance =  pow((neighbourPos.m_x - enemyPos.m_x), 2) +
+                               pow((neighbourPos.m_y - enemyPos.m_y), 2) +
+                               pow((neighbourPos.m_z - enemyPos.m_z), 2);
+
+      //Apply a 1 / r weighting.
+      repulsion *= 1 / squaredDistance;
+
+      //Add to the running total
+      totalRepulsion += repulsion;
+    }
+  }
+
+  //return the final summed repulsion.
+  return totalRepulsion;
 }
 
+//Cohesion
+ngl::Vec3 SteeringBehaviours::Cohesion()
+{
+  //Running sum of the neighbours' positions
+  ngl::Vec3 neighbourPosSum = ngl::Vec3(0.0, 0.0, 0.0);
 
+  //The neighbours.
+  EntityRecordListPtr localStrongEntities = m_localEntities.lock();
+
+  EntityPtr strongEntity = m_entity.lock();
+  EnemyPtr enemyPtr = boost::dynamic_pointer_cast<Enemy>(strongEntity);
+  ngl::Vec3 enemyPos = enemyPtr->getPos();
+
+  //Iterate over the neighbours.
+  std::list<EntityRecord>::const_iterator iterator;
+  for(iterator = localStrongEntities->begin();
+      iterator != localStrongEntities->end();
+      ++iterator)
+  {
+    neighbourPosSum += ngl::Vec3(iterator->m_x, iterator->m_y, iterator->m_z);
+  }
+
+  //Find the average position of the neighbours.
+  ngl::Vec3 averagePosition = neighbourPosSum / localStrongEntities->size();
+
+  //Return the vector in the direction of the average position.
+  return averagePosition - enemyPos;
+}
+
+//Alignment
+ngl::Vec3 SteeringBehaviours::Alignment()
+{
+  //Running sum of the neighbours's velocities
+  ngl::Vec3 neighbourVecSum = ngl::Vec3(0.0, 0.0, 0.0);
+
+  //The neighbours.
+  EntityRecordListPtr localStrongEntities = m_localEntities.lock();
+
+  EntityPtr strongEntity = m_entity.lock();
+  EnemyPtr enemyPtr = boost::dynamic_pointer_cast<Enemy>(strongEntity);
+  ngl::Vec3 enemyVel = enemyPtr->getVelocity();
+
+  //Iterate over the neighbours.
+  std::list<EntityRecord>::const_iterator iterator;
+  for(iterator = localStrongEntities->begin();
+      iterator != localStrongEntities->end();
+      ++iterator)
+  {
+    neighbourVecSum += ngl::Vec3(iterator->m_velocity[0],
+                                 iterator->m_velocity[1],
+                                 iterator->m_velocity[2]);
+  }
+
+  //Average velocity of the neighbours
+  ngl::Vec3 averageVelocity = neighbourVecSum / localStrongEntities->size();
+
+  //Return he difference between the average and the current velocity
+  return averageVelocity - enemyVel;
+}

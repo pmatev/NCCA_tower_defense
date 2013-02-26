@@ -59,9 +59,8 @@ void DynamicEntity::prepareForUpdate()
 
 void DynamicEntity::update(const double _dt)
 {
-
-  //Q unused to remove warnings, will be replaced if used
-  Q_UNUSED(_dt);
+  //In seconds
+  float dt = _dt / 1000;
 
   //update the state machine
   m_stateMachine->update();
@@ -69,16 +68,23 @@ void DynamicEntity::update(const double _dt)
 
   ngl::Vec3 steeringForce = brain();
   ngl::Vec3 acceleration = steeringForce / m_mass;
+  float maxAcceleration = 0.1;
+
+  //truncate acceleration to max acc
+  float accDiff = maxAcceleration / acceleration.length(); //COULD FAIL IF 0
+  float accScaleFactor = (accDiff < 1.0) ? accDiff : 1.0;
+  acceleration *= accScaleFactor;
+
   m_velocity += acceleration;
 
   //truncate velocity to max speed
-  float diff = m_maxVelocity / m_velocity.length();
+  float diff = m_maxVelocity / m_velocity.length(); //COULD FAIL IF 0
   float scaleFactor = (diff < 1.0) ? diff : 1.0;
   m_velocity *= scaleFactor;
 
   //update position
   m_prevPos = m_pos;
-  m_pos += m_velocity * _dt;
+  m_pos += m_velocity * dt;
 
   enforceGridBoundaries();
 
