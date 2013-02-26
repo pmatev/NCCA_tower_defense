@@ -19,7 +19,7 @@ TestEnemy::TestEnemy(
   m_damage = 100;
   m_velocity = 0;
   m_maxVelocity = 2.0;
-  m_maxForce = ngl::Vec3(2.0, 2.0, 2.0);
+  m_maxForce = ngl::Vec3(5, 5, 5);
 }
 
 //-------------------------------------------------------------------//

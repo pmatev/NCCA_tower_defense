@@ -35,6 +35,7 @@ public:
   typedef std::vector<NodePtr> NodeVec;
 
   typedef boost::shared_ptr<NodeWList> NodeWListPtr;
+  typedef boost::shared_ptr<NodeWVec> NodeWVecPtr;
 
 public:
 

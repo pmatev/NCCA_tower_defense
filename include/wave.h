@@ -20,11 +20,14 @@
 /// @class Wave
 //-------------------------------------------------------------------//
 
-DECLARESMART(Wave)
+DECLARESMARTLIST(Wave)
+
+
 
 class Wave
 {
 public:
+  DECLARESMART(EnemyPair)
   //-------------------------------------------------------------------//
   /// @struct pair for storing the number and type of a specific enemy
   /// this will be used when creating lists of available enemies for passing
@@ -33,6 +36,23 @@ public:
 
   struct EnemyPair
   {
+    //-------------------------------------------------------------------//
+    /// @brief default ctor
+    //-------------------------------------------------------------------//
+    EnemyPair():
+      m_count(0),
+      m_type("")
+    {;}
+
+    //-------------------------------------------------------------------//
+    /// @brief paramatized ctor
+    //-------------------------------------------------------------------//
+
+    EnemyPair(int _count, const std::string &_type):
+      m_count(_count),
+      m_type(_type)
+    {;}
+
     //-------------------------------------------------------------------//
     /// @brief the number of enemies of specific type
     //-------------------------------------------------------------------//
@@ -49,7 +69,29 @@ public:
   /// @brief typedef for lists of EnemyPairs
   //-------------------------------------------------------------------//
 
-  typedef std::list<EnemyPair> EnemyPairList;
+  typedef std::list<EnemyPairPtr> EnemyPairList;
+
+  //-------------------------------------------------------------------//
+  /// @brief struct to hold information relating to the creation of a wave
+  //-------------------------------------------------------------------//
+
+  DECLARESMARTLIST(WaveInfo)
+  struct WaveInfo
+  {
+    WaveInfo(const EnemyPairList &_enemiesForCreation, float _creationInterval):
+      m_enemiesForCreation(_enemiesForCreation),
+      m_creationInterval(_creationInterval)
+    {;}
+    //-------------------------------------------------------------------//
+    /// @brief List of enemy types and corresponding enemy counts
+    //-------------------------------------------------------------------//
+    EnemyPairList m_enemiesForCreation;
+
+    //-------------------------------------------------------------------//
+    /// @brief time interval between each enemy creation
+    //-------------------------------------------------------------------//
+    float m_creationInterval;
+  };
 
 public:
 
@@ -59,7 +101,11 @@ public:
   /// can create
   //-------------------------------------------------------------------//
 
-  static WavePtr create(EnemyPairList _enemiesForCreation);
+  static WavePtr create(
+        EnemyPairList _enemiesForCreation,
+        Node::NodeWVecPtr _spawnNodes,
+        float _creationInterval
+        );
 
   //-------------------------------------------------------------------//
   /// @brief the destructor
@@ -108,6 +154,12 @@ public:
 
   std::list<Collision> checkCollisions();
 
+  //-------------------------------------------------------------------//
+  /// @brief check if all the enemies have been killed
+  //-------------------------------------------------------------------//
+
+  bool isDead() const ;
+
 protected:
   //typedef std::list<DynamicEntityPtr> EnemyVec;
   //typedef boost::shared_ptr<EnemyVec> EnemyVecPtr;
@@ -119,13 +171,17 @@ protected:
   /// can creation
   //-------------------------------------------------------------------//
 
-  Wave(EnemyPairList _enemiesForCreation);
+  Wave(
+        EnemyPairList &_enemiesForCreation,
+        Node::NodeWVecPtr _spawnNodes,
+        float _creationInterval
+        );
 
   //-------------------------------------------------------------------//
   /// @brief creates necessarry new enemies, should be called after update
   //-------------------------------------------------------------------//
 
-  void brain();
+  void brain(const double _dt);
 
   //-------------------------------------------------------------------//
   /// @brief add enemy of specific type
@@ -178,6 +234,13 @@ protected:
 
   EnemyPairList m_enemiesForCreation;
 
+
+  //-------------------------------------------------------------------//
+  /// @brief vector of nodes that can be spawned on.
+  //-------------------------------------------------------------------//
+
+  Node::NodeWVecPtr m_spawnNodes;
+
   //-------------------------------------------------------------------//
   /// @brief map of all Nodes currently being used for paths and their
   /// corresponding list of Enemies. This list must be updated whenever
@@ -185,6 +248,18 @@ protected:
   //-------------------------------------------------------------------//
 
   std::map<NodeWPtr, EnemyWVecPtr> m_pathNodes;
+
+  //-------------------------------------------------------------------//
+  /// @brief internal time value for managing enemy creation (in seconds)
+  //-------------------------------------------------------------------//
+
+  float m_time;
+
+  //-------------------------------------------------------------------//
+  /// @brief approximate time between between enemy creation
+  //-------------------------------------------------------------------//
+
+  float m_creationInterval;
 
 };
 

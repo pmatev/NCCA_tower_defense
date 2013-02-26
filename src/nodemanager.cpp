@@ -848,27 +848,30 @@ bool NodeManager::findPathFromPos(
 NodeWPtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
 {
   float x = _pos.m_x - m_origin.m_x;
-  float y = _pos.m_z - m_origin.m_z;
+  float z = _pos.m_z - m_origin.m_z;
 
   //transform into coordinate space
   x /= m_hexagonSize*0.75;
-  y /= (m_hexagonSize*(s_hexFactor));
+  z /= (m_hexagonSize*(s_hexFactor));
 
   //round to nearest int
   x = floor(x + 0.5);
-  y = floor(y + 0.5);
+  z = floor(z + 0.5);
 
   //clamp between values within the grid
   x = x < 0 ? 0 : x > m_gridWidth - 1 ? m_gridWidth - 1 : x;
-  y = y < 0 ? 0 : y > m_gridHeight-1 ? m_gridHeight-1 : y;
+  z = z < 0 ? 0 : z > m_gridHeight-1 ? m_gridHeight-1 : z;
 
   //calculate the index of the nearest based on x and y
-  int index = (y * m_gridWidth) + x;
+  int index = (z * m_gridWidth) + x;
 
-  return m_nodes[index];
+  return NodeWPtr(m_nodes[index]);
 }
 
-NodeWPtr NodeManager::getNodeFromCoords(int _x, int _y) const
+NodeWPtr NodeManager::getNodeFromCoords(int _x, int _z) const
 {
-  return m_nodes[(_y*m_gridWidth) + _x];
+  //clamp between values within the grid
+  _x = _x < 0 ? 0 : _x > m_gridWidth - 1 ? m_gridWidth - 1 : _x;
+  _z = _z < 0 ? 0 : _z > m_gridHeight-1 ? m_gridHeight-1 : _z;
+  return NodeWPtr(m_nodes[(_z*m_gridWidth) + _x]);
 }

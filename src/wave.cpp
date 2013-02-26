@@ -8,30 +8,29 @@
 
 //-------------------------------------------------------------------//
 
-Wave::Wave(EnemyPairList _enemiesForCreation):
-  m_enemiesForCreation(_enemiesForCreation)
+Wave::Wave(
+    EnemyPairList &_enemiesForCreation,
+    Node::NodeWVecPtr _spawnNodes,
+    float _creationInterval
+    ):
+  m_enemiesForCreation(_enemiesForCreation),
+  m_spawnNodes(_spawnNodes),
+  m_time(0),
+  m_creationInterval(_creationInterval)
 {
-  // ctor
-  //---------------------------------------------TEST--------------------------------------------------
-  // create shit load o enemies!!!
-  int numEnemies = 200;
-  for(int i=0; i < numEnemies; ++i)
-  {
-    float randomX = std::rand() / float(RAND_MAX);
-    float randomZ = std::rand() / float(RAND_MAX);
-    addEnemy("TestEnemy", ngl::Vec3((10 * randomX) + 20, 0, i*(40.0/numEnemies)* randomZ), ngl::Vec3(0, 0, 0));
-  }
-  //-------------------------------------------END TEST------------------------------------------------
 }
 
 //-------------------------------------------------------------------//
 
-WavePtr Wave::create(EnemyPairList _enemiesForCreation)
+WavePtr Wave::create(
+    EnemyPairList _enemiesForCreation,
+    Node::NodeWVecPtr _spawnNodes,
+    float _creationInterval
+    )
 {
-  WavePtr a(new Wave(_enemiesForCreation));
+  WavePtr a(new Wave(_enemiesForCreation, _spawnNodes, _creationInterval));
   return a;
 }
-
 
 //-------------------------------------------------------------------//
 
@@ -49,8 +48,6 @@ Wave::~Wave()
 
 void Wave::update(const double _dt)
 {
-  //  std::cout<<"updating wave"<<std::endl;
-
   //set a variable for the currency
 
   int currencyAdded = 0;
@@ -102,7 +99,7 @@ void Wave::update(const double _dt)
       (m_enemies[i])->update(_dt);
     }
   }
-  brain();
+  brain(_dt);
 }
 
 //-------------------------------------------------------------------//
@@ -169,57 +166,103 @@ bool Wave::generatePaths(NodeWPtr _node)
 
 
   // 1.
-  EnemyWVecPtr enemyList = m_pathNodes[_node];
-  // if there are no enemies using this node
-  if(!enemyList)
+  BOOST_FOREACH(EnemyPtr enemy, m_enemies)
   {
-    return true;
-  }
-  // 2.
-  bool invalidPath = false;
-
-  for(unsigned long int i = 0; i < enemyList->size(); ++i)
-  {
-    // This is set to skip computation so that we can shortcut to the end
-    // without breaking (breaking doesn't work with "omp for")
-    if(invalidPath)
+    if(!enemy->generateTempPath())
     {
-      continue;
+      return false;
     }
-    EnemyPtr enemy = (*enemyList)[i].lock();
-    if(enemy)
-    {
-      if(!enemy->generateTempPath())
-      {
-        invalidPath = true;
-      }
-    }
-  }
-
-  if(invalidPath)
-  {
-    return false;
-  }
-  // 3.
-  BOOST_FOREACH(EnemyWPtr enemyWeak, *enemyList)
-  {
-    EnemyPtr enemy = enemyWeak.lock();
-    if(enemy)
+    else
     {
       enemy->finalisePath();
     }
   }
-  // 4.
-  // clear list and rebuild
-  rebuildPathNodes();
+
+//  EnemyWVecPtr enemyList = m_pathNodes[_node];
+//  // if there are no enemies using this node
+//  if(!enemyList)
+//  {
+//    return true;
+//  }
+//  // 2.
+//  bool invalidPath = false;
+
+//  for(unsigned long int i = 0; i < enemyList->size(); ++i)
+//  {
+//    // This is set to skip computation so that we can shortcut to the end
+//    // without breaking (breaking doesn't work with "omp for")
+//    if(invalidPath)
+//    {
+//      continue;
+//    }
+//    EnemyPtr enemy = (*enemyList)[i].lock();
+//    if(enemy)
+//    {
+//      if(!enemy->generateTempPath())
+//      {
+//        invalidPath = true;
+//      }
+//    }
+//  }
+
+//  if(invalidPath)
+//  {
+//    return false;
+//  }
+//  // 3.
+//  BOOST_FOREACH(EnemyWPtr enemyWeak, *enemyList)
+//  {
+//    EnemyPtr enemy = enemyWeak.lock();
+//    if(enemy)
+//    {
+//      enemy->finalisePath();
+//    }
+//  }
+//  // 4.
+//  // clear list and rebuild
+//  rebuildPathNodes();
   return true;
 }
 
 //-------------------------------------------------------------------//
 
-void Wave::brain()
+void Wave::brain(const double _dt)
 {
   // Work out which enemies need creating and where
+  // If there are enemies that haven't been created yet then create them at
+  // random positions
+  m_time += _dt / 1000.0;
+
+  if(m_time > m_creationInterval)
+  {
+    BOOST_FOREACH(EnemyPairPtr pair, m_enemiesForCreation)
+    {
+      if(pair->m_count)
+      {
+        // pick a node to generate on
+        int randomInt = std::rand() % m_spawnNodes->size();
+        NodePtr startNode = (*m_spawnNodes)[randomInt].lock();
+        if(startNode)
+        {
+          addEnemy(pair->m_type, startNode->getPos(), ngl::Vec3(0, 0, 0));
+          --pair->m_count;
+        }
+      }
+    }
+    m_time = 0;
+  }
+
+  //  // ctor
+  //  //---------------------------------------------TEST--------------------------------------------------
+  //  // create shit load o enemies!!!
+  //  int numEnemies = 200;
+  //  for(int i=0; i < numEnemies; ++i)
+  //  {
+  //    float randomX = std::rand() / float(RAND_MAX);
+  //    float randomZ = std::rand() / float(RAND_MAX);
+  //    addEnemy("TestEnemy", ngl::Vec3((10 * randomX) + 20, 0, i*(40.0/numEnemies)* randomZ), ngl::Vec3(0, 0, 0));
+  //  }
+  //  //-------------------------------------------END TEST------------------------------------------------
 }
 
 //-------------------------------------------------------------------//
@@ -320,3 +363,24 @@ std::list<Collision> Wave::checkCollisions()
 }
 
 //-------------------------------------------------------------------//
+
+bool Wave::isDead() const
+{
+  // Make sure there are no enemies alive
+  if(m_enemies.size() == 0)
+  {
+    // Make sure there are no enemies left to be created
+    BOOST_FOREACH(EnemyPairPtr pair, m_enemiesForCreation)
+    {
+      if(pair->m_count != 0)
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}

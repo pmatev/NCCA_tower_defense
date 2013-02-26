@@ -27,7 +27,10 @@ public:
   /// @brief the creator
   //-------------------------------------------------------------------//
 
-  static WaveManagerPtr create();
+  static WaveManagerPtr create(
+        Node::NodeWVecPtr _spawnNodes,
+        const Wave::WaveInfoList &_waveInfo
+        );
 
   //-------------------------------------------------------------------//
   /// @brief the destructor
@@ -58,7 +61,7 @@ public:
   /// @brief call draw selection on everything
   //-------------------------------------------------------------------//
 
-  void drawSelection();
+  //void drawSelection();
 
   //-------------------------------------------------------------------//
   /// @brief create new temporary paths for all enemies that are affected
@@ -76,20 +79,37 @@ public:
 
   std::list<Collision> checkCollisions() const;
 
+  //-------------------------------------------------------------------//
+  /// @brief start creating waves
+  //-------------------------------------------------------------------//
+  void startWaves();
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief ctor
   //-------------------------------------------------------------------//
 
-  WaveManager();
+  WaveManager(Node::NodeWVecPtr _spawnNodes, const Wave::WaveInfoList &_waveInfo);
 
 protected:
+  //-------------------------------------------------------------------//
+  /// @brief list of possible nodes for enemies to be created on
+  //-------------------------------------------------------------------//
+  Node::NodeWVecPtr m_spawnNodes;
+
 
   //-------------------------------------------------------------------//
   /// @brief current wave
   //-------------------------------------------------------------------//
 
-  WavePtr m_wave;
+  WaveList::iterator m_currentWaveIt;
+
+  //-------------------------------------------------------------------//
+  /// @brief all waves
+  //-------------------------------------------------------------------//
+
+  WaveList m_waves;
+
 };
 
 

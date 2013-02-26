@@ -124,6 +124,12 @@ public:
 
     inline void addCurrency(int _value) {m_player->addCurrency(_value);}
 
+    //-------------------------------------------------------------------//
+    /// @brief tell wavemanager to start sending enemies
+    //-------------------------------------------------------------------//
+
+    void startWaves();
+
 protected:
     //-------------------------------------------------------------------//
     /// @brief hidden ctor for singleton

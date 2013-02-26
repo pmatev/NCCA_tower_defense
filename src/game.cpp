@@ -55,8 +55,36 @@ void Game::setupScene()
   //Environment has to be created before the waves, as the enemies query data
   //in environment.
   //if(!m_environment) // FOR TESTING SO THAT TOWERS ARE NOT REMOVED
-  m_environment = Environment::create(20, 20, 2, ngl::Vec3(0.0, 0.0, 0.0), 10, 10,10,10); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
-  m_waveManager = WaveManager::create();
+  m_environment = Environment::create(20, 20, 2, ngl::Vec3(0.0, 0.0, 0.0), 0, 0,10,10); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
+  NodeManagerPtr nm = m_environment->getNodeManagerWeakPtr().lock();
+  if(nm)
+  {
+    Node::NodeWVecPtr spawnPoints = Node::NodeWVecPtr(new Node::NodeWVec());
+    spawnPoints->push_back(nm->getNodeFromCoords(19, 19));
+    spawnPoints->push_back(nm->getNodeFromCoords(19, 18));
+    spawnPoints->push_back(nm->getNodeFromCoords(19, 17));
+    spawnPoints->push_back(nm->getNodeFromCoords(19, 16));
+    Wave::WaveInfoList waveInfo;
+    // TEST CREATES DEFAULT WAVE
+    Wave::EnemyPairList creationEnemies;
+    creationEnemies.push_back(
+          Wave::EnemyPairPtr(
+            new Wave::EnemyPair(
+              200,
+              "TestEnemy"
+              )
+            )
+          );
+    waveInfo.push_back(
+          Wave::WaveInfoPtr(
+            new Wave::WaveInfo(
+              creationEnemies,
+              0.2
+              )
+            )
+          );
+    m_waveManager = WaveManager::create(spawnPoints, waveInfo);
+  }
   m_projectileManager = ProjectileManager::create();
   m_player = Player::create(500); //Hard coded now, should probably be set from a file
 }
@@ -237,8 +265,6 @@ ProjectileManagerWPtr Game::getProjectileManagerWeakPtr()
 
 //-------------------------------------------------------------------//
 
-//-------------------------------------------------------------------//
-
 void Game::setNodehighlighted(int _id, bool _highlighted)
 {
     EntityPtr entityClick = getEntityByID(_id).lock();
@@ -257,5 +283,11 @@ void Game::setNodehighlighted(int _id, bool _highlighted)
 
 }
 
+//-------------------------------------------------------------------//
+
+void Game::startWaves()
+{
+  m_waveManager->startWaves();
+}
 
 

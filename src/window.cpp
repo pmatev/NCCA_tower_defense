@@ -255,6 +255,10 @@ void Window::keyEvent(const SDL_KeyboardEvent &_event)
     {
        game->reset();
     }
+    if(_event.keysym.sym == SDLK_g)
+    {
+      game->startWaves();
+    }
 }
 
 //-------------------------------------------------------------------//

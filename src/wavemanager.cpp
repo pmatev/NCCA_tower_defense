@@ -1,20 +1,40 @@
 #include "wavemanager.h"
+#include <boost/foreach.hpp>
 
 //-------------------------------------------------------------------//
 
-WaveManager::WaveManager():
-  m_wave(Wave::create(Wave::EnemyPairList()))
+WaveManager::WaveManager(
+    Node::NodeWVecPtr _spawnNodes,
+    const Wave::WaveInfoList &_waveInfo
+    ):
+  m_spawnNodes(_spawnNodes)
 {
-  // TEST CREATES DEFAULT WAVE
+  // go through _waveInfo and construct waves accordingly
+  BOOST_FOREACH(Wave::WaveInfoPtr waveInfo, _waveInfo)
+  {
+    m_waves.push_back(
+          Wave::create(
+            waveInfo->m_enemiesForCreation,
+            m_spawnNodes,
+            waveInfo->m_creationInterval
+            )
+          );
+  }
+  m_currentWaveIt = m_waves.end();
 }
 
 //-------------------------------------------------------------------//
 
-WaveManagerPtr WaveManager::create()
+WaveManagerPtr WaveManager::create(
+    Node::NodeWVecPtr _spawnNodes,
+    const Wave::WaveInfoList &_waveInfo
+    )
 {
-  WaveManagerPtr a(new WaveManager());
+  WaveManagerPtr a(new WaveManager(_spawnNodes, _waveInfo));
   return a;
 }
+
+//-------------------------------------------------------------------//
 
 WaveManager::~WaveManager()
 {
@@ -24,36 +44,66 @@ WaveManager::~WaveManager()
 //-------------------------------------------------------------------//
 void WaveManager::update(const double _dt)
 {
-  m_wave->update(_dt);
+  if(m_currentWaveIt != m_waves.end())
+  {
+    (*m_currentWaveIt)->update(_dt);
+    if((*m_currentWaveIt)->isDead())
+    {
+      ++m_currentWaveIt;
+    }
+  }
 }
 
 //-------------------------------------------------------------------//
 void WaveManager::publish()
 {
-  m_wave->publish();
+  if(m_currentWaveIt != m_waves.end())
+  {
+    (*m_currentWaveIt)->publish();
+  }
 }
 
 //-------------------------------------------------------------------//
 void WaveManager::draw()
 {
-  m_wave->draw();
+  if(m_currentWaveIt != m_waves.end())
+  {
+    (*m_currentWaveIt)->draw();
+  }
 }
-
-//void WaveManager::drawSelection()
-//{
-//  m_wave->drawSelection();
-//}
 
 //-------------------------------------------------------------------//
 
 bool WaveManager::generatePaths(NodeWPtr _node)
 {
-  return m_wave->generatePaths(_node);
+  if(m_currentWaveIt != m_waves.end())
+  {
+    return (*m_currentWaveIt)->generatePaths(_node);
+  }
+  else
+  {
+    return true;
+  }
 }
 
 //-------------------------------------------------------------------//
 
 std::list<Collision> WaveManager::checkCollisions() const
 {
-  return m_wave->checkCollisions();
+  if(m_currentWaveIt != m_waves.end())
+  {
+    return (*m_currentWaveIt)->checkCollisions();
+  }
+  else
+  {
+    return std::list<Collision>();
+  }
+}
+
+//-------------------------------------------------------------------//
+
+void WaveManager::startWaves()
+{
+
+  m_currentWaveIt = m_waves.begin();
 }

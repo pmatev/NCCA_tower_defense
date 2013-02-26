@@ -178,7 +178,7 @@ public:
   /// @param[out] the node with grids coords _coords
   //-------------------------------------------------------------------//
 
-  NodeWPtr getNodeFromCoords(int _x, int _y) const;
+  NodeWPtr getNodeFromCoords(int _x, int __z) const;
 
   void drawSelection();
 
