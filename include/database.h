@@ -88,7 +88,7 @@ public: //methods
   //-------------------------------------------------------------------//
 
   void getLocalEntities (
-        EntityRecordListPtr &o_newList,
+        EntityRecordList &o_newList,
         float _minX,
         float _minZ,
         float _maxX,

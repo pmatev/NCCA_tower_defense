@@ -45,9 +45,10 @@ void StaticEntity::prepareForUpdate()
   // Get the local entities
   std::list<GeneralType> types;
   types.push_back(ENEMY);
-  calculateLocalEntities(m_localEntities, types);
+  m_localEntities = EntityRecordListPtr(new EntityRecordList());
+  calculateLocalEntities(*m_localEntities, types);
   // Filter the entities
-  filterViewVolume(m_localEntities);
+  filterViewVolume(*m_localEntities);
 }
 
 //-------------------------------------------------------------------//

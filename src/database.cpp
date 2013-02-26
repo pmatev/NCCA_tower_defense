@@ -162,7 +162,7 @@ void Database::addRecord(EntityRecord &_record)
 //-------------------------------------------------------------------//
 
 void Database::getLocalEntities(
-    EntityRecordListPtr &o_newList,
+    EntityRecordList &o_newList,
     float _minX,
     float _minZ,
     float _maxX,
@@ -170,10 +170,10 @@ void Database::getLocalEntities(
     std::list<GeneralType> &_typeList
     ) const
 {
-  if(!o_newList)
-  {
-    o_newList = EntityRecordListPtr(new std::list<EntityRecord>());
-  }
+//  if(!o_newList)
+//  {
+//    o_newList = std::list<EntityRecord>();
+//  }
 
   //initialise an iterator to the beginning of the list of entity
   //records
@@ -188,7 +188,7 @@ void Database::getLocalEntities(
 
   //set up a tempory list to store the reult in
 
-  EntityRecordListPtr tempList;
+  EntityRecordList tempList;
 
   //cycle through each element of the type list
 
@@ -215,36 +215,36 @@ void Database::getLocalEntities(
       m_nodeGrid->getLocalEntities(tempList, _minX,_minZ,_maxX,_maxZ);
       break;
     case BASE:
-      tempList->push_back(m_base);
+      tempList.push_back(m_base);
       break;
     }
 
     //now add the tempList to the return list if it has elements:
 
-    if (tempList && tempList->size()!=0)
+    if (tempList.size()!=0)
     {
       //and if the return list is empty
 
-      if (o_newList->size()==0)
+      if (o_newList.size()==0)
       {
         //set the return list iterator to the beginning of the list
 
-        returnListIt = o_newList->begin();
+        returnListIt = o_newList.begin();
       }
       else
       {
         //set the return list iterator to the end of the list
 
-        returnListIt = o_newList->end();
+        returnListIt = o_newList.end();
       }
 
       //insert the whole cell list into the return list
 
-      o_newList->splice(
+      o_newList.splice(
             returnListIt,
-            (*tempList),
-            tempList->begin(),
-            tempList->end()
+            tempList,
+            tempList.begin(),
+            tempList.end()
             );
     }
 

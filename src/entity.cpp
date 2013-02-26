@@ -79,7 +79,7 @@ void Entity::publish()
 //-------------------------------------------------------------------//
 
 void Entity::calculateLocalEntities(
-    EntityRecordListPtr &o_newList,
+    EntityRecordList &o_newList,
     std::list<GeneralType> &_typeList
     )
 {
@@ -92,9 +92,9 @@ void Entity::calculateLocalEntities(
   db->getLocalEntities(
         o_newList,
         m_wsViewBBox.m_minX,
-        m_wsViewBBox.m_minY,
+        m_wsViewBBox.m_minZ,
         m_wsViewBBox.m_maxX,
-        m_wsViewBBox.m_maxY,
+        m_wsViewBBox.m_maxZ,
         _typeList
         );
 }

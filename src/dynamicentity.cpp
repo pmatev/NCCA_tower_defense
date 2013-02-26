@@ -31,13 +31,28 @@ DynamicEntity::~DynamicEntity()
 
 void DynamicEntity::prepareForUpdate()
 {
+  // initialise world space view box
+  m_wsViewBBox = BBox(
+        m_lsMeshBBox.m_minX*5 + m_pos.m_x,
+        m_lsMeshBBox.m_minY*5 + m_pos.m_y,
+        m_lsMeshBBox.m_minZ*5 + m_pos.m_z,
+        m_lsMeshBBox.m_maxX*5 + m_pos.m_x,
+        m_lsMeshBBox.m_maxY*5 + m_pos.m_y,
+        m_lsMeshBBox.m_maxZ*5 + m_pos.m_z
+        );
+
   // Get the local entities
   std::list<GeneralType> types;
   types.push_back(TURRET);
   types.push_back(ENEMY);
-  calculateLocalEntities(m_localEntities, types);
+  m_localEntities = EntityRecordListPtr(new EntityRecordList());
+  //EntityRecordList localEntities;
+  calculateLocalEntities(*m_localEntities, types);
   // Filter the entities
-  filterViewVolume(m_localEntities);
+  filterViewVolume(*m_localEntities);
+  //m_localEntities = EntityRecordListPtr(&localEntities);
+  EntityRecordListWPtr test = getLocalEntities(); // TEST----------------------------------
+  test.lock();
 }
 
 //-------------------------------------------------------------------//
@@ -425,7 +440,7 @@ Collision DynamicEntity::collisionTest(
 
   //first generate a list of local entity records
   Database* db = Database::instance();
-  EntityRecordListPtr localEntities;
+  EntityRecordList localEntities;
   db->getLocalEntities(
         localEntities,
         m_pos.m_x+m_lsMeshBBox.m_minX-0.5,
@@ -436,14 +451,14 @@ Collision DynamicEntity::collisionTest(
         );
 
   //then cycle through the list
-  EntityRecordList::iterator listIt = localEntities->begin();
+  EntityRecordList::iterator listIt = localEntities.begin();
 
   //initialise the result and the return collision
 
   bool result = false;
   Collision c(0,0);
 
-  while(listIt != localEntities->end() && result != true)
+  while(listIt != localEntities.end() && result != true)
   {
     //get the id of the element pointed to by the iterator
 

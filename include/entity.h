@@ -249,7 +249,7 @@ protected:
   //-------------------------------------------------------------------//
 
   void calculateLocalEntities(
-      EntityRecordListPtr &o_newList,
+      EntityRecordList &o_newList,
       std::list<GeneralType> &_typeList
       );
 
@@ -265,7 +265,7 @@ protected:
   /// @param[out] o_localEntities pointer to the local entities
   //-------------------------------------------------------------------//
 
-  virtual void filterViewVolume(EntityRecordListPtr &o_localEntities) = 0;
+  virtual void filterViewVolume(EntityRecordList &o_localEntities) = 0;
 
   //-------------------------------------------------------------------//
   /// @brief this method is used for running all the functions that need

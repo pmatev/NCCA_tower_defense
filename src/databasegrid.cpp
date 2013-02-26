@@ -116,16 +116,16 @@ void DatabaseGrid::addRecord(EntityRecord &_record)
 //-------------------------------------------------------------------//
 
 void DatabaseGrid::getLocalEntities(
-    EntityRecordListPtr &o_newList,
+    EntityRecordList &o_newList,
     float _minX,
     float _minZ,
     float _maxX, float _maxZ
     ) const
 {
-  if(!o_newList)
-  {
-    o_newList = EntityRecordListPtr(new std::list<EntityRecord>());
-  }
+//  if(!o_newList)
+//  {
+//    o_newList = EntityRecordListPtr(new std::list<EntityRecord>());
+//  }
   //checks that the min values are smaller than the max values,
   //and if not it swaps them
 
@@ -177,22 +177,22 @@ void DatabaseGrid::getLocalEntities(
       {
         //and if the return list is empty
 
-        if (o_newList->size()==0)
+        if (o_newList.size()==0)
         {
           //set the return list iterator to the beginning of the list
 
-          returnListIt = o_newList->begin();
+          returnListIt = o_newList.begin();
         }
         else
         {
           //set the return list iterator to the end of the list
 
-          returnListIt = o_newList->end();
+          returnListIt = o_newList.end();
         }
 
         //insert the whole  cell list into the return list
 
-        o_newList->insert(
+        o_newList.insert(
               returnListIt,
               (*m_grid[j+(i*(m_numCellsX))]).begin(),
               (*m_grid[j+(i*(m_numCellsX))]).end()

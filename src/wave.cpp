@@ -14,7 +14,7 @@ Wave::Wave(EnemyPairList _enemiesForCreation):
   // ctor
   //---------------------------------------------TEST--------------------------------------------------
   // create shit load o enemies!!!
-  int numEnemies = 1000;
+  int numEnemies = 200;
   for(int i=0; i < numEnemies; ++i)
   {
     float randomX = std::rand() / float(RAND_MAX);
