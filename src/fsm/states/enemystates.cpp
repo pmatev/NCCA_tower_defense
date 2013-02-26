@@ -18,6 +18,8 @@ Normal* Normal::instance()
 
 void Normal::enter(EntityWPtr _enemy)
 {
+  //q_unused to remove warnings
+  Q_UNUSED(_enemy)
 }
 
 void Normal::execute(EntityWPtr _enemy)
@@ -32,4 +34,6 @@ void Normal::execute(EntityWPtr _enemy)
 
 void Normal::exit(EntityWPtr _enemy)
 {
+  //q_unused to remove warnings
+  Q_UNUSED(_enemy)
 }

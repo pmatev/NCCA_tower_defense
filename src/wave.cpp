@@ -51,6 +51,10 @@ void Wave::update(const double _dt)
 {
   //  std::cout<<"updating wave"<<std::endl;
 
+  //set a variable for the currency
+
+  int currencyAdded = 0;
+
   for(
       EnemyVec::iterator it = m_enemies.begin();
       it != m_enemies.end();
@@ -60,12 +64,24 @@ void Wave::update(const double _dt)
     if ((*it)->getHealth() <= 0)
     {
       // KILL ENEMY!!!
+
+      currencyAdded += (*it)->getCurrencyValue();
+
       it = removeEnemy(it);
     }
     else
     {
       ++it;
     }
+
+    //get a pointer to the game
+
+    Game * game = Game::instance();
+
+    //and add the currency
+
+    game->addCurrency(currencyAdded);
+
   }
 #pragma omp parallel
   {
@@ -230,6 +246,8 @@ EnemyVec::iterator Wave::removeEnemy(EnemyVec::iterator _it)
   return m_enemies.erase(_it);
 }
 
+//-------------------------------------------------------------------//
+
 void Wave::rebuildPathNodes()
 {
   // clear map
@@ -240,6 +258,8 @@ void Wave::rebuildPathNodes()
     addToPathNodes(enemy);
   }
 }
+
+//-------------------------------------------------------------------//
 
 void Wave::addToPathNodes(EnemyPtr _enemy)
 {
@@ -258,13 +278,15 @@ void Wave::addToPathNodes(EnemyPtr _enemy)
   }
 }
 
+//-------------------------------------------------------------------//
+
 std::list<Collision> Wave::checkCollisions()
 {
   //initialise a list of collisions to return
 
   std::list<Collision> collisionList;
 
-  // cycle through all of the projectiles stored
+  // cycle through all of the enemies stored
 
   for (
        EnemyVec::iterator listIt = m_enemies.begin();
@@ -272,7 +294,7 @@ std::list<Collision> Wave::checkCollisions()
        listIt++
        )
   {
-    //call call collision detection on the projectiles
+    //call collision detection on the projectiles
     std::list<GeneralType> types;
     types.push_back(TURRET);
     //    types.push_back(BASE);
@@ -283,9 +305,7 @@ std::list<Collision> Wave::checkCollisions()
     if (c.m_id != 0)
     {
       //if there was, add it to the list
-      // This needs to call damage deal and pass in the damage from the collision ----------
-      //(*listIt)->kill();
-      collisionList.push_back(c);
+
     }
   }
   //finally return the resulting list
@@ -293,4 +313,4 @@ std::list<Collision> Wave::checkCollisions()
   return collisionList;
 }
 
-
+//-------------------------------------------------------------------//

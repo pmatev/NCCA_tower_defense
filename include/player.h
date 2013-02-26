@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include "smartpointers.h"
-
+#include <iostream>
 //-------------------------------------------------------------------//
 /// @file player.h
 /// @brief The class which contains information about the player

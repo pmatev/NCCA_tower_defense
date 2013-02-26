@@ -30,8 +30,6 @@
 class Game
 {
 public:
-
-
     //-------------------------------------------------------------------//
     /// @brief returns instance of singleton
     //-------------------------------------------------------------------//
@@ -118,6 +116,13 @@ public:
 
     ProjectileManagerWPtr getProjectileManagerWeakPtr();
 
+    //-------------------------------------------------------------------//
+    /// @brief a method to add the inputted currency to the player's
+    /// currency
+    /// @param [in] _value, the value to add to the currency
+    //-------------------------------------------------------------------//
+
+    inline void addCurrency(int _value) {m_player->addCurrency(_value);}
 
 protected:
     //-------------------------------------------------------------------//
