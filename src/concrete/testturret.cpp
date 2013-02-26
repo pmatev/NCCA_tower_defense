@@ -73,8 +73,8 @@ void TestTurret::generateMesh()
                        0,-1,1
                       };
 
-  std::vector<vertData> boxData;
-  vertData d;
+  std::vector<Renderer::vertData> boxData;
+  Renderer::vertData d;
   for(int j=0; j<8; j++)
   {
     d.x = vertices[j*3];
@@ -98,7 +98,7 @@ void TestTurret::generateMesh()
 
   render->setIndexedDataToVAO(
         m_IDStr,
-        sizeof(vertData)*boxData.size(),
+        sizeof(Renderer::vertData)*boxData.size(),
         3,
         boxData[0].x,
         sizeof(indices),
@@ -109,25 +109,31 @@ void TestTurret::generateMesh()
 
 //-------------------------------------------------------------------//
 
-void TestTurret::draw()
-{
-  Renderer *r = Renderer::instance();
-  //m_transformStack.setScale(0.5, 0.5, 0.5);
-  r->loadMatrixToShader(m_transformStack, "Phong");
+//void TestTurret::draw()
+//{
+//    Renderer *r = Renderer::instance();
 
-  r->draw(m_IDStr, "Phong");
-}
+//    // draw to selection buffer
+//    r->bindFrameBuffer("Selection");
+//    r->loadMatrixToShader("Colour");
+//    r->draw(m_IDStr, "Colour");
+
+//    // draw to default buffer (screen)
+//    r->bindFrameBuffer(0);
+//    r->loadMatrixToShader(m_transformStack, "Phong");
+//    r->draw(m_IDStr, "Phong");
+//}
 
 //-------------------------------------------------------------------//
 
-void TestTurret::drawSelection()
-{
-  Renderer *r = Renderer::instance();
-  //m_transformStack.setScale(0.5, 0.5, 0.5);
-  r->loadMatrixToShader(m_transformStack, "Colour");
+//void TestTurret::drawSelection()
+//{
+//  Renderer *r = Renderer::instance();
+//  //m_transformStack.setScale(0.5, 0.5, 0.5);
+//  r->loadMatrixToShader(m_transformStack, "Colour");
 
-  r->drawSelection(m_ID, m_IDStr);
-}
+//  r->drawSelection(m_ID, m_IDStr);
+//}
 
 //-------------------------------------------------------------------//
 

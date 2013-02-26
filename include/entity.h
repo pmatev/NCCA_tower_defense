@@ -148,14 +148,14 @@ public: //methods
   /// implemented in child classes
   //-------------------------------------------------------------------//
 
-  virtual void draw()  = 0;
+  virtual void draw();
 
   //-------------------------------------------------------------------//
   /// @brief a virtual method that draws the selection frame (where each
   /// object is rendered with a colour based on it's id)
   //-------------------------------------------------------------------//
 
-  virtual void drawSelection()  = 0;
+//  virtual void drawSelection()  = 0;
 
   //-------------------------------------------------------------------//
   /// @brief a method which will publish the entity's position to the
@@ -236,7 +236,7 @@ public: //methods
   /// calculate the bounding box
   //-------------------------------------------------------------------//
 
-  void generateLsBBox(const std::vector<vertData> & _meshData);
+  void generateLsBBox(const std::vector<Renderer::vertData> & _meshData);
 
   //-------------------------------------------------------------------//
   /// @brief gets the statemachine, obviously.

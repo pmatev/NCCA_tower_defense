@@ -3,8 +3,10 @@
 #include "boost/lexical_cast.hpp"
 #include "game.h"
 #include "renderer.h"
+#include "window.h"
 #include "ngl/Vec3.h"
 #include "ngl/TransformStack.h"
+#include "ngl/ShaderLib.h"
 
 //-------------------------------------------------------------------//
 
@@ -111,11 +113,11 @@ void Entity::clearLocalEntities()
 
 //-------------------------------------------------------------------//
 
-void Entity::generateLsBBox(const std::vector <vertData> & _meshData)
+void Entity::generateLsBBox(const std::vector <Renderer::vertData> & _meshData)
 {
   //set an iterator for the list of vertData objects
 
-  std::vector<vertData>::const_iterator vertIt = _meshData.begin();
+  std::vector<Renderer::vertData>::const_iterator vertIt = _meshData.begin();
 
   //set the bounding box to initially start as the same as the first vert
 
@@ -184,4 +186,15 @@ void Entity::generateLsBBox(const std::vector <vertData> & _meshData)
 
 //-------------------------------------------------------------------//
 
+void Entity::draw()
+{
+  Renderer *r = Renderer::instance();
+  ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
+  r->loadMatrixToShader(m_transformStack, "Phong");
+  (*shader)["Phong"]->use();
+  ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
+  shader->setShaderParam4f("colour", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
+
+  r->draw(m_IDStr, "Phong");
+}

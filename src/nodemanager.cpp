@@ -438,15 +438,16 @@ void NodeManager::draw()
   }
 }
 
-//-------------------------------------------------------------------//
+////-------------------------------------------------------------------//
 
-void NodeManager::drawSelection()
-{
-  for(unsigned long int i = 0; i < m_nodes.size(); i++)
-  {
-    m_nodes[i]->drawSelection();
-  }
-}
+//void NodeManager::drawSelection()
+//{
+//  for(unsigned int i = 0; i < m_nodes.size(); i++)
+//  {
+//    m_nodes[i]->drawSelection();
+//  }
+//}
+
 
 void NodeManager::resetPathNodes()
 {

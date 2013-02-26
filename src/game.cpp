@@ -35,36 +35,6 @@ Game* Game::instance()
 
 void Game::init()
 {
-    //create and initialize the shaders.
-    Renderer *render = Renderer::instance();
-    render->createShader("Phong",2);
-    render->createShader("Colour",2);
-
-    ngl::ShaderLib *shader = ngl::ShaderLib::instance();
-
-    shader->createShaderProgram("UI");
-
-    shader->attachShader("UIVertex",ngl::VERTEX);
-    shader->attachShader("UIFragment",ngl::FRAGMENT);
-    shader->loadShaderSource("UIVertex", "shaders/UI.vs");
-    shader->loadShaderSource("UIFragment","shaders/UI.fs");
-
-    shader->compileShader("UIVertex");
-    shader->compileShader("UIFragment");
-
-    shader->attachShaderToProgram("UI","UIVertex");
-    shader->attachShaderToProgram("UI","UIFragment");
-
-    shader->bindAttribute("UI", 0, "inVert");
-    shader->bindAttribute("UI",1,"inUV");
-    shader->linkProgramObject("UI");
-
-
-//    glBindFragDataLocation(shader->getProgramID("UI"), 0, "fragColour");
-
-
-    std::cerr<<glGetError()<<std::endl;
-
     //m_light = new ngl::Light(ngl::Vec3(1,2,0),ngl::Colour(1,1,1),ngl::POINTLIGHT);
     setupScene();
 }
@@ -88,7 +58,7 @@ void Game::setupScene()
   m_environment = Environment::create(20, 20, 2, ngl::Vec3(0.0, 0.0, 0.0), 10, 10,10,10); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
   m_waveManager = WaveManager::create();
   m_projectileManager = ProjectileManager::create();
-  m_player = Player::create(1000); //Hard coded now, should probably be set from a file
+  m_player = Player::create(500); //Hard coded now, should probably be set from a file
 }
 
 //-------------------------------------------------------------------//
@@ -172,8 +142,8 @@ void Game::update(const double _dt)
 //-------------------------------------------------------------------//
 void Game::draw()
 {
-    glClearColor(0.1,0.2,0.3,1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
 
     m_environment->draw();
     m_waveManager->draw();
@@ -181,13 +151,13 @@ void Game::draw()
 }
 //-------------------------------------------------------------------//
 
-void Game::drawSelection()
-{
-  glClearColor(0.0,0.0,0.0,1.0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  m_environment->drawSelection();
-  m_waveManager->drawSelection();
-}
+//void Game::drawSelection()
+//{
+//  glClearColor(0.0,0.0,0.0,1.0);
+//  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//  m_environment->drawSelection();
+//  m_waveManager->drawSelection();
+//}
 
 //-------------------------------------------------------------------//
 

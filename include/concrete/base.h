@@ -28,8 +28,8 @@ public:
 
   void init();
   void update(const double _dt);
-  void draw();
-  void drawSelection();
+//  void draw();
+//  void drawSelection();
   void generateMesh();
   void filterViewVolume(EntityRecordList &o_localEntities);
 

@@ -12,8 +12,6 @@ Renderer::Renderer()
 //-------------------------------------------------------------------//
 Renderer::~Renderer()
 {
-    delete m_cam;
-    delete m_orthoCam;
 }
 //-------------------------------------------------------------------//
 
@@ -38,19 +36,89 @@ void Renderer::destroy()
 
 void Renderer::init()
 {
-    m_cam = new Camera(ngl::Vec4(10,10,10,1),ngl::Vec4(0,0,0,1),ngl::Vec4(0,1,0,0));
-//    m_orthoCam = new ngl::Camera(ngl::Vec3(0,0,0.1),ngl::Vec3(0,0,0),ngl::Vec3(0,1,0),ngl::ORTHOGRAPHIC);
+    m_cam = CameraPtr(new Camera(ngl::Vec4(10,10,10,1),Game::instance()->getBasePos(),ngl::Vec4(0,1,0,0)));
 
     Window *window = Window::instance();
+    ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
     float w = window->getScreenWidth();
     float h = window->getScreenHeight();
 
-    resize(w, h);
 
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE_EXT);
 
 
+    /* NEED TO REDO create shader to allow for more flexibility */
+//    createShader("Phong",2);
+//    createShader("Colour",2);
+
+
+    shader->createShaderProgram("Phong");
+
+    shader->attachShader("PhongVertex",ngl::VERTEX);
+    shader->attachShader("PhongFragment",ngl::FRAGMENT);
+    shader->loadShaderSource("PhongVertex", "shaders/Phong.vs");
+    shader->loadShaderSource("PhongFragment","shaders/Phong.fs");
+
+    shader->compileShader("PhongVertex");
+    shader->compileShader("PhongFragment");
+
+    shader->attachShaderToProgram("Phong","PhongVertex");
+    shader->attachShaderToProgram("Phong","PhongFragment");
+
+    shader->bindAttribute("Phong", 0, "inVert");
+    shader->bindAttribute("Phong", 1, "inUV");
+    shader->linkProgramObject("Phong");
+
+    glBindFragDataLocation(shader->getProgramID("Phong"),0,"outColour");
+
+    m_shaderNames.push_back("Phong");
+
+    shader->createShaderProgram("UI");
+
+    shader->attachShader("UIVertex",ngl::VERTEX);
+    shader->attachShader("UIFragment",ngl::FRAGMENT);
+    shader->loadShaderSource("UIVertex", "shaders/UI.vs");
+    shader->loadShaderSource("UIFragment","shaders/UI.fs");
+
+    shader->compileShader("UIVertex");
+    shader->compileShader("UIFragment");
+
+    shader->attachShaderToProgram("UI","UIVertex");
+    shader->attachShaderToProgram("UI","UIFragment");
+
+    shader->bindAttribute("UI", 0, "inVert");
+    shader->bindAttribute("UI",1,"inUV");
+    shader->linkProgramObject("UI");
+
+    shader->autoRegisterUniforms("UI");
+
+    m_shaderNames.push_back("UI");
+
+    shader->createShaderProgram("Texture");
+    shader->attachShader("TextureVertex", ngl::VERTEX);
+    shader->attachShader("TextureFragment", ngl::FRAGMENT);
+    shader->loadShaderSource("TextureVertex", "shaders/Texture.vs");
+    shader->loadShaderSource("TextureFragment", "shaders/Texture.fs");
+
+    shader->compileShader("TextureVertex");
+    shader->compileShader("TextureFragment");
+
+    shader->attachShaderToProgram("Texture", "TextureVertex");
+    shader->attachShaderToProgram("Texture", "TextureFragment");
+
+    shader->bindAttribute("Texture", 0, "inVert");
+    shader->bindAttribute("Texture", 1, "inUV");
+    shader->linkProgramObject("Texture");
+
+    shader->autoRegisterUniforms("Texture");
+
+    m_shaderNames.push_back("Texture");
+
+    createFramebufferObject("Texture");
+
+    resize(w, h);
 }
 //-------------------------------------------------------------------//
 
@@ -62,17 +130,24 @@ void Renderer::resize(const unsigned int _w, const unsigned int _h)
   m_cam->setShape(45,(float)_w/_h,0.5,150);
 //  m_orthoCam->setShape(45,(float)_w/_h,0.5,150);
 
-  setScreenSize();
-}
+  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
 
+  (*shader)["UI"]->use();
+
+  GLfloat scaleX=2.0/_w;
+  GLfloat scaleY=-2.0/_h;
+
+  shader->setRegisteredUniform1f("scaleX",scaleX);
+  shader->setRegisteredUniform1f("scaleY",scaleY);
+
+
+//  std::cout<<"resized window"<<std::endl;
+}
 
 
 //-------------------------------------------------------------------//
 void Renderer::createShader(std::string _name, int _numAttribs)
 {
-//  GLuint prog_id = glCreateProgram();
-
-//  GLuint shader_id= glCreateShader(GL_VERTEX_SHADER);
 
     ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
@@ -101,9 +176,11 @@ void Renderer::createShader(std::string _name, int _numAttribs)
     }
     //shader->bindAttribute(_name,1,"inUV");
 
+    glBindFragDataLocation(shader->getProgramID(_name),0,"outColour");
     shader->linkProgramObject(_name);
 
     m_shaderNames.push_back(_name);
+
 
 }
 //-------------------------------------------------------------------//
@@ -207,28 +284,6 @@ void Renderer::draw(std::string _id, std::string _shader)
   v->draw();
   v->unbind();
 }
-
-
-//-------------------------------------------------------------------//
-void Renderer::deleteVAO(std::string _id)
-{
-  m_mapVAO.erase(_id);
-}
-
-
-//-------------------------------------------------------------------//
-
-/*---------------taken from Jon Macy SimpleFBO Demo-----------*/
-
-//void Renderer::createFramebufferObject()
-//{
-//  //create a framebuffer object this is deleted in the dtor
-//  glGenFramebuffersEXT(1, &m_fboID);
-//  glBindFramebufferEXT(GL_FRAMEBUFFER, m_fboID);
-//  glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
-
-//}
-
 //-------------------------------------------------------------------//
 
 void Renderer::drawSelection(unsigned int _id, std::string _idStr)
@@ -240,7 +295,7 @@ void Renderer::drawSelection(unsigned int _id, std::string _idStr)
 
   ngl::Vec3 c = Window::instance()->IDToColour(_id);
 
-  shader->setShaderParam4f("Colour", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
+  shader->setShaderParam4f("colour", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
 
   //std::cout<<c<<std::endl;
   v->bind();
@@ -257,29 +312,104 @@ void Renderer::prepareDrawSelection()
   glDisable(GL_FOG);
 }
 
+
+//-------------------------------------------------------------------//
+void Renderer::deleteVAO(std::string _id)
+{
+  m_mapVAO.erase(_id);
+}
+
+
 //-------------------------------------------------------------------//
 
-ngl::Vec3 Renderer::readColourSelection(const int _x, const int _y)
+void Renderer::createFramebufferObject(const std::string &_name)
+{
+  glGenTextures(1, &m_textures[0]);
+  glBindTexture(GL_TEXTURE_2D, m_textures[0]);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); // automatic mipmap
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0,
+               GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+
+  glGenTextures(1, &m_textures[1]);
+  glBindTexture(GL_TEXTURE_2D, m_textures[1]);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); // automatic mipmap
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0,
+               GL_RGBA, GL_UNSIGNED_BYTE, 0);
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  GLuint rboID;
+  glGenRenderbuffers(1, &rboID);
+  glBindRenderbuffer(GL_RENDERBUFFER, rboID);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT,TEXTURE_WIDTH,TEXTURE_HEIGHT);
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+  GLuint fboID;
+  glGenFramebuffers(1, &fboID);
+  glBindFramebuffer(GL_FRAMEBUFFER, fboID);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_textures[0],0);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_textures[1],0);
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboID);
+
+  fboError(glCheckFramebufferStatus(GL_FRAMEBUFFER));
+
+
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+  m_mapFBO[_name] = fboID;
+
+
+}
+//-------------------------------------------------------------------//
+void Renderer::bindFrameBuffer(const std::string &_name)
+{
+    GLuint id  = m_mapFBO[_name];
+  glBindFramebuffer(GL_FRAMEBUFFER,id);
+  m_boundFBO = id;
+}
+//-------------------------------------------------------------------//
+void Renderer::bindFrameBuffer(const GLuint _id)
+{
+  glBindFramebuffer(GL_FRAMEBUFFER,_id);
+  m_boundFBO = _id;
+}
+
+
+//-------------------------------------------------------------------//
+
+ngl::Vec4 Renderer::readPixels(const int _x, const int _y)
 {    
-  //BIND GLBUFFER FOR SELECTION IN HERE I THINK!!!!
-
-  //setFboState(1);
-
-
-  // get color information from frame buffer
   unsigned char pixel[3];
-  // get the viweport
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
   // read the pixels (1,1 at present but could do wider area)
-  glReadPixels(_x, viewport[3] - _y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
-  // now loop for each object and see if the colour matches
-  // need to use a reference object as we will change the class Active value
-  ngl::Vec3 p(pixel[0], pixel[1], pixel[2]);
-
-  //setFboState(0);
-
+  glReadPixels(_x, viewport[3] - _y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+  ngl::Vec4 p(pixel[0], pixel[1], pixel[2], pixel[3]);
   return p;
+}
+
+void Renderer::fboError(GLenum _error)
+{
+    switch(_error)
+    {
+        case GL_FRAMEBUFFER_COMPLETE:                       std::cout<<"FBO Success"<<std::endl; break;
+        case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:          std::cout<<"FBO Incomplete Attachment"<<std::endl; break;
+        case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:  std::cout<<"FBO Incomplete Missing Attachment"<<std::endl; break;
+        case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:      std::cout<<"FBO Incomplete Dimensions"<<std::endl; break;
+        case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:         std::cout<<"FBO Incomplete Formats"<<std::endl; break;
+        case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:         std::cout<<"FBO Incomplete Draw buffer"<<std::endl; break;
+        case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:         std::cout<<"FBO Incomplete Read buffer"<<std::endl; break;
+        case GL_FRAMEBUFFER_UNSUPPORTED:                    std::cout<<"FBO Unsupported"<<std::endl; break;
+        default:                                            std::cout<<"Unknown"<<std::endl; break;
+    }
 }
 
 
@@ -329,22 +459,7 @@ void Renderer::set2DPosToShader(ngl::Vec2 _pos,  std::string _shader)
 }
 
 
-//-------------------------------------------------------------------//
-void Renderer::setScreenSize()
-{
-//  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
-//  Window *window = Window::instance();
-//  int w = window->getScreenWidth();
-//  int h = window->getScreenHeight();
 
-//  (*shader)["UI"]->use();
-
-//  GLfloat scaleX=2.0/w;
-//  GLfloat scaleY=-2.0/h;
-
-//  shader->setRegisteredUniform1f("scaleX",scaleX);
-//  shader->setRegisteredUniform1f("scaleY",scaleY);
-}
 
 //-------------------------------------------------------------------//
 void Renderer::loadLightToShader(ngl::Light *_light, std::string _shader)

@@ -97,20 +97,14 @@ HEADERS += \
     include/fwd/uibutton.h \
     #include/user.h \
     include/fwd/ui.h \
+    include/fwd/camera.h \
     include/fsm/statemachine.h \
     include/fsm/state.h \
     include/fsm/states/enemystates.h \
     include/ai/steeringbehaviours.h \
-    include/fwd/ui.h \
     include/player.h
 
 
-
-#including the Imath Library
-
-#LIBS += -L/usr/lib64 -lImath
-#INCLUDEPATH += /usr/local/include/OpenEXR
-#DEPENDPATH += /usr/lib64
 
 #including the NGL library
 
@@ -152,9 +146,10 @@ LIBS += -lgomp
 OTHER_FILES += \
     shaders/Phong.vs \
     shaders/Phong.fs \
-    shaders/Colour.vs \
-    shaders/Colour.fs \
     shaders/UI.vs \
     shaders/UI.fs \
     textures/grid.png \
-    textures/default_texture.jpg
+    textures/default_texture.jpg \
+    models/turret.obj \
+    shaders/Texture.vs \
+    shaders/Texture.fs

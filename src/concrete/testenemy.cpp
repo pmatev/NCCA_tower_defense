@@ -87,8 +87,8 @@ void TestEnemy::generateMesh()
                         -1,-1,1
                        };
 
-  std::vector<vertData> boxData;
-  vertData d;
+  std::vector<Renderer::vertData> boxData;
+  Renderer::vertData d;
   for(int j=0; j<8; j++)
   {
     d.x = vertices[j*3];
@@ -110,7 +110,7 @@ void TestEnemy::generateMesh()
   render->createVAO(m_IDStr, GL_TRIANGLES);
   render->setIndexedDataToVAO(
         m_IDStr,
-        sizeof(vertData)*boxData.size(),
+        sizeof(Renderer::vertData)*boxData.size(),
         3,
         boxData[0].x,
         sizeof(indices),
@@ -132,26 +132,32 @@ ngl::Vec3 TestEnemy::brain()
 
 //-------------------------------------------------------------------//
 
-void TestEnemy::draw()
-{
-    Renderer *r = Renderer::instance();
-    //m_transformStack.setScale(0.3, 0.3, 0.3);
-    r->loadMatrixToShader(m_transformStack, "Phong");
+//void TestEnemy::draw()
+//{
+//    Renderer *r = Renderer::instance();
 
-    r->draw(m_IDStr, "Phong");
+//    // draw to selection buffer
+//    r->bindFrameBuffer("Selection");
+//    r->loadMatrixToShader("Colour");
+//    r->draw(m_IDStr, "Colour");
 
-}
+//    // draw to default buffer (screen)
+//    r->bindFrameBuffer(0);
+//    r->loadMatrixToShader(m_transformStack, "Phong");
+//    r->draw(m_IDStr, "Phong");
+
+//}
 
 //-------------------------------------------------------------------//
 
-void TestEnemy::drawSelection()
-{
-  Renderer *r = Renderer::instance();
-  //m_transformStack.setScale(0.3, 0.3, 0.3);
-  r->loadMatrixToShader(m_transformStack, "Colour");
+//void TestEnemy::drawSelection()
+//{
+//  Renderer *r = Renderer::instance();
+//  //m_transformStack.setScale(0.3, 0.3, 0.3);
+//  r->loadMatrixToShader(m_transformStack, "Colour");
 
-  r->drawSelection(m_ID, m_IDStr);
-}
+//  r->drawSelection(m_ID, m_IDStr);
+//}
 
 //-------------------------------------------------------------------//
 

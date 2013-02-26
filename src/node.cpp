@@ -72,8 +72,8 @@ void Node::generateMesh()
                        0,0,1
                        };
 
-  std::vector<vertData> boxData;
-  vertData d;
+  std::vector<Renderer::vertData> boxData;
+  Renderer::vertData d;
   for(int j=0; j<12; j++)
   {
     d.x = vertices[j*3];
@@ -86,7 +86,7 @@ void Node::generateMesh()
     boxData.push_back(d);
   }
 
-  unsigned int vertSize = sizeof(vertData);
+  unsigned int vertSize = sizeof(Renderer::vertData);
   Renderer *render = Renderer::instance();
 
   render->createVAO(m_IDStr, GL_TRIANGLES);
@@ -115,37 +115,39 @@ void Node::update(const double _dt)
 
 //-------------------------------------------------------------------//
 
-void Node::draw()
-{
-  Renderer *r = Renderer::instance();
-  r->loadMatrixToShader(m_transformStack, "Phong");
-  if(m_highlighted == false)
-  {
-      r->draw(m_IDStr, "Phong");
-      //std::cout<<"POS: "<<m_transformStack<<std::endl;
-  }
-  else
-  {
-      std::cout<<"rendering selected node "<<m_ID<<std::endl;
-      r->draw(m_IDStr, "Phong"); //change either shader or colour
+//void Node::draw()
+//{
+//  Renderer *r = Renderer::instance();
+//  r->loadMatrixToShader(m_transformStack, "Phong");
+//  if(m_highlighted == false)
+//  {
+//      r->draw(m_IDStr, "Phong");
+//      //std::cout<<"POS: "<<m_transformStack<<std::endl;
+//  }
+//  else
+//  {
+//      std::cout<<"rendering selected node "<<m_ID<<std::endl;
+//      r->draw(m_IDStr, "Phong"); //change either shader or colour
 
-      //need to change this system for changing highlighted back
-      // at uiselection level
+//      //need to change this system for changing highlighted back
+//      // at uiselection level
 
-  }
+//  }
 
 
 
-}
+//}
 
-//-------------------------------------------------------------------//
+////-------------------------------------------------------------------//
 
-void Node::drawSelection()
-{
-  Renderer *r = Renderer::instance();
-  r->loadMatrixToShader(m_transformStack, "Colour");
-  r->drawSelection(m_ID, m_IDStr);
-}
+//void Node::drawSelection()
+//{
+//  Renderer *r = Renderer::instance();
+//  r->loadMatrixToShader(m_transformStack, "Colour");
+//  r->drawSelection(m_ID, m_IDStr);
+//}
+
+////-------------------------------------------------------------------//
 
 //-------------------------------------------------------------------//
 

@@ -60,9 +60,8 @@ void UIButton::generateMesh()
       }
     }
 
-    GLuint textureID;
-    glGenTextures(1,&textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    glGenTextures(1,&m_texture);
+    glBindTexture(GL_TEXTURE_2D, m_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 
@@ -133,47 +132,57 @@ void UIButton::generateMesh()
 
 void UIButton::draw()
 {
-//  ngl::Transformation parentTX = m_parent->getTransformStack().getCurrentTransform();
-//  m_transformStack.setGlobal(parentTX);
-//  m_transformStack.pushTransform();
-//    m_transformStack.setPosition(1.0,0.0,-1.0);
-//  m_transformStack.popTransform();
+  glDisable(GL_DEPTH_TEST);
 
   Renderer *render = Renderer::instance();
   Window *window = Window::instance();
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();
 
-  VAOPtr v = render->getVAObyID(m_IDStr);
+  GLfloat scaleX = 2.0/window->getScreenWidth();
+  GLfloat scaleY = 2.0/window->getScreenHeight();
+
+
   (*shader)["UI"]->use();
-//    (*shader)["Colour"]->use();
+  shader->setRegisteredUniform1f("xpos",m_pos.m_x);
+  shader->setRegisteredUniform1f("ypos",m_pos.m_y);
+  shader->setRegisteredUniform1f("scaleX",scaleX);
+  shader->setRegisteredUniform1f("scaleY",scaleY);
 
-//  render->loadMatrixToShader(m_transformStack,"Colour");
+  ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
+  shader->setRegisteredUniform4f("colour", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
 
-//  shader->setRegisteredUniform3f("Colour",1,1,1);
+  glBindTexture(GL_TEXTURE_2D, m_texture);
+  render->draw(m_IDStr, "UI");
 
-  float scaleX = 2.0/window->getScreenWidth();
-  float scaleY = 2.0/window->getScreenHeight();
-
-  shader->setShaderParam1f("xpos",m_pos.m_x);
-  shader->setShaderParam1f("ypos",m_pos.m_y);
-  shader->setShaderParam1f("scaleX",scaleX);
-  shader->setShaderParam1f("scaleY",scaleY);
-
-
-
-  v->bind();
-  v->draw();
-  v->unbind();
-
+  glEnable(GL_DEPTH_TEST);
 //  std::cout<<"drawing button "<<m_name<<" "<<m_pos<<std::endl;
 }
 
 
 //-------------------------------------------------------------------//
 
-void UIButton::drawSelection()
-{
-  Renderer *r = Renderer::instance();
-  //r->loadMatrixToShaderSS(m_transformStack, "Colour");
-  r->drawSelection(m_ID, m_IDStr);
-}
+//void UIButton::drawSelection()
+//{
+//  Renderer *render = Renderer::instance();
+//  Window *window = Window::instance();
+//  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
+
+//  (*shader)["UIColour"]->use();
+
+//  float scaleX = 2.0/window->getScreenWidth();
+//  float scaleY = 2.0/window->getScreenHeight();
+
+//  shader->setShaderParam1f("xpos",m_pos.m_x);
+//  shader->setShaderParam1f("ypos",m_pos.m_y);
+//  shader->setShaderParam1f("scaleX",scaleX);
+//  shader->setShaderParam1f("scaleY",scaleY);
+
+//  ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
+//  shader->setShaderParam4f("colour", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
+
+//  VAOPtr v = render->getVAObyID(m_IDStr);
+//  v->bind();
+//  v->draw();
+//  v->unbind();
+
+//}

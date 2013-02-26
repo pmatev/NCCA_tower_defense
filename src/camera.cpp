@@ -23,6 +23,8 @@ Camera::Camera(const ngl::Vec4 &_eye, const ngl::Vec4 &_look, const ngl::Vec4 &_
     m_rotAxis = ngl::Vec4(0,1,0,0);
     m_radius=1.5;
 
+    update();
+
 }
 //----------------------------------------------------------------------------------------------------------------------
 Camera::~Camera()

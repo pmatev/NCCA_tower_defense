@@ -78,9 +78,6 @@ void Window::init()
       glewInit(); // need a local glew init as well as lib one for windows
     #endif
 
-    Renderer *render = Renderer::instance();
-    render->init();
-
     // Init factory
     EntityFactory::initialiseFactory();
 
@@ -88,12 +85,65 @@ void Window::init()
     game->init();
 
 
+    Renderer *render = Renderer::instance();
+    render->init();
 
 
     m_UI = UIPtr(new UI());
 
     m_UI->createTestMenu();
 
+    // BUILD BILLBOARD
+    struct quadVertData
+    {
+    float x;
+    float y;
+    float u;
+    float v;
+    };
+
+    quadVertData d[6];
+
+    d[0].x=-1.0f;
+    d[0].y=-1.0f;
+    d[0].u=0.0f;
+    d[0].v=0.0f;
+
+    d[1].x=1.0f;
+    d[1].y=-1.0f;
+    d[1].u=1.0f;
+    d[1].v=0.0f;
+
+    d[2].x=-1.0f;
+    d[2].y=1.0f;
+    d[2].u=0.0f;
+    d[2].v=1.0f;
+
+    d[3].x=-1.0f;
+    d[3].y=1.0f;
+    d[3].u=0.0f;
+    d[3].v=1.0f;
+
+    d[4].x=1.0f;
+    d[4].y=-1.0f;
+    d[4].u=1.0f;
+    d[4].v=0.0f;
+
+    d[5].x=1.0f;
+    d[5].y=1.0f;
+    d[5].u=1.0f;
+    d[5].v=1.0f;
+
+    render->createVAO("screen", GL_TRIANGLES);
+
+    VAOPtr v = render->getVAObyID("screen");
+    v->bind();
+    int size = sizeof(quadVertData);
+    v->setData(6*size,d[0].x);
+    v->setVertexAttributePointer(0,2,GL_FLOAT,size,0);
+    v->setVertexAttributePointer(1,2,GL_FLOAT,size,2);
+    v->setNumIndices(6);
+    v->unbind();
 
 }
 
@@ -152,7 +202,7 @@ void Window::loop()
         if(frameCount % 20 == 0)
         {
           std::string fpsStr = boost::lexical_cast<std::string>(int(avgFPS/20));
-          SDL_WM_SetCaption(&fpsStr[0], "Cap");
+          SDL_WM_SetCaption(&fpsStr[0],fpsStr.c_str());
           avgFPS = 0;
         }
         float fps = 1000.0/frameTime;
@@ -169,9 +219,24 @@ void Window::loop()
             m_time += dt;
         }
 
+        Renderer *r = Renderer::instance();
+
+
+        r->bindFrameBuffer("Texture");
+        GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+        glDrawBuffers(2, buffers);
+        glViewport(0,0,Renderer::TEXTURE_WIDTH,Renderer::TEXTURE_HEIGHT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         game->draw();
         m_UI->draw();
 
+        r->bindFrameBuffer(0);
+        glViewport(0,0,m_width, m_height);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glBindTexture(GL_TEXTURE_2D, r->getTexture(0));
+        glGenerateMipmapEXT(GL_TEXTURE_2D);
+        r->draw("screen", "Texture");
 
         SDL_GL_SwapBuffers();
         frameCount++;
@@ -225,7 +290,7 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
     m_mouseY = _event.y;
 
     Renderer *render = Renderer::instance();
-    Camera *cam = render->getCam();
+    CameraPtr cam = render->getCam().lock();
 
     m_motionEvent = _event;
 
@@ -251,7 +316,7 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
     m_oldMouseY = m_mouseY;
 
 
-    m_UI->mouseMoveEvent();
+//    m_UI->mouseMoveEvent();
 
 }
 //-------------------------------------------------------------------//
@@ -263,8 +328,8 @@ void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
     if(_event.button == SDL_BUTTON_LEFT)
     {
         m_rotate =true;
-    }
 
+    }
     else if(_event.button == SDL_BUTTON_MIDDLE)
     {
         m_track = true;
@@ -292,20 +357,25 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 
     /* -------- Testing Code -------------*/
 
-    m_clickEvent = _event;
+//    Renderer *r = Renderer::instance();
+//    r->bindFrameBuffer("Texture");
+//    std::cout<<r->readPixels(_event.x, _event.y)<<std::endl;
 
-    Renderer *r = Renderer::instance();
-    r->prepareDrawSelection();
+//    std::cout<<pixel<<std::endl;
+//    m_clickEvent = _event;
 
-    m_UI->drawSelection();
+//    Renderer *r = Renderer::instance();
+//    r->prepareDrawSelection();
+
+//    unsigned int id = getIDFromGameSelection();
+//    m_UI->drawSelection();
 
 
-    unsigned int id = getIDFromGameSelection();
 
-    if(_event.button == SDL_BUTTON_LEFT)
-    {
-          m_UI->mouseLeftUpTowerCreate(id);
-    }
+//    if(_event.button == SDL_BUTTON_LEFT)
+//    {
+//          m_UI->mouseLeftUpTowerCreate(id);
+//    }
 
 
     /* -------- End Testing Code -------------*/
@@ -358,26 +428,27 @@ unsigned int Window::getID()
 
 //-------------------------------------------------------------------//
 
-unsigned int Window::getIDFromGameSelection()
-{
-  Game *game = Game::instance();
-  Renderer *r = Renderer::instance();
-  game->drawSelection();
-  unsigned int id;
-  ngl::Vec3 pixel;
+//unsigned int Window::getIDFromGameSelection()
+//{
+//  Game *game = Game::instance();
+//  Renderer *r = Renderer::instance();
+//  game->drawSelection();
+//  m_UI->drawSelection();
+//  unsigned int id;
+//  ngl::Vec3 pixel;
 
-//checks which event it is in order to give the correct selection
+////checks which event it is in order to give the correct selection
 
-  switch(m_event.type)
-  {
-  case SDL_MOUSEMOTION : pixel = r->readColourSelection(
-                         m_motionEvent.x, m_motionEvent.y);
-                         id = colourToID(pixel); break;
+//  switch(m_event.type)
+//  {
+//  case SDL_MOUSEMOTION : pixel = r->readColourSelection(
+//                         m_motionEvent.x, m_motionEvent.y);
+//                         id = colourToID(pixel); break;
 
-  case SDL_MOUSEBUTTONUP : pixel = r->readColourSelection(
-                  m_clickEvent.x, m_clickEvent.y);
-                  id = colourToID(pixel); break;
-  }
+//  case SDL_MOUSEBUTTONUP : pixel = r->readColourSelection(
+//                  m_clickEvent.x, m_clickEvent.y);
+//                  id = colourToID(pixel); break;
+//  }
 
-  return id;
-}
+//  return id;
+//}

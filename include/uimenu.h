@@ -50,10 +50,10 @@ public:
 
     void draw() ;
 
-    //-------------------------------------------------------------------//
-    /// @brief draw element with constant shader for selection use
-    //-------------------------------------------------------------------//
-    void drawSelection();
+//    //-------------------------------------------------------------------//
+//    /// @brief draw element with constant shader for selection use
+//    //-------------------------------------------------------------------//
+//    void drawSelection();
 
 
 

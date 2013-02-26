@@ -136,18 +136,18 @@ void Wave::draw()
 }
 //-------------------------------------------------------------------//
 
-void Wave::drawSelection()
-{
-  // Go through all the enemies and call their publish
-  for(
-      EnemyVec::iterator it = m_enemies.begin();
-      it != m_enemies.end();
-      ++it
-      )
-  {
-    (*it)->drawSelection();
-  }
-}
+//void Wave::drawSelection()
+//{
+//  // Go through all the enemies and call their publish
+//  for(
+//      EnemyVec::iterator it = m_enemies.begin();
+//      it != m_enemies.end();
+//      ++it
+//      )
+//  {
+//    (*it)->drawSelection();
+//  }
+//}
 
 
 //-------------------------------------------------------------------//

@@ -42,19 +42,19 @@ void Base::update(const double _dt)
 
 //-------------------------------------------------------------------//
 
-void Base::draw()
-{
-  Renderer *r = Renderer::instance();
-  r->loadMatrixToShader(m_transformStack, "Phong");
-  r->draw(m_IDStr, "Phong");
-}
+//void Base::draw()
+//{
+//  Renderer *r = Renderer::instance();
+//  r->loadMatrixToShader(m_transformStack, "Phong");
+//  r->draw(m_IDStr, "Phong");
+//}
 
 //-------------------------------------------------------------------//
 
-void Base::drawSelection()
-{
-  // do something
-}
+//void Base::drawSelection()
+//{
+//  // do something
+//}
 
 //-------------------------------------------------------------------//
 
@@ -83,8 +83,8 @@ void Base::generateMesh()
                        1,1,1
                        };
 
-  std::vector<vertData> boxData;
-  vertData d;
+  std::vector<Renderer::vertData> boxData;
+  Renderer::vertData d;
   for(int j=0; j<12; j++)
   {
     d.x = vertices[j*3];
@@ -97,7 +97,7 @@ void Base::generateMesh()
     boxData.push_back(d);
   }
 
-  unsigned int vertSize = sizeof(vertData);
+  unsigned int vertSize = sizeof(Renderer::vertData);
   Renderer *render = Renderer::instance();
 
   render->createVAO(m_IDStr, GL_TRIANGLES);
@@ -114,6 +114,7 @@ void Base::generateMesh()
 }
 
 //-------------------------------------------------------------------//
+
 
 void Base::filterViewVolume(EntityRecordList &o_localEntities)
 {

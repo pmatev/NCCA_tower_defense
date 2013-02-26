@@ -60,7 +60,7 @@ public:
 
     virtual void generateMesh();
 
-    virtual void drawSelection() = 0;
+//    virtual void drawSelection() = 0;
 
     //-------------------------------------------------------------------//
     /// @brief virtual execute function passed through to other elements

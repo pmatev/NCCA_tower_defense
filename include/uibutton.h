@@ -84,6 +84,8 @@ protected:
       UIMenu *m_parent;
 
       std::string m_imageFile;
+
+      GLuint m_texture;
 };
 
 #endif // UIBUTTON_H

@@ -121,21 +121,21 @@ void Environment::draw() const
 
 //-------------------------------------------------------------------//
 
-void Environment::drawSelection() const
-{
-  // Go through all the towers and draw
-  for(
-      StaticEntityList::const_iterator it = m_towers.begin();
-      it != m_towers.end();
-      ++it
-      )
-  {
-    (*it)->drawSelection();
-  }
-  // draw base
-  m_base->drawSelection();
-  m_nodeMap->drawSelection();
-}
+//void Environment::drawSelection() const
+//{
+//  // Go through all the towers and draw
+//  for(
+//      StaticEntityList::const_iterator it = m_towers.begin();
+//      it != m_towers.end();
+//      ++it
+//      )
+//  {
+//    (*it)->drawSelection();
+//  }
+//  // draw base
+//  m_base->drawSelection();
+//  m_nodeMap->drawSelection();
+//}
 
 //-------------------------------------------------------------------//
 

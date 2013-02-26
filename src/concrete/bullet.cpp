@@ -35,14 +35,14 @@ EntityPtr Bullet::create(
 
 //-------------------------------------------------------------------//
 
-void Bullet::draw()
-{
-  Renderer *r = Renderer::instance();
-  //m_transformStack.setScale(0.3, 0.3, 0.3);
-  r->loadMatrixToShader(m_transformStack, "Phong");
+//void Bullet::draw()
+//{
+//  Renderer *r = Renderer::instance();
+//  //m_transformStack.setScale(0.3, 0.3, 0.3);
+//  r->loadMatrixToShader(m_transformStack, "Phong");
 
-  r->draw(m_IDStr, "Phong");
-}
+//  r->draw(m_IDStr, "Phong");
+//}
 
 //-------------------------------------------------------------------//
 
@@ -76,8 +76,8 @@ void Bullet::generateMesh()
                         -1,-1,1
                        };
 
-  std::vector<vertData> boxData;
-  vertData d;
+  std::vector<Renderer::vertData> boxData;
+  Renderer::vertData d;
   for(int j=0; j<8; j++)
   {
     d.x = vertices[j*3];
@@ -99,7 +99,7 @@ void Bullet::generateMesh()
   render->createVAO(m_IDStr, GL_TRIANGLES);
   render->setIndexedDataToVAO(
         m_IDStr,
-        sizeof(vertData)*boxData.size(),
+        sizeof(Renderer::vertData)*boxData.size(),
         3,
         boxData[0].x,
         sizeof(indices),
@@ -111,14 +111,14 @@ void Bullet::generateMesh()
 
 //-------------------------------------------------------------------//
 
-void Bullet::drawSelection()
-{
-  Renderer *r = Renderer::instance();
-  //m_transformStack.setScale(0.3, 0.3, 0.3);
-  r->loadMatrixToShader(m_transformStack, "Colour");
+//void Bullet::drawSelection()
+//{
+//  Renderer *r = Renderer::instance();
+//  //m_transformStack.setScale(0.3, 0.3, 0.3);
+//  r->loadMatrixToShader(m_transformStack, "Colour");
 
-  r->drawSelection(m_ID, m_IDStr);
-}
+//  r->drawSelection(m_ID, m_IDStr);
+//}
 
 //-------------------------------------------------------------------//
 

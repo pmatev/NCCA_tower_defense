@@ -50,23 +50,23 @@ void UIMenu::draw()
 
 //-------------------------------------------------------------------//
 
-void UIMenu::drawSelection()
-{
-    Renderer *r = Renderer::instance();
+//void UIMenu::drawSelection()
+//{
+//    Renderer *r = Renderer::instance();
 
-    //Q unused to remove warnings, will be replaced if used
+//    //Q unused to remove warnings, will be replaced if used
 
-    Q_UNUSED(r);
+//    Q_UNUSED(r);
 
-    //r->loadMatrixToShaderSS(m_transformStack, "Colour");
-    //r->drawSelection(m_ID, m_IDStr);
+//    //r->loadMatrixToShaderSS(m_transformStack, "Colour");
+//    //r->drawSelection(m_ID, m_IDStr);
 
-    for(std::vector<UIElementPtr>::iterator it=m_elements.begin(); it!=m_elements.end(); it++)
-    {
-      (*it)->drawSelection();
-    }
+//    for(std::vector<UIElementPtr>::iterator it=m_elements.begin(); it!=m_elements.end(); it++)
+//    {
+//      (*it)->drawSelection();
+//    }
 
-}
+//}
 
 //-------------------------------------------------------------------//
 

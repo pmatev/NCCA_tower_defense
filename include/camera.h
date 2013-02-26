@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include <ngl/Camera.h>
+#include "fwd/camera.h"
 //#include <ngl/TransformStack.h>
 #include "fwd/window.h"
 
