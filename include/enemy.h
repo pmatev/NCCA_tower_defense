@@ -27,7 +27,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
   /// @param [in] _damage, a float to initialise the damage value
-  /// @param [in] __maxVelocity, a float value describing the maximum
+  /// @param [in] _maxVelocity, a float value describing the maximum
   /// velocity of the dynamic entity
   /// @param [in] _pos, a vector containing the initial position in 3D
   /// space of the entity, passed to the entity constructor
@@ -37,8 +37,8 @@ public:
   Enemy(
         const ngl::Vec3 &_pos,
         const ngl::Vec3 &_aim,
-        unsigned int _id
-        );
+        unsigned int _id,
+        int _currencyValue);
 
   //-------------------------------------------------------------------//
   /// @brief updates path from node manager
@@ -70,6 +70,25 @@ public:
   //-------------------------------------------------------------------//
 
   void enforceGridBoundaries();
+
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the currency value
+  /// @param [out] the currency value of the enemy
+  //-------------------------------------------------------------------//
+
+  inline int getCurrencyValue() const {return m_currencyValue;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to detect collisions based on a sphere and the
+  /// square distances from the position passed in
+  /// @param [in] _pos, the position of the object to check against
+  /// @param [in] _radius,the radius of the sphere to check against
+  /// @param [out] boolean, whether there was a collision or not
+  //-------------------------------------------------------------------//
+
+  bool sphereBBoxCollision(const ngl::Vec3  &_pos,
+                           float _radius) const;
 
   //-------------------------------------------------------------------//
   /// @brief a method to enforce the grid boundaries
@@ -104,6 +123,11 @@ protected:
 
   float m_pathTargetThreshold;
 
+  //-------------------------------------------------------------------//
+  /// @brief the amount of currency given to the player when killed
+  //-------------------------------------------------------------------//
+
+  int m_currencyValue;
 };
 
 #endif // ENEMY_H

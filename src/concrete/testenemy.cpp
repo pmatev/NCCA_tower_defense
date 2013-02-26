@@ -8,7 +8,8 @@ TestEnemy::TestEnemy(
     const ngl::Vec3 &_aim,
     unsigned int _id
     ):
-  Enemy(_pos,_aim, _id)
+  Enemy(_pos,_aim, _id, 5)   //last value is the currency value, specified at
+                             //concrete level
 {
   // ctor just passes everything to parent class
   // HACKY TESTING HERE

@@ -10,11 +10,12 @@
 Enemy::Enemy(
     const ngl::Vec3 &_pos,
     const ngl::Vec3 &_aim,
-    unsigned int _id
+    unsigned int _id,
+    int _currencyValue
     ) :
   DynamicEntity(_pos,_aim,ENEMY, _id),
-  m_pathTargetThreshold(1.2) //THIS SHOULD BE A PROPORTION OF THE DISTANCE BETWEEN NODES!!!!!
-                             //IF ITS TOO LOW ENEMIES WILL NOT MOVE
+  m_pathTargetThreshold(1.2), //THIS SHOULD BE A PROPORTION OF THE DISTANCE BETWEEN NODES!!!!!
+  m_currencyValue(_currencyValue)             //IF ITS TOO LOW ENEMIES WILL NOT MOVE
 {
   if(generateTempPath())
   {
@@ -186,8 +187,8 @@ ngl::Vec3 Enemy::getPathVec() const
 
   ngl::Vec3 finalVector;
 
-  for(Node::NodeWList::const_iterator it = m_pathNodes.begin();
-      it != m_pathNodes.end();
+  for(Node::NodeWList::const_reverse_iterator it = m_pathNodes.rbegin();
+      it != m_pathNodes.rend();
       it++)
   {
     NodePtr currentNode = it->lock();
@@ -207,7 +208,7 @@ ngl::Vec3 Enemy::getPathVec() const
         nearestSqrDistance = newSqrDistance;
         nearestNode = currentNode;
         //if the closest node is NOT at the end
-        if(boost::next(it) != m_pathNodes.end())
+        if(boost::next(it) != m_pathNodes.rend())
         {
           parentNode = (*boost::next(it)).lock();
         }
@@ -223,18 +224,15 @@ ngl::Vec3 Enemy::getPathVec() const
   }
 
   //get the parent node of the nearestNode as long as we're not at the end.
-  if(nearestNode)
+  finalVector = nearestNode->getPos() - m_pos;
+  float len = finalVector.length();
+  if(parentNode && len < m_pathTargetThreshold)
   {
-    finalVector = nearestNode->getPos() - m_pos;
-    float len = finalVector.length();
-    if(parentNode && len < m_pathTargetThreshold)
-    {
-      //return dir vector between parentNode and nearestNode
+    //return dir vector between parentNode and nearestNode
 
-      // get distance to nearest node and check threshold
+    // get distance to nearest node and check threshold
 
-      finalVector = parentNode->getPos() - m_pos;
-    }
+    finalVector = parentNode->getPos() - m_pos;
   }
 //  else
 //  {
@@ -251,6 +249,96 @@ ngl::Vec3 Enemy::getPathVec() const
   }
 
   return finalVector;
+}
+
+//-------------------------------------------------------------------//
+
+bool Enemy::sphereBBoxCollision(const ngl::Vec3 &_pos,
+                                float _radius) const
+{
+  //set up  the return boolean
+
+  bool result = false;
+
+  //first check if the position of the enemy is within the sphere
+
+  //calculate the square distance from the enemy to the sphere
+
+  float sqDist = (_pos.m_x-m_pos.m_x)*(_pos.m_x-m_pos.m_x)+
+      (_pos.m_y-m_pos.m_y)*(_pos.m_y-m_pos.m_y)+
+      (_pos.m_z-m_pos.m_z)*(_pos.m_z-m_pos.m_z);
+
+  //calculate the radius squared
+
+  float sqRadius = _radius*_radius;
+
+  //if the distance is less than the radius squared
+
+  if (sqRadius >= sqDist)
+  {
+    //set the result boolean to be true
+
+    result = true;
+  }
+
+  else
+  {
+    //otherwise, clamp position of the sphere within the boundaries
+    //of the bounding box, finding the closest point on the bounding
+    //box to the sphere object
+
+    float xPos = _pos.m_x;
+    float yPos = _pos.m_y;
+    float zPos = _pos.m_z;
+
+    //x
+
+    if(xPos > m_lsMeshBBox.m_maxX+m_pos.m_x)
+    {
+      xPos = m_lsMeshBBox.m_maxX+m_pos.m_x;
+    }
+    else if (xPos < m_lsMeshBBox.m_minX+m_pos.m_x)
+    {
+      xPos = m_lsMeshBBox.m_minX+m_pos.m_x;
+    }
+
+    //y
+
+    if(yPos > m_lsMeshBBox.m_maxY+m_pos.m_y)
+    {
+      yPos = m_lsMeshBBox.m_maxY+m_pos.m_y;
+    }
+    else if (yPos < m_lsMeshBBox.m_minY+m_pos.m_y)
+    {
+      yPos = m_lsMeshBBox.m_minY+m_pos.m_y;
+    }
+
+    //z
+
+    if(zPos > m_lsMeshBBox.m_maxZ+m_pos.m_z)
+    {
+      zPos = m_lsMeshBBox.m_maxZ+m_pos.m_z;
+    }
+    else if (zPos < m_lsMeshBBox.m_minZ+m_pos.m_z)
+    {
+      zPos = m_lsMeshBBox.m_minZ+m_pos.m_z;
+    }
+
+    //then check if the squared distance between the point and
+    //the sphere is less than the radius squared
+
+    sqDist = (_pos.m_x-xPos)*(_pos.m_x-xPos)+
+        (_pos.m_y-yPos)*(_pos.m_y-yPos)+
+        (_pos.m_z-zPos)*(_pos.m_z-zPos);
+
+    if (sqRadius>sqDist)
+    {
+      result = true;
+    }
+
+  }
+
+  return result;
 }
 
 //-------------------------------------------------------------------//
