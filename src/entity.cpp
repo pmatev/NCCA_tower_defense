@@ -194,7 +194,15 @@ void Entity::draw()
   r->loadMatrixToShader(m_transformStack, "Phong");
   (*shader)["Phong"]->use();
   ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
-  shader->setShaderParam4f("colour", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
+  c = c/255.0f;
+
+
+  if(m_generalType != ENEMY)
+  {
+      shader->setShaderParam4f("colour", c[0], c[1], c[2], 1);
+  }else{
+      shader->setShaderParam4f("colour",0,0,0,0);
+  }
 
   r->draw(m_IDStr, "Phong");
 }

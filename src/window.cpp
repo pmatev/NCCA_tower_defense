@@ -145,6 +145,8 @@ void Window::init()
     v->setNumIndices(6);
     v->unbind();
 
+
+    m_viewmode=0;
 }
 
 
@@ -234,7 +236,7 @@ void Window::loop()
         r->bindFrameBuffer(0);
         glViewport(0,0,m_width, m_height);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glBindTexture(GL_TEXTURE_2D, r->getTexture(0));
+        glBindTexture(GL_TEXTURE_2D, r->getTexture(m_viewmode));
         glGenerateMipmapEXT(GL_TEXTURE_2D);
         r->draw("screen", "Texture");
 
@@ -254,6 +256,18 @@ void Window::keyEvent(const SDL_KeyboardEvent &_event)
     if(_event.keysym.sym == SDLK_r)
     {
        game->reset();
+    }
+    if(_event.keysym.sym == SDLK_1)
+    {
+        m_viewmode = 0;
+    }
+    if(_event.keysym.sym == SDLK_2)
+    {
+        m_viewmode = 1;
+    }
+    if(_event.keysym.sym == SDLK_3)
+    {
+        m_viewmode = 2;
     }
     if(_event.keysym.sym == SDLK_g)
     {
@@ -361,27 +375,18 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 
     /* -------- Testing Code -------------*/
 
-//    Renderer *r = Renderer::instance();
-//    r->bindFrameBuffer("Texture");
-//    std::cout<<r->readPixels(_event.x, _event.y)<<std::endl;
+    Renderer *r = Renderer::instance();
+    r->bindFrameBuffer("Texture");
 
-//    std::cout<<pixel<<std::endl;
-//    m_clickEvent = _event;
+    ngl::Vec4 pixel = r->readPixels(_event.x, _event.y);
+    int id = colourToID(pixel.toVec3());
+    std::cout<<pixel<<std::endl;
+    if(_event.button == SDL_BUTTON_LEFT)
+    {
+          m_UI->mouseLeftUp(id);
+    }
 
-//    Renderer *r = Renderer::instance();
-//    r->prepareDrawSelection();
-
-//    unsigned int id = getIDFromGameSelection();
-//    m_UI->drawSelection();
-
-
-
-//    if(_event.button == SDL_BUTTON_LEFT)
-//    {
-//          m_UI->mouseLeftUpTowerCreate(id);
-//    }
-
-
+    r->bindFrameBuffer(0);
     /* -------- End Testing Code -------------*/
 
 }
@@ -431,28 +436,3 @@ unsigned int Window::getID()
 
 
 //-------------------------------------------------------------------//
-
-//unsigned int Window::getIDFromGameSelection()
-//{
-//  Game *game = Game::instance();
-//  Renderer *r = Renderer::instance();
-//  game->drawSelection();
-//  m_UI->drawSelection();
-//  unsigned int id;
-//  ngl::Vec3 pixel;
-
-////checks which event it is in order to give the correct selection
-
-//  switch(m_event.type)
-//  {
-//  case SDL_MOUSEMOTION : pixel = r->readColourSelection(
-//                         m_motionEvent.x, m_motionEvent.y);
-//                         id = colourToID(pixel); break;
-
-//  case SDL_MOUSEBUTTONUP : pixel = r->readColourSelection(
-//                  m_clickEvent.x, m_clickEvent.y);
-//                  id = colourToID(pixel); break;
-//  }
-
-//  return id;
-//}

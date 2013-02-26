@@ -59,17 +59,6 @@ UIElementPtr UI::checkUIClicked(const unsigned int _ID)
 
 //-------------------------------------------------------------------//
 
-//EntityWPtr UI::checkEntityClicked()
-//{
-
-//    Game *game = Game::instance();
-//    Window *window = Window::instance();
-
-//    unsigned int id = window->getIDFromGameSelection();
-
-//    return game->getEntityByID(id);
-//}
-
 
 
 
@@ -269,54 +258,56 @@ void UI::placeDownStaticEntity(const std::string &_type, NodePtr _node)
 //-------------------------------------------------------------------//
 //----------------------Test Function for Jared----------------------//
 //-------------------------------------------------------------------//
-//void UI::mouseLeftUpTowerCreate(const unsigned int _ID)
-//{
+void UI::mouseLeftUp(const unsigned int _ID)
+{
 
-//    UIElementPtr UIClick = checkUIClicked(_ID);
+    Game *game = Game::instance();
 
-//    EntityPtr entityClick;
-//    std::cout<<_ID<<std::endl;
-//    if(!UIClick)
-//    {
-//        entityClick = checkEntityClicked().lock();
+    UIElementPtr UIClick = checkUIClicked(_ID);
 
-//        if(!entityClick)
-//        {
-//          std::cout<<"i am background"<<std::endl;
-//        }
-//        else
-//        {
-//            if(entityClick->getGeneralType() == NODE)
-//            {
-//                Game* game = Game::instance();
+    EntityPtr entityClick;
+    std::cout<<_ID<<" ";
+    if(!UIClick)
+    {
+        entityClick = game->getEntityByID(_ID).lock();
 
-//                NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
+        if(!entityClick)
+        {
+          std::cout<<"i am background"<<std::endl;
+        }
+        else
+        {
+            if(entityClick->getGeneralType() == NODE)
+            {
+                Game* game = Game::instance();
 
-//                bool isCreated = game->tryToCreateTower("TestTurret",
-//                                                         node);
+                NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
 
-//                if(isCreated == true)
-//                {
-//                    //m_creationMode = 0;
+                bool isCreated = game->tryToCreateTower("TestTurret",
+                                                         node);
 
-//                    std::cout<<"tower was created properly"<<std::endl;
-//                }
+                if(isCreated == true)
+                {
+                    //m_creationMode = 0;
 
-//            }
-//            else
-//            {
-//                std::cout<<"i'm not a node"<<std::endl;
-//            }
+                    std::cout<<"tower was created properly"<<std::endl;
+                }
 
-//        }
+            }
+            else
+            {
+                std::cout<<"i'm not a node"<<std::endl;
+            }
 
-//    }
-//    else
-//    {
-////        UIClick->isClicked();
-//        std::cout<<"i am GUI"<<std::endl;
-//    }
-//}
+        }
+
+    }
+    else
+    {
+//        UIClick->isClicked();
+        std::cout<<"i am GUI"<<std::endl;
+    }
+}
 
 //-------------------------------------------------------------------//
 //-------------------------------------------------------------------//

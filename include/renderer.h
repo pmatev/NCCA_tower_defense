@@ -244,7 +244,7 @@ protected:
     CameraPtr m_cam;
 
     // TMP //
-    GLuint m_textures[2];
+    GLuint m_textures[3];
     GLuint m_boundTexture;
     GLuint m_boundFBO;
 

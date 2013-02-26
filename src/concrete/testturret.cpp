@@ -63,14 +63,14 @@ void TestTurret::generateMesh()
                         0.5,-0.5,0.5,
                         -0.5,-0.5,0.5
                        };
-  GLfloat normals[] = {0,1,-1,
-                       0,1,-1,
-                       0,1,1,
-                       0,1,1,
-                       0,-1,-1,
-                       0,-1,-1,
-                       0,-1,1,
-                       0,-1,1
+  GLfloat normals[] = {1,0,0.5,
+                       1,0,0.5,
+                       1,0,0.5,
+                       1,0,0.5,
+                       1,0,1,
+                       1,0,1,
+                       1,0,1,
+                       1,0,1
                       };
 
   std::vector<Renderer::vertData> boxData;

@@ -46,7 +46,10 @@ void Renderer::init()
 
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_MULTISAMPLE_EXT);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+//    glEnable(GL_MULTISAMPLE_EXT);
 
 
     /* NEED TO REDO create shader to allow for more flexibility */
@@ -324,18 +327,17 @@ void Renderer::deleteVAO(std::string _id)
 
 void Renderer::createFramebufferObject(const std::string &_name)
 {
-  glGenTextures(1, &m_textures[0]);
+  glGenTextures(3, &m_textures[0]);
   glBindTexture(GL_TEXTURE_2D, m_textures[0]);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); // automatic mipmap
+//  glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); // automatic mipmap
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0,
                GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
 
-  glGenTextures(1, &m_textures[1]);
   glBindTexture(GL_TEXTURE_2D, m_textures[1]);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -344,20 +346,32 @@ void Renderer::createFramebufferObject(const std::string &_name)
   glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); // automatic mipmap
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0,
                GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+  glBindTexture(GL_TEXTURE_2D, m_textures[2]);
+  glTexParameteri( GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_LUMINANCE );
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//  glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); // automatic mipmap
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0,
+               GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
   glBindTexture(GL_TEXTURE_2D, 0);
 
-  GLuint rboID;
-  glGenRenderbuffers(1, &rboID);
-  glBindRenderbuffer(GL_RENDERBUFFER, rboID);
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT,TEXTURE_WIDTH,TEXTURE_HEIGHT);
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+//  GLuint rboID;
+//  glGenRenderbuffers(1, &rboID);
+//  glBindRenderbuffer(GL_RENDERBUFFER, rboID);
+//  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT,TEXTURE_WIDTH,TEXTURE_HEIGHT);
+//  glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
   GLuint fboID;
   glGenFramebuffers(1, &fboID);
   glBindFramebuffer(GL_FRAMEBUFFER, fboID);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_textures[0],0);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_textures[1],0);
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboID);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_textures[2],0);
+//  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboID);
 
   fboError(glCheckFramebufferStatus(GL_FRAMEBUFFER));
 
@@ -387,11 +401,14 @@ void Renderer::bindFrameBuffer(const GLuint _id)
 
 ngl::Vec4 Renderer::readPixels(const int _x, const int _y)
 {    
+  Window *w = Window::instance();
   unsigned char pixel[3];
-  GLint viewport[4];
-  glGetIntegerv(GL_VIEWPORT, viewport);
-  // read the pixels (1,1 at present but could do wider area)
-  glReadPixels(_x, viewport[3] - _y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+  glReadBuffer(GL_COLOR_ATTACHMENT1);
+
+  int read_x = _x * (float(TEXTURE_WIDTH)/float(w->getScreenWidth()));
+  int read_y = TEXTURE_HEIGHT - _y * (float(TEXTURE_HEIGHT)/float(w->getScreenHeight()));
+
+  glReadPixels(read_x, read_y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
   ngl::Vec4 p(pixel[0], pixel[1], pixel[2], pixel[3]);
   return p;
 }
