@@ -12,6 +12,8 @@ struct BehaviourInfo
 {
   ngl::Vec3 (SteeringBehaviours::*function)();
   bool enabled;
+  float weighting;
+  int priority;
 };
 
 class SteeringBehaviours
@@ -38,7 +40,9 @@ public:
   /// @brief enables a behaviour
   /// @param [in] _behaviour the behaviour to enable
   //----------------------------------------------------------------------------------------------------------------------
-  void enable(std::string _behaviour);
+  void enable(std::string _behaviour,
+              float _weighting,
+              int _priority);
 
   //----------------------------------------------------------------------------------------------------------------------
   /// @brief disables a behaviour

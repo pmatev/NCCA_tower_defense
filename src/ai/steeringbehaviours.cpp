@@ -1,9 +1,21 @@
+#include <algorithm>
+
 #include "boost/utility.hpp"
 
 #include "include/ai/steeringbehaviours.h"
 #include "node.h"
 #include "enemy.h"
 #include "entity.h"
+
+//Comperator used to sort the vector
+struct PriorityCmp
+{
+  bool operator()(const std::pair<std::string, int> &lhs,
+                  const std::pair<std::string, int> &rhs)
+  {
+    return lhs.second < rhs.second;
+  }
+};
 
 SteeringBehaviours::SteeringBehaviours(EntityWPtr _entity):
             m_entity(_entity),
@@ -13,24 +25,32 @@ SteeringBehaviours::SteeringBehaviours(EntityWPtr _entity):
   BehaviourInfo fp_info;
   fp_info.function = &SteeringBehaviours::FollowPath;
   fp_info.enabled = false;
+  fp_info.weighting = 1.0;
+  fp_info.priority = 1;
   m_registeredBehaviours["FollowPath"] = fp_info;
 
   //register the behaviours
   BehaviourInfo sep_info;
   sep_info.function = &SteeringBehaviours::Seperation;
   sep_info.enabled = false;
+  sep_info.weighting = 1.0;
+  sep_info.priority = 2;
   m_registeredBehaviours["Seperation"] = sep_info;
 
   //register the behaviours
   BehaviourInfo co_info;
   co_info.function = &SteeringBehaviours::Cohesion;
   co_info.enabled = false;
+  co_info.weighting = 1.0;
+  co_info.priority = 3;
   m_registeredBehaviours["Cohesion"] = co_info;
 
   //register the behaviours
   BehaviourInfo ali_info;
   ali_info.function = &SteeringBehaviours::Alignment;
   ali_info.enabled = false;
+  ali_info.weighting = 1.0;
+  ali_info.priority = 4;
   m_registeredBehaviours["Alignment"] = ali_info;
 
 }
@@ -52,8 +72,9 @@ ngl::Vec3 SteeringBehaviours::calculate()
     //The individual force from each behaviour
     ngl::Vec3 force = ngl::Vec3(0.0, 0.0, 0.0);
 
-    //Iterates over each behaviour and accumulates their individual
-    //forces.
+    //Will evntually store the sorted behaviours.
+    std::vector<std::pair<std::string, int> > ordered_vector;
+
     typedef std::map<std::string, BehaviourInfo>::iterator rb_iter;
     for(rb_iter iterator = m_registeredBehaviours.begin();
         iterator != m_registeredBehaviours.end();
@@ -61,19 +82,57 @@ ngl::Vec3 SteeringBehaviours::calculate()
     {
       if(iterator->second.enabled)
       {
-        //Grabs the function registered to this behaviour
-        ngl::Vec3 (SteeringBehaviours::*f)() = iterator->second.function;
-        //grab its force
-        force = (*this.*f)();
-
-        //if accumulateForce returns false, then there's no
-        //more frorce left so return the current steering force.
-        if(!accumulateForce(force))
-        {
-          return m_steeringForce;
-        }
+        ordered_vector.push_back(std::make_pair(iterator->first,
+                                                iterator->second.priority));
       }
     }
+
+    //Sort the vector based on the priority stored in the pair.
+    std::sort(ordered_vector.begin(), ordered_vector.end(), PriorityCmp());
+
+    std::vector<std::pair<std::string, int> >::iterator ord_iter;
+    for(ord_iter = ordered_vector.begin();
+        ord_iter != ordered_vector.end();
+        ++ord_iter)
+    {
+      std::string key = ord_iter->first;
+
+      BehaviourInfo info = m_registeredBehaviours[key];
+      //Grabs the function registered to this behaviour
+      ngl::Vec3 (SteeringBehaviours::*f)() = info.function;
+      //grab its force
+      force = (*this.*f)() * info.weighting;
+
+      //if accumulateForce returns false, then there's no
+      //more frorce left so return the current steering force.
+      if(!accumulateForce(force))
+      {
+        return m_steeringForce;
+      }
+    }
+
+//    //Iterates over each behaviour and accumulates their individual
+//    //forces.
+//    typedef std::map<std::string, BehaviourInfo>::iterator rb_iter;
+//    for(rb_iter iterator = m_registeredBehaviours.begin();
+//        iterator != m_registeredBehaviours.end();
+//        iterator++)
+//    {
+//      if(iterator->second.enabled)
+//      {
+//        //Grabs the function registered to this behaviour
+//        ngl::Vec3 (SteeringBehaviours::*f)() = iterator->second.function;
+//        //grab its force
+//        force = (*this.*f)() * iterator->second.weighting;
+
+//        //if accumulateForce returns false, then there's no
+//        //more frorce left so return the current steering force.
+//        if(!accumulateForce(force))
+//        {
+//          return m_steeringForce;
+//        }
+//      }
+//    }
 
     return m_steeringForce;
   }
@@ -113,9 +172,13 @@ bool SteeringBehaviours::accumulateForce(ngl::Vec3 _force)
   return true;
 }
 
-void SteeringBehaviours::enable(std::string _behaviour)
+void SteeringBehaviours::enable(std::string _behaviour,
+                                float _weighting,
+                                int _priority)
 {
   m_registeredBehaviours[_behaviour].enabled = true;
+  m_registeredBehaviours[_behaviour].weighting = _weighting;
+  m_registeredBehaviours[_behaviour].priority = _priority;
 }
 
 void SteeringBehaviours::disable(std::string _behaviour)
