@@ -58,6 +58,9 @@ public:
   void drawSelection() ;
 
 protected:
+
+  void filterViewVolume(EntityRecordListPtr &o_localEntities);
+
   //-------------------------------------------------------------------//
   /// @brief ctor
   /// @param[in] _damage, damage that TestEnemy can do

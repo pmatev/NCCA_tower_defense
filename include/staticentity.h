@@ -59,6 +59,11 @@ public:
 
   inline NodeWPtr getLinkedNode() const {return m_linkedNode;}
 
+  //-------------------------------------------------------------------//
+  /// @brief recalculate the local entites
+  //-------------------------------------------------------------------//
+  void prepareForUpdate();
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief The upgrade level of the static entity

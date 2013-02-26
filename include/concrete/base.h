@@ -31,6 +31,7 @@ public:
   void draw();
   void drawSelection();
   void generateMesh();
+  void filterViewVolume(EntityRecordListPtr &o_localEntities);
 
 protected:
 

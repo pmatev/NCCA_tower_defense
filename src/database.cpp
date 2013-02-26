@@ -13,7 +13,7 @@ Database::Database(
     float _environMinX,
     float _environMinZ
     ) :
-  m_base(0,BASE,0,0,0,0,0,0,0,0,0),
+  m_base(0,BASE,0,0,0,0,0,0,0,0,0,0,0,0),
   m_environmentMaxX(_environMaxX),
   m_environmentMinX(_environMinX),
   m_environmentMaxZ(_environMaxZ),
@@ -161,7 +161,8 @@ void Database::addRecord(EntityRecord &_record)
 
 //-------------------------------------------------------------------//
 
-EntityRecordListPtr Database::getLocalEntities(
+void Database::getLocalEntities(
+    EntityRecordListPtr &o_newList,
     float _minX,
     float _minZ,
     float _maxX,
@@ -169,9 +170,10 @@ EntityRecordListPtr Database::getLocalEntities(
     std::list<GeneralType> &_typeList
     ) const
 {
-  //initialise a pointer to a list of entity records
-
-  EntityRecordListPtr returnList(new std::list<EntityRecord>);
+  if(!o_newList)
+  {
+    o_newList = EntityRecordListPtr(new std::list<EntityRecord>());
+  }
 
   //initialise an iterator to the beginning of the list of entity
   //records
@@ -198,19 +200,19 @@ EntityRecordListPtr Database::getLocalEntities(
     switch ((*typeListIt))
     {
     case ENEMY:
-      tempList = m_enemyGrid->getLocalEntities(_minX,_minZ,_maxX,_maxZ);
+      m_enemyGrid->getLocalEntities(tempList, _minX,_minZ,_maxX,_maxZ);
       break;
     case PROJECTILE:
-      tempList = m_projectileGrid->getLocalEntities(_minX,_minZ,_maxX,_maxZ);
+      m_projectileGrid->getLocalEntities(tempList, _minX,_minZ,_maxX,_maxZ);
       break;
     case TURRET:
-      tempList = m_turretGrid->getLocalEntities(_minX,_minZ,_maxX,_maxZ);
+      m_turretGrid->getLocalEntities(tempList, _minX,_minZ,_maxX,_maxZ);
       break;
     case WALL:
-      tempList = m_wallGrid->getLocalEntities(_minX,_minZ,_maxX,_maxZ);
+      m_wallGrid->getLocalEntities(tempList, _minX,_minZ,_maxX,_maxZ);
       break;
     case NODE:
-      tempList = m_nodeGrid->getLocalEntities(_minX,_minZ,_maxX,_maxZ);
+      m_nodeGrid->getLocalEntities(tempList, _minX,_minZ,_maxX,_maxZ);
       break;
     case BASE:
       tempList->push_back(m_base);
@@ -219,26 +221,26 @@ EntityRecordListPtr Database::getLocalEntities(
 
     //now add the tempList to the return list if it has elements:
 
-    if (tempList->size()!=0)
+    if (tempList && tempList->size()!=0)
     {
       //and if the return list is empty
 
-      if (returnList->size()==0)
+      if (o_newList->size()==0)
       {
         //set the return list iterator to the beginning of the list
 
-        returnListIt = returnList->begin();
+        returnListIt = o_newList->begin();
       }
       else
       {
         //set the return list iterator to the end of the list
 
-        returnListIt = returnList->end();
+        returnListIt = o_newList->end();
       }
 
       //insert the whole cell list into the return list
 
-      returnList->splice(
+      o_newList->splice(
             returnListIt,
             (*tempList),
             tempList->begin(),
@@ -247,9 +249,6 @@ EntityRecordListPtr Database::getLocalEntities(
     }
 
   }
-
-
-  return returnList;
 }
 //-------------------------------------------------------------------//
 

@@ -114,3 +114,10 @@ void Base::generateMesh()
 }
 
 //-------------------------------------------------------------------//
+
+void Base::filterViewVolume(EntityRecordListPtr &o_localEntities)
+{
+  Q_UNUSED(o_localEntities);
+}
+
+//-------------------------------------------------------------------//

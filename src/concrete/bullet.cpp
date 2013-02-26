@@ -11,7 +11,7 @@ Bullet::Bullet(
 {
   m_damage = 20;
   m_maxVelocity = 10;
-  m_currentVelocity = 2;
+  m_velocity = 2;
   generateMesh();
 }
 
@@ -130,3 +130,8 @@ ngl::Vec3 Bullet::brain()
 }
 
 //-------------------------------------------------------------------//
+
+void Bullet::filterViewVolume(EntityRecordListPtr &o_localEntities)
+{
+  Q_UNUSED(o_localEntities);
+}

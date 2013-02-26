@@ -17,7 +17,7 @@ TestEnemy::TestEnemy(
   //  m_active = false;
 
   m_damage = 100;
-  m_currentVelocity = 0;
+  m_velocity = 0;
   m_maxVelocity = 0.0025;
   m_maxForce = ngl::Vec3(0.2, 0.2, 0.2);
 }
@@ -154,3 +154,8 @@ void TestEnemy::drawSelection()
 }
 
 //-------------------------------------------------------------------//
+
+void TestEnemy::filterViewVolume(EntityRecordListPtr &o_localEntities)
+{
+  Q_UNUSED(o_localEntities);
+}

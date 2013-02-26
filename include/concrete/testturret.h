@@ -59,6 +59,8 @@ public:
 
 protected:
 
+  void filterViewVolume(EntityRecordListPtr &o_localEntities);
+
   //-------------------------------------------------------------------//
   /// @brief a parameterised ctor
   /// @param [in] _fov, a float value defining the field of view of the

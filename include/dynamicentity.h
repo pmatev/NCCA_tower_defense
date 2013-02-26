@@ -80,6 +80,13 @@ public:
   //-------------------------------------------------------------------//
   inline ngl::Vec3 getMaxForce(){return m_maxForce;}
 
+  //-------------------------------------------------------------------//
+  /// @brief prepare for update. This should update the local entites and
+  /// anything else that needs doing outside the update loop.
+  //-------------------------------------------------------------------//
+
+  void prepareForUpdate();
+
 
 protected:
 
@@ -164,11 +171,6 @@ protected:
 
   float m_mass;
 
-  //-------------------------------------------------------------------//
-  /// @brief the current velocity of the dynamic entity
-  //-------------------------------------------------------------------//
-
-  ngl::Vec3 m_currentVelocity;
 
   //-------------------------------------------------------------------//
   /// @brief the max velocity of the entity

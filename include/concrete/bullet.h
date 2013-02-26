@@ -56,6 +56,8 @@ public: //methods
 
   void generateMesh();
 
+  void filterViewVolume(EntityRecordListPtr &o_localEntities);
+
 protected: //methods
   //-------------------------------------------------------------------//
   /// @brief creator

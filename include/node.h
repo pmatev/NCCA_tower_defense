@@ -143,7 +143,17 @@ public:
 
   void resetSearchInfo();
 
+  //-------------------------------------------------------------------//
+  /// @brief shortcut the prepare for update because it does nothing
+  //-------------------------------------------------------------------//
+  inline void prepareForUpdate(){;}
+
 protected:
+  //-------------------------------------------------------------------//
+  /// @brief filter view. This does nothing at the moment
+  //-------------------------------------------------------------------//
+  void filterViewVolume(EntityRecordListPtr &o_localEntities);
+
   //-------------------------------------------------------------------//
   /// @brief parameterised constructor
   /// @param [in] _pos, a const reference to an ngl vector containing the

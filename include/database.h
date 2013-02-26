@@ -87,7 +87,8 @@ public: //methods
   /// influences as defined
   //-------------------------------------------------------------------//
 
-  EntityRecordListPtr getLocalEntities (
+  void getLocalEntities (
+        EntityRecordListPtr &o_newList,
         float _minX,
         float _minZ,
         float _maxX,

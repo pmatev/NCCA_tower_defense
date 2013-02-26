@@ -62,6 +62,9 @@ void Entity::publish()
                  m_pos.m_x,
                  m_pos.m_y,
                  m_pos.m_z,
+                 m_velocity.m_x,
+                 m_velocity.m_y,
+                 m_velocity.m_z,
                  m_lsMeshBBox.m_minX + m_pos.m_x,
                  m_lsMeshBBox.m_maxX + m_pos.m_x,
                  m_lsMeshBBox.m_minY + m_pos.m_y,
@@ -75,7 +78,8 @@ void Entity::publish()
 
 //-------------------------------------------------------------------//
 
-EntityRecordListPtr Entity::updateLocalEntities(
+void Entity::calculateLocalEntities(
+    EntityRecordListPtr &o_newList,
     std::list<GeneralType> &_typeList
     )
 {
@@ -85,17 +89,14 @@ EntityRecordListPtr Entity::updateLocalEntities(
 
   //get a pointer to the list of possible local entities
 
-  EntityRecordListPtr result = db->getLocalEntities(
+  db->getLocalEntities(
+        o_newList,
         m_wsViewBBox.m_minX,
         m_wsViewBBox.m_minY,
         m_wsViewBBox.m_maxX,
         m_wsViewBBox.m_maxY,
         _typeList
         );
-
-  //and return it
-
-  return result;
 }
 
 //-------------------------------------------------------------------//

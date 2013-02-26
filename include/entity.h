@@ -198,20 +198,6 @@ public: //methods
   inline unsigned int getID() const {return m_ID;}
 
   //-------------------------------------------------------------------//
-  /// @brief a method to update the list of localEntities
-  //-------------------------------------------------------------------//
-
-  EntityRecordListPtr updateLocalEntities(
-      std::list<GeneralType> &_typeList
-      );
-
-  //-------------------------------------------------------------------//
-  /// @brief a method to clear the list of local entities
-  //-------------------------------------------------------------------//
-
-  void clearLocalEntities();
-
-  //-------------------------------------------------------------------//
   /// @brief gets localEntities
   //-------------------------------------------------------------------//
 
@@ -257,6 +243,42 @@ public: //methods
   //-------------------------------------------------------------------//
   inline StateMachine* getStateMachine() const {return m_stateMachine;}
 
+protected:
+  //-------------------------------------------------------------------//
+  /// @brief a method to update the list of localEntities
+  //-------------------------------------------------------------------//
+
+  void calculateLocalEntities(
+      EntityRecordListPtr &o_newList,
+      std::list<GeneralType> &_typeList
+      );
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to clear the list of local entities
+  //-------------------------------------------------------------------//
+
+  void clearLocalEntities();
+
+  //-------------------------------------------------------------------//
+  /// @brief pure virtual method for filtering the local entity list based
+  /// on view volume. This should be implemented in the concrete type.
+  /// @param[out] o_localEntities pointer to the local entities
+  //-------------------------------------------------------------------//
+
+  virtual void filterViewVolume(EntityRecordListPtr &o_localEntities) = 0;
+
+  //-------------------------------------------------------------------//
+  /// @brief this method is used for running all the functions that need
+  /// to be run before the entity is updated. This should be implemented
+  /// at dynamic or static entity level. This will normally get all the local
+  /// entities and run the filterViewVolume method. This is for all things
+  /// that should be done outside of update loop to keep thread-safe.
+  //-------------------------------------------------------------------//
+
+  virtual void prepareForUpdate() = 0;
+
+
+
 protected: //attributes
 
   //-------------------------------------------------------------------//
@@ -272,6 +294,12 @@ protected: //attributes
   //-------------------------------------------------------------------//
 
   ngl::Vec3 m_pos;
+
+  //-------------------------------------------------------------------//
+  /// @brief the current velocity of the dynamic entity
+  //-------------------------------------------------------------------//
+
+  ngl::Vec3 m_velocity;
 
   //-------------------------------------------------------------------//
   /// @brief the health value of the entity

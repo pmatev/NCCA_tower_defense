@@ -83,6 +83,12 @@ void Wave::update(const double _dt)
     game->addCurrency(currencyAdded);
 
   }
+  // Make sure to update local entites
+  BOOST_FOREACH(EnemyPtr enemy, m_enemies)
+  {
+    enemy->prepareForUpdate();
+  }
+
 #pragma omp parallel
   {
 #pragma omp for

@@ -115,13 +115,17 @@ void DatabaseGrid::addRecord(EntityRecord &_record)
 
 //-------------------------------------------------------------------//
 
-EntityRecordListPtr DatabaseGrid::getLocalEntities(
+void DatabaseGrid::getLocalEntities(
+    EntityRecordListPtr &o_newList,
     float _minX,
     float _minZ,
-    float _maxX,
-    float _maxZ
+    float _maxX, float _maxZ
     ) const
 {
+  if(!o_newList)
+  {
+    o_newList = EntityRecordListPtr(new std::list<EntityRecord>());
+  }
   //checks that the min values are smaller than the max values,
   //and if not it swaps them
 
@@ -153,10 +157,6 @@ EntityRecordListPtr DatabaseGrid::getLocalEntities(
   int minZId = std::max(0, int(minZGrid));
   int maxZId = std::min(m_numCellsZ - 1, int(maxZGrid));
 
-  //initialise a pointer to a list of entity records
-
-  EntityRecordListPtr returnList(new std::list<EntityRecord>);
-
   //and initialise an iterator for that list
 
   std::list<EntityRecord>::iterator returnListIt;
@@ -177,22 +177,22 @@ EntityRecordListPtr DatabaseGrid::getLocalEntities(
       {
         //and if the return list is empty
 
-        if (returnList->size()==0)
+        if (o_newList->size()==0)
         {
           //set the return list iterator to the beginning of the list
 
-          returnListIt = returnList->begin();
+          returnListIt = o_newList->begin();
         }
         else
         {
           //set the return list iterator to the end of the list
 
-          returnListIt = returnList->end();
+          returnListIt = o_newList->end();
         }
 
         //insert the whole  cell list into the return list
 
-        returnList->insert(
+        o_newList->insert(
               returnListIt,
               (*m_grid[j+(i*(m_numCellsX))]).begin(),
               (*m_grid[j+(i*(m_numCellsX))]).end()
@@ -200,10 +200,6 @@ EntityRecordListPtr DatabaseGrid::getLocalEntities(
       }
     }
   }
-
-  //return a pointer to the list
-
-  return returnList;
 }
 //-------------------------------------------------------------------//
 

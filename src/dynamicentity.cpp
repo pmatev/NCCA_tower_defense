@@ -17,7 +17,7 @@ DynamicEntity::DynamicEntity(
 {
   //variables initialised before the constructor body
   m_mass = 10.0;
-  m_currentVelocity = ngl::Vec3(0.0, 0.0, 0.0);
+  m_velocity = ngl::Vec3(0.0, 0.0, 0.0);
 }
 
 //-------------------------------------------------------------------//
@@ -25,6 +25,19 @@ DynamicEntity::DynamicEntity(
 DynamicEntity::~DynamicEntity()
 {
   //currently using default destructor
+}
+
+//-------------------------------------------------------------------//
+
+void DynamicEntity::prepareForUpdate()
+{
+  // Get the local entities
+  std::list<GeneralType> types;
+  types.push_back(TURRET);
+  types.push_back(ENEMY);
+  calculateLocalEntities(m_localEntities, types);
+  // Filter the entities
+  filterViewVolume(m_localEntities);
 }
 
 //-------------------------------------------------------------------//
@@ -37,19 +50,20 @@ void DynamicEntity::update(const double _dt)
 
   //update the state machine
   m_stateMachine->update();
+  EntityRecordListWPtr test = getLocalEntities(); // TEST----------------------------------
 
   ngl::Vec3 steeringForce = brain();
   ngl::Vec3 acceleration = steeringForce / m_mass;
-  m_currentVelocity += acceleration;
+  m_velocity += acceleration;
 
   //truncate velocity to max speed
-  float diff = m_maxVelocity / m_currentVelocity.length();
+  float diff = m_maxVelocity / m_velocity.length();
   float scaleFactor = (diff < 1.0) ? diff : 1.0;
-  m_currentVelocity *= scaleFactor;
+  m_velocity *= scaleFactor;
 
   //update position
   m_prevPos = m_pos;
-  m_pos += m_currentVelocity * _dt;
+  m_pos += m_velocity * _dt;
 
   enforceGridBoundaries();
 
@@ -411,7 +425,9 @@ Collision DynamicEntity::collisionTest(
 
   //first generate a list of local entity records
   Database* db = Database::instance();
-  EntityRecordListPtr localEntities = db->getLocalEntities(
+  EntityRecordListPtr localEntities;
+  db->getLocalEntities(
+        localEntities,
         m_pos.m_x+m_lsMeshBBox.m_minX-0.5,
         m_pos.m_z+m_lsMeshBBox.m_minZ-0.5,
         m_pos.m_x+m_lsMeshBBox.m_maxX+0.5,
@@ -420,7 +436,6 @@ Collision DynamicEntity::collisionTest(
         );
 
   //then cycle through the list
-
   EntityRecordList::iterator listIt = localEntities->begin();
 
   //initialise the result and the return collision
