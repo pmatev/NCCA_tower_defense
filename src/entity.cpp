@@ -75,7 +75,7 @@ void Entity::publish()
 
 //-------------------------------------------------------------------//
 
-entityRecordListPtr Entity::updateLocalEntities(
+EntityRecordListPtr Entity::updateLocalEntities(
     std::list<GeneralType> &_typeList
     )
 {
@@ -85,7 +85,7 @@ entityRecordListPtr Entity::updateLocalEntities(
 
   //get a pointer to the list of possible local entities
 
-  entityRecordListPtr result = db->getLocalEntities(
+  EntityRecordListPtr result = db->getLocalEntities(
         m_wsViewBBox.m_minX,
         m_wsViewBBox.m_minY,
         m_wsViewBBox.m_maxX,

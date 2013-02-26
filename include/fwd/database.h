@@ -91,6 +91,10 @@ struct EntityRecord
 /// @typedef a boost shared pointer to a list of entity records
 //-------------------------------------------------------------------//
 
-typedef boost::shared_ptr<std::list<EntityRecord> > entityRecordListPtr;
+typedef std::list<EntityRecord> EntityRecordList;
+
+typedef boost::shared_ptr<EntityRecordList> EntityRecordListPtr;
+
+typedef boost::weak_ptr<EntityRecordList> EntityRecordListWPtr;
 
 #endif // DATABASE_FWD_H

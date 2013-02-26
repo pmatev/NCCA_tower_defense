@@ -161,7 +161,7 @@ void Database::addRecord(EntityRecord &_record)
 
 //-------------------------------------------------------------------//
 
-entityRecordListPtr Database::getLocalEntities(
+EntityRecordListPtr Database::getLocalEntities(
     float _minX,
     float _minZ,
     float _maxX,
@@ -171,7 +171,7 @@ entityRecordListPtr Database::getLocalEntities(
 {
   //initialise a pointer to a list of entity records
 
-  entityRecordListPtr returnList(new std::list<EntityRecord>);
+  EntityRecordListPtr returnList(new std::list<EntityRecord>);
 
   //initialise an iterator to the beginning of the list of entity
   //records
@@ -186,7 +186,7 @@ entityRecordListPtr Database::getLocalEntities(
 
   //set up a tempory list to store the reult in
 
-  entityRecordListPtr tempList;
+  EntityRecordListPtr tempList;
 
   //cycle through each element of the type list
 

@@ -80,7 +80,7 @@ public: //methods
   /// influences as defined
   //-------------------------------------------------------------------//
 
-  entityRecordListPtr getLocalEntities(
+  EntityRecordListPtr getLocalEntities(
         float _minX,
         float _minZ,
         float _maxX,
@@ -133,7 +133,7 @@ protected: //attributes
   /// system to reduce positional checks carried out in each update cycle
   //-------------------------------------------------------------------//
 
-  std::vector<entityRecordListPtr> m_grid;
+  std::vector<EntityRecordListPtr> m_grid;
 
   //-------------------------------------------------------------------//
   /// @brief The normalisation x scale factor of grid, to enable the entity

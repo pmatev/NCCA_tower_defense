@@ -201,7 +201,7 @@ public: //methods
   /// @brief a method to update the list of localEntities
   //-------------------------------------------------------------------//
 
-  entityRecordListPtr updateLocalEntities(
+  EntityRecordListPtr updateLocalEntities(
       std::list<GeneralType> &_typeList
       );
 
@@ -210,6 +210,14 @@ public: //methods
   //-------------------------------------------------------------------//
 
   void clearLocalEntities();
+
+  //-------------------------------------------------------------------//
+  /// @brief gets localEntities
+  //-------------------------------------------------------------------//
+
+  inline EntityRecordListWPtr getLocalEntities() const {
+    return EntityRecordListWPtr(m_localEntities);
+  }
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the type string
@@ -275,7 +283,7 @@ protected: //attributes
   /// @brief a pointer to a list of entity records
   //-------------------------------------------------------------------//
 
-  entityRecordListPtr m_localEntities;
+  EntityRecordListPtr m_localEntities;
 
   //-------------------------------------------------------------------//
   /// @brief the statemachine.

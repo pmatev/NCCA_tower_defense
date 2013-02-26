@@ -3,6 +3,7 @@
 #include "include/ai/steeringbehaviours.h"
 #include "node.h"
 #include "enemy.h"
+#include "entity.h"
 
 SteeringBehaviours::SteeringBehaviours(EntityWPtr _entity):
             m_entity(_entity),
@@ -14,45 +15,51 @@ SteeringBehaviours::SteeringBehaviours(EntityWPtr _entity):
   fp_info.enabled = false;
   m_registeredBehaviours["FollowPath"] = fp_info;
 
-  //register the behaviours
-  BehaviourInfo test_info;
-  test_info.function = &SteeringBehaviours::test;
-  test_info.enabled = false;
-  m_registeredBehaviours["test"] = test_info;
 }
 
 ngl::Vec3 SteeringBehaviours::calculate()
 {
-  return FollowPath();
-  //reset the steering force
-  m_steeringForce.null();
+  EntityPtr strongEntity = m_entity.lock();
 
-  //Interates over the registered behaviours
-  typedef std::map<std::string, BehaviourInfo>::iterator rb_iter;
-
-  ngl::Vec3 force = ngl::Vec3(0.0, 0.0, 0.0);
-  for(rb_iter iterator = m_registeredBehaviours.begin();
-      iterator != m_registeredBehaviours.end();
-      iterator++)
+  if(strongEntity)
   {
-    if(iterator->second.enabled)
-    {
-      //Grabs the function registered to this behaviour
-      ngl::Vec3 (SteeringBehaviours::*f)() = iterator->second.function;
-      //grab its force
-      force = (*this.*f)();
+    EnemyPtr enemyPtr = boost::dynamic_pointer_cast<Enemy>(strongEntity);
 
-      //return force;
-      //if accumulateForce returns false, then there's no
-      //more frorce left so return the current steering force.
-      if(!accumulateForce(force))
+    //The local entities are used by the steering behaviours.
+    m_localEntities = enemyPtr->getLocalEntities();
+
+    //reset the steering force
+    m_steeringForce.null();
+
+    //The individual force from each behaviour
+    ngl::Vec3 force = ngl::Vec3(0.0, 0.0, 0.0);
+
+    //Iterates over each behaviour and accumulates their individual
+    //forces.
+    typedef std::map<std::string, BehaviourInfo>::iterator rb_iter;
+    for(rb_iter iterator = m_registeredBehaviours.begin();
+        iterator != m_registeredBehaviours.end();
+        iterator++)
+    {
+      if(iterator->second.enabled)
       {
-        return m_steeringForce;
+        //Grabs the function registered to this behaviour
+        ngl::Vec3 (SteeringBehaviours::*f)() = iterator->second.function;
+        //grab its force
+        force = (*this.*f)();
+
+        //return force;
+        //if accumulateForce returns false, then there's no
+        //more frorce left so return the current steering force.
+        if(!accumulateForce(force))
+        {
+          return m_steeringForce;
+        }
       }
     }
-  }
 
-  return m_steeringForce;
+    return m_steeringForce;
+  }
 }
 
 bool SteeringBehaviours::accumulateForce(ngl::Vec3 _force)
@@ -186,9 +193,20 @@ ngl::Vec3 SteeringBehaviours::FollowPath()
   return finalVector;
 }
 
-ngl::Vec3 SteeringBehaviours::test()
+//Seperation
+ngl::Vec3 SteeringBehaviours::Seperation()
 {
-  return ngl::Vec3(0.0, 2.0, 0.0);
+//  ngl::Vec3 total_repulsion = ngl::Vec3(0.0, 0.0, 0.0);
+
+//  EntityRecordListPtr localStrongEntities = m_localEntities.lock();
+
+//  std::list<EntityRecord>::const_iterator iterator;
+//  for(iterator = localStrongEntities->begin();
+//      iterator < localStrongEntities->end();
+//      ++iterator)
+//  {
+
+//  }
 }
 
 

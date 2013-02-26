@@ -50,7 +50,7 @@ DatabaseGrid::DatabaseGrid(
   {
     for (int j = 0; j < _numCellsZ; j++)
     {
-      entityRecordListPtr list (new std::list<EntityRecord>);
+      EntityRecordListPtr list (new std::list<EntityRecord>);
       m_grid.push_back(list);
     }
   }
@@ -115,7 +115,7 @@ void DatabaseGrid::addRecord(EntityRecord &_record)
 
 //-------------------------------------------------------------------//
 
-entityRecordListPtr DatabaseGrid::getLocalEntities(
+EntityRecordListPtr DatabaseGrid::getLocalEntities(
     float _minX,
     float _minZ,
     float _maxX,
@@ -155,7 +155,7 @@ entityRecordListPtr DatabaseGrid::getLocalEntities(
 
   //initialise a pointer to a list of entity records
 
-  entityRecordListPtr returnList(new std::list<EntityRecord>);
+  EntityRecordListPtr returnList(new std::list<EntityRecord>);
 
   //and initialise an iterator for that list
 
@@ -212,7 +212,7 @@ void DatabaseGrid::clearRecords()
   // create an iterater to cycle through the cell lists and set it to the
   //beginning of the vector of lists
 
-  std::vector<entityRecordListPtr>::iterator it;
+  std::vector<EntityRecordListPtr>::iterator it;
   it = m_grid.begin();
 
   //then for each one

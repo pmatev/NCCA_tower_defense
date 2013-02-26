@@ -411,7 +411,7 @@ Collision DynamicEntity::collisionTest(
 
   //first generate a list of local entity records
   Database* db = Database::instance();
-  entityRecordListPtr localEntities = db->getLocalEntities(
+  EntityRecordListPtr localEntities = db->getLocalEntities(
         m_pos.m_x+m_lsMeshBBox.m_minX-0.5,
         m_pos.m_z+m_lsMeshBBox.m_minZ-0.5,
         m_pos.m_x+m_lsMeshBBox.m_maxX+0.5,
@@ -421,7 +421,7 @@ Collision DynamicEntity::collisionTest(
 
   //then cycle through the list
 
-  std::list<EntityRecord>::iterator listIt = localEntities->begin();
+  EntityRecordList::iterator listIt = localEntities->begin();
 
   //initialise the result and the return collision
 
