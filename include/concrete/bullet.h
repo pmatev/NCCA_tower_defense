@@ -56,7 +56,7 @@ public: //methods
 
   void generateMesh();
 
-  void filterViewVolume(EntityRecordListPtr &o_localEntities);
+  void filterViewVolume(EntityRecordList &o_localEntities);
 
 protected: //methods
   //-------------------------------------------------------------------//

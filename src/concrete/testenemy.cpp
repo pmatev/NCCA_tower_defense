@@ -155,7 +155,7 @@ void TestEnemy::drawSelection()
 
 //-------------------------------------------------------------------//
 
-void TestEnemy::filterViewVolume(EntityRecordListPtr &o_localEntities)
+void TestEnemy::filterViewVolume(EntityRecordList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
 }

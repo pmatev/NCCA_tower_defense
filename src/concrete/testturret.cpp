@@ -140,7 +140,7 @@ ngl::Vec3 TestTurret::brain()
 
 //-------------------------------------------------------------------//
 
-void TestTurret::filterViewVolume(EntityRecordListPtr &o_localEntities)
+void TestTurret::filterViewVolume(EntityRecordList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
 }

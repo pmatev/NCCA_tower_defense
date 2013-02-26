@@ -59,7 +59,7 @@ public:
 
 protected:
 
-  void filterViewVolume(EntityRecordListPtr &o_localEntities);
+  void filterViewVolume(EntityRecordList &o_localEntities);
 
   //-------------------------------------------------------------------//
   /// @brief a parameterised ctor

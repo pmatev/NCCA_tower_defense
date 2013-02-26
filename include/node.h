@@ -152,7 +152,7 @@ protected:
   //-------------------------------------------------------------------//
   /// @brief filter view. This does nothing at the moment
   //-------------------------------------------------------------------//
-  void filterViewVolume(EntityRecordListPtr &o_localEntities);
+  void filterViewVolume(EntityRecordList &o_localEntities);
 
   //-------------------------------------------------------------------//
   /// @brief parameterised constructor

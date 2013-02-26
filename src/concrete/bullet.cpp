@@ -131,7 +131,7 @@ ngl::Vec3 Bullet::brain()
 
 //-------------------------------------------------------------------//
 
-void Bullet::filterViewVolume(EntityRecordListPtr &o_localEntities)
+void Bullet::filterViewVolume(EntityRecordList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
 }
