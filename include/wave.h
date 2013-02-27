@@ -22,6 +22,7 @@
 //-------------------------------------------------------------------//
 
 DECLARESMARTLIST(Wave)
+DECLARESMARTLIST(WaveInfo)
 
 class Wave
 {
@@ -97,9 +98,8 @@ public:
   //-------------------------------------------------------------------//
 
   static WavePtr create(
-        EnemyPairList _enemiesForCreation,
-        Node::NodeWVecWPtr _spawnNodes,
-        float _creationInterval
+        const WaveInfo &_waveInfo,
+        Node::NodeWVecWPtr _spawnNodes
         );
 
   //-------------------------------------------------------------------//
@@ -167,9 +167,8 @@ protected:
   //-------------------------------------------------------------------//
 
   Wave(
-        EnemyPairList &_enemiesForCreation,
-        Node::NodeWVecWPtr _spawnNodes,
-        float _creationInterval
+        const WaveInfo &_waveInfo,
+        Node::NodeWVecWPtr _spawnNodes
         );
 
   //-------------------------------------------------------------------//
@@ -229,6 +228,11 @@ protected:
 
   EnemyPairList m_enemiesForCreation;
 
+  //-------------------------------------------------------------------//
+  /// @brief approximate time between between enemy creation
+  //-------------------------------------------------------------------//
+
+  float m_birthRate;
 
   //-------------------------------------------------------------------//
   /// @brief vector of nodes that can be spawned on.
@@ -250,11 +254,7 @@ protected:
 
   float m_time;
 
-  //-------------------------------------------------------------------//
-  /// @brief approximate time between between enemy creation
-  //-------------------------------------------------------------------//
 
-  float m_creationInterval;
 
 };
 
@@ -263,13 +263,12 @@ protected:
 /// @brief class to hold information relating to the creation of a wave
 //-------------------------------------------------------------------//
 
-DECLARESMARTLIST(WaveInfo)
 class WaveInfo
 {
   public:
   static WaveInfoPtr create(
         const Wave::EnemyPairList &_enemiesForCreation,
-        float _creationInterval
+        float _birthRate
         );
   //-------------------------------------------------------------------//
   /// @brief List of enemy types and corresponding enemy counts
@@ -279,17 +278,16 @@ class WaveInfo
   //-------------------------------------------------------------------//
   /// @brief time interval between each enemy creation
   //-------------------------------------------------------------------//
-  float m_creationInterval;
+  float m_birthRate;
 
   protected:
   inline WaveInfo(
         const Wave::EnemyPairList &_enemiesForCreation,
-        float _creationInterval
+        float _birthRate
         ):
     m_enemiesForCreation(_enemiesForCreation),
-    m_creationInterval(_creationInterval)
+    m_birthRate(_birthRate)
   {;}
-
 };
 
 #endif // WAVE_H

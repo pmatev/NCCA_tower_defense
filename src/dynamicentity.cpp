@@ -31,20 +31,18 @@ DynamicEntity::~DynamicEntity()
 
 void DynamicEntity::prepareForUpdate()
 {
+//  //generate the view box
+//  generateViewBBox();
 
-  //generate the view box
-
-  generateViewBBox();
-
-  // Get the local entities
-  std::list<GeneralType> types;
-  types.push_back(TURRET);
-  types.push_back(ENEMY);
-  m_localEntities = EntityRecordListPtr(new EntityRecordList());
-  //EntityRecordList localEntities;
-  calculateLocalEntities(*m_localEntities, types);
-  // Filter the entities
-  filterViewVolume(*m_localEntities);
+//  // Get the local entities
+//  std::list<GeneralType> types;
+//  types.push_back(TURRET);
+//  types.push_back(ENEMY);
+//  m_localEntities = EntityRecordListPtr(new EntityRecordList());
+//  //EntityRecordList localEntities;
+//  calculateLocalEntities(*m_localEntities, types);
+//  // Filter the entities
+//  filterViewVolume(*m_localEntities);
 }
 
 //-------------------------------------------------------------------//

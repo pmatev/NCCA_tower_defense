@@ -94,6 +94,12 @@ public:
 
   Node::NodeWVecWPtr getSpawnNodes() const;
 
+  //-------------------------------------------------------------------//
+  /// @brief check that all spawn nodes have valid paths to the base
+  //-------------------------------------------------------------------//
+
+  bool checkSpawnNodePaths() const;
+
 protected:
 
 

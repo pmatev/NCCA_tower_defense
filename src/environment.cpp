@@ -1,3 +1,4 @@
+#include <boost/foreach.hpp>
 #include "environment.h"
 #include "entityfactory.h"
 #include "database.h"
@@ -99,9 +100,6 @@ Environment::~Environment()
 
 void Environment::update(const double _dt)
 {
-  //--------------------------------------------------------------------------------------------------------
-  //createTower("TestTurret", m_nodeMap->getNodeFromCoords(0, 0));
-  //--------------------------------------------------------------------------------------------------------
   // Go through all the towers and draw
   for(
       StaticEntityList::iterator it = m_towers.begin();
@@ -115,9 +113,6 @@ void Environment::update(const double _dt)
   // update base
   m_base->update(_dt);
   m_nodeMap->update(_dt);
-  //--------------------------------------------------------------------------------------------------------
-  //removeTower(m_towers.begin());
-  //--------------------------------------------------------------------------------------------------------
 }
 
 //-------------------------------------------------------------------//
@@ -173,6 +168,7 @@ void Environment::createTower(
   {
     m_towers.push_back(newTower);
   }
+  recalculateSearchTree();
 }
 
 //-------------------------------------------------------------------//
@@ -216,3 +212,23 @@ Node::NodeWVecWPtr Environment::getSpawnNodes() const
 {
   return Node::NodeWVecWPtr(m_spawnNodes);
 }
+
+//-------------------------------------------------------------------//
+
+bool Environment::checkSpawnNodePaths() const
+{
+  BOOST_FOREACH(NodeWPtr nodeWeak, *m_spawnNodes)
+  {
+    NodePtr node = nodeWeak.lock();
+    if(node)
+    {
+      if(node->getSearchDepth() == -1)
+      {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+//-------------------------------------------------------------------//

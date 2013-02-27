@@ -38,7 +38,9 @@ public:
         const ngl::Vec3 &_pos,
         const ngl::Vec3 &_aim,
         unsigned int _id,
-        int _currencyValue);
+        int _currencyValue,
+        float _maxPathDistance
+        );
 
   //-------------------------------------------------------------------//
   /// @brief updates path from node manager
@@ -89,6 +91,22 @@ public:
 
   inline float getPathTargetThreshold(){return m_pathTargetThreshold;}
 
+  //-------------------------------------------------------------------//
+  /// @brief set enemy to try to regenerate it's path on the next update
+  //-------------------------------------------------------------------//
+  inline void needsNewPath(){m_needNewPath = true;}
+
+  //-------------------------------------------------------------------//
+  /// @brief prepare for update
+  //-------------------------------------------------------------------//
+  void prepareForUpdate();
+
+  //-------------------------------------------------------------------//
+  /// @brief get the maximum distance the enemy can stray from the path
+  //-------------------------------------------------------------------//
+
+  inline float getMaxPathDistance() const {return m_maxPathDistance;}
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief a list containing all the nodes in the path
@@ -99,6 +117,19 @@ protected:
   /// @brief a list temporary location for thepath nodes
   //-------------------------------------------------------------------//
   Node::NodeWList m_tempPathNodes;
+
+  //-------------------------------------------------------------------//
+  /// @brief this boolean should be set when the path needs regenerating
+  //-------------------------------------------------------------------//
+
+  bool m_needNewPath;
+
+  //-------------------------------------------------------------------//
+  /// @brief the maximum distance the enemy can be away from the closest
+  /// node in its path without regenerating the path.
+  //-------------------------------------------------------------------//
+
+  float m_maxPathDistance;
 
   //-------------------------------------------------------------------//
   /// @brief The distance from a node at which the enemy starts following

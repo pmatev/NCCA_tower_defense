@@ -9,26 +9,24 @@
 //-------------------------------------------------------------------//
 
 Wave::Wave(
-    EnemyPairList &_enemiesForCreation,
-    Node::NodeWVecWPtr _spawnNodes,
-    float _creationInterval
+    const WaveInfo &_waveInfo,
+    Node::NodeWVecWPtr _spawnNodes
     ):
-  m_enemiesForCreation(_enemiesForCreation),
+  m_enemiesForCreation(_waveInfo.m_enemiesForCreation),
+  m_birthRate(_waveInfo.m_birthRate),
   m_spawnNodes(_spawnNodes),
-  m_time(0),
-  m_creationInterval(_creationInterval)
+  m_time(0)
 {
 }
 
 //-------------------------------------------------------------------//
 
 WavePtr Wave::create(
-    EnemyPairList _enemiesForCreation,
-    Node::NodeWVecWPtr _spawnNodes,
-    float _creationInterval
+    const WaveInfo &_waveInfo,
+    Node::NodeWVecWPtr _spawnNodes
     )
 {
-  WavePtr a(new Wave(_enemiesForCreation, _spawnNodes, _creationInterval));
+  WavePtr a(new Wave(_waveInfo, _spawnNodes));
   return a;
 }
 
@@ -151,12 +149,12 @@ void Wave::draw()
 
 bool Wave::generatePaths(NodeWPtr _node)
 {
-  // Reset path nodes (for path optimisation)
-  EnvironmentPtr env = Game::instance()->getEnvironmentWeakPtr().lock();
-  if(env)
-  {
-    env->recalculateSearchTree();
-  }
+//  // Reset path nodes (for path optimisation)
+//  EnvironmentPtr env = Game::instance()->getEnvironmentWeakPtr().lock();
+//  if(env)
+//  {
+//    env->recalculateSearchTree();
+//  }
 
   // 1. Find all Enemies affected by _node
   // 2. Go through each Enemy and tell it to generate a new temporary path
@@ -172,10 +170,11 @@ bool Wave::generatePaths(NodeWPtr _node)
     {
       return false;
     }
-    else
-    {
-      enemy->finalisePath();
-    }
+  }
+
+  BOOST_FOREACH(EnemyPtr enemy, m_enemies)
+  {
+    enemy->finalisePath();
   }
 
 //  EnemyWVecPtr enemyList = m_pathNodes[_node];
@@ -233,7 +232,7 @@ void Wave::brain(const double _dt)
   // random positions
   m_time += _dt / 1000.0;
 
-  if(m_time > m_creationInterval)
+  if(m_time > m_birthRate)
   {
     Node::NodeWVecPtr spawnNodes = m_spawnNodes.lock();
     if(spawnNodes)
@@ -395,9 +394,9 @@ bool Wave::isDead() const
 
 WaveInfoPtr WaveInfo::create(
     const Wave::EnemyPairList &_enemiesForCreation,
-    float _creationInterval
+    float _birthRate
     )
 {
-  WaveInfoPtr a(new WaveInfo(_enemiesForCreation, _creationInterval));
+  WaveInfoPtr a(new WaveInfo(_enemiesForCreation, _birthRate));
   return a;
 }

@@ -90,7 +90,7 @@ public:
   /// anything else that needs doing outside the update loop.
   //-------------------------------------------------------------------//
 
-  void prepareForUpdate();
+  virtual void prepareForUpdate();
 
   //-------------------------------------------------------------------//
   /// @brief a method to generate the view box

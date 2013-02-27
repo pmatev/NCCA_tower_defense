@@ -203,7 +203,6 @@ ngl::Vec3 SteeringBehaviours::FollowPath()
   NodePtr nearestNode;
   NodePtr parentNode;
   float nearestSqrDistance = 10000000000;
-
   ngl::Vec3 finalVector;
 
   for(Node::NodeWList::const_iterator it = nodePath.begin();
@@ -245,15 +244,30 @@ ngl::Vec3 SteeringBehaviours::FollowPath()
   //get the parent node of the nearestNode as long as we're not at the end.
   if(nearestNode)
   {
+
+    // get distance to nearest node and check threshold
     finalVector = nearestNode->getPos() - enemyPtr->getPos();
     float len = finalVector.length();
+
+    if(len > enemyPtr->getMaxPathDistance())
+    {
+      enemyPtr->needsNewPath();
+    }
+
     if(parentNode && len < enemyPtr->getPathTargetThreshold())
     {
       //return dir vector between parentNode and nearestNode
 
-      // get distance to nearest node and check threshold
-
+      // Don't normalise so that the further it moves away from the path the
+      // bigger the force
       finalVector = parentNode->getPos() - enemyPtr->getPos();
+
+//      // Normalise
+//      float newLen = finalVector.length();
+//      if(newLen)
+//      {
+//        finalVector/=newLen;
+//      }
     }
   }
 //  else
@@ -264,11 +278,8 @@ ngl::Vec3 SteeringBehaviours::FollowPath()
 //  }
 
   //std::cout<<finalVector<<std::endl;
-  float newLen = finalVector.length();
-  if(newLen)
-  {
-    finalVector/=newLen;
-  }
+
+
 
   return finalVector;
 }

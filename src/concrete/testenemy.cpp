@@ -8,8 +8,14 @@ TestEnemy::TestEnemy(
     const ngl::Vec3 &_aim,
     unsigned int _id
     ):
-  Enemy(_pos,_aim, _id, 5)   //last value is the currency value, specified at
-                             //concrete level
+  Enemy(
+    _pos,
+    _aim,
+    _id,
+    5, // currency value
+    3.0 // max distance from nearest path node
+    )
+
 {
   // ctor just passes everything to parent class
   // HACKY TESTING HERE

@@ -259,7 +259,6 @@ protected:
   typedef std::map<NodeWPtr, PathNodePtr> PathNodeMap;
 
 protected:
-
   //-------------------------------------------------------------------//
   /// @brief static member for caching hexagon factor sqrt(3)/2
   //-------------------------------------------------------------------//

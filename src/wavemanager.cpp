@@ -13,9 +13,8 @@ WaveManager::WaveManager(
   {
     m_waves.push_back(
           Wave::create(
-            waveInfo->m_enemiesForCreation,
-            _spawnNodes,
-            waveInfo->m_creationInterval
+            *waveInfo,
+            _spawnNodes
             )
           );
   }
@@ -46,6 +45,7 @@ void WaveManager::update(const double _dt)
   if(m_currentWaveIt != m_waves.end())
   {
     (*m_currentWaveIt)->update(_dt);
+    // If the current wave is dead go to the next wave
     if((*m_currentWaveIt)->isDead())
     {
       ++m_currentWaveIt;

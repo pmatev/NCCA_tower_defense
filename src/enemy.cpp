@@ -11,16 +11,44 @@ Enemy::Enemy(
     const ngl::Vec3 &_pos,
     const ngl::Vec3 &_aim,
     unsigned int _id,
-    int _currencyValue
+    int _currencyValue,
+    float _maxPathDistance
     ) :
   DynamicEntity(_pos,_aim,ENEMY, _id),
   m_pathTargetThreshold(1.2), //THIS SHOULD BE A PROPORTION OF THE DISTANCE BETWEEN NODES!!!!!
-  m_currencyValue(_currencyValue)             //IF ITS TOO LOW ENEMIES WILL NOT MOVE
+  m_currencyValue(_currencyValue),          //IF ITS TOO LOW ENEMIES WILL NOT MOVE
+  m_needNewPath(false),
+  m_maxPathDistance(_maxPathDistance)
 {
   if(generateTempPath())
   {
     finalisePath();
   }
+}
+
+void Enemy::prepareForUpdate()
+{
+  // Check to see if it's path needs updating
+  if(m_needNewPath)
+  {
+    if(generateTempPath())
+    {
+      finalisePath();
+    }
+  }
+
+  //generate the view box
+  generateViewBBox();
+
+  // Get the local entities
+  std::list<GeneralType> types;
+  types.push_back(TURRET);
+  types.push_back(ENEMY);
+  m_localEntities = EntityRecordListPtr(new EntityRecordList());
+  //EntityRecordList localEntities;
+  calculateLocalEntities(*m_localEntities, types);
+  // Filter the entities
+  filterViewVolume(*m_localEntities);
 }
 
 //-------------------------------------------------------------------//
@@ -51,6 +79,7 @@ void Enemy::finalisePath()
 {
   m_pathNodes = m_tempPathNodes;
   m_tempPathNodes.clear();
+  m_needNewPath = false;
 }
 
 //-------------------------------------------------------------------//
@@ -192,3 +221,4 @@ bool Enemy::sphereBBoxCollision(const ngl::Vec3 &_pos,
 }
 
 //-------------------------------------------------------------------//
+

@@ -157,11 +157,11 @@ void Game::update(const double _dt)
   m_waveManager->publish();
   m_projectileManager->publish();
   // 3 //
-  m_projectileManager->update(_dt);
-  // 4 //
-  dealDamage(m_projectileManager->checkCollisions());
+//  m_projectileManager->update(_dt);
+//  // 4 //
+//  dealDamage(m_projectileManager->checkCollisions());
 
-  m_projectileManager->checkDeaths();
+//  m_projectileManager->checkDeaths();
   // 5 //
   m_waveManager->update(_dt);
   // 6 //
@@ -194,10 +194,9 @@ void Game::draw()
 
 bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
 {
-  // HARD CODE FALSE SO THAT IT DOESNT BREAK OTHER PEOPLES CODE DURING DEBUGGING
-  //return false;
   // Update all Enemy paths and check that they are all valid if _node
   // is occupied
+  bool status = true;
 
   // quick stupidity check to make sure that the node is not occupied
   if(_node->isOccupied())
@@ -206,15 +205,33 @@ bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
   }
   // set node to occupied
   _node->setOccupied(true);
-  if(m_waveManager->generatePaths(NodeWPtr(_node)))
+  m_environment->recalculateSearchTree();
+
+  // Check to make sure that all spawn node are accessable
+  if(!m_environment->checkSpawnNodePaths())
   {
-    // Tell the environment to create a tower
-    m_environment->createTower(_type, _node);
-    return true;
+    status = false;
   }
-  // if placing the tower was unsuccessful set the node back to unoccupied
-  _node->setOccupied(false);
-  return false;
+  else
+  {
+    if(m_waveManager->generatePaths(NodeWPtr(_node)))
+    {
+      // Tell the environment to create a tower
+      m_environment->createTower(_type, _node);
+      status =  true;
+    }
+    else
+    {
+      status = false;
+    }
+  }
+  if(!status)
+  {
+    // if placing the tower was unsuccessful set the node back to unoccupied
+    _node->setOccupied(false);
+    m_environment->recalculateSearchTree();
+  }
+  return status;
 
 }
 

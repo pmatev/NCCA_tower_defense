@@ -400,7 +400,8 @@ NodeManagerPtr NodeManager::create(
     int _hexagonSize,
     ngl::Vec3 _origin,
     int _dbGridSizeX,
-    int _dbGridSizeZ)
+    int _dbGridSizeZ
+    )
 {
   NodeManagerPtr a(new NodeManager(_gridWidth,
                                    _gridHeight,
@@ -454,7 +455,6 @@ void NodeManager::resetPathNodes()
   BOOST_FOREACH(PathNodeMap::value_type pathNode, m_pathNodeMap)
   {
     pathNode.second->m_hasSuccessfulPath = false;
-
   }
 }
 
