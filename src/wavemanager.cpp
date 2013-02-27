@@ -4,18 +4,17 @@
 //-------------------------------------------------------------------//
 
 WaveManager::WaveManager(
-    Node::NodeWVecPtr _spawnNodes,
-    const Wave::WaveInfoList &_waveInfo
-    ):
-  m_spawnNodes(_spawnNodes)
+    Node::NodeWVecWPtr _spawnNodes,
+    const WaveInfoList &_waveInfo
+    )
 {
   // go through _waveInfo and construct waves accordingly
-  BOOST_FOREACH(Wave::WaveInfoPtr waveInfo, _waveInfo)
+  BOOST_FOREACH(WaveInfoPtr waveInfo, _waveInfo)
   {
     m_waves.push_back(
           Wave::create(
             waveInfo->m_enemiesForCreation,
-            m_spawnNodes,
+            _spawnNodes,
             waveInfo->m_creationInterval
             )
           );
@@ -26,8 +25,8 @@ WaveManager::WaveManager(
 //-------------------------------------------------------------------//
 
 WaveManagerPtr WaveManager::create(
-    Node::NodeWVecPtr _spawnNodes,
-    const Wave::WaveInfoList &_waveInfo
+    Node::NodeWVecWPtr _spawnNodes,
+    const WaveInfoList &_waveInfo
     )
 {
   WaveManagerPtr a(new WaveManager(_spawnNodes, _waveInfo));

@@ -28,8 +28,8 @@ public:
   //-------------------------------------------------------------------//
 
   static WaveManagerPtr create(
-        Node::NodeWVecPtr _spawnNodes,
-        const Wave::WaveInfoList &_waveInfo
+        Node::NodeWVecWPtr _spawnNodes,
+        const WaveInfoList &_waveInfo
         );
 
   //-------------------------------------------------------------------//
@@ -89,14 +89,9 @@ protected:
   /// @brief ctor
   //-------------------------------------------------------------------//
 
-  WaveManager(Node::NodeWVecPtr _spawnNodes, const Wave::WaveInfoList &_waveInfo);
+  WaveManager(Node::NodeWVecWPtr _spawnNodes, const WaveInfoList &_waveInfo);
 
 protected:
-  //-------------------------------------------------------------------//
-  /// @brief list of possible nodes for enemies to be created on
-  //-------------------------------------------------------------------//
-  Node::NodeWVecPtr m_spawnNodes;
-
 
   //-------------------------------------------------------------------//
   /// @brief current wave

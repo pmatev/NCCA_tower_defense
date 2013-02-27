@@ -13,7 +13,9 @@ Environment::Environment(
     int _baseX,
     int _baseY,
     int _dbGridSizeX,
-    int _dbGridSizeZ):
+    int _dbGridSizeZ,
+    const std::vector<ngl::Vec2> &_spawnCoords
+    ):
   m_nodeMap(NodeManager::create(
               _gridWidth,
               _gridHeight,
@@ -44,6 +46,16 @@ Environment::Environment(
   // Do first pass at scene graph, this is so objects can find initial paths when
   // they are constructed.
   m_nodeMap->recalculateSearchTree(NodeWPtr(linkedNode));
+
+  // Create spawn points from coordinates.
+  m_spawnNodes = Node::NodeWVecPtr(new Node::NodeWVec(_spawnCoords.size()));
+  for(unsigned int i = 0; i < _spawnCoords.size(); ++i)
+  {
+    (*m_spawnNodes)[i] = m_nodeMap->getNodeFromCoords(
+          _spawnCoords[i][0],
+          _spawnCoords[i][1]
+          );
+  }
 }
 
 //-------------------------------------------------------------------//
@@ -56,17 +68,23 @@ EnvironmentPtr Environment::create(
     int _baseX,
     int _baseY,
     int _dbGridSizeX,
-    int _dbGridSizeZ)
+    int _dbGridSizeZ,
+    const std::vector<ngl::Vec2> &_spawnCoords
+    )
 {
-  EnvironmentPtr a(new Environment(
-                     _gridWidth,
-                     _gridHeight,
-                     _hexagonSize,
-                     _origin,
-                     _baseX,
-                     _baseY,
-                     _dbGridSizeX,
-                     _dbGridSizeZ));
+  EnvironmentPtr a(
+        new Environment(
+          _gridWidth,
+          _gridHeight,
+          _hexagonSize,
+          _origin,
+          _baseX,
+          _baseY,
+          _dbGridSizeX,
+          _dbGridSizeZ,
+          _spawnCoords
+          )
+        );
   return a;
 }
 
@@ -157,6 +175,8 @@ void Environment::createTower(
   }
 }
 
+//-------------------------------------------------------------------//
+
 void Environment::removeTower(StaticEntityList::iterator _tower)
 {
   // unregister
@@ -169,7 +189,6 @@ void Environment::removeTower(StaticEntityList::iterator _tower)
 }
 
 //-------------------------------------------------------------------//
-
 
 ngl::Vec3 Environment::getBasePos()
 {
@@ -184,8 +203,16 @@ NodeManagerWPtr Environment::getNodeManagerWeakPtr()
   return a;
 }
 
+//-------------------------------------------------------------------//
 
 void Environment::recalculateSearchTree()
 {
   m_nodeMap->recalculateSearchTree(m_base->getLinkedNode());
+}
+
+//-------------------------------------------------------------------//
+
+Node::NodeWVecWPtr Environment::getSpawnNodes() const
+{
+  return Node::NodeWVecWPtr(m_spawnNodes);
 }

@@ -38,7 +38,9 @@ public:
         int _baseX,
         int _baseY,
         int _dbGridSizeX,
-        int _dbGridSizeZ);
+        int _dbGridSizeZ,
+        const std::vector<ngl::Vec2> &_spawnCoords
+        );
 
   //-------------------------------------------------------------------//
   /// @brief dtor
@@ -85,6 +87,13 @@ public:
 
   void recalculateSearchTree();
 
+  //-------------------------------------------------------------------//
+  /// @brief get a weak pointer to a vector of weak pointer to the nodes
+  /// that should be used for spawning.
+  //-------------------------------------------------------------------//
+
+  Node::NodeWVecWPtr getSpawnNodes() const;
+
 protected:
 
 
@@ -106,6 +115,14 @@ protected:
 
   NodeManagerPtr m_nodeMap;
 
+  //-------------------------------------------------------------------//
+  /// @brief possible spawn points for waves. This is stored here so that
+  /// path checking can make sure these nodes have valid paths and they cannot
+  /// themselves be occupied by towers.
+  //-------------------------------------------------------------------//
+
+  Node::NodeWVecPtr m_spawnNodes;
+
 protected:
 
 
@@ -124,7 +141,9 @@ private:
         int _baseX,
         int _baseY,
         int _dbGridSizeX,
-        int _dbGridSizeZ);
+        int _dbGridSizeZ,
+        const std::vector<ngl::Vec2> &_spawnCoords
+        );
 };
 
 #endif // ENVIRONMENT_H

@@ -10,7 +10,7 @@
 
 Wave::Wave(
     EnemyPairList &_enemiesForCreation,
-    Node::NodeWVecPtr _spawnNodes,
+    Node::NodeWVecWPtr _spawnNodes,
     float _creationInterval
     ):
   m_enemiesForCreation(_enemiesForCreation),
@@ -24,7 +24,7 @@ Wave::Wave(
 
 WavePtr Wave::create(
     EnemyPairList _enemiesForCreation,
-    Node::NodeWVecPtr _spawnNodes,
+    Node::NodeWVecWPtr _spawnNodes,
     float _creationInterval
     )
 {
@@ -235,21 +235,27 @@ void Wave::brain(const double _dt)
 
   if(m_time > m_creationInterval)
   {
-    BOOST_FOREACH(EnemyPairPtr pair, m_enemiesForCreation)
+    Node::NodeWVecPtr spawnNodes = m_spawnNodes.lock();
+    if(spawnNodes)
     {
-      if(pair->m_count)
+      BOOST_FOREACH(EnemyPairPtr pair, m_enemiesForCreation)
       {
-        // pick a node to generate on
-        int randomInt = std::rand() % m_spawnNodes->size();
-        NodePtr startNode = (*m_spawnNodes)[randomInt].lock();
-        if(startNode)
+        if(pair->m_count)
         {
-          addEnemy(pair->m_type, startNode->getPos(), ngl::Vec3(0, 0, 0));
-          --pair->m_count;
+          // pick a node to generate on
+          int randomInt = std::rand() % spawnNodes->size();
+          NodePtr startNode = (*spawnNodes)[randomInt].lock();
+          if(startNode)
+          {
+            addEnemy(pair->m_type, startNode->getPos(), ngl::Vec3(0, 0, 0));
+            --pair->m_count;
+          }
+          // Break so we don't make one of each type
+          break;
         }
       }
+      m_time = 0;
     }
-    m_time = 0;
   }
 
   //  // ctor
@@ -383,4 +389,15 @@ bool Wave::isDead() const
   {
     return false;
   }
+}
+
+//-------------------------------- WaveInfo ----------------------------------//
+
+WaveInfoPtr WaveInfo::create(
+    const Wave::EnemyPairList &_enemiesForCreation,
+    float _creationInterval
+    )
+{
+  WaveInfoPtr a(new WaveInfo(_enemiesForCreation, _creationInterval));
+  return a;
 }

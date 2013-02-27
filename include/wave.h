@@ -18,24 +18,50 @@
 /// Revision History :
 /// Initial Version 27/11/12
 /// @class Wave
+/// @class WaveInfo
 //-------------------------------------------------------------------//
 
 DECLARESMARTLIST(Wave)
-
-
 
 class Wave
 {
 public:
   DECLARESMART(EnemyPair)
   //-------------------------------------------------------------------//
-  /// @struct pair for storing the number and type of a specific enemy
+  /// @class pair for storing the number and type of a specific enemy
   /// this will be used when creating lists of available enemies for passing
   /// into the wave
   //-------------------------------------------------------------------//
 
-  struct EnemyPair
+  class EnemyPair
   {
+    public:
+
+    //-------------------------------------------------------------------//
+    /// @brief the number of enemies of specific type
+    //-------------------------------------------------------------------//
+
+    int m_count;
+
+    //-------------------------------------------------------------------//
+    /// @brief the specific enemy type
+    //-------------------------------------------------------------------//
+    std::string m_type;
+
+    public:
+
+    //-------------------------------------------------------------------//
+    /// @brief default creator
+    //-------------------------------------------------------------------//
+
+    inline static EnemyPairPtr create(int _count, const std::string &_type)
+    {
+      EnemyPairPtr a(new EnemyPair(_count, _type));
+      return a;
+    }
+
+    protected:
+
     //-------------------------------------------------------------------//
     /// @brief default ctor
     //-------------------------------------------------------------------//
@@ -53,16 +79,6 @@ public:
       m_type(_type)
     {;}
 
-    //-------------------------------------------------------------------//
-    /// @brief the number of enemies of specific type
-    //-------------------------------------------------------------------//
-
-    int m_count;
-
-    //-------------------------------------------------------------------//
-    /// @brief the specific enemy type
-    //-------------------------------------------------------------------//
-    std::string m_type;
   };
 
   //-------------------------------------------------------------------//
@@ -71,27 +87,6 @@ public:
 
   typedef std::list<EnemyPairPtr> EnemyPairList;
 
-  //-------------------------------------------------------------------//
-  /// @brief struct to hold information relating to the creation of a wave
-  //-------------------------------------------------------------------//
-
-  DECLARESMARTLIST(WaveInfo)
-  struct WaveInfo
-  {
-    WaveInfo(const EnemyPairList &_enemiesForCreation, float _creationInterval):
-      m_enemiesForCreation(_enemiesForCreation),
-      m_creationInterval(_creationInterval)
-    {;}
-    //-------------------------------------------------------------------//
-    /// @brief List of enemy types and corresponding enemy counts
-    //-------------------------------------------------------------------//
-    EnemyPairList m_enemiesForCreation;
-
-    //-------------------------------------------------------------------//
-    /// @brief time interval between each enemy creation
-    //-------------------------------------------------------------------//
-    float m_creationInterval;
-  };
 
 public:
 
@@ -103,7 +98,7 @@ public:
 
   static WavePtr create(
         EnemyPairList _enemiesForCreation,
-        Node::NodeWVecPtr _spawnNodes,
+        Node::NodeWVecWPtr _spawnNodes,
         float _creationInterval
         );
 
@@ -173,7 +168,7 @@ protected:
 
   Wave(
         EnemyPairList &_enemiesForCreation,
-        Node::NodeWVecPtr _spawnNodes,
+        Node::NodeWVecWPtr _spawnNodes,
         float _creationInterval
         );
 
@@ -239,7 +234,7 @@ protected:
   /// @brief vector of nodes that can be spawned on.
   //-------------------------------------------------------------------//
 
-  Node::NodeWVecPtr m_spawnNodes;
+  Node::NodeWVecWPtr m_spawnNodes;
 
   //-------------------------------------------------------------------//
   /// @brief map of all Nodes currently being used for paths and their
@@ -263,5 +258,38 @@ protected:
 
 };
 
+
+//-------------------------------------------------------------------//
+/// @brief class to hold information relating to the creation of a wave
+//-------------------------------------------------------------------//
+
+DECLARESMARTLIST(WaveInfo)
+class WaveInfo
+{
+  public:
+  static WaveInfoPtr create(
+        const Wave::EnemyPairList &_enemiesForCreation,
+        float _creationInterval
+        );
+  //-------------------------------------------------------------------//
+  /// @brief List of enemy types and corresponding enemy counts
+  //-------------------------------------------------------------------//
+  Wave::EnemyPairList m_enemiesForCreation;
+
+  //-------------------------------------------------------------------//
+  /// @brief time interval between each enemy creation
+  //-------------------------------------------------------------------//
+  float m_creationInterval;
+
+  protected:
+  inline WaveInfo(
+        const Wave::EnemyPairList &_enemiesForCreation,
+        float _creationInterval
+        ):
+    m_enemiesForCreation(_enemiesForCreation),
+    m_creationInterval(_creationInterval)
+  {;}
+
+};
 
 #endif // WAVE_H

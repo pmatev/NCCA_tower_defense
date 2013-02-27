@@ -36,6 +36,7 @@ public:
 
   typedef boost::shared_ptr<NodeWList> NodeWListPtr;
   typedef boost::shared_ptr<NodeWVec> NodeWVecPtr;
+  typedef boost::weak_ptr<NodeWVec> NodeWVecWPtr;
 
 public:
 
