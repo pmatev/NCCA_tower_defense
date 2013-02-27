@@ -110,7 +110,9 @@ public:
   Turret(
         NodePtr _linkedNode,
         unsigned int _id,
-        std::string _projectileType
+        std::string _projectileType,
+        float _viewDistance,
+        float _projectileSpeed
         );
 
   //-------------------------------------------------------------------//
@@ -194,7 +196,8 @@ public:
   /// @param [out] the required vector to aim at the position
   //-------------------------------------------------------------------//
 
-  ngl::Vec3 getAimVec(const ngl::Vec3 &_pos) const;
+  ngl::Vec3 calculateAimVec(const ngl::Vec3 &_pos,
+                            const ngl::Vec3 &_velocity) const;
 
   //-------------------------------------------------------------------//
   /// @brief a method to update the shot position
@@ -209,11 +212,11 @@ public:
   /// @param [out] reference to the entity record
   //-------------------------------------------------------------------//
 
-  void getLocalRecordByID(unsigned int _ID, EntityRecord & o_record);
+  void getTargetRecord(EntityRecord &o_record);
 
   //-------------------------------------------------------------------//
   /// @brief a method to get a record from the local entities
-  /// list by it's ID
+  /// list based on the one that is nearest to the current aim
   /// @param [out] a reference to the entity record
   //-------------------------------------------------------------------//
 
@@ -224,7 +227,7 @@ public:
   /// @param [in] _aim the input vector defines the aim
   //-------------------------------------------------------------------//
 
-  void setAim(const ngl::Vec3 &_aim);
+  void setDesiredAim(const ngl::Vec3 &_aim);
 
   //-------------------------------------------------------------------//
   /// @brief prepare for update method, overloaded so that it has access
@@ -232,6 +235,31 @@ public:
   //-------------------------------------------------------------------//
 
   void prepareForUpdate();
+
+  //-------------------------------------------------------------------//
+  /// @brief method to return the cosine of the max rotation speed
+  //-------------------------------------------------------------------//
+
+  inline float getCosRotationSpeed() const {return m_cosRotationSpeed;}
+
+  //-------------------------------------------------------------------//
+  /// @brief method to return the m_aim Vector
+  //-------------------------------------------------------------------//
+
+  inline ngl::Vec3 getAim() const{return m_aim;}
+
+  //-------------------------------------------------------------------//
+  /// @brief method to set the target id
+  //-------------------------------------------------------------------//
+
+  inline void setTarget(unsigned int _ID) {m_targetID = _ID;}
+
+  //-------------------------------------------------------------------//
+  /// @brief method to set the rotation value, auto sets the cos val
+  /// @param [in] _maxRotation rotation value
+  //-------------------------------------------------------------------//
+
+  void setRotationAngle (float _maxRotation);
 
   //-------------------------------------------------------------------//
   /// @brief move turret to the next available upgrade
@@ -272,10 +300,17 @@ protected:
   float m_viewDistance;
 
   //-------------------------------------------------------------------//
-  /// @brief value to define the max rotation speed
+  /// @brief value to define the max rotation speed, stored as angle per
+  /// update
   //-------------------------------------------------------------------//
 
-  float m_maxRotationSpeed;
+  float m_maxRotationAngle;
+
+  //-------------------------------------------------------------------//
+  /// @brief the cosine of the max rotation angle
+  //-------------------------------------------------------------------//
+
+  float m_cosRotationSpeed;
 
   //-------------------------------------------------------------------//
   /// @brief vector defining the aim vector of the turret
@@ -318,7 +353,20 @@ protected:
   /// @brief the ID of the target
   //-------------------------------------------------------------------//
 
-  int m_targetID;
+  unsigned int m_targetID;
+
+  //-------------------------------------------------------------------//
+  /// @brief the desired vector for the aim
+  //-------------------------------------------------------------------//
+
+  ngl::Vec3 m_desiredAim;
+
+  //-------------------------------------------------------------------//
+  /// @brief the initial speed inputted to the bullet, not necessarily
+  /// used at the other end
+  //-------------------------------------------------------------------//
+
+  float m_projectileSpeed;
 
   //-------------------------------------------------------------------//
   /// @brief array of posible upgrade state that a turret can be in

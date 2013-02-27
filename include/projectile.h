@@ -55,6 +55,12 @@ public://methods
 
   inline void setEmitterID(int _ID) {m_emitterID = _ID;}
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to set the velocity of the projectile, virtual
+  /// so that concrete types can over-ride it with other specific behaviour
+  //-------------------------------------------------------------------//
+
+  virtual void setVelocity(const ngl::Vec3 _velocity){m_velocity = _velocity;}
   protected:
 
     //-------------------------------------------------------------------//

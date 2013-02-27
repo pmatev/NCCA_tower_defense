@@ -23,90 +23,7 @@ void Seek::execute(EntityWPtr _turret)
 {
   //execute
 
-  //get a strong pointer from the waek pointer passed in
-
-  EntityPtr strongEntity = _turret.lock();
-
-  // if the pointer exists
-
-  if (strongEntity)
-  {
-
-  }
-
-}
-
-//-------------------------------------------------------------------//
-
-void Seek::exit(EntityWPtr _turret)
-{
-  Q_UNUSED(_turret);
-}
-
-//-------------------------------------------------------------------//
-
-Approach * Approach::instance()
-{
-  static Approach approachInstance;
-
-  return &approachInstance;
-}
-
-//-------------------------------------------------------------------//
-
-void Approach::enter(EntityWPtr _turret)
-{
-  Q_UNUSED(_turret);
-}
-
-//-------------------------------------------------------------------//
-
-void Approach::execute(EntityWPtr _turret)
-{
-  //execute
-
-  //get a strong pointer from the waek pointer passed in
-
-  EntityPtr strongEntity = _turret.lock();
-
-  // if the pointer exists
-
-  if (strongEntity)
-  {
-
-  }
-}
-
-//-------------------------------------------------------------------//
-
-void Approach::exit(EntityWPtr _turret)
-{
-  Q_UNUSED(_turret);
-}
-
-//-------------------------------------------------------------------//
-
-LockOn * LockOn::instance()
-{
-  static LockOn lockOnInstance;
-
-  return &lockOnInstance;
-}
-
-//-------------------------------------------------------------------//
-
-void LockOn::enter(EntityWPtr _turret)
-{
-  Q_UNUSED(_turret);
-}
-
-//-------------------------------------------------------------------//
-
-void LockOn::execute(EntityWPtr _turret)
-{
-  //execute
-
-  //get a strong pointer from the waek pointer passed in
+  //get a strong pointer from the weak pointer passed in
 
   EntityPtr strongEntity = _turret.lock();
 
@@ -131,24 +48,13 @@ void LockOn::execute(EntityWPtr _turret)
 
       if (record.m_id != 0)
       {
-        //get the aim vector from the method
+        //set the target id
 
-        ngl::Vec3 aim(turretptr->getAimVec(ngl::Vec3(
-                                             record.m_x,
-                                             record.m_y,
-                                             record.m_z
-                                             )));
+        turretptr->setTarget(record.m_id);
 
-        turretptr->setAim(aim);
-      }
+        //and move to lockedOn state
 
-      //if the difference in time is great enough, fire
-
-      if (turretptr->getShotWaitTime() <= turretptr->getDtSinceShot())
-      {
-        //set the doShot boolean to true
-
-        turretptr->setDoShot(true);
+        turretptr->getStateMachine()->changeState(LockedOn::instance());
       }
     }
   }
@@ -156,7 +62,115 @@ void LockOn::execute(EntityWPtr _turret)
 
 //-------------------------------------------------------------------//
 
-void LockOn::exit(EntityWPtr _turret)
+void Seek::exit(EntityWPtr _turret)
+{
+  Q_UNUSED(_turret);
+}
+
+//-------------------------------------------------------------------//
+
+LockedOn * LockedOn::instance()
+{
+  static LockedOn lockOnInstance;
+
+  return &lockOnInstance;
+}
+
+//-------------------------------------------------------------------//
+
+void LockedOn::enter(EntityWPtr _turret)
+{
+  Q_UNUSED(_turret);
+}
+
+//-------------------------------------------------------------------//
+
+void LockedOn::execute(EntityWPtr _turret)
+{
+  //execute
+
+  //get a strong pointer from the weak pointer passed in
+
+  EntityPtr strongEntity = _turret.lock();
+
+  // if the pointer exists
+
+  if (strongEntity)
+  {
+
+    //cast strong entity pointer to a turret pointer
+
+    TurretPtr turretptr = boost::dynamic_pointer_cast<Turret>(strongEntity);
+
+    if (turretptr)
+    {
+      //now get the entity record of the target if it's still a local entity
+
+      EntityRecord record;
+
+      // rotate to face the enemy
+
+      turretptr->getTargetRecord(record);
+
+      if (record.m_id != 0)
+      {
+        //get the aim vector from the method
+
+        ngl::Vec3 aim(turretptr->calculateAimVec(ngl::Vec3(record.m_pos[0],
+                                                           record.m_pos[1],
+                                                           record.m_pos[2]
+                                                           ),
+                                                 ngl::Vec3(record.m_velocity[0],
+                                                           record.m_velocity[1],
+                                                           record.m_velocity[2]
+                                                           )));
+
+        //normalise the aim
+
+        float len = aim.length();
+        if(len)
+        {
+          aim /= len;
+        }
+
+        //check the cosine of the angles between the aims
+
+        float cos = aim.dot(turretptr->getAim());
+
+        //set the desired aim
+
+        turretptr->setDesiredAim(aim);
+
+        //if it is greater than the cosine of the max rotation speed,
+        //and therefore within the cone defined by it
+
+        if (cos >= turretptr->getCosRotationSpeed())
+        {
+
+          //if the time since the last shot is great enough
+
+          if (turretptr->getShotWaitTime() <= turretptr->getDtSinceShot())
+          {
+            //set the doShot boolean to true
+
+            turretptr->setDoShot(true);
+          }
+        }
+      }
+
+      else
+      {
+        //if the target record is no longer in the list
+
+        turretptr->getStateMachine()->changeState(Seek::instance());
+      }
+    }
+  }
+}
+
+//-------------------------------------------------------------------//
+
+void LockedOn::exit(EntityWPtr _turret)
 {
   Q_UNUSED(_turret);
 }
