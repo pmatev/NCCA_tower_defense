@@ -86,6 +86,11 @@ public:
   inline ngl::Vec3 getVelocity(){return m_velocity;}
 
   //-------------------------------------------------------------------//
+  /// @brief gets the aim
+  //-------------------------------------------------------------------//
+  inline ngl::Vec3 getAim(){return m_aimVector;}
+
+  //-------------------------------------------------------------------//
   /// @brief prepare for update. This should update the local entites and
   /// anything else that needs doing outside the update loop.
   //-------------------------------------------------------------------//

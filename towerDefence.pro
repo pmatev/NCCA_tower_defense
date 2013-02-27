@@ -5,7 +5,8 @@
 #-------------------------------------------------
 
 QT       += core \
-            opengl
+            opengl \
+            xml
 
 
 TARGET = towerDefence
@@ -157,6 +158,7 @@ OTHER_FILES += \
     shaders/UI.fs \
     textures/grid.png \
     textures/default_texture.jpg \
+    config/config.xml \
     models/turret.obj \
     shaders/Texture.vs \
     shaders/Texture.fs

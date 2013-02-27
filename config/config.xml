@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data>
+
+  <environment>
+    <gridWidth>20</gridWidth>
+    <gridHeight>20</gridHeight>
+    <hexSize>2</hexSize>
+    <baseX>0</baseX>
+    <baseY>0</baseY>
+    <dbGridSizeX>10</dbGridSizeX>
+    <dbGridSizeZ>10</dbGridSizeZ>
+  </environment>
+
+  <spawnPoints>
+    <spawnPoint>
+      <x>19</x>
+      <y>16</y>
+    </spawnPoint>
+    <spawnPoint>
+      <x>19</x>
+      <y>18</y>
+    </spawnPoint>
+    <spawnPoint>
+      <x>19</x>
+      <y>17</y>
+    </spawnPoint>
+    <spawnPoint>
+      <x>19</x>
+      <y>16</y>
+    </spawnPoint>
+  </spawnPoints>
+
+  <waves>
+    <wave>
+      <enemyTypes>
+        <enemyType>
+          <type>TestEnemy</type>
+          <count>10</count>
+        </enemyType>
+      </enemyTypes>
+      <spawnRate>0.3</spawnRate>
+    </wave>
+    <wave>
+      <enemyTypes>
+        <enemyType>
+          <type>TestEnemy</type>
+          <count>100</count>
+        </enemyType>
+      </enemyTypes>
+      <spawnRate>0.1</spawnRate>
+    </wave>
+  </waves>
+
+  <player>
+    <startCurrency>500</startCurrency>
+  </player>
+
+</data>

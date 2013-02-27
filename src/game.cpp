@@ -1,13 +1,18 @@
-#include <ngl/Camera.h>
-#include "renderer.h"
+#include <iostream>
+
+#include <QtXml/QDomDocument>
+#include <QFile>
+#include <boost/lexical_cast.hpp>
 #include <ngl/NGLInit.h>
 #include <ngl/VAOPrimitives.h>
+#include <ngl/Camera.h>
+#include "ngl/ShaderLib.h"
+
+#include "renderer.h"
 #include "entityfactory.h"
 #include "window.h"
 #include "database.h"
-#include <iostream>
 #include "include/game.h"
-#include "ngl/ShaderLib.h"
 
 Game* Game::s_instance = 0;
 
@@ -52,45 +57,288 @@ void Game::reset()
 
 void Game::setupScene()
 {
+  //Load configuration
+  QFile* file = new QFile("config/config.xml");
+
+  //Test if the file failed to open
+  if(!file->open(QIODevice::ReadOnly | QIODevice::Text))
+  {
+    std::cout << "Failed to load XML file." << std::endl;
+  }
+
+  //QDomElement stores the XML tree
+  QDomDocument document("configDocument");
+
+  //Try to set document's content to the xml file
+  if(!document.setContent(file))
+  {
+    std::cout << "Failed to load XML." << std::endl;
+  }
+
+  //Grab the root node
+  QDomElement docElem = document.documentElement();
+
+
+
+  //========================================================================//
+  //                              SpawnCoords                               //
+  //========================================================================//
+
   //Environment has to be created before the waves, as the enemies query data
   //in environment.
 
   std::vector<ngl::Vec2> spawnCoords;
-  spawnCoords.push_back(ngl::Vec2(19, 19));
-  spawnCoords.push_back(ngl::Vec2(19, 18));
-  spawnCoords.push_back(ngl::Vec2(19, 17));
-  spawnCoords.push_back(ngl::Vec2(19, 16));
-  m_environment = Environment::create(
-        20,
-        20,
-        2,
-        ngl::Vec3(0.0, 0.0, 0.0),
-        0,
-        0,
-        10,
-        10,
-        spawnCoords
-        ); // HARD CODED DUE TO PURE LAZINESS, WILL CHANGE VERY SOON :)
+
+  //Get the spawnPoint nodes
+  QDomNodeList spawnList = docElem.elementsByTagName("spawnPoint");
+
+  int count = spawnList.count();
+
+  for(int i = 0; i < spawnList.count(); i++)
+  {
+    //The spawn point node
+    QDomElement spawnNode = spawnList.at(i).toElement();
+
+    //Get the children of the spawn point node
+    QDomNode spawnEntries = spawnNode.firstChild();
+
+    int x;
+    int y;
+
+    //Loop through the children of spawn point
+    while(!spawnEntries.isNull())
+    {
+      //The current child of the spawn point node
+      QDomElement spawnData = spawnEntries.toElement();
+      //The child's name
+      QString spawnDataTagName = spawnData.tagName();
+
+      if(spawnDataTagName == "x")
+      {
+        x = boost::lexical_cast<int>(spawnData.text().toStdString());
+      }
+      else if(spawnDataTagName == "y")
+      {
+        y = boost::lexical_cast<int>(spawnData.text().toStdString());
+      }
+
+      spawnEntries = spawnEntries.nextSibling();
+    }
+
+    spawnCoords.push_back(ngl::Vec2(x, y));
+  }
+
+  int sCount = spawnCoords.size();
+
+  //========================================================================//
+  //                              Environment                               //
+  //========================================================================//
+
+  //Get the environment node
+  QDomNodeList environmentList = docElem.elementsByTagName("environment");
+
+  //make sure there's only one environment node
+  if(environmentList.size() == 1)
+  {
+    //The environment node
+    QDomElement envNode = environmentList.at(0).toElement();
+
+    //Get the children of the environment node
+    QDomNode envEntries = envNode.firstChild();
+
+    //Declares the vars used to create the environment
+    int gridWidth;
+    int gridHeight;
+    int hexagonSize;
+    int baseX;
+    int baseY;
+    int dbGridSizeX;
+    int dbGridSizeZ;
+
+    //while there's entries in the environment node
+    while(!envEntries.isNull())
+    {
+      //The current child of the environment node
+      QDomElement envData = envEntries.toElement();
+      //The child's name
+      QString envDataTagName = envData.tagName();
+
+      if(envDataTagName == "gridWidth")
+      {
+        gridWidth = boost::lexical_cast<int>(envData.text().toStdString());
+      }
+      else if(envDataTagName == "gridHeight")
+      {
+        gridHeight = boost::lexical_cast<int>(envData.text().toStdString());
+      }
+      else if(envDataTagName == "hexSize")
+      {
+        hexagonSize = boost::lexical_cast<int>(envData.text().toStdString());
+      }
+      else if(envDataTagName == "baseX")
+      {
+        baseX = boost::lexical_cast<int>(envData.text().toStdString());
+      }
+      else if(envDataTagName == "baseY")
+      {
+        baseY = boost::lexical_cast<int>(envData.text().toStdString());
+      }
+      else if(envDataTagName == "dbGridSizeX")
+      {
+        dbGridSizeX = boost::lexical_cast<int>(envData.text().toStdString());
+      }
+      else if(envDataTagName == "dbGridSizeZ")
+      {
+        dbGridSizeZ = boost::lexical_cast<int>(envData.text().toStdString());
+      }
+
+      //Advance to the next child.
+      envEntries = envEntries.nextSibling();
+    }
+
+    m_environment = Environment::create(gridWidth,
+                                        gridHeight,
+                                        hexagonSize,
+                                        ngl::Vec3(0.0, 0.0, 0.0),
+                                        baseX,
+                                        baseY,
+                                        dbGridSizeX,
+                                        dbGridSizeZ,
+                                        spawnCoords);
+  }
+
+  //========================================================================//
+  //                                 Waves                                  //
+  //========================================================================//
 
   WaveInfoList waveInfos;
-  // TEST CREATES DEFAULT WAVE
-  Wave::EnemyPairList creationEnemies;
-  creationEnemies.push_back(
-        Wave::EnemyPair::create(
-          200,
-          "TestEnemy"
-          )
-        );
-  waveInfos.push_back(
-        WaveInfo::create(
-          creationEnemies,
-          0.2
-          )
-        );
+
+  //Get the wave nodes
+  QDomNodeList waveList = docElem.elementsByTagName("wave");
+
+  //For each wave node
+  for(int i =0; i < waveList.count(); i++)
+  {
+    //The wave node
+    QDomElement waveNode = waveList.at(i).toElement();
+
+    //Get the children of the wave node
+    QDomNode waveEntries = waveNode.firstChild();
+
+    Wave::EnemyPairList creationEnemies;
+    float spawnRate;
+
+    //Loops through the wave children
+    while(!waveEntries.isNull())
+    {
+      //The current child of the environment node
+      QDomElement waveData = waveEntries.toElement();
+      //The child's name
+      QString waveDataTagName = waveData.tagName();
+
+      //If its an enemyType we need to loop through its children
+      if(waveDataTagName == "enemyTypes")
+      {
+        //Get the enemy types.
+        QDomNodeList enemyTypesList = waveData.elementsByTagName("enemyType");
+
+        //Loop through the enemy types
+        for(int j = 0; j < enemyTypesList.count(); j++)
+        {
+          //The enemy type node
+          QDomElement enemyTypeNode = enemyTypesList.at(j).toElement();
+
+          //Get the children of the enemy type node
+          QDomNode enemyTypeEntries = enemyTypeNode.firstChild();
+
+          std::string type;
+          int count;
+
+          //This will loop through the enemyType children
+          while(!enemyTypeEntries.isNull())
+          {
+            //The current child of the enemy type node
+            QDomElement enemyTypeData = enemyTypeEntries.toElement();
+            //The child's name
+            QString enemyTypeDataTagName = enemyTypeData.tagName();
+
+            if(enemyTypeDataTagName == "type")
+            {
+              type = enemyTypeData.text().toStdString();
+            }
+            else if(enemyTypeDataTagName == "count")
+            {
+              count = boost::lexical_cast<int>(enemyTypeData.text().toStdString());
+            }
+
+            enemyTypeEntries = enemyTypeEntries.nextSibling();
+          }
+
+          //Add a new enemytype
+          creationEnemies.push_back(
+                Wave::EnemyPair::create(
+                  count,
+                  type
+                  )
+                );
+        }
+      }
+      else if(waveDataTagName == "spawnRate")
+      {
+        spawnRate = boost::lexical_cast<float>(waveData.text().toStdString());
+      }
+
+      waveEntries = waveEntries.nextSibling();
+    }
+
+    waveInfos.push_back(
+          WaveInfo::create(
+            creationEnemies,
+            spawnRate
+            )
+          );
+  }
+
   m_waveManager = WaveManager::create(m_environment->getSpawnNodes(), waveInfos);
 
   m_projectileManager = ProjectileManager::create();
-  m_player = Player::create(500); //Hard coded now, should probably be set from a file
+
+
+  //========================================================================//
+  //                                 Player                                 //
+  //========================================================================//
+
+  QDomNodeList playerList = docElem.elementsByTagName("player");
+
+  int playerCurrency;
+
+  //make sure there's only one player node
+  if(playerList.size() == 1)
+  {
+    //The player node
+    QDomElement playerNode = playerList.at(0).toElement();
+
+    //Get the children of the player node
+    QDomNode playerEntries = playerNode.firstChild();
+
+    //Loops through the player children
+    while(!playerEntries.isNull())
+    {
+      //The current child of the environment node
+      QDomElement playerData = playerEntries.toElement();
+      //The child's name
+      QString playerDataTagName = playerData.tagName();
+
+      if(playerDataTagName == "startCurrency")
+      {
+        playerCurrency = boost::lexical_cast<int>(playerData.text().toStdString());
+      }
+
+      playerEntries = playerEntries.nextSibling();
+    }
+  }
+
+  m_player = Player::create(playerCurrency); //Hard coded now, should probably be set from a file
 }
 
 //-------------------------------------------------------------------//

@@ -21,7 +21,7 @@ SteeringBehaviours::SteeringBehaviours(EntityWPtr _entity):
             m_entity(_entity),
             m_steeringForce(ngl::Vec3(0.0, 0.0, 0.0))
 {
-  //register the behaviours
+  //FollowPath
   BehaviourInfo fp_info;
   fp_info.function = &SteeringBehaviours::FollowPath;
   fp_info.enabled = false;
@@ -29,7 +29,15 @@ SteeringBehaviours::SteeringBehaviours(EntityWPtr _entity):
   fp_info.priority = 1;
   m_registeredBehaviours["FollowPath"] = fp_info;
 
-  //register the behaviours
+  //ObstacleAvoidance
+  BehaviourInfo oa_info;
+  oa_info.function = &SteeringBehaviours::ObstacleAvoidance;
+  oa_info.enabled = false;
+  oa_info.weighting = 1.0;
+  oa_info.priority = 1;
+  m_registeredBehaviours["ObstacleAvoidance"] = oa_info;
+
+  //Seperation
   BehaviourInfo sep_info;
   sep_info.function = &SteeringBehaviours::Seperation;
   sep_info.enabled = false;
@@ -37,7 +45,7 @@ SteeringBehaviours::SteeringBehaviours(EntityWPtr _entity):
   sep_info.priority = 2;
   m_registeredBehaviours["Seperation"] = sep_info;
 
-  //register the behaviours
+  //Cohesion
   BehaviourInfo co_info;
   co_info.function = &SteeringBehaviours::Cohesion;
   co_info.enabled = false;
@@ -45,7 +53,7 @@ SteeringBehaviours::SteeringBehaviours(EntityWPtr _entity):
   co_info.priority = 3;
   m_registeredBehaviours["Cohesion"] = co_info;
 
-  //register the behaviours
+  //Alignment
   BehaviourInfo ali_info;
   ali_info.function = &SteeringBehaviours::Alignment;
   ali_info.enabled = false;
@@ -287,7 +295,44 @@ ngl::Vec3 SteeringBehaviours::FollowPath()
 //Object avoidance
 ngl::Vec3 SteeringBehaviours::ObstacleAvoidance()
 {
+  EntityRecordListPtr localStrongEntities = m_localEntities.lock();
 
+  EntityPtr strongEntity = m_entity.lock();
+  EnemyPtr enemyPtr = boost::dynamic_pointer_cast<Enemy>(strongEntity);
+  ngl::Vec3 enemyPos = enemyPtr->getPos();
+  ngl::Vec3 enemyAim = enemyPtr->getAim();
+  ngl::Vec3 feeler = enemyAim * 2;
+
+  //Iterate over the neighbours.
+  std::list<EntityRecord>::const_iterator iterator;
+  for(iterator = localStrongEntities->begin();
+      iterator != localStrongEntities->end();
+      ++iterator)
+  {
+    if(iterator->m_generalType == TURRET)
+    {
+      //Grab the positions of the neighbour we're looking at.
+      ngl::Vec3 neighbourPos = ngl::Vec3(iterator->m_x,
+                                         iterator->m_y,
+                                         iterator->m_z);
+      float neighbourRadius = 1.5;
+
+      ngl::Vec3 a = neighbourPos - enemyPos;
+      ngl::Vec3 p = a.dot(feeler) * feeler;
+      ngl::Vec3 b = p - a;
+
+      //the condition is true if the enemy needs to avoid
+      if(p.length() < feeler.length() &&
+         b.length() < neighbourRadius)
+      {
+        std::cout<<"Steering away from obstacle."<<std::endl;
+        return enemyPtr->getMaxForce() * feeler.length() / a.length();
+      }
+    }
+  }
+
+  //std::cout<<"No steering."<<std::endl;
+  return ngl::Vec3(0.0, 0.0, 0.0);
 }
 
 //Seperation
@@ -310,7 +355,9 @@ ngl::Vec3 SteeringBehaviours::Seperation()
       ++iterator)
   {
     //Grab the positions of the neighbour we're looking at.
-    ngl::Vec3 neighbourPos = ngl::Vec3(iterator->m_x, iterator->m_y, iterator->m_z);
+    ngl::Vec3 neighbourPos = ngl::Vec3(iterator->m_x,
+                                       iterator->m_y,
+                                       iterator->m_z);
 
     //Find the vector between the two positions
     ngl::Vec3 repulsion = enemyPos - neighbourPos;
@@ -355,7 +402,9 @@ ngl::Vec3 SteeringBehaviours::Cohesion()
       iterator != localStrongEntities->end();
       ++iterator)
   {
-    neighbourPosSum += ngl::Vec3(iterator->m_x, iterator->m_y, iterator->m_z);
+    neighbourPosSum += ngl::Vec3(iterator->m_x,
+                                 iterator->m_y,
+                                 iterator->m_z);
   }
 
   //Find the average position of the neighbours.
