@@ -13,6 +13,7 @@ Node::Node(const ngl::Vec3 &_pos, float _hexagonSize, unsigned int _id):
   m_isOccupied(false),
   m_hexagonSize(_hexagonSize),
   m_highlighted(false),
+  m_isVisible(true),
   m_isFound(false),
   m_searchDepth(-1)
 {
@@ -185,12 +186,22 @@ void Node::generateViewBBox()
 
 void Node::draw()
 {
-  if(m_isInSpawnPath)
+  if(m_isVisible)
   {
-    drawWithColour(ngl::Vec3(0, 0, 1));
+    if(m_isInSpawnPath)
+    {
+      drawWithColour(ngl::Vec3(0, 0, 1));
+    }
+    else
+    {
+      drawWithColour(ngl::Vec3(1, 0, 0));
+    }
   }
-  else
-  {
-    drawWithColour(ngl::Vec3(1, 0, 0));
-  }
+}
+
+//-------------------------------------------------------------------//
+
+void Node::setVisibility(bool _visibility)
+{
+  m_isVisible = _visibility;
 }

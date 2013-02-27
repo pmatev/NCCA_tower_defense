@@ -174,6 +174,12 @@ public:
 
   void generateViewBBox();
 
+  //-------------------------------------------------------------------//
+  /// @brief change the node's visibility
+  //-------------------------------------------------------------------//
+
+  void setVisibility(bool _visibility);
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief filter view. This does nothing at the moment
@@ -214,6 +220,12 @@ protected:
   //-------------------------------------------------------------------//
 
   bool m_highlighted;
+
+  //-------------------------------------------------------------------//
+  /// @brief whether the node should draw or not
+  //-------------------------------------------------------------------//
+
+  bool m_isVisible;
 
   // PATH FINDING
 

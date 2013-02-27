@@ -25,6 +25,7 @@
 /// Revision History :
 /// Initial Version 29/11/12
 /// @class Game
+/// @class LevelInfo
 //-------------------------------------------------------------------//
 
 class Game
@@ -194,6 +195,56 @@ private:
     static Game* s_instance;
 
     ngl::Light *m_light;
+
+};
+
+//-------------------------------------------------------------------//
+/// @class This class collects all the data to do with a level.
+//-------------------------------------------------------------------//
+DECLARESMART(LevelInfo)
+class LevelInfo
+{
+public:
+  //-------------------------------------------------------------------//
+  /// @brief create function
+  /// @param[in] _environment the data corresponding to the environment
+  /// @param[in] _waveInfors data corresponding to each wave
+  //-------------------------------------------------------------------//
+
+  inline static LevelInfoPtr create(
+        EnvironmentInfoPtr _environment,
+        const WaveInfoList &_waveInfos
+        )
+  {
+    LevelInfoPtr a(new LevelInfo(_environment, _waveInfos));
+    return a;
+  }
+
+protected:
+  //-------------------------------------------------------------------//
+  /// @brief ctor
+  /// @param[in] _environment the data corresponding to the environment
+  /// @param[in] _waveInfors data corresponding to each wave
+  //-------------------------------------------------------------------//
+  LevelInfo(
+        EnvironmentInfoPtr _environment,
+            const WaveInfoList &_waveInfos
+        ):
+    m_environment(_environment),
+    m_waveInfos(_waveInfos)
+  {;}
+
+protected:
+  //-------------------------------------------------------------------//
+  /// @brief pointer to envrionment data
+  //-------------------------------------------------------------------//
+  EnvironmentInfoPtr m_environment;
+
+  //-------------------------------------------------------------------//
+  /// @brief wave information for each wave
+  //-------------------------------------------------------------------//
+
+  WaveInfoList m_waveInfos;
 
 };
 

@@ -7,23 +7,17 @@
 //-------------------------------------------------------------------//
 
 Environment::Environment(
-    int _gridWidth,
-    int _gridHeight,
-    int _hexagonSize,
-    ngl::Vec3 _origin,
-    int _baseX,
-    int _baseY,
-    int _dbGridSizeX,
-    int _dbGridSizeZ,
-    const std::vector<ngl::Vec2> &_spawnCoords
+    const EnvironmentInfo &_info
     ):
-  m_nodeMap(NodeManager::create(
-              _gridWidth,
-              _gridHeight,
-              _hexagonSize,
-              _origin,
-              _dbGridSizeX,
-              _dbGridSizeZ))
+  m_nodeMap(
+    NodeManager::create(
+      _info.m_gridWidth,
+      _info.m_gridHeight,
+      _info.m_hexagonSize,
+      ngl::Vec3(0, 0, 0),
+      _info.m_dbGridX,
+      _info.m_dbGridZ)
+    )
 {
   // base needs to be initialised here as it fails when putting it in the
   // inititalisation list
@@ -34,7 +28,10 @@ Environment::Environment(
   //create the base
 
   unsigned int ID = game->getID();
-  NodePtr linkedNode = m_nodeMap->getNodeFromCoords(_baseX, _baseY).lock();
+  NodePtr linkedNode = m_nodeMap->getNodeFromCoords(
+        _info.m_baseX,
+        _info.m_baseZ
+        ).lock();
   if(linkedNode)
   {
     m_base = Base::create(
@@ -44,49 +41,59 @@ Environment::Environment(
 
     game->registerID(m_base,ID);
   }
+
   // Do first pass at scene graph, this is so objects can find initial paths when
   // they are constructed.
   m_nodeMap->recalculateSearchTree(NodeWPtr(linkedNode));
 
   // Create spawn points from coordinates.
-  m_spawnNodes = Node::NodeWVecPtr(new Node::NodeWVec(_spawnCoords.size()));
-  for(unsigned int i = 0; i < _spawnCoords.size(); ++i)
+  m_spawnNodes = Node::NodeWVecPtr(new Node::NodeWVec(_info.m_spawnCoords.size()));
+  for(unsigned int i = 0; i < _info.m_spawnCoords.size(); ++i)
   {
     (*m_spawnNodes)[i] = m_nodeMap->getNodeFromCoords(
-          _spawnCoords[i][0],
-          _spawnCoords[i][1]
+          _info.m_spawnCoords[i][0],
+          _info.m_spawnCoords[i][1]
           );
   }
   resetSpawnPathHighlighting();
+
+  // Set invisible nodes to be invisible.
+  BOOST_FOREACH(ngl::Vec2 visCoord, _info.m_invisibleCoords)
+  {
+    NodePtr visNode = m_nodeMap->getNodeFromCoords(
+          visCoord[0],
+          visCoord[1]
+          ).lock();
+    if(visNode)
+    {
+      visNode->setVisibility(false);
+      visNode->setOccupied(true);
+    }
+  }
+
+  // Create walls from coordinates.
+  BOOST_FOREACH(ngl::Vec2 wallCoord, _info.m_wallCoords)
+  {
+    NodePtr wallNode = m_nodeMap->getNodeFromCoords(
+          wallCoord[0],
+          wallCoord[1]
+          ).lock();
+    if(wallNode)
+    {
+      createTower("TestTurret", wallNode);
+    }
+  }
+
+
 }
 
 //-------------------------------------------------------------------//
 
 EnvironmentPtr Environment::create(
-    int _gridWidth,
-    int _gridHeight,
-    int _hexagonSize,
-    ngl::Vec3 _origin,
-    int _baseX,
-    int _baseY,
-    int _dbGridSizeX,
-    int _dbGridSizeZ,
-    const std::vector<ngl::Vec2> &_spawnCoords
+    const EnvironmentInfo &_info
     )
 {
-  EnvironmentPtr a(
-        new Environment(
-          _gridWidth,
-          _gridHeight,
-          _hexagonSize,
-          _origin,
-          _baseX,
-          _baseY,
-          _dbGridSizeX,
-          _dbGridSizeZ,
-          _spawnCoords
-          )
-        );
+  EnvironmentPtr a(new Environment(_info));
   return a;
 }
 
@@ -241,21 +248,24 @@ void Environment::resetSpawnPathHighlighting()
   // Clear all booleans
   m_nodeMap->clearSpawnPathHighlighting();
 
-  // Find the path for each spawn node and flag all the nodes with isInSpawnPath
-  BOOST_FOREACH(NodeWPtr spawnWeak, *m_spawnNodes)
+  if(m_spawnNodes)
   {
-    NodePtr spawnNode = spawnWeak.lock();
-    if(spawnNode)
+    // Find the path for each spawn node and flag all the nodes with isInSpawnPath
+    BOOST_FOREACH(NodeWPtr spawnWeak, *m_spawnNodes)
     {
-      // get path
-      Node::NodeWList path;
-      m_nodeMap->getSearchTreePath(path, spawnWeak, m_base->getLinkedNode());
-      BOOST_FOREACH(NodeWPtr nodeWeak, path)
+      NodePtr spawnNode = spawnWeak.lock();
+      if(spawnNode)
       {
-        NodePtr node = nodeWeak.lock();
-        if(node)
+        // get path
+        Node::NodeWList path;
+        m_nodeMap->getSearchTreePath(path, spawnWeak, m_base->getLinkedNode());
+        BOOST_FOREACH(NodeWPtr nodeWeak, path)
         {
-          node->setInSpawnPath(true);
+          NodePtr node = nodeWeak.lock();
+          if(node)
+          {
+            node->setInSpawnPath(true);
+          }
         }
       }
     }

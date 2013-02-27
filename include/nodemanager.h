@@ -118,7 +118,7 @@ public:
   static NodeManagerPtr create(
         int _gridWidth,
         int _gridHeight,
-        int _hexagonSize,
+        float _hexagonSize,
         ngl::Vec3 _origin,
         int _dbGridSizeX,
         int _dbGridSizeZ
@@ -293,7 +293,7 @@ protected:
   /// @brief size of hexagons
   //-------------------------------------------------------------------//
 
-  int m_hexagonSize;
+  float m_hexagonSize;
 
   //-------------------------------------------------------------------//
   /// @brief grid width
@@ -328,7 +328,7 @@ private:
 
   NodeManager(int _gridWidth,
               int _gridHeight,
-              int _hexagonSize,
+              float _hexagonSize,
               ngl::Vec3 _origin,
               int _dbGridSizeX,
               int _dbGridSizeZ);

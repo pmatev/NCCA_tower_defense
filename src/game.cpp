@@ -130,6 +130,12 @@ void Game::setupScene()
 
   int sCount = spawnCoords.size();
 
+  std::vector<ngl::Vec2> invisibleCoords;
+  //invisibleCoords.push_back(ngl::Vec2(10, 10));
+
+  std::vector<ngl::Vec2> wallCoords;
+  //wallCoords.push_back(ngl::Vec2(5, 5));
+
   //========================================================================//
   //                              Environment                               //
   //========================================================================//
@@ -149,7 +155,7 @@ void Game::setupScene()
     //Declares the vars used to create the environment
     int gridWidth;
     int gridHeight;
-    int hexagonSize;
+    float hexagonSize;
     int baseX;
     int baseY;
     int dbGridSizeX;
@@ -195,16 +201,19 @@ void Game::setupScene()
       //Advance to the next child.
       envEntries = envEntries.nextSibling();
     }
-
-    m_environment = Environment::create(gridWidth,
-                                        gridHeight,
-                                        hexagonSize,
-                                        ngl::Vec3(0.0, 0.0, 0.0),
-                                        baseX,
-                                        baseY,
-                                        dbGridSizeX,
-                                        dbGridSizeZ,
-                                        spawnCoords);
+    EnvironmentInfo envInfo(
+          gridWidth,
+          gridHeight,
+          hexagonSize,
+          baseX,
+          baseY,
+          dbGridSizeX,
+          dbGridSizeZ,
+          spawnCoords,
+          invisibleCoords,
+          wallCoords
+          );
+    m_environment = Environment::create(envInfo);
   }
 
   //========================================================================//

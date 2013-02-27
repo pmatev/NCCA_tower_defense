@@ -17,9 +17,11 @@
 /// Revision History :
 /// Initial Version 3/12/12
 /// @class Environment
+/// @class EnvironmentInfo
 //-------------------------------------------------------------------//
 
 DECLARESMART(Environment)
+DECLARESMART(EnvironmentInfo)
 
 class Environment
 {
@@ -31,15 +33,7 @@ public:
   //-------------------------------------------------------------------//
 
   static EnvironmentPtr create(
-        int _gridWidth,
-        int _gridHeight,
-        int _hexagonSize,
-        ngl::Vec3 _origin,
-        int _baseX,
-        int _baseY,
-        int _dbGridSizeX,
-        int _dbGridSizeZ,
-        const std::vector<ngl::Vec2> &_spawnCoords
+        const EnvironmentInfo &_info
         );
 
   //-------------------------------------------------------------------//
@@ -144,16 +138,90 @@ private:
   //-------------------------------------------------------------------//
 
   Environment(
-        int _gridWidth,
-        int _gridHeight,
-        int _hexagonSize,
-        ngl::Vec3 _origin,
-        int _baseX,
-        int _baseY,
-        int _dbGridSizeX,
-        int _dbGridSizeZ,
-        const std::vector<ngl::Vec2> &_spawnCoords
+        const EnvironmentInfo &_info
         );
+};
+
+//-------------------------------------------------------------------//
+/// @brief This is a class to collect together all the data related to creating
+/// the environment
+//-------------------------------------------------------------------//
+
+class EnvironmentInfo
+{
+public:
+  //-------------------------------------------------------------------//
+  /// @brief creator (used for easily creating pointers)
+  //-------------------------------------------------------------------//
+
+  inline static EnvironmentInfoPtr create(
+      int _gridWidth,
+      int _gridHeight,
+      float _hexagonSize,
+      int _baseX,
+      int _baseZ,
+      int _dbGridX,
+      int _dbGridZ,
+      const std::vector<ngl::Vec2> &_spawnCoords,
+      const std::vector<ngl::Vec2> &_invisibleCoords,
+      const std::vector<ngl::Vec2> &_wallCoords
+      )
+  {
+    EnvironmentInfoPtr a(
+          new EnvironmentInfo(
+            _gridWidth,
+            _gridHeight,
+            _hexagonSize,
+            _baseX,
+            _baseZ,
+            _dbGridX,
+            _dbGridZ,
+            _spawnCoords,
+            _invisibleCoords,
+            _wallCoords
+            )
+          );
+    return a;
+  }
+  //-------------------------------------------------------------------//
+  /// @brief ctor
+  //-------------------------------------------------------------------//
+
+  inline EnvironmentInfo(
+      int _gridWidth,
+      int _gridHeight,
+      float _hexagonSize,
+      int _baseX,
+      int _baseZ,
+      int _dbGridX,
+      int _dbGridZ,
+      const std::vector<ngl::Vec2> &_spawnCoords,
+      const std::vector<ngl::Vec2> &_invisibleCoords,
+      const std::vector<ngl::Vec2> &_wallCoords
+      ):
+    m_gridWidth(_gridWidth),
+    m_gridHeight(_gridHeight),
+    m_hexagonSize(_hexagonSize),
+    m_baseX(_baseX),
+    m_baseZ(_baseZ),
+    m_dbGridX(_dbGridX),
+    m_dbGridZ(_dbGridZ),
+    m_spawnCoords(_spawnCoords),
+    m_invisibleCoords(_invisibleCoords),
+    m_wallCoords(_wallCoords)
+  {;}
+
+public:
+  int m_gridWidth;
+  int m_gridHeight;
+  float m_hexagonSize;
+  int m_baseX;
+  int m_baseZ;
+  int m_dbGridX;
+  int m_dbGridZ;
+  const std::vector<ngl::Vec2> m_spawnCoords;
+  const std::vector<ngl::Vec2> m_invisibleCoords;
+  const std::vector<ngl::Vec2> m_wallCoords;
 };
 
 #endif // ENVIRONMENT_H

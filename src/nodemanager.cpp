@@ -11,7 +11,7 @@ float NodeManager::s_hexFactor = 0.866025404;
 NodeManager::NodeManager(
     int _gridWidth,
     int _gridHeight,
-    int _hexagonSize,
+    float _hexagonSize,
     ngl::Vec3 _origin,
     int _dbGridSizeX,
     int _dbGridSizeZ
@@ -397,7 +397,7 @@ void NodeManager::createPathNodes()
 NodeManagerPtr NodeManager::create(
     int _gridWidth,
     int _gridHeight,
-    int _hexagonSize,
+    float _hexagonSize,
     ngl::Vec3 _origin,
     int _dbGridSizeX,
     int _dbGridSizeZ
