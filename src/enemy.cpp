@@ -45,6 +45,7 @@ void Enemy::prepareForUpdate()
   std::list<GeneralType> types;
   types.push_back(TURRET);
   types.push_back(ENEMY);
+  types.push_back(WALL);
   m_localEntities = EntityRecordListPtr(new EntityRecordList());
   //EntityRecordList localEntities;
   calculateLocalEntities(*m_localEntities, types);

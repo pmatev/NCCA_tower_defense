@@ -65,12 +65,12 @@ void Node::generateMesh()
                         m_hexagonSize/4, 0.0, -(std::cos(30*PI/180)*m_hexagonSize/2),
                         -m_hexagonSize/4, 0.0, -(std::cos(30*PI/180)*m_hexagonSize/2),
                        };
-  GLfloat normals[] = {0.1,0.1,0.1,
-                       0.1,0.1,0.1,
-                       0.1,0.1,0.1,
-                       0.1,0.1,0.1,
-                       0.1,0.1,0.1,
-                       0.1,0.1,0.1
+  GLfloat normals[] = {0.8,0.8,0.8,
+                       0.8,0.8,0.8,
+                       0.8,0.8,0.8,
+                       0.8,0.8,0.8,
+                       0.8,0.8,0.8,
+                       0.8,0.8,0.8
                        };
 
   std::vector<Renderer::vertData> boxData;
@@ -194,7 +194,7 @@ void Node::draw()
     }
     else
     {
-      drawWithColour(ngl::Vec3(1, 0, 0));
+      drawWithColour(ngl::Vec3(1, 1, 1));
     }
   }
 }

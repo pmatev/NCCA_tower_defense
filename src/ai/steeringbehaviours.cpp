@@ -300,7 +300,15 @@ ngl::Vec3 SteeringBehaviours::ObstacleAvoidance()
   EntityPtr strongEntity = m_entity.lock();
   EnemyPtr enemyPtr = boost::dynamic_pointer_cast<Enemy>(strongEntity);
   ngl::Vec3 enemyPos = enemyPtr->getPos();
-  ngl::Vec3 enemyAim = enemyPtr->getAim();
+
+  ngl::Vec3 enemyVel = enemyPtr->getVelocity();
+  ngl::Vec3 enemyAim = ngl::Vec3(0.0, 0.0, 0.0);
+  float velMag = enemyPtr->getVelocity().length();
+  if(velMag)
+  {
+    enemyAim = enemyVel / velMag;
+  }
+
   ngl::Vec3 feeler = enemyAim * 2;
 
   //Iterate over the neighbours.
@@ -315,7 +323,7 @@ ngl::Vec3 SteeringBehaviours::ObstacleAvoidance()
       ngl::Vec3 neighbourPos = ngl::Vec3(iterator->m_x,
                                          iterator->m_y,
                                          iterator->m_z);
-      float neighbourRadius = 1.5;
+      float neighbourRadius = 1;
 
       ngl::Vec3 a = neighbourPos - enemyPos;
       ngl::Vec3 p = a.dot(feeler) * feeler;
@@ -325,8 +333,8 @@ ngl::Vec3 SteeringBehaviours::ObstacleAvoidance()
       if(p.length() < feeler.length() &&
          b.length() < neighbourRadius)
       {
-        std::cout<<"Steering away from obstacle."<<std::endl;
-        return enemyPtr->getMaxForce() * feeler.length() / a.length();
+        ngl::Vec3 force = enemyPtr->getVelocity() * (1 - (p.length() / feeler.length()));
+        return force;
       }
     }
   }

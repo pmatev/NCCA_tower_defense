@@ -75,6 +75,37 @@ void DynamicEntity::update(const double _dt)
   m_prevPos = m_pos;
   m_pos += m_velocity * dt;
 
+  //Collision check
+  //Iterate over the neighbours.
+  if(m_localEntities)
+  {
+    std::list<EntityRecord>::const_iterator iterator;
+    for(iterator = m_localEntities->begin();
+        iterator != m_localEntities->end();
+        ++iterator)
+    {
+      if(iterator->m_generalType == TURRET ||
+         iterator->m_generalType == WALL)
+       {
+        ngl::Vec3 neighbourPos = ngl::Vec3(iterator->m_x,
+                                           iterator->m_y,
+                                           iterator->m_z);
+
+        ngl::Vec3 v = neighbourPos - m_pos;
+
+        float obstacleRadius = 1;
+        float enemyRadius = 0.3;
+
+        float vMag = v.length();
+
+        if((vMag - enemyRadius) < obstacleRadius)
+        {
+
+          m_pos -= (obstacleRadius - vMag + enemyRadius) * v;
+        }
+      }
+    }
+  }
   enforceGridBoundaries();
 
   m_transformStack.setPosition(m_pos);
