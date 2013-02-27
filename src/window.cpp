@@ -176,7 +176,7 @@ void Window::loop()
 
         Renderer *r = Renderer::instance();
 
-
+    // render to texture
         r->bindFrameBuffer("Texture");
         GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
         glDrawBuffers(2, buffers);
@@ -186,13 +186,13 @@ void Window::loop()
         game->draw();
         m_UI->draw();
 
+    // render textured billboard to screen
         r->bindFrameBuffer(0);
         glViewport(0,0,m_width, m_height);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glBindTexture(GL_TEXTURE_2D, r->getTexture(m_viewmode));
         glGenerateMipmapEXT(GL_TEXTURE_2D);
         m_screenBillboard->draw("Texture");
-//        r->draw("screen", "Texture");
 
         SDL_GL_SwapBuffers();
         frameCount++;
