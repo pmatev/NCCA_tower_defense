@@ -4,6 +4,8 @@
 #include "concrete/testenemy.h"
 #include "concrete/testturret.h"
 #include "concrete/bullet.h"
+#include "concrete/invisiblewall.h"
+#include "concrete/standardwall.h"
 #include "game.h"
 
 EntityFactory::DynamicEntityTypeMap EntityFactory::s_dynamicEntityTypes;
@@ -31,6 +33,8 @@ void EntityFactory::initialiseFactory()
   registerDynamicEntity("TestEnemy", TestEnemy::create);
   registerDynamicEntity("Bullet", Bullet::create);
   registerStaticEntity("TestTurret", TestTurret::create);
+  registerStaticEntity("InvisibleWall", InvisibleWall::create);
+  registerStaticEntity("StandardWall", StandardWall::create);
 }
 
 void EntityFactory::registerDynamicEntity(

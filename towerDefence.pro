@@ -59,7 +59,9 @@ SOURCES += src/main.cpp \
     src/player.cpp \
     src/fsm/states/turretstates.cpp \
     src/fsm/states/projectilestates.cpp \
-    src/billboard.cpp
+    src/billboard.cpp \
+    src/concrete/invisiblewall.cpp \
+    src/concrete/standardwall.cpp
 
 
 
@@ -109,7 +111,9 @@ HEADERS += \
     include/player.h \
     include/fsm/states/turretstates.h \
     include/fsm/states/projectilestates.h \
-    include/billboard.h
+    include/billboard.h \
+    include/concrete/invisiblewall.h \
+    include/concrete/standardwall.h
 
 
 

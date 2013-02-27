@@ -55,7 +55,6 @@ Environment::Environment(
           _info.m_spawnCoords[i][1]
           );
   }
-  resetSpawnPathHighlighting();
 
   // Set invisible nodes to be invisible.
   BOOST_FOREACH(ngl::Vec2 visCoord, _info.m_invisibleCoords)
@@ -66,8 +65,7 @@ Environment::Environment(
           ).lock();
     if(visNode)
     {
-      visNode->setVisibility(false);
-      visNode->setOccupied(true);
+      createTower("InvisibleWall", visNode);
     }
   }
 
@@ -80,10 +78,12 @@ Environment::Environment(
           ).lock();
     if(wallNode)
     {
-      createTower("TestTurret", wallNode);
+      createTower("StandardWall", wallNode);
     }
   }
 
+  m_nodeMap->recalculateSearchTree(NodeWPtr(linkedNode));
+  resetSpawnPathHighlighting();
 
 }
 

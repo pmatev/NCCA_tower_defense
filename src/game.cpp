@@ -55,6 +55,51 @@ void Game::reset()
   setupScene();
 }
 
+std::vector<ngl::Vec2> Game::getCoordsFromXML(QDomElement _docElem,
+                                 std::string _nodeName)
+{
+  std::vector<ngl::Vec2> coordsVec;
+
+  //Get the spawnPoint nodes
+  QDomNodeList coordList = _docElem.elementsByTagName(QString::fromStdString(_nodeName));
+
+  for(int i = 0; i < coordList.count(); i++)
+  {
+    //The spawn point node
+    QDomElement coordNode = coordList.at(i).toElement();
+
+    //Get the children of the spawn point node
+    QDomNode coordEntries = coordNode.firstChild();
+
+    int x;
+    int y;
+
+    //Loop through the children of spawn point
+    while(!coordEntries.isNull())
+    {
+      //The current child of the spawn point node
+      QDomElement coordData = coordEntries.toElement();
+      //The child's name
+      QString coordDataTagName = coordData.tagName();
+
+      if(coordDataTagName == "x")
+      {
+        x = boost::lexical_cast<int>(coordData.text().toStdString());
+      }
+      else if(coordDataTagName == "y")
+      {
+        y = boost::lexical_cast<int>(coordData.text().toStdString());
+      }
+
+      coordEntries = coordEntries.nextSibling();
+    }
+
+    coordsVec.push_back(ngl::Vec2(x, y));
+  }
+
+  return coordsVec;
+}
+
 //-------------------------------------------------------------------//
 
 void Game::setupScene()
@@ -89,54 +134,14 @@ void Game::setupScene()
   //Environment has to be created before the waves, as the enemies query data
   //in environment.
 
-  std::vector<ngl::Vec2> spawnCoords;
+  std::vector<ngl::Vec2> spawnCoords = getCoordsFromXML(docElem,
+                                                        "spawnCoord");
 
-  //Get the spawnPoint nodes
-  QDomNodeList spawnList = docElem.elementsByTagName("spawnPoint");
+  std::vector<ngl::Vec2> invisibleCoords = getCoordsFromXML(docElem,
+                                                            "invisibleCoord");
 
-  int count = spawnList.count();
-
-  for(int i = 0; i < spawnList.count(); i++)
-  {
-    //The spawn point node
-    QDomElement spawnNode = spawnList.at(i).toElement();
-
-    //Get the children of the spawn point node
-    QDomNode spawnEntries = spawnNode.firstChild();
-
-    int x;
-    int y;
-
-    //Loop through the children of spawn point
-    while(!spawnEntries.isNull())
-    {
-      //The current child of the spawn point node
-      QDomElement spawnData = spawnEntries.toElement();
-      //The child's name
-      QString spawnDataTagName = spawnData.tagName();
-
-      if(spawnDataTagName == "x")
-      {
-        x = boost::lexical_cast<int>(spawnData.text().toStdString());
-      }
-      else if(spawnDataTagName == "y")
-      {
-        y = boost::lexical_cast<int>(spawnData.text().toStdString());
-      }
-
-      spawnEntries = spawnEntries.nextSibling();
-    }
-
-    spawnCoords.push_back(ngl::Vec2(x, y));
-  }
-
-  int sCount = spawnCoords.size();
-
-  std::vector<ngl::Vec2> invisibleCoords;
-  //invisibleCoords.push_back(ngl::Vec2(10, 10));
-
-  std::vector<ngl::Vec2> wallCoords;
-  //wallCoords.push_back(ngl::Vec2(5, 5));
+  std::vector<ngl::Vec2> wallCoords = getCoordsFromXML(docElem,
+                                                       "wallCoord");
 
   //========================================================================//
   //                              Environment                               //

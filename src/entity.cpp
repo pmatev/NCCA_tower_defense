@@ -206,9 +206,17 @@ void Entity::drawWithColour(const ngl::Vec3 &_colour)
   if(m_generalType != ENEMY)
   {
       shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
-  }else{
+  } else{
       shader->setShaderParam4f("colourSelect",0,0,0,0);
   }
-  shader->setShaderParam4f("colour", _colour[0], _colour[1], _colour[2], 1);
+
+  if(m_generalType == WALL)
+  {
+    shader->setShaderParam4f("colour", 0, 0, 0, 0);
+  } else
+  {
+    shader->setShaderParam4f("colour", _colour[0], _colour[1], _colour[2], 1);
+  }
+
   r->draw(m_IDStr, "Phong");
 }

@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <QtXml/QDomDocument>
+
 #include "fwd/game.h"
 #include "fwd/window.h"
 #include <map>
@@ -184,6 +186,13 @@ protected:
     //-------------------------------------------------------------------//
 
     void setupScene();
+
+    //-------------------------------------------------------------------//
+    /// @brief blah blah xml
+    /// @param[in] _environment the data corresponding to the environment
+    /// @param[in] _waveInfors data corresponding to each wave
+    //-------------------------------------------------------------------//
+    std::vector<ngl::Vec2> getCoordsFromXML(QDomElement _docElem, std::string _nodeName);
 
 protected:
 
