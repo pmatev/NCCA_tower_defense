@@ -1,6 +1,9 @@
 #include "turret.h"
 #include "game.h"
 
+std::vector<State*> Turret::s_upgrades;
+Turret::UpgradeDataVec Turret::s_upgradeData;
+
 //-------------------------------------------------------------------//
 
 Turret::Turret(
@@ -18,7 +21,8 @@ Turret::Turret(
   m_dtSinceLastShot(0),
   m_shotWaitTime(0.1),
   m_shotPos(0,0,0),
-  m_targetID(-1)
+  m_targetID(-1),
+  m_upgradeIndex(0)
 {
   //variables initialised before constructor body called
 }
@@ -199,6 +203,56 @@ void Turret::prepareForUpdate()
   {
     fire();
   }
+}
+
+//-------------------------------------------------------------------//
+
+bool Turret::upgrade()
+{
+  // manage the transition between upgrades
+  if(m_upgradeIndex + 1 < s_upgrades.size())
+  {
+    ++m_upgradeIndex;
+    // Check that its not null
+    if(s_upgrades[m_upgradeIndex])
+    {
+      m_stateMachine->changeState(s_upgrades[m_upgradeIndex]);
+      return true;
+    }
+  }
+  return false;
+}
+
+//-------------------------------------------------------------------//
+
+void Turret::registerUpgrade(State *_upgradeState, UpgradeDataPtr _data)
+{
+  s_upgrades.push_back(_upgradeState);
+  s_upgradeData.push_back(_data);
+}
+
+//-------------------------------------------------------------------//
+
+bool Turret::getCurrentUpgrade(UpgradeDataWPtr &o_upgradeData)
+{
+  if(s_upgradeData.size() != 0 && m_upgradeIndex < s_upgrades.size())
+  {
+    o_upgradeData = UpgradeDataWPtr(s_upgradeData[m_upgradeIndex]);
+    return true;
+  }
+  return false;
+}
+
+//-------------------------------------------------------------------//
+
+bool Turret::getNextUpgrade(UpgradeDataWPtr &o_upgradeData)
+{
+  if(s_upgradeData.size() != 0 && m_upgradeIndex + 1 < s_upgrades.size())
+  {
+    o_upgradeData = UpgradeDataWPtr(s_upgradeData[m_upgradeIndex + 1]);
+    return true;
+  }
+  return false;
 }
 
 //-------------------------------------------------------------------//

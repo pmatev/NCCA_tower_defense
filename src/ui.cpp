@@ -298,6 +298,28 @@ void UI::mouseLeftUp(const unsigned int _ID)
             {
                 std::cout<<"i'm not a node"<<std::endl;
             }
+            if(entityClick->getGeneralType() == TURRET)
+            {
+              Game* game = Game::instance();
+
+              Turret::UpgradeDataWPtr upgradeDataWeak;
+              bool successful = game->upgrateTurret(_ID);
+              if(successful)
+              {
+                successful = game->getCurrentUpgrade(upgradeDataWeak,_ID);
+              }
+              if(successful)
+              {
+                Turret::UpgradeDataPtr data = upgradeDataWeak.lock();
+                if(data)
+                {
+                  std::cout<<"Upgrading to "<<std::endl;
+                  std::cout<<"   "<<data->m_title<<std::endl;
+                  std::cout<<"   "<<data->m_description<<std::endl;
+                  std::cout<<"   "<<data->m_cost<<std::endl;
+                }
+              }
+            }
 
         }
 

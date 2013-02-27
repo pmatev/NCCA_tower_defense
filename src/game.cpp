@@ -13,6 +13,8 @@
 #include "window.h"
 #include "database.h"
 #include "include/game.h"
+#include "turret.h"
+
 
 Game* Game::s_instance = 0;
 
@@ -568,4 +570,52 @@ void Game::startWaves()
   m_waveManager->startWaves();
 }
 
+//-------------------------------------------------------------------//
 
+bool Game::upgrateTurret(int _id)
+{
+  EntityPtr entity = getEntityByID(_id).lock();
+  if(entity)
+  {
+    TurretPtr turret = boost::dynamic_pointer_cast<Turret>(entity);
+    if(turret)
+    {
+      return turret->upgrade();
+    }
+  }
+  return false;
+}
+
+//-------------------------------------------------------------------//
+
+bool Game::getCurrentUpgrade(Turret::UpgradeDataWPtr &o_upgradeData, int _id)
+{
+  EntityPtr entity = getEntityByID(_id).lock();
+  if(entity)
+  {
+    TurretPtr turret = boost::dynamic_pointer_cast<Turret>(entity);
+    if(turret)
+    {
+      return turret->getCurrentUpgrade(o_upgradeData);
+    }
+  }
+  return false;
+}
+
+//-------------------------------------------------------------------//
+
+bool Game::getNextUpgrade(Turret::UpgradeDataWPtr &o_upgradeData, int _id)
+{
+  EntityPtr entity = getEntityByID(_id).lock();
+  if(entity)
+  {
+    TurretPtr turret = boost::dynamic_pointer_cast<Turret>(entity);
+    if(turret)
+    {
+      return turret->getNextUpgrade(o_upgradeData);
+    }
+  }
+  return false;
+}
+
+//-------------------------------------------------------------------//

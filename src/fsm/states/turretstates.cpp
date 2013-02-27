@@ -34,7 +34,6 @@ void Seek::execute(EntityWPtr _turret)
 
   }
 
-
 }
 
 //-------------------------------------------------------------------//
@@ -163,3 +162,99 @@ void LockOn::exit(EntityWPtr _turret)
 }
 
 //-------------------------------------------------------------------//
+
+BasicUpgrade * BasicUpgrade::instance()
+{
+  static BasicUpgrade lockOnInstance;
+
+  return &lockOnInstance;
+}
+
+//-------------------------------------------------------------------//
+
+void BasicUpgrade::enter(EntityWPtr _turret)
+{
+  Q_UNUSED(_turret);
+}
+
+//-------------------------------------------------------------------//
+
+void BasicUpgrade::execute(EntityWPtr _turret)
+{
+  //get a strong pointer from the waek pointer passed in
+  EntityPtr strongEntity = _turret.lock();
+
+  // if the pointer exists
+  if (strongEntity)
+  {
+    //cast strong entity pointer to a turret pointer
+    TurretPtr turretptr = boost::dynamic_pointer_cast<Turret>(strongEntity);
+    if (turretptr)
+    {
+      // Edit all the values
+      turretptr->setShotWaitTime(0.5);
+      // When this is done it needs to change to the previous state
+      StateMachine *sm = strongEntity->getStateMachine();
+      if(sm)
+      {
+        sm->changeToPreviousState();
+      }
+    }
+  }
+}
+
+//-------------------------------------------------------------------//
+
+void BasicUpgrade::exit(EntityWPtr _turret)
+{
+  Q_UNUSED(_turret);
+}
+
+//-------------------------------------------------------------------//
+
+AdvancedUpgrade * AdvancedUpgrade::instance()
+{
+  static AdvancedUpgrade lockOnInstance;
+
+  return &lockOnInstance;
+}
+
+//-------------------------------------------------------------------//
+
+void AdvancedUpgrade::enter(EntityWPtr _turret)
+{
+  Q_UNUSED(_turret);
+}
+
+//-------------------------------------------------------------------//
+
+void AdvancedUpgrade::execute(EntityWPtr _turret)
+{
+  //get a strong pointer from the waek pointer passed in
+  EntityPtr strongEntity = _turret.lock();
+
+  // if the pointer exists
+  if (strongEntity)
+  {
+    //cast strong entity pointer to a turret pointer
+    TurretPtr turretptr = boost::dynamic_pointer_cast<Turret>(strongEntity);
+    if (turretptr)
+    {
+      // Edit all the values
+      turretptr->setShotWaitTime(0.1);
+      // When this is done it needs to change to the previous state
+      StateMachine *sm = strongEntity->getStateMachine();
+      if(sm)
+      {
+        sm->changeToPreviousState();
+      }
+    }
+  }
+}
+
+//-------------------------------------------------------------------//
+
+void AdvancedUpgrade::exit(EntityWPtr _turret)
+{
+  Q_UNUSED(_turret);
+}

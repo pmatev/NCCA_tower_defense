@@ -45,9 +45,28 @@ EntityPtr TestTurret::create(
 void TestTurret::init()
 {
   m_stateMachine = new StateMachine(EntityWPtr(shared_from_this()));
-  m_stateMachine->setCurrentState(LockOn::instance());
+  m_stateMachine->setCurrentState(BasicUpgrade::instance());
   m_stateMachine->setPreviousState(LockOn::instance());
-  m_stateMachine->setGlobalState(0);
+  //m_stateMachine->setGlobalState(0);
+
+  registerUpgrade(
+        BasicUpgrade::instance(),
+        UpgradeData::create(
+          std::string("Initial Upgrade"),
+          std::string("descriptiony thing"),
+          std::string("test.jpg"),
+          0
+          )
+        );
+  registerUpgrade(
+        AdvancedUpgrade::instance(),
+        UpgradeData::create(
+          std::string("Super Advanced Upgrade"),
+          std::string("other descriptiony thing\nmakes bullets shoot faster"),
+          std::string("otherTest.jpg"),
+          100
+          )
+        );
 }
 
 //-------------------------------------------------------------------//

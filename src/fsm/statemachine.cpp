@@ -46,3 +46,8 @@ void StateMachine::changeState(State* _state)
   m_currentState->enter(m_owner);
 }
 
+void StateMachine::changeToPreviousState()
+{
+  changeState(m_previousState);
+}
+

@@ -22,6 +22,75 @@ DECLARESMART(Turret)
 class Turret : public StaticEntity
 {
 public:
+
+  //-------------------------------------------------------------------//
+  /// @brief class to hold data for each update
+  //-------------------------------------------------------------------//
+  DECLARESMARTVEC(UpgradeData)
+  struct UpgradeData
+  {
+    //-------------------------------------------------------------------//
+    /// @brief ctor
+    //-------------------------------------------------------------------//
+    UpgradeData(
+          const std::string &_title,
+          const std::string &_description,
+          const std::string &_texture,
+          int _cost
+          ):
+      m_title(_title),
+      m_description(_description),
+      m_texture(_texture),
+      m_cost(_cost)
+    {;}
+
+    //-------------------------------------------------------------------//
+    /// @brief creator
+    //-------------------------------------------------------------------//
+
+    inline static UpgradeDataPtr create(
+          const std::string &_title,
+          const std::string &_description,
+          const std::string &_texture,
+          int _cost
+          )
+    {
+      UpgradeDataPtr a(
+            new UpgradeData(
+              _title,
+              _description,
+              _texture,
+              _cost
+              )
+            );
+      return a;
+    }
+    //-------------------------------------------------------------------//
+    /// @brief title of the upgrade
+    //-------------------------------------------------------------------//
+
+    std::string m_title;
+
+    //-------------------------------------------------------------------//
+    /// @brief description of the upgrade. This will be displayed by the ui
+    /// when the user wants to update.
+    //-------------------------------------------------------------------//
+
+    std::string m_description;
+
+    //-------------------------------------------------------------------//
+    /// @brief This can be used to store a path to a custom texture related
+    /// to the upgrade
+    //-------------------------------------------------------------------//
+    std::string m_texture;
+
+    //-------------------------------------------------------------------//
+    /// @brief Cost to upgrade
+    //-------------------------------------------------------------------//
+
+    int m_cost;
+  };
+
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
   /// @param [in] _fov, a float value defining the field of view of the
@@ -110,6 +179,15 @@ public:
   inline double getShotWaitTime() const {return m_shotWaitTime;}
 
   //-------------------------------------------------------------------//
+  /// @brief set the shooting speed
+  /// @param[in] _shotWaitTime seconds between shots
+  //-------------------------------------------------------------------//
+  inline void setShotWaitTime(float _shotWaitTime)
+  {
+    m_shotWaitTime = _shotWaitTime;
+  }
+
+  //-------------------------------------------------------------------//
   /// @brief a method to return the vector required to aim at an inputted
   /// position
   /// @param [in] _pos the position to aim at
@@ -123,7 +201,6 @@ public:
   //-------------------------------------------------------------------//
 
   virtual void updateShotPos() = 0;
-
 
   //-------------------------------------------------------------------//
   /// @brief a method to get a record from the local entities
@@ -155,6 +232,30 @@ public:
   //-------------------------------------------------------------------//
 
   void prepareForUpdate();
+
+  //-------------------------------------------------------------------//
+  /// @brief move turret to the next available upgrade
+  //-------------------------------------------------------------------//
+
+  bool upgrade();
+
+  //-------------------------------------------------------------------//
+  /// @brief get the upgrade data about the current upgrade level
+  /// @param[out] o_upgradeData this is a weak pointer to the current
+  /// upgradeData.
+  /// @return whether the turret has a current upgrade.
+  //-------------------------------------------------------------------//
+
+  bool getCurrentUpgrade(UpgradeDataWPtr &o_upgradeData);
+
+  //-------------------------------------------------------------------//
+  /// @brief get the upgrade data about the next upgrade level
+  /// @param[out] o_upgradeData this is a weak pointer to the next
+  /// upgradeData.
+  /// @return whether the turret has a next upgrade.
+  //-------------------------------------------------------------------//
+
+  bool getNextUpgrade(UpgradeDataWPtr &o_upgradeData);
 
 protected:
 
@@ -219,6 +320,35 @@ protected:
 
   int m_targetID;
 
+  //-------------------------------------------------------------------//
+  /// @brief array of posible upgrade state that a turret can be in
+  //-------------------------------------------------------------------//
+
+  static std::vector<State*> s_upgrades;
+
+  //-------------------------------------------------------------------//
+  /// @brief array of data for each upgrade. This is used in the ui for
+  /// showing upgrade information.
+  //-------------------------------------------------------------------//
+
+  static UpgradeDataVec s_upgradeData;
+
+  //-------------------------------------------------------------------//
+  /// @brief current upgrade state, this is an index into s_upgrades
+  //-------------------------------------------------------------------//
+
+  unsigned int m_upgradeIndex;
+
+protected:
+  //-------------------------------------------------------------------//
+  /// @brief register upgrade with the turret. This enables all the update
+  /// transitions
+  /// @param[in] _upgradeState the state that should manage the upgrading
+  //-------------------------------------------------------------------//
+
+  void registerUpgrade(State *_upgradeState, UpgradeDataPtr _data);
+
 };
+
 
 #endif // TURRET_H

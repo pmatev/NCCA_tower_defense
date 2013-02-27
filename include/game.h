@@ -13,6 +13,7 @@
 #include "environment.h"
 #include "projectilemanager.h"
 #include "player.h"
+#include "turret.h"
 
 
 //-------------------------------------------------------------------//
@@ -131,6 +132,33 @@ public:
 
     void startWaves();
 
+    //-------------------------------------------------------------------//
+    /// @brief upgrade the tower with ID _id
+    /// @param[in] _id identifier for the tower that should be upgraded.
+    //-------------------------------------------------------------------//
+
+    bool upgrateTurret(int _id);
+
+    //-------------------------------------------------------------------//
+    /// @brief get the upgrade data about the current upgrade level
+    /// @param[out] o_upgradeData this is a weak pointer to the current
+    /// upgradeData.
+    /// @param[in] _id the id of the turret
+    /// @return whether the turret has a current upgrade.
+    //-------------------------------------------------------------------//
+
+    bool getCurrentUpgrade(Turret::UpgradeDataWPtr &o_upgradeData, int _id);
+
+    //-------------------------------------------------------------------//
+    /// @brief get the upgrade data about the next upgrade level
+    /// @param[out] o_upgradeData this is a weak pointer to the next
+    /// upgradeData.
+    /// @param[in] _id the id of the turret
+    /// @return whether the turret has a next upgrade.
+    //-------------------------------------------------------------------//
+
+    bool getNextUpgrade(Turret::UpgradeDataWPtr &o_upgradeData, int _id);
+
 protected:
     //-------------------------------------------------------------------//
     /// @brief hidden ctor for singleton
@@ -195,7 +223,6 @@ private:
     static Game* s_instance;
 
     ngl::Light *m_light;
-
 };
 
 //-------------------------------------------------------------------//
