@@ -57,6 +57,7 @@ Environment::Environment(
           _spawnCoords[i][1]
           );
   }
+  resetSpawnPathHighlighting();
 }
 
 //-------------------------------------------------------------------//
@@ -169,6 +170,8 @@ void Environment::createTower(
     m_towers.push_back(newTower);
   }
   recalculateSearchTree();
+  // Highlight paths between spawn nodes and base
+  resetSpawnPathHighlighting();
 }
 
 //-------------------------------------------------------------------//
@@ -232,3 +235,29 @@ bool Environment::checkSpawnNodePaths() const
 }
 
 //-------------------------------------------------------------------//
+
+void Environment::resetSpawnPathHighlighting()
+{
+  // Clear all booleans
+  m_nodeMap->clearSpawnPathHighlighting();
+
+  // Find the path for each spawn node and flag all the nodes with isInSpawnPath
+  BOOST_FOREACH(NodeWPtr spawnWeak, *m_spawnNodes)
+  {
+    NodePtr spawnNode = spawnWeak.lock();
+    if(spawnNode)
+    {
+      // get path
+      Node::NodeWList path;
+      m_nodeMap->getSearchTreePath(path, spawnWeak, m_base->getLinkedNode());
+      BOOST_FOREACH(NodeWPtr nodeWeak, path)
+      {
+        NodePtr node = nodeWeak.lock();
+        if(node)
+        {
+          node->setInSpawnPath(true);
+        }
+      }
+    }
+  }
+}

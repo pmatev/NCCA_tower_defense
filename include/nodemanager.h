@@ -182,6 +182,12 @@ public:
 
   void drawSelection();
 
+  //-------------------------------------------------------------------//
+  /// @brief set all spawn path booleans to false
+  //-------------------------------------------------------------------//
+
+  void clearSpawnPathHighlighting();
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief traverse node tree from _node and continue the search on the

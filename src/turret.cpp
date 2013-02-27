@@ -195,10 +195,10 @@ void Turret::prepareForUpdate()
   // if the fire boolean is set
 
 // Don't shoot for testing
-//  if (m_doShot == true)
-//  {
-//    fire();
-//  }
+  if (m_doShot == true)
+  {
+    fire();
+  }
 }
 
 //-------------------------------------------------------------------//

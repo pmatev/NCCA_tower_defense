@@ -284,7 +284,13 @@ protected:
 
   virtual void generateViewBBox() = 0;
 
+  //-------------------------------------------------------------------//
+  /// @brief draw the entity with colour. This is separated from draw so
+  /// that we can easily change the colour of objects in virtualized draw
+  /// methods.
+  //-------------------------------------------------------------------//
 
+  void drawWithColour(const ngl::Vec3 &_colour);
 
 protected: //attributes
 

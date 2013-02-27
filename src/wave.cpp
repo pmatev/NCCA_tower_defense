@@ -164,6 +164,7 @@ bool Wave::generatePaths(NodeWPtr _node)
 
 
   // 1.
+  Q_UNUSED(_node)
   BOOST_FOREACH(EnemyPtr enemy, m_enemies)
   {
     if(!enemy->generateTempPath())

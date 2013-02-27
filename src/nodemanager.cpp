@@ -567,7 +567,15 @@ bool NodeManager::traverseChildren(
       {
         current->setFound(true);
       }
-      o_newPath.push_back(_current);
+      //bool startIsBlocked = false;
+      if(_isStart && current->getSearchDepth() == -1)
+      {
+       // startIsBlocked = true;
+      }
+      else
+      {
+        o_newPath.push_back(_current);
+      }
       // go through children
       // 1. find child with lowest search depth
       // 2. add child to o_newPath
@@ -601,10 +609,10 @@ bool NodeManager::traverseChildren(
           }
         }
       }
-      if(!_isStart && lowestDepth == -1)
-      {
-        return false;
-      }
+//      if(lowestDepth == -1)
+//      {
+//        return false;
+//      }
       if (foundSomething)
       {
         return traverseChildren(o_newPath, _goal,bestChild, false);
@@ -874,4 +882,14 @@ NodeWPtr NodeManager::getNodeFromCoords(int _x, int _z) const
   _x = _x < 0 ? 0 : _x > m_gridWidth - 1 ? m_gridWidth - 1 : _x;
   _z = _z < 0 ? 0 : _z > m_gridHeight-1 ? m_gridHeight-1 : _z;
   return NodeWPtr(m_nodes[(_z*m_gridWidth) + _x]);
+}
+
+//-------------------------------------------------------------------//
+
+void NodeManager::clearSpawnPathHighlighting()
+{
+  BOOST_FOREACH(NodePtr node, m_nodes)
+  {
+    node->setInSpawnPath(false);
+  }
 }

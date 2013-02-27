@@ -139,6 +139,21 @@ public:
   inline void setSearchDepth(int _searchDepth) {m_searchDepth = _searchDepth;}
 
   //-------------------------------------------------------------------//
+  /// @brief is the node in any spawn paths
+  //-------------------------------------------------------------------//
+
+  inline bool isInSpawnPath() const {return m_isInSpawnPath;}
+
+  //-------------------------------------------------------------------//
+  /// @brief set whether the node is in one of the spawn paths
+  //-------------------------------------------------------------------//
+
+  inline void setInSpawnPath(bool _isInSpawnPath)
+  {
+    m_isInSpawnPath = _isInSpawnPath;
+  }
+
+  //-------------------------------------------------------------------//
   /// @brief reset the node's path details. This should be run on all nodes
   /// before search depths are calculated.
   //-------------------------------------------------------------------//
@@ -151,8 +166,11 @@ public:
   inline void prepareForUpdate(){;}
 
   //-------------------------------------------------------------------//
-  /// @brief a method to generate the view box
+  /// @brief overload drawing so that we can set highlighting based on node
+  /// state.
   //-------------------------------------------------------------------//
+
+  void draw();
 
   void generateViewBBox();
 
@@ -210,6 +228,13 @@ protected:
   //-------------------------------------------------------------------//
 
   int m_searchDepth;
+
+  //-------------------------------------------------------------------//
+  /// @brief whether the node is in any of the paths between a spawn point
+  /// and the base
+  //-------------------------------------------------------------------//
+
+  bool m_isInSpawnPath;
 
 };
 

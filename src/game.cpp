@@ -407,11 +407,11 @@ void Game::update(const double _dt)
   m_waveManager->publish();
   m_projectileManager->publish();
   // 3 //
-//  m_projectileManager->update(_dt);
-//  // 4 //
-//  dealDamage(m_projectileManager->checkCollisions());
+  m_projectileManager->update(_dt);
+  // 4 //
+  dealDamage(m_projectileManager->checkCollisions());
 
-//  m_projectileManager->checkDeaths();
+  m_projectileManager->checkDeaths();
   // 5 //
   m_waveManager->update(_dt);
   // 6 //

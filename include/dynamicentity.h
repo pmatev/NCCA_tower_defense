@@ -98,10 +98,11 @@ public:
   virtual void prepareForUpdate();
 
   //-------------------------------------------------------------------//
-  /// @brief a method to generate the view box
+  /// @brief a method to generate the view box, must be implemented in
+  /// concrete types so that there can be variation on the view bboxes
   //-------------------------------------------------------------------//
 
-  void generateViewBBox();
+  virtual void generateViewBBox();
 
 protected:
 

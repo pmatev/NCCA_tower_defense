@@ -130,8 +130,12 @@ protected:
   Node::NodeWVecPtr m_spawnNodes;
 
 protected:
+  //-------------------------------------------------------------------//
+  /// @brief make sure that all nodes are are used in the paths between
+  /// spawn nodes and the goal are highlighted.
+  //-------------------------------------------------------------------//
 
-
+  void resetSpawnPathHighlighting();
 
 private:
 

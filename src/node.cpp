@@ -182,3 +182,15 @@ void Node::generateViewBBox()
 }
 
 //-------------------------------------------------------------------//
+
+void Node::draw()
+{
+  if(m_isInSpawnPath)
+  {
+    drawWithColour(ngl::Vec3(0, 0, 1));
+  }
+  else
+  {
+    drawWithColour(ngl::Vec3(1, 0, 0));
+  }
+}

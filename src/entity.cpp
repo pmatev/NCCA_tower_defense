@@ -188,6 +188,11 @@ void Entity::generateLsBBox(const std::vector <Renderer::vertData> & _meshData)
 
 void Entity::draw()
 {
+  drawWithColour(ngl::Vec3(1, 0, 0));
+}
+
+void Entity::drawWithColour(const ngl::Vec3 &_colour)
+{
   Renderer *r = Renderer::instance();
 
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
@@ -204,7 +209,6 @@ void Entity::draw()
   }else{
       shader->setShaderParam4f("colourSelect",0,0,0,0);
   }
-
-  shader->setShaderParam4f("colour", 1,0,0,1);
+  shader->setShaderParam4f("colour", _colour[0], _colour[1], _colour[2], 1);
   r->draw(m_IDStr, "Phong");
 }
