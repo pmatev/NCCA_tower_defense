@@ -46,7 +46,11 @@ void Turret::update(const double _dt)
   // just do whatever the brain says
   m_aim = brain();
 
-  m_aim.normalize();
+  float len = m_aim.length();
+  if(len)
+  {
+      m_aim /= len;
+  }
 
 }
 
@@ -84,7 +88,7 @@ ngl::Vec3 Turret::getAimVec(const ngl::Vec3 &_pos) const
   ngl::Vec3 aim(_pos.m_x-m_pos.m_x,
                    _pos.m_y-m_shotPos.m_y,
                    _pos.m_z-m_pos.m_z);
-  std::cout<<"\n";
+//  std::cout<<"\n";
 
   return aim;
 }

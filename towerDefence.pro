@@ -57,7 +57,8 @@ SOURCES += src/main.cpp \
     src/ai/steeringbehaviours.cpp \
     src/player.cpp \
     src/fsm/states/turretstates.cpp \
-    src/fsm/states/projectilestates.cpp
+    src/fsm/states/projectilestates.cpp \
+    src/billboard.cpp
 
 
 
@@ -106,7 +107,8 @@ HEADERS += \
     include/ai/steeringbehaviours.h \
     include/player.h \
     include/fsm/states/turretstates.h \
-    include/fsm/states/projectilestates.h
+    include/fsm/states/projectilestates.h \
+    include/billboard.h
 
 
 

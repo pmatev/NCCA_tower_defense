@@ -189,9 +189,10 @@ void Entity::generateLsBBox(const std::vector <Renderer::vertData> & _meshData)
 void Entity::draw()
 {
   Renderer *r = Renderer::instance();
+
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-  r->loadMatrixToShader(m_transformStack, "Phong");
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
   (*shader)["Phong"]->use();
   ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
   c = c/255.0f;
@@ -199,10 +200,11 @@ void Entity::draw()
 
   if(m_generalType != ENEMY)
   {
-      shader->setShaderParam4f("colour", c[0], c[1], c[2], 1);
+      shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
   }else{
-      shader->setShaderParam4f("colour",0,0,0,0);
+      shader->setShaderParam4f("colourSelect",0,0,0,0);
   }
 
+  shader->setShaderParam4f("colour", 1,0,0,1);
   r->draw(m_IDStr, "Phong");
 }

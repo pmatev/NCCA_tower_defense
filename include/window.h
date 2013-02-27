@@ -8,7 +8,7 @@
 #include "ui.h"
 #include <SDL.h>
 #include "renderer.h"
-
+#include "billboard.h"
 
 //-------------------------------------------------------------------//
 /// @file window.h
@@ -214,6 +214,8 @@ protected:
     SDL_Event m_event;
 
     int m_viewmode;
+
+    BillboardPtr m_screenBillboard;
 
 
 

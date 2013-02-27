@@ -396,6 +396,10 @@ void Renderer::bindFrameBuffer(const GLuint _id)
   m_boundFBO = _id;
 }
 
+//void Renderer::bindTexture(const std::string &_name)
+//{
+//    glBindTexture(GL_TEXTURE_2D, m_textures[_name]);
+//}
 
 //-------------------------------------------------------------------//
 
@@ -429,35 +433,16 @@ void Renderer::fboError(GLenum _error)
     }
 }
 
-
 //-------------------------------------------------------------------//
-
-//void Renderer::setFboState(bool _fbo)
-//{
-////    if(_fbo == 1)
-////    {
-////         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,m_fboID);
-////    }
-////    else
-////    {
-////         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
-////    }
-
-//}
-
-//-------------------------------------------------------------------//
-void Renderer::loadMatrixToShader( ngl::TransformStack &_tx, std::string _shader)
+void Renderer::loadMatrixToShader( const ngl::Mat4 &_tx, const std::string &_shader)
 {
     ngl::ShaderLib *shader=ngl::ShaderLib::instance();
 
     (*shader)[_shader]->use();
 
-    ngl::Mat4 M;
-    ngl::Mat4 V;
-    ngl::Mat4 P;
-    M=_tx.getCurrentTransform().getMatrix();
-    V= m_cam->getViewMatrix();
-    P= m_cam->getProjectionMatrix();
+    ngl::Mat4 M = _tx;
+    ngl::Mat4 V = m_cam->getViewMatrix();
+    ngl::Mat4 P = m_cam->getProjectionMatrix();
 
     shader->setShaderParamFromMat4("MVP",M*V*P);
 }

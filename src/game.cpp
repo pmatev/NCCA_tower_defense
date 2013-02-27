@@ -54,6 +54,7 @@ void Game::setupScene()
 {
   //Environment has to be created before the waves, as the enemies query data
   //in environment.
+
   std::vector<ngl::Vec2> spawnCoords;
   spawnCoords.push_back(ngl::Vec2(19, 19));
   spawnCoords.push_back(ngl::Vec2(19, 18));
@@ -87,6 +88,7 @@ void Game::setupScene()
           )
         );
   m_waveManager = WaveManager::create(m_environment->getSpawnNodes(), waveInfos);
+
   m_projectileManager = ProjectileManager::create();
   m_player = Player::create(500); //Hard coded now, should probably be set from a file
 }

@@ -149,7 +149,7 @@ void UIButton::draw()
   shader->setRegisteredUniform1f("scaleY",scaleY);
 
   ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
-  shader->setRegisteredUniform4f("colour", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
+  shader->setRegisteredUniform4f("colourSelect", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
 
   glBindTexture(GL_TEXTURE_2D, m_texture);
   render->draw(m_IDStr, "UI");

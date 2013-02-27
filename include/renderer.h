@@ -146,7 +146,7 @@ public:
     /// @param [in] _tx, transformation stack (matrix)
     /// @param [in] _shader, which shader to pass the matrix to.
     //-------------------------------------------------------------------//
-    void loadMatrixToShader(ngl::TransformStack &_tx, std::string _shader);
+    void loadMatrixToShader(const ngl::Mat4 &_tx, const std::string &_shader);
 
     //-------------------------------------------------------------------//
     /// OBSOLETE

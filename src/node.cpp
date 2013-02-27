@@ -64,12 +64,12 @@ void Node::generateMesh()
                         m_hexagonSize/4, 0.0, -(std::cos(30*PI/180)*m_hexagonSize/2),
                         -m_hexagonSize/4, 0.0, -(std::cos(30*PI/180)*m_hexagonSize/2),
                        };
-  GLfloat normals[] = {0,0,1,
-                       0,0,1,
-                       0,1,1,
-                       0,1,1,
-                       0,0,1,
-                       0,0,1
+  GLfloat normals[] = {0.1,0.1,0.1,
+                       0.1,0.1,0.1,
+                       0.1,0.1,0.1,
+                       0.1,0.1,0.1,
+                       0.1,0.1,0.1,
+                       0.1,0.1,0.1
                        };
 
   std::vector<Renderer::vertData> boxData;

@@ -48,7 +48,7 @@ void Bullet::draw()
 {
   Renderer *r = Renderer::instance();
   //m_transformStack.setScale(0.3, 0.3, 0.3);
-  r->loadMatrixToShader(m_transformStack, "Phong");
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
 
 //void Bullet::draw()
 //{

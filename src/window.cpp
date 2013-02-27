@@ -8,6 +8,7 @@
 #include "boost/lexical_cast.hpp"
 
 
+
 Window* Window::s_instance = 0;
 
 //-------------------------------------------------------------------//
@@ -93,57 +94,9 @@ void Window::init()
 
     m_UI->createTestMenu();
 
-    // BUILD BILLBOARD
-    struct quadVertData
-    {
-    float x;
-    float y;
-    float u;
-    float v;
-    };
 
-    quadVertData d[6];
-
-    d[0].x=-1.0f;
-    d[0].y=-1.0f;
-    d[0].u=0.0f;
-    d[0].v=0.0f;
-
-    d[1].x=1.0f;
-    d[1].y=-1.0f;
-    d[1].u=1.0f;
-    d[1].v=0.0f;
-
-    d[2].x=-1.0f;
-    d[2].y=1.0f;
-    d[2].u=0.0f;
-    d[2].v=1.0f;
-
-    d[3].x=-1.0f;
-    d[3].y=1.0f;
-    d[3].u=0.0f;
-    d[3].v=1.0f;
-
-    d[4].x=1.0f;
-    d[4].y=-1.0f;
-    d[4].u=1.0f;
-    d[4].v=0.0f;
-
-    d[5].x=1.0f;
-    d[5].y=1.0f;
-    d[5].u=1.0f;
-    d[5].v=1.0f;
-
-    render->createVAO("screen", GL_TRIANGLES);
-
-    VAOPtr v = render->getVAObyID("screen");
-    v->bind();
-    int size = sizeof(quadVertData);
-    v->setData(6*size,d[0].x);
-    v->setVertexAttributePointer(0,2,GL_FLOAT,size,0);
-    v->setVertexAttributePointer(1,2,GL_FLOAT,size,2);
-    v->setNumIndices(6);
-    v->unbind();
+    m_screenBillboard = BillboardPtr(new Billboard(Billboard::b2D, ngl::Vec4(0,0,0,1),1,1));
+    m_screenBillboard->init();
 
 
     m_viewmode=0;
@@ -238,7 +191,8 @@ void Window::loop()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glBindTexture(GL_TEXTURE_2D, r->getTexture(m_viewmode));
         glGenerateMipmapEXT(GL_TEXTURE_2D);
-        r->draw("screen", "Texture");
+        m_screenBillboard->draw("Texture");
+//        r->draw("screen", "Texture");
 
         SDL_GL_SwapBuffers();
         frameCount++;
