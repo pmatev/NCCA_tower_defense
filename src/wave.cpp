@@ -49,6 +49,7 @@ void Wave::update(const double _dt)
   //set a variable for the currency
 
   int currencyAdded = 0;
+  int scoreAdded = 0;
 
   for(
       EnemyVec::iterator it = m_enemies.begin();
@@ -60,7 +61,19 @@ void Wave::update(const double _dt)
     {
       // KILL ENEMY!!!
 
-      currencyAdded += (*it)->getCurrencyValue();
+      (*it)->kill();
+    }
+    if ((*it)->getToBeRemoved() == true)
+    {
+      //check if it was killed by a player
+
+      if ((*it)->getKilledByUser() == true)
+      {
+        //add teh currency and score to the appropriate variables
+
+        currencyAdded += (*it)->getCurrencyValue();
+        scoreAdded += (*it)->getScoreValue();
+      }
 
       it = removeEnemy(it);
     }
@@ -68,16 +81,17 @@ void Wave::update(const double _dt)
     {
       ++it;
     }
-
-    //get a pointer to the game
-
-    Game * game = Game::instance();
-
-    //and add the currency
-
-    game->addCurrency(currencyAdded);
-
   }
+
+  //get a pointer to the game
+
+  Game * game = Game::instance();
+
+  //and add the currency and the score
+
+  game->addCurrency(currencyAdded);
+  game->addScore(scoreAdded);
+
   // Make sure to update local entites
   BOOST_FOREACH(EnemyPtr enemy, m_enemies)
   {
@@ -349,11 +363,8 @@ std::list<Collision> Wave::checkCollisions()
        listIt++
        )
   {
-    //call collision detection on the projectiles
-    std::list<GeneralType> types;
-    types.push_back(TURRET);
-    //    types.push_back(BASE);
-    Collision c = (*listIt)->collisionDetection(types);
+
+    Collision c = (*listIt)->baseTest();
 
     //check if there was a collision
 
@@ -361,6 +372,13 @@ std::list<Collision> Wave::checkCollisions()
     {
       //if there was, add it to the list
 
+      collisionList.push_back(c);
+
+      //and kill the emeny using the suicide method
+      //so that the player doesn't get the score or
+      //currency from the enemy
+
+      (*listIt)->suicide();
     }
   }
   //finally return the resulting list

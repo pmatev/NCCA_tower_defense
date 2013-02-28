@@ -39,7 +39,7 @@ public:
       const ngl::Vec3 &_pos,
       const ngl::Vec3 &_aim,
       GeneralType _type,
-        unsigned int _id
+      unsigned int _id
       );
 
   //-------------------------------------------------------------------//
@@ -54,14 +54,6 @@ public:
   //-------------------------------------------------------------------//
 
   void update(const double _dt);
-
-  //-------------------------------------------------------------------//
-  /// @brief a method to check collisions against enemies
-  /// @param [out] a collision struct, 0 for the id if there was no
-  /// collision
-  //-------------------------------------------------------------------//
-
-  Collision collisionDetection(std::list<GeneralType> _types) const;
 
   //-------------------------------------------------------------------//
   /// @brief a method to enforce the grid boundaries, pure virtual as
@@ -104,6 +96,30 @@ public:
 
   virtual void generateViewBBox();
 
+  //-------------------------------------------------------------------//
+  /// @brief enter the death sequence, at the moment just sets toBeRemoved
+  /// to true, later can implement a death state
+  //-------------------------------------------------------------------//
+
+  virtual void kill();
+
+  //-------------------------------------------------------------------//
+  /// @brief method to get the toBeRemoved variable
+  //-------------------------------------------------------------------//
+
+  bool getToBeRemoved() const { return m_toBeRemoved;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to check collisions of this entity against a list
+  /// of entities retrieved from the database based on the list of types
+  /// @param [in] _types, a list of types of enemies to test collisions
+  /// against
+  //-------------------------------------------------------------------//
+
+  Collision collisionTest (
+        std::list<GeneralType> &_types
+        ) const;
+
 protected:
 
   //-------------------------------------------------------------------//
@@ -143,16 +159,7 @@ protected:
         const ngl::Vec3 &_point2,
         BBox _planeExtents) const;
 
-  //-------------------------------------------------------------------//
-  /// @brief a method to check collisions of this entity against a list
-  /// of entities retrieved from the database based on the list of types
-  /// @param [in] _types, a list of types of enemies to test collisions
-  /// against
-  //-------------------------------------------------------------------//
 
-  Collision collisionTest (
-        std::list<GeneralType> &_types
-        ) const;
 
   //-------------------------------------------------------------------//
   /// @brief a virtual brain method, to be implemented in children
@@ -208,7 +215,14 @@ protected:
   //-------------------------------------------------------------------//
   /// @brief stores the steering behaviours
   //-------------------------------------------------------------------//
+
   SteeringBehaviours *m_steering;
+
+  //-------------------------------------------------------------------//
+  /// @brief a boolean which states whether or not to remove the enemy
+  //-------------------------------------------------------------------//
+
+  bool m_toBeRemoved;
 
 };
 

@@ -2,6 +2,7 @@
 #include "nodemanager.h"
 #include "game.h"
 #include "boost/utility.hpp"
+#include "fwd/database.h"
 #include "database.h"
 #include "fsm/states/enemystates.h"
 
@@ -12,14 +13,17 @@ Enemy::Enemy(
     const ngl::Vec3 &_aim,
     unsigned int _id,
     int _currencyValue,
+    int _scoreValue,
     float _maxPathDistance
     ) :
   DynamicEntity(_pos,_aim,ENEMY, _id),
   m_needNewPath(false),
   m_maxPathDistance(_maxPathDistance),
   m_pathTargetThreshold(1.2), //THIS SHOULD BE A PROPORTION OF THE DISTANCE BETWEEN NODES!!!!!
-                              //IF ITS TOO LOW ENEMIES WILL NOT MOVE
-  m_currencyValue(_currencyValue)
+  //IF ITS TOO LOW ENEMIES WILL NOT MOVE
+  m_currencyValue(_currencyValue),
+  m_scoreValue(_scoreValue),
+  m_killedByUser(true)
 {
   if(generateTempPath())
   {
@@ -224,3 +228,67 @@ bool Enemy::sphereBBoxCollision(const ngl::Vec3 &_pos,
 
 //-------------------------------------------------------------------//
 
+Collision Enemy::baseTest() const
+{
+  //first generate a list of local entity records
+  Database* db = Database::instance();
+  std::list<GeneralType> typeList;
+  typeList.push_back(BASE);
+  EntityRecordWCList localEntities;
+  db->getLocalEntities(
+        localEntities,
+        m_pos.m_x+m_lsMeshBBox.m_minX-0.5,
+        m_pos.m_z+m_lsMeshBBox.m_minZ-0.5,
+        m_pos.m_x+m_lsMeshBBox.m_maxX+0.5,
+        m_pos.m_z+m_lsMeshBBox.m_maxZ+0.5,
+        typeList
+        );
+
+  //initialise the return collision
+
+  Collision c(0,0);
+
+  //if the list is not empty
+
+  if (localEntities.size() != 0)
+  {
+
+    //then tent the iterator
+    EntityRecordWCList::iterator listIt = localEntities.begin();
+
+    //get the id of the element pointed to by the iterator
+    EntityRecordCPtr recordStrong = listIt->lock();
+    if(recordStrong)
+    {
+
+      //get the relevant information
+
+      ngl::Vec3 pos (recordStrong->m_x,recordStrong->m_y,recordStrong->m_z);
+      float  radius = (recordStrong->m_maxX -recordStrong->m_minX)/2;
+
+      //check for collisions between the entity checking and the one
+      //it's checking against
+
+      bool result = sphereBBoxCollision(pos,radius);
+      //if there was a collision
+
+      if (result == true)
+      {
+        //set the id of the collision being returned from the null value
+        //to the one tested
+
+        c.m_id = recordStrong->m_id;
+
+        //then set the damage value
+
+        c.m_damage = m_damage;
+      }
+    }
+  }
+
+  //finally return the collision struct
+
+  return c;
+}
+
+//-------------------------------------------------------------------//

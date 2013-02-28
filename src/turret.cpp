@@ -144,7 +144,6 @@ void Turret::update(const double _dt)
 
     axisQuart.rotatePoint(axisQuart,m_aim);
 
-    //std::cout<<"quarternionRotated: "<<m_aim.m_x<<m_aim.m_y<<m_aim.m_z<<"\n";
   }
 
 
