@@ -10,12 +10,14 @@ TestTurret::TestTurret(
   Turret(
     _linkedNode,
     _id,
-    std::string("Bullet")
+    std::string("Bullet"),
+    20,
+    15
     )
 {
-  m_fov = 90;
+  m_fov = 360;
   m_viewDistance = 10;
-  m_maxRotationSpeed = 3;
+  setRotationAngle(0.5);
   // pass everything into the turret
   generateMesh();
   publish();
@@ -46,8 +48,8 @@ void TestTurret::init()
 {
   m_stateMachine = new StateMachine(EntityWPtr(shared_from_this()));
   m_stateMachine->setCurrentState(BasicUpgrade::instance());
-  m_stateMachine->setPreviousState(LockOn::instance());
-  //m_stateMachine->setGlobalState(0);
+  m_stateMachine->setPreviousState(Seek::instance());
+
 
   registerUpgrade(
         BasicUpgrade::instance(),
@@ -170,14 +172,42 @@ ngl::Vec3 TestTurret::brain()
   // do something
   // return test aim
   m_stateMachine->update();
-  return m_aim;
+  return m_desiredAim;
 }
 
 //-------------------------------------------------------------------//
 
 void TestTurret::filterViewVolume(EntityRecordList &o_localEntities)
 {
-  Q_UNUSED(o_localEntities);
+  if(o_localEntities.size()!= 0)
+  {
+    //generate an iterator to cycle through the list
+
+    EntityRecordList::iterator listIt = o_localEntities.begin();
+
+    while (listIt != o_localEntities.end())
+    {
+      //check if the square dist is greater than the view distance
+      // squared
+
+      float sqDist = (listIt->m_x - m_pos.m_x)*(listIt->m_x - m_pos.m_x)+
+          (listIt->m_y - m_pos.m_y)*(listIt->m_y - m_pos.m_y)+
+          (listIt->m_z - m_pos.m_z)*(listIt->m_z - m_pos.m_z);
+
+      if (sqDist > m_viewDistance*m_viewDistance)
+      {
+        //if it is bigger, remove it from the local entities
+
+        listIt = o_localEntities.erase(listIt);
+      }
+      else
+      {
+        //increment the local entities list
+
+        listIt++;
+      }
+    }
+  }
 }
 
 //-------------------------------------------------------------------//
@@ -195,12 +225,12 @@ void TestTurret::generateViewBBox()
 {
   // initialise world space view box
   m_wsViewBBox = BBox(
-        m_lsMeshBBox.m_minX*10 + m_pos.m_x,
-        m_lsMeshBBox.m_minY*10 + m_pos.m_y,
-        m_lsMeshBBox.m_minZ*10 + m_pos.m_z,
-        m_lsMeshBBox.m_maxX*10 + m_pos.m_x,
-        m_lsMeshBBox.m_maxY*10 + m_pos.m_y,
-        m_lsMeshBBox.m_maxZ*10 + m_pos.m_z
+        m_lsMeshBBox.m_minX*m_viewDistance + m_pos.m_x,
+        m_lsMeshBBox.m_minY*m_viewDistance + m_pos.m_y,
+        m_lsMeshBBox.m_minZ*m_viewDistance + m_pos.m_z,
+        m_lsMeshBBox.m_maxX*m_viewDistance + m_pos.m_x,
+        m_lsMeshBBox.m_maxY*m_viewDistance + m_pos.m_y,
+        m_lsMeshBBox.m_maxZ*m_viewDistance + m_pos.m_z
         );
 }
 //-------------------------------------------------------------------//

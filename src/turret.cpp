@@ -1,28 +1,40 @@
 #include "turret.h"
 #include "game.h"
+#include <cmath>
+#include<ngl/Quaternion.h>
+
+
+#define PI 3.14159265
 
 std::vector<State*> Turret::s_upgrades;
 Turret::UpgradeDataVec Turret::s_upgradeData;
+
 
 //-------------------------------------------------------------------//
 
 Turret::Turret(
     NodePtr _linkedNode,
     unsigned int _id,
-    std::string _projectileType
+    std::string _projectileType,
+    float _viewDistance,
+    float _projectileSpeed
     ):
   StaticEntity(_linkedNode, TURRET,_id),
   m_fov(360),
-  m_viewDistance(20),
-  m_maxRotationSpeed(0.5),
-  m_aim(ngl::Vec3(0.01, 0, 0)),
+  m_viewDistance(_viewDistance),
+  m_maxRotationAngle(2),            //default values
+  m_cosRotationSpeed(cos(m_maxRotationAngle*PI/180)),
+  m_aim(ngl::Vec3(1, 0, 0)),
   m_projectileType(_projectileType),
   m_doShot(false),
   m_dtSinceLastShot(0),
   m_shotWaitTime(0.1),
   m_shotPos(0,0,0),
-  m_targetID(-1),
+  m_targetID(0),
+  m_desiredAim(m_aim),
+  m_projectileSpeed(_projectileSpeed),
   m_upgradeIndex(0)
+
 {
   //variables initialised before constructor body called
 }
@@ -43,12 +55,101 @@ void Turret::update(const double _dt)
 
   m_dtSinceLastShot += _dt/1000;
 
-  //update the state machine
-  //m_stateMachine->update();
+  //call the brain
 
-  // TEST
-  // just do whatever the brain says
-  m_aim = brain();
+  m_stateMachine->update();
+
+  //check the dot product
+
+  float angleDot = m_aim.dot(m_desiredAim);
+
+  // if it's greater than the stored cosine of the max rotation
+  //speed angle implying that the desired aim vector is within the
+  //rotation limits
+
+  if (angleDot > m_cosRotationSpeed)
+  {
+    m_aim = m_desiredAim;
+  }
+
+  // if the angle is too big but is less than 90 degrees, do a quarternion
+  //rotation of the vector around the normal to the two vectors, if it is
+  //more than 90 degrees, just rotate around the z axis
+
+  else
+  {
+    //calculate the components for the quarternion
+
+    float rotInRads = (m_maxRotationAngle*PI/180);
+
+    //then calculate sine and cos theta/2
+
+    float rotVal = cos(rotInRads);
+    float sinTheta = sin(rotInRads/2);
+
+    //initialise the x y and z vale
+
+    float xVal;
+    float yVal;
+    float zVal;
+
+    //get the normal of the two vectors
+
+    ngl::Vec3 normal = m_desiredAim.cross(m_aim);
+
+    //if the angle is less than 90
+
+    if (angleDot >= 0)
+    {
+      //ensure unit normal
+
+      float len = normal.length();
+      if(len)
+      {
+        normal /= len;
+      }
+
+      //then set the x,y, and z components
+
+      xVal = normal.m_x*sinTheta;
+      yVal = normal.m_y*sinTheta;
+      zVal = normal.m_z*sinTheta;
+    }
+
+    //if it's not enforce rotation around the y axis
+
+    else
+    {
+      //set up x and z vals to = 0
+
+      xVal = 0;
+      zVal = 0;
+
+      //otherwise determine if the normal is pointing up or down,
+      //and follow that, default behaviour if the vectors are opposite is
+      //to use -y as the axis
+
+      if (normal.m_y > 0 && angleDot != 0)
+      {
+        yVal = sinTheta;
+      }
+      else
+      {
+        yVal = -sinTheta;
+      }
+
+    }
+    //generate the quarternion axis
+
+    ngl::Quaternion axisQuart (rotVal,xVal,yVal,zVal);
+
+    //and rotate the point by the quarternion
+
+    axisQuart.rotatePoint(axisQuart,m_aim);
+
+    std::cout<<"quarternionRotated: "<<m_aim.m_x<<m_aim.m_y<<m_aim.m_z<<"\n";
+  }
+
 
   float len = m_aim.length();
   if(len)
@@ -71,10 +172,18 @@ void Turret::fire()
   ProjectileManagerPtr pm = game->getProjectileManagerWeakPtr().lock();
   if(pm)
   {
+    //ensure normailsed aim
+
+    float len = m_aim.length();
+    if(len)
+    {
+        m_aim /= len;
+    }
+
     //add a projectile, at the moment starts it at the centre of the turret
     //might need to add some way of setting where the end of the turret's
     //barrel is
-    pm->addProjectile(m_projectileType,m_pos,m_aim,m_ID);
+    pm->addProjectile(m_projectileType,m_pos,m_aim*m_projectileSpeed,m_ID);
 
     //then set the doFire and time since last shot values back to their default
     // values
@@ -87,19 +196,64 @@ void Turret::fire()
 
 //-------------------------------------------------------------------//
 
-ngl::Vec3 Turret::getAimVec(const ngl::Vec3 &_pos) const
+ngl::Vec3 Turret::calculateAimVec(const ngl::Vec3 &_pos,
+                                  const ngl::Vec3 &_velocity) const
 {
-  ngl::Vec3 aim(_pos.m_x-m_pos.m_x,
-                   _pos.m_y-m_shotPos.m_y,
-                   _pos.m_z-m_pos.m_z);
-//  std::cout<<"\n";
 
-  return aim;
+  //calculate how long it will take for the projectile to reach
+  //the current position of the enemy
+
+  //calculate the predicted velocity of the projectile
+
+  ngl::Vec3 aim ((_pos.m_x-m_pos.m_x),
+                               (_pos.m_y-m_pos.m_y),
+                               (_pos.m_z-m_pos.m_z)
+                               );
+
+  ngl::Vec3 predictedVelocity = aim;
+
+  float len = predictedVelocity.length();
+  if(len)
+  {
+      predictedVelocity /= len;
+  }
+
+  predictedVelocity *= m_projectileSpeed;
+
+  //then calculate how many seconds it will take for the projectile
+  //to reach the enemy
+
+  float time = 0;
+
+  if (predictedVelocity.m_x != 0)
+  {
+    time = aim.m_x/predictedVelocity.m_x;
+  }
+  else if (predictedVelocity.m_y != 0)
+  {
+    time = aim.m_y/predictedVelocity.m_y;
+  }
+  else if (predictedVelocity.m_z != 0)
+  {
+    time = aim.m_z/predictedVelocity.m_z;
+  }
+
+  //then add the velocity multiplied by that time to the position
+
+  ngl::Vec3 aimPoint = _pos+_velocity*time;
+
+  //then calculate the vector to that point
+
+  ngl::Vec3 aimVec(aimPoint.m_x-m_pos.m_x,
+                   aimPoint.m_y-m_shotPos.m_y,
+                   aimPoint.m_z-m_pos.m_z);
+
+  return aimVec;
 }
 
 //-------------------------------------------------------------------//
 
-void Turret::getLocalRecordByID(unsigned int _ID, EntityRecord &o_record)
+void Turret::getTargetRecord(EntityRecord &o_record)
 {
   //set up variables
 
@@ -111,10 +265,12 @@ void Turret::getLocalRecordByID(unsigned int _ID, EntityRecord &o_record)
 
   while (!result && listIt != m_localEntities->end())
   {
-    if (listIt->m_id == _ID)
+    if (listIt->m_id == m_targetID)
     {
 
       o_record = (*listIt);
+
+      result = true;
     }
     else
     {
@@ -132,18 +288,39 @@ void Turret::getNearestLocalRecord(EntityRecord &o_record)
 
   //set up variables
 
-  float lowestSqDist;
-  float tempSqDist;
+  float highestCosRotation;
+  float tempCosRotation;
 
-  if (m_localEntities)
+  //ensure normalised values in aim vector
+
+  float len = m_aim.length();
+  if(len)
+  {
+      m_aim /= len;
+  }
+
+  if (m_localEntities->size()!=0)
   {
     EntityRecordList::iterator listIt = m_localEntities->begin();
 
-    //set the lowest to the first distance and set the record
+    //generate the aim vector and initialise it to be the aim
+    //from the turret to the first point
 
-    lowestSqDist = (listIt->m_x - m_pos.m_x)*(listIt->m_x - m_pos.m_x)+
-        (listIt->m_y - m_pos.m_y)*(listIt->m_y - m_pos.m_y)+
-        (listIt->m_z - m_pos.m_z)*(listIt->m_z - m_pos.m_z);
+    ngl::Vec3 aim ((listIt->m_x - m_pos.m_x),
+                   (listIt->m_y - m_pos.m_y),
+                   (listIt->m_z - m_pos.m_z));
+
+    //normalise the aim
+
+    float len = aim.length();
+    if(len)
+    {
+        aim /= len;
+    }
+
+    //set the highest to the first distance and set the record
+
+    highestCosRotation = aim.dot(m_aim);
 
     o_record = (*listIt);
 
@@ -153,19 +330,17 @@ void Turret::getNearestLocalRecord(EntityRecord &o_record)
 
     for (;listIt != m_localEntities->end();listIt++)
     {
-      //set a the temporary squareDisrance
+      //set a the temporary cos of the angle
 
-      tempSqDist = (listIt->m_x - m_pos.m_x)*(listIt->m_x - m_pos.m_x)+
-          (listIt->m_y - m_pos.m_y)*(listIt->m_y - m_pos.m_y)+
-          (listIt->m_z - m_pos.m_z)*(listIt->m_z - m_pos.m_z);
+      tempCosRotation = aim.dot(m_aim);
 
       //if the calculated value is less than the current one
 
-      if (lowestSqDist > tempSqDist)
+      if (highestCosRotation < tempCosRotation)
       {
         //swap it in and set the output object
 
-        lowestSqDist = tempSqDist;
+        highestCosRotation = tempCosRotation;
 
         o_record =(*listIt);
       }
@@ -175,11 +350,20 @@ void Turret::getNearestLocalRecord(EntityRecord &o_record)
 
 //-------------------------------------------------------------------//
 
-void Turret::setAim(const ngl::Vec3 &_aim)
+void Turret::setDesiredAim(const ngl::Vec3 &_aim)
 {
   //at the moment just set the value to the inputted value
 
-  m_aim = _aim;
+  m_desiredAim = _aim;
+
+  //ensure normailsed vector
+
+  float len = m_desiredAim.length();
+  if(len)
+  {
+      m_desiredAim /= len;
+  }
+
 }
 
 //-------------------------------------------------------------------//
@@ -198,11 +382,21 @@ void Turret::prepareForUpdate()
 
   // if the fire boolean is set
 
-// Don't shoot for testing
   if (m_doShot == true)
   {
     fire();
   }
+}
+
+//-------------------------------------------------------------------//
+
+
+void Turret::setRotationAngle (float _maxRotation)
+{
+  //set the values
+
+  m_maxRotationAngle = _maxRotation;
+  m_cosRotationSpeed = cos(m_maxRotationAngle*PI/180);
 }
 
 //-------------------------------------------------------------------//
@@ -253,6 +447,7 @@ bool Turret::getNextUpgrade(UpgradeDataWPtr &o_upgradeData)
     return true;
   }
   return false;
+
 }
 
 //-------------------------------------------------------------------//

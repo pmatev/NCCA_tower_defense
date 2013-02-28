@@ -15,11 +15,11 @@ Enemy::Enemy(
     float _maxPathDistance
     ) :
   DynamicEntity(_pos,_aim,ENEMY, _id),
+  m_needNewPath(false),
+  m_maxPathDistance(_maxPathDistance),
   m_pathTargetThreshold(1.2), //THIS SHOULD BE A PROPORTION OF THE DISTANCE BETWEEN NODES!!!!!
                               //IF ITS TOO LOW ENEMIES WILL NOT MOVE
-  m_needNewPath(false),
-  m_currencyValue(_currencyValue),
-  m_maxPathDistance(_maxPathDistance)
+  m_currencyValue(_currencyValue)
 {
   if(generateTempPath())
   {

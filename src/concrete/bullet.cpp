@@ -10,9 +10,9 @@ Bullet::Bullet(
     ) :
   Projectile(_pos,_aim, _id)
 {
-  m_damage =100;
+  m_damage =10;
   m_maxVelocity = 10;
-  m_velocity = 15*m_aimVector;
+  m_velocity = m_aimVector;
   generateMesh();
 }
 

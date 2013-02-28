@@ -141,7 +141,7 @@ void ProjectileManager::checkDeaths()
 void ProjectileManager::addProjectile(
     const std::string &_type,
     const ngl::Vec3 &_pos,
-    const ngl::Vec3 &_aim,
+    const ngl::Vec3 &_velocity,
     int _emitterID
     )
 {
@@ -151,12 +151,13 @@ void ProjectileManager::addProjectile(
         EntityFactory::createDynamicEntity(
           _type,
           _pos,
-          _aim
+          _velocity
           )
         );
 
   //add the projectile to the list of projectiles
   newProjectile->setEmitterID(_emitterID);
+  newProjectile->setVelocity(_velocity);
   m_projectiles.push_back(newProjectile);
 }
 
