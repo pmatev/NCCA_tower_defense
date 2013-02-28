@@ -212,7 +212,7 @@ public:
   /// @param [out] reference to the entity record
   //-------------------------------------------------------------------//
 
-  void getTargetRecord(EntityRecord &o_record);
+  void getTargetRecord(EntityRecordWCPtr &o_record);
 
   //-------------------------------------------------------------------//
   /// @brief a method to get a record from the local entities
@@ -220,7 +220,7 @@ public:
   /// @param [out] a reference to the entity record
   //-------------------------------------------------------------------//
 
-  void getNearestLocalRecord(EntityRecord & o_record);
+  void getNearestLocalRecord(EntityRecordWCPtr & o_record);
 
   //-------------------------------------------------------------------//
   /// @brief a method  to set the aim value of the turret
@@ -372,14 +372,14 @@ protected:
   /// @brief array of posible upgrade state that a turret can be in
   //-------------------------------------------------------------------//
 
-  static std::vector<State*> s_upgrades;
+  std::vector<State*> m_upgrades;
 
   //-------------------------------------------------------------------//
   /// @brief array of data for each upgrade. This is used in the ui for
   /// showing upgrade information.
   //-------------------------------------------------------------------//
 
-  static UpgradeDataVec s_upgradeData;
+  UpgradeDataVec m_upgradeData;
 
   //-------------------------------------------------------------------//
   /// @brief current upgrade state, this is an index into s_upgrades

@@ -48,7 +48,7 @@ public: //methods
 
 //  void drawSelection() ;
 
-  void init();
+  void stateInit();
 
   //-------------------------------------------------------------------//
   /// @brief method to generate the mesh of the object
@@ -56,7 +56,7 @@ public: //methods
 
   void generateMesh();
 
-  void filterViewVolume(EntityRecordList &o_localEntities);
+  void filterViewVolume(EntityRecordWCList &o_localEntities);
 
 protected: //methods
   //-------------------------------------------------------------------//

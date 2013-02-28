@@ -91,7 +91,7 @@ void StandardWall::generateMesh()
 
 //-------------------------------------------------------------------//
 
-void StandardWall::filterViewVolume(EntityRecordList &o_localEntities)
+void StandardWall::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
 }

@@ -28,10 +28,10 @@ void Normal::execute(EntityWPtr _enemy)
   if(strong_entity)
   {
     DynamicEntityPtr dyn_entity = boost::dynamic_pointer_cast<DynamicEntity>(strong_entity);
-    dyn_entity->getSteeringBehaviours()->enable("Seperation", 5.0, 3);
+    dyn_entity->getSteeringBehaviours()->enable("Seperation", 0.5, 3);
     dyn_entity->getSteeringBehaviours()->enable("ObstacleAvoidance", 1.0, 1);
-    //dyn_entity->getSteeringBehaviours()->enable("Cohesion");
-    //dyn_entity->getSteeringBehaviours()->enable("Alignment");
+    dyn_entity->getSteeringBehaviours()->enable("Cohesion", 0.5, 4);
+    dyn_entity->getSteeringBehaviours()->enable("Alignment", 1.0, 5);
     dyn_entity->getSteeringBehaviours()->enable("FollowPath", 1.0, 2);
   }
 }

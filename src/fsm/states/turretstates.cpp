@@ -40,22 +40,27 @@ void Seek::execute(EntityWPtr _turret)
     {
       //now get the entity record of the target if it's still a local entity
 
-      EntityRecord record;
+      EntityRecordWCPtr record;
 
       // rotate to face the enemy
 
       turretptr->getNearestLocalRecord(record);
 
-      if (record.m_id != 0)
+      EntityRecordCPtr recordStrong = record.lock();
+      if(recordStrong)
       {
-        //set the target id
+        if (recordStrong->m_id != 0)
+        {
+          //set the target id
 
-        turretptr->setTarget(record.m_id);
+          turretptr->setTarget(recordStrong->m_id);
 
-        //and move to lockedOn state
+          //and move to lockedOn state
 
-        turretptr->getStateMachine()->changeState(LockedOn::instance());
+          turretptr->getStateMachine()->changeState(LockedOn::instance());
+        }
       }
+
     }
   }
 }
@@ -106,23 +111,25 @@ void LockedOn::execute(EntityWPtr _turret)
     {
       //now get the entity record of the target if it's still a local entity
 
-      EntityRecord record;
+      EntityRecordWCPtr record;
 
       // rotate to face the enemy
 
       turretptr->getTargetRecord(record);
 
-      if (record.m_id != 0)
+      EntityRecordCPtr recordStrong = record.lock();
+      if(recordStrong)
       {
+
         //get the aim vector from the method
 
-        ngl::Vec3 aim(turretptr->calculateAimVec(ngl::Vec3(record.m_pos[0],
-                                                           record.m_pos[1],
-                                                           record.m_pos[2]
+        ngl::Vec3 aim(turretptr->calculateAimVec(ngl::Vec3(recordStrong->m_pos[0],
+                                                           recordStrong->m_pos[1],
+                                                           recordStrong->m_pos[2]
                                                            ),
-                                                 ngl::Vec3(record.m_velocity[0],
-                                                           record.m_velocity[1],
-                                                           record.m_velocity[2]
+                                                 ngl::Vec3(recordStrong->m_velocity[0],
+                                                           recordStrong->m_velocity[1],
+                                                           recordStrong->m_velocity[2]
                                                            )));
 
         //normalise the aim
@@ -157,7 +164,6 @@ void LockedOn::execute(EntityWPtr _turret)
           }
         }
       }
-
       else
       {
         //if the target record is no longer in the list

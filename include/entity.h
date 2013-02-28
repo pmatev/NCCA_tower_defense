@@ -134,7 +134,7 @@ public: //methods
   //-------------------------------------------------------------------//
   /// @brief called after the constructor
   //-------------------------------------------------------------------//
-  virtual void init();
+  virtual void stateInit();
 
   //-------------------------------------------------------------------//
   /// @brief a virtual method which will update the entity when
@@ -201,8 +201,8 @@ public: //methods
   /// @brief gets localEntities
   //-------------------------------------------------------------------//
 
-  inline EntityRecordListWPtr getLocalEntities() const {
-    return EntityRecordListWPtr(m_localEntities);
+  inline EntityRecordWCListWPtr getLocalEntities() const {
+    return EntityRecordWCListWPtr(m_localEntities);
   }
 
   //-------------------------------------------------------------------//
@@ -249,7 +249,7 @@ protected:
   //-------------------------------------------------------------------//
 
   void calculateLocalEntities(
-      EntityRecordList &o_newList,
+      EntityRecordWCList &o_newList,
       std::list<GeneralType> &_typeList
       );
 
@@ -265,7 +265,7 @@ protected:
   /// @param[out] o_localEntities pointer to the local entities
   //-------------------------------------------------------------------//
 
-  virtual void filterViewVolume(EntityRecordList &o_localEntities) = 0;
+  virtual void filterViewVolume(EntityRecordWCList &o_localEntities) = 0;
 
   //-------------------------------------------------------------------//
   /// @brief this method is used for running all the functions that need
@@ -324,7 +324,7 @@ protected: //attributes
   /// @brief a pointer to a list of entity records
   //-------------------------------------------------------------------//
 
-  EntityRecordListPtr m_localEntities;
+  EntityRecordWCListPtr m_localEntities;
 
   //-------------------------------------------------------------------//
   /// @brief the statemachine.

@@ -79,29 +79,33 @@ void DynamicEntity::update(const double _dt)
   //Iterate over the neighbours.
   if(m_localEntities)
   {
-    std::list<EntityRecord>::const_iterator iterator;
+    EntityRecordWCList::const_iterator iterator;
     for(iterator = m_localEntities->begin();
         iterator != m_localEntities->end();
         ++iterator)
     {
-      if(iterator->m_generalType == TURRET ||
-         iterator->m_generalType == WALL)
-       {
-        ngl::Vec3 neighbourPos = ngl::Vec3(iterator->m_x,
-                                           iterator->m_y,
-                                           iterator->m_z);
+      EntityRecordCPtr recordStrong = iterator->lock();
+      if(recordStrong)
+      {
+        if(recordStrong->m_generalType == TURRET ||
+           recordStrong->m_generalType == WALL)
+         {
+          ngl::Vec3 neighbourPos = ngl::Vec3(recordStrong->m_x,
+                                             recordStrong->m_y,
+                                             recordStrong->m_z);
 
-        ngl::Vec3 v = neighbourPos - m_pos;
+          ngl::Vec3 v = neighbourPos - m_pos;
 
-        float obstacleRadius = 1;
-        float enemyRadius = 0.3;
+          float obstacleRadius = 1;
+          float enemyRadius = 0.3;
 
-        float vMag = v.length();
+          float vMag = v.length();
 
-        if((vMag - enemyRadius) < obstacleRadius)
-        {
+          if((vMag - enemyRadius) < obstacleRadius)
+          {
 
-          m_pos -= (obstacleRadius - vMag + enemyRadius) * v;
+            m_pos -= (obstacleRadius - vMag + enemyRadius) * v;
+          }
         }
       }
     }
@@ -467,7 +471,7 @@ Collision DynamicEntity::collisionTest(
 
   //first generate a list of local entity records
   Database* db = Database::instance();
-  EntityRecordList localEntities;
+  EntityRecordWCList localEntities;
   db->getLocalEntities(
         localEntities,
         m_pos.m_x+m_lsMeshBBox.m_minX-0.5,
@@ -478,7 +482,7 @@ Collision DynamicEntity::collisionTest(
         );
 
   //then cycle through the list
-  EntityRecordList::iterator listIt = localEntities.begin();
+  EntityRecordWCList::iterator listIt = localEntities.begin();
 
   //initialise the result and the return collision
 
@@ -488,28 +492,22 @@ Collision DynamicEntity::collisionTest(
   while(listIt != localEntities.end() && result != true)
   {
     //get the id of the element pointed to by the iterator
-
-    unsigned int id = listIt->m_id;
-    if(id != m_ID)
+    EntityRecordCPtr recordStrong = listIt->lock();
+    if(recordStrong)
     {
-      //get the relevant information
-
-      //ngl::Vec3 pos (listIt->m_x,listIt->m_y,listIt->m_z);
-      Entity::BBox bBox (listIt->m_minX,
-                         listIt->m_minY,
-                         listIt->m_minZ,
-                         listIt->m_maxX,
-                         listIt->m_maxY,
-                         listIt->m_maxZ);
-
-      //check for collisions between the entity checking and the one
-      //it's checking against
-
-      result = intersectTest(bBox);
-      //if there was a collision
-
-      if (result == true)
+      unsigned int id = recordStrong->m_id;
+      if(id != m_ID)
       {
+        //get the relevant information
+
+        //ngl::Vec3 pos (listIt->m_x,listIt->m_y,listIt->m_z);
+        Entity::BBox bBox (recordStrong->m_minX,
+                           recordStrong->m_minY,
+                           recordStrong->m_minZ,
+                           recordStrong->m_maxX,
+                           recordStrong->m_maxY,
+                           recordStrong->m_maxZ);
+
         //check for collisions between the entity checking and the one
         //it's checking against
 
@@ -518,17 +516,26 @@ Collision DynamicEntity::collisionTest(
 
         if (result == true)
         {
-          //set the id of the collision being returned from the null value
-          //to the one tested
+          //check for collisions between the entity checking and the one
+          //it's checking against
 
-          c.m_id = id;
+          result = intersectTest(bBox);
+          //if there was a collision
 
-          //then set the damage value
+          if (result == true)
+          {
+            //set the id of the collision being returned from the null value
+            //to the one tested
 
-          c.m_damage = m_damage;
+            c.m_id = id;
+
+            //then set the damage value
+
+            c.m_damage = m_damage;
+          }
+
         }
-
-      }
+    }
 
     }
     //increment the iterator
@@ -556,12 +563,12 @@ void DynamicEntity::generateViewBBox()
 {
   // initialise world space view box
   m_wsViewBBox = BBox(
-        m_lsMeshBBox.m_minX*5 + m_pos.m_x,
-        m_lsMeshBBox.m_minY*5 + m_pos.m_y,
-        m_lsMeshBBox.m_minZ*5 + m_pos.m_z,
-        m_lsMeshBBox.m_maxX*5 + m_pos.m_x,
-        m_lsMeshBBox.m_maxY*5 + m_pos.m_y,
-        m_lsMeshBBox.m_maxZ*5 + m_pos.m_z
+        m_lsMeshBBox.m_minX*4 + m_pos.m_x,
+        m_lsMeshBBox.m_minY*4 + m_pos.m_y,
+        m_lsMeshBBox.m_minZ*4 + m_pos.m_z,
+        m_lsMeshBBox.m_maxX*4 + m_pos.m_x,
+        m_lsMeshBBox.m_maxY*4 + m_pos.m_y,
+        m_lsMeshBBox.m_maxZ*4 + m_pos.m_z
         );
 }
 

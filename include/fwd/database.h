@@ -4,7 +4,10 @@
 #include <boost/shared_ptr.hpp>
 #include <fwd/entity.h>
 
-DECLARESMART(EntityRecord)
+DECLARESMARTLIST(EntityRecord)
+typedef std::list<EntityRecordWCPtr> EntityRecordWCList;
+typedef boost::shared_ptr<EntityRecordWCList> EntityRecordWCListPtr;
+typedef boost::weak_ptr<EntityRecordWCList> EntityRecordWCListWPtr;
 
 //-------------------------------------------------------------------//
 /// @struct a data structure to store information about a given entity
@@ -158,16 +161,67 @@ struct EntityRecord
     m_minZ(0),
     m_maxZ(0)
   {}
+
+  //-------------------------------------------------------------------//
+  /// @brief creator of helping with smart pointer creation
+  //-------------------------------------------------------------------//
+
+  inline static EntityRecordPtr create(
+        unsigned int _id,
+        GeneralType _type,
+        float _x,
+        float _y,
+        float _z,
+        float _velX,
+        float _velY,
+        float _velZ,
+        float _minX,
+        float _maxX,
+        float _minY,
+        float _maxY,
+        float _minZ,
+        float _maxZ
+        )
+  {
+    EntityRecordPtr a(
+          new EntityRecord(
+             _id,
+            _type,
+            _x,
+            _y,
+            _z,
+            _velX,
+            _velY,
+            _velZ,
+            _minX,
+            _maxX,
+            _minY,
+            _maxY,
+            _minZ,
+            _maxZ
+                        )
+          );
+    return a;
+  }
+
+  //-------------------------------------------------------------------//
+  /// @brief creator of helping with smart pointer creation
+  //-------------------------------------------------------------------//
+
+  static EntityRecordPtr create()
+  {
+    EntityRecordPtr a(new EntityRecord());
+    return a;
+  }
 };
 
 //-------------------------------------------------------------------//
 /// @typedef a boost shared pointer to a list of entity records
 //-------------------------------------------------------------------//
 
-typedef std::list<EntityRecord> EntityRecordList;
+//typedef std::list<EntityRecord> EntityRecordList;
 
-typedef boost::shared_ptr<EntityRecordList> EntityRecordListPtr;
+//typedef boost::shared_ptr<EntityRecordList> EntityRecordListPtr;
 
-typedef boost::weak_ptr<EntityRecordList> EntityRecordListWPtr;
 
 #endif // DATABASE_FWD_H

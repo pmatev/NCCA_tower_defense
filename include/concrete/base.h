@@ -26,12 +26,12 @@ public:
 
   static BasePtr create(NodePtr _linkedNode, unsigned int _id);
 
-  void init();
+  void stateInit();
   void update(const double _dt);
 //  void draw();
 //  void drawSelection();
   void generateMesh();
-  void filterViewVolume(EntityRecordList &o_localEntities);
+  void filterViewVolume(EntityRecordWCList &o_localEntities);
 
   //-------------------------------------------------------------------//
   /// @brief a method to generate the view box

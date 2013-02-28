@@ -44,7 +44,7 @@ Entity::~Entity()
 
 //-------------------------------------------------------------------//
 
-void Entity::init()
+void Entity::stateInit()
 {
 
 }
@@ -59,21 +59,22 @@ void Entity::publish()
 
   //add the record
 
-  EntityRecord r(m_ID,
-                 m_generalType,
-                 m_pos.m_x,
-                 m_pos.m_y,
-                 m_pos.m_z,
-                 m_velocity.m_x,
-                 m_velocity.m_y,
-                 m_velocity.m_z,
-                 m_lsMeshBBox.m_minX + m_pos.m_x,
-                 m_lsMeshBBox.m_maxX + m_pos.m_x,
-                 m_lsMeshBBox.m_minY + m_pos.m_y,
-                 m_lsMeshBBox.m_maxY + m_pos.m_y,
-                 m_lsMeshBBox.m_minZ + m_pos.m_z,
-                 m_lsMeshBBox.m_maxZ + m_pos.m_z
-                 );
+  EntityRecordPtr r = EntityRecord::create(
+        m_ID,
+        m_generalType,
+        m_pos.m_x,
+        m_pos.m_y,
+        m_pos.m_z,
+        m_velocity.m_x,
+        m_velocity.m_y,
+        m_velocity.m_z,
+        m_lsMeshBBox.m_minX + m_pos.m_x,
+        m_lsMeshBBox.m_maxX + m_pos.m_x,
+        m_lsMeshBBox.m_minY + m_pos.m_y,
+        m_lsMeshBBox.m_maxY + m_pos.m_y,
+        m_lsMeshBBox.m_minZ + m_pos.m_z,
+        m_lsMeshBBox.m_maxZ + m_pos.m_z
+        );
 
   db->addRecord(r);
 }
@@ -81,7 +82,7 @@ void Entity::publish()
 //-------------------------------------------------------------------//
 
 void Entity::calculateLocalEntities(
-    EntityRecordList &o_newList,
+    EntityRecordWCList &o_newList,
     std::list<GeneralType> &_typeList
     )
 {

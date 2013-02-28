@@ -87,7 +87,7 @@ protected:
   //----------------------------------------------------------------------------
   /// @brief holds the entities near the m_entity
   //----------------------------------------------------------------------------
-  EntityRecordListWPtr m_localEntities;
+  EntityRecordWCListWPtr m_localEntities;
 
   //----------------------------------------------------------------------------------------------------------------------
   /// @brief the current steering force

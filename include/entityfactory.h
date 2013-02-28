@@ -39,6 +39,8 @@ public:
         unsigned int _id
         );
 
+  typedef void (*initCallBack)();
+
   //-------------------------------------------------------------------//
   /// @brief typedefs to hold the map of all the possible types
   //-------------------------------------------------------------------//
@@ -87,6 +89,7 @@ public:
   /// possible types
   /// @param[in] _type, a string referring to the type's name
   /// @param[in] _cb, the callback method (the create method of the class)
+  /// @param[in] _init callback for the initialisation of class
   //-------------------------------------------------------------------//
 
   static void registerStaticEntity(

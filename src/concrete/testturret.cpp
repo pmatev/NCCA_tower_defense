@@ -37,19 +37,18 @@ EntityPtr TestTurret::create(
           _id
           )
         );
-  a->init();
+  a->stateInit();
 
   return a;
 }
 
 //-------------------------------------------------------------------//
 
-void TestTurret::init()
+void TestTurret::stateInit()
 {
   m_stateMachine = new StateMachine(EntityWPtr(shared_from_this()));
   m_stateMachine->setCurrentState(BasicUpgrade::instance());
   m_stateMachine->setPreviousState(Seek::instance());
-
 
   registerUpgrade(
         BasicUpgrade::instance(),
@@ -177,34 +176,39 @@ ngl::Vec3 TestTurret::brain()
 
 //-------------------------------------------------------------------//
 
-void TestTurret::filterViewVolume(EntityRecordList &o_localEntities)
+void TestTurret::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
   if(o_localEntities.size()!= 0)
   {
     //generate an iterator to cycle through the list
 
-    EntityRecordList::iterator listIt = o_localEntities.begin();
+    EntityRecordWCList::iterator listIt = o_localEntities.begin();
 
     while (listIt != o_localEntities.end())
     {
-      //check if the square dist is greater than the view distance
-      // squared
-
-      float sqDist = (listIt->m_x - m_pos.m_x)*(listIt->m_x - m_pos.m_x)+
-          (listIt->m_y - m_pos.m_y)*(listIt->m_y - m_pos.m_y)+
-          (listIt->m_z - m_pos.m_z)*(listIt->m_z - m_pos.m_z);
-
-      if (sqDist > m_viewDistance*m_viewDistance)
+      EntityRecordCPtr strongRecord = listIt->lock();
+      if(strongRecord)
       {
-        //if it is bigger, remove it from the local entities
+        //check if the square dist is greater than the view distance
+        // squared
 
-        listIt = o_localEntities.erase(listIt);
-      }
-      else
-      {
-        //increment the local entities list
+        float sqDist =
+            pow(strongRecord->m_x - m_pos.m_x, 2)+
+            pow(strongRecord->m_y - m_pos.m_y, 2)+
+            pow(strongRecord->m_z - m_pos.m_z, 2);
 
-        listIt++;
+        if (sqDist > m_viewDistance*m_viewDistance)
+        {
+          //if it is bigger, remove it from the local entities
+
+          listIt = o_localEntities.erase(listIt);
+        }
+        else
+        {
+          //increment the local entities list
+
+          listIt++;
+        }
       }
     }
   }

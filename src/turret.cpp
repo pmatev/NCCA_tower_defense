@@ -2,13 +2,10 @@
 #include "game.h"
 #include <cmath>
 #include<ngl/Quaternion.h>
+#include <boost/foreach.hpp>
 
 
 #define PI 3.14159265
-
-std::vector<State*> Turret::s_upgrades;
-Turret::UpgradeDataVec Turret::s_upgradeData;
-
 
 //-------------------------------------------------------------------//
 
@@ -147,7 +144,7 @@ void Turret::update(const double _dt)
 
     axisQuart.rotatePoint(axisQuart,m_aim);
 
-    std::cout<<"quarternionRotated: "<<m_aim.m_x<<m_aim.m_y<<m_aim.m_z<<"\n";
+    //std::cout<<"quarternionRotated: "<<m_aim.m_x<<m_aim.m_y<<m_aim.m_z<<"\n";
   }
 
 
@@ -253,99 +250,123 @@ ngl::Vec3 Turret::calculateAimVec(const ngl::Vec3 &_pos,
 
 //-------------------------------------------------------------------//
 
-void Turret::getTargetRecord(EntityRecord &o_record)
+void Turret::getTargetRecord(EntityRecordWCPtr &o_record)
 {
   //set up variables
 
   bool result = false;
 
-  EntityRecordList::iterator listIt = m_localEntities->begin();
+  EntityRecordWCList::iterator listIt = m_localEntities->begin();
 
   //cycle through
 
   while (!result && listIt != m_localEntities->end())
   {
-    if (listIt->m_id == m_targetID)
+    EntityRecordCPtr recordStrong = listIt->lock();
+    if(recordStrong)
     {
+      if (recordStrong->m_id == m_targetID)
+      {
 
-      o_record = (*listIt);
+        o_record = (*listIt);
 
-      result = true;
-    }
-    else
-    {
-      //increment the iterator
+        result = true;
+      }
+      else
+      {
+        //increment the iterator
 
-      listIt++;
+        listIt++;
+      }
     }
   }
 }
 
 //-------------------------------------------------------------------//
 
-void Turret::getNearestLocalRecord(EntityRecord &o_record)
+void Turret::getNearestLocalRecord(EntityRecordWCPtr &o_record)
 {
-
-  //set up variables
-
-  float highestCosRotation;
-  float tempCosRotation;
-
-  //ensure normalised values in aim vector
-
-  float len = m_aim.length();
-  if(len)
-  {
-      m_aim /= len;
-  }
-
-  if (m_localEntities->size()!=0)
-  {
-    EntityRecordList::iterator listIt = m_localEntities->begin();
-
-    //generate the aim vector and initialise it to be the aim
-    //from the turret to the first point
-
-    ngl::Vec3 aim ((listIt->m_x - m_pos.m_x),
-                   (listIt->m_y - m_pos.m_y),
-                   (listIt->m_z - m_pos.m_z));
-
-    //normalise the aim
-
-    float len = aim.length();
-    if(len)
+  float minSqrDist = 100000000;
+    BOOST_FOREACH(EntityRecordWCPtr recordWeak, *m_localEntities)
     {
-        aim /= len;
-    }
-
-    //set the highest to the first distance and set the record
-
-    highestCosRotation = aim.dot(m_aim);
-
-    o_record = (*listIt);
-
-    listIt++;
-
-    //cycle through the rest
-
-    for (;listIt != m_localEntities->end();listIt++)
-    {
-      //set a the temporary cos of the angle
-
-      tempCosRotation = aim.dot(m_aim);
-
-      //if the calculated value is less than the current one
-
-      if (highestCosRotation < tempCosRotation)
+      EntityRecordCPtr recordStrong = recordWeak.lock();
+      if(recordStrong)
       {
-        //swap it in and set the output object
-
-        highestCosRotation = tempCosRotation;
-
-        o_record =(*listIt);
+        // Find sqr dist
+        float sqrDist =
+            pow(recordStrong->m_x - m_pos.m_x, 2) +
+            pow(recordStrong->m_y - m_pos.m_y, 2) +
+            pow(recordStrong->m_z - m_pos.m_z, 2)
+              ;
+        if(sqrDist < minSqrDist)
+        {
+          minSqrDist = sqrDist;
+          o_record = recordWeak;
+        }
       }
     }
-  }
+
+//  //set up variables
+
+//  float highestCosRotation;
+//  float tempCosRotation;
+
+//  //ensure normalised values in aim vector
+
+//  float len = m_aim.length();
+//  if(len)
+//  {
+//      m_aim /= len;
+//  }
+
+//  if (m_localEntities->size()!=0)
+//  {
+//    EntityRecordWCList::iterator listIt = m_localEntities->begin();
+
+
+//    //generate the aim vector and initialise it to be the aim
+//    //from the turret to the first point
+
+//    ngl::Vec3 aim ((listIt->m_x - m_pos.m_x),
+//                   (listIt->m_y - m_pos.m_y),
+//                   (listIt->m_z - m_pos.m_z));
+
+//    //normalise the aim
+
+//    float len = aim.length();
+//    if(len)
+//    {
+//        aim /= len;
+//    }
+
+//    //set the highest to the first distance and set the record
+
+//    highestCosRotation = aim.dot(m_aim);
+
+//    o_record = (*listIt);
+
+//    listIt++;
+
+//    //cycle through the rest
+
+//    for (;listIt != m_localEntities->end();listIt++)
+//    {
+//      //set a the temporary cos of the angle
+
+//      tempCosRotation = aim.dot(m_aim);
+
+//      //if the calculated value is less than the current one
+
+//      if (highestCosRotation < tempCosRotation)
+//      {
+//        //swap it in and set the output object
+
+//        highestCosRotation = tempCosRotation;
+
+//        o_record =(*listIt);
+//      }
+//    }
+//  }
 }
 
 //-------------------------------------------------------------------//
@@ -375,7 +396,7 @@ void Turret::prepareForUpdate()
   // Get the local entities
   std::list<GeneralType> types;
   types.push_back(ENEMY);
-  m_localEntities = EntityRecordListPtr(new EntityRecordList());
+  m_localEntities = EntityRecordWCListPtr(new EntityRecordWCList());
   calculateLocalEntities(*m_localEntities, types);
   // Filter the entities
   filterViewVolume(*m_localEntities);
@@ -404,13 +425,13 @@ void Turret::setRotationAngle (float _maxRotation)
 bool Turret::upgrade()
 {
   // manage the transition between upgrades
-  if(m_upgradeIndex + 1 < s_upgrades.size())
+  if(m_upgradeIndex + 1 < m_upgrades.size())
   {
     ++m_upgradeIndex;
     // Check that its not null
-    if(s_upgrades[m_upgradeIndex])
+    if(m_upgrades[m_upgradeIndex])
     {
-      m_stateMachine->changeState(s_upgrades[m_upgradeIndex]);
+      m_stateMachine->changeState(m_upgrades[m_upgradeIndex]);
       return true;
     }
   }
@@ -421,17 +442,17 @@ bool Turret::upgrade()
 
 void Turret::registerUpgrade(State *_upgradeState, UpgradeDataPtr _data)
 {
-  s_upgrades.push_back(_upgradeState);
-  s_upgradeData.push_back(_data);
+  m_upgrades.push_back(_upgradeState);
+  m_upgradeData.push_back(_data);
 }
 
 //-------------------------------------------------------------------//
 
 bool Turret::getCurrentUpgrade(UpgradeDataWPtr &o_upgradeData)
 {
-  if(s_upgradeData.size() != 0 && m_upgradeIndex < s_upgrades.size())
+  if(m_upgradeData.size() != 0 && m_upgradeIndex < m_upgrades.size())
   {
-    o_upgradeData = UpgradeDataWPtr(s_upgradeData[m_upgradeIndex]);
+    o_upgradeData = UpgradeDataWPtr(m_upgradeData[m_upgradeIndex]);
     return true;
   }
   return false;
@@ -441,9 +462,9 @@ bool Turret::getCurrentUpgrade(UpgradeDataWPtr &o_upgradeData)
 
 bool Turret::getNextUpgrade(UpgradeDataWPtr &o_upgradeData)
 {
-  if(s_upgradeData.size() != 0 && m_upgradeIndex + 1 < s_upgrades.size())
+  if(m_upgradeData.size() != 0 && m_upgradeIndex + 1 < m_upgrades.size())
   {
-    o_upgradeData = UpgradeDataWPtr(s_upgradeData[m_upgradeIndex + 1]);
+    o_upgradeData = UpgradeDataWPtr(m_upgradeData[m_upgradeIndex + 1]);
     return true;
   }
   return false;

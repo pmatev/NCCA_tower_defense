@@ -72,7 +72,7 @@ public: //methods
   /// @param [in] _pos, an ngl vec3 defining the position of the entity
   //-------------------------------------------------------------------//
 
-  void addRecord (EntityRecord &_record);
+  void addRecord (EntityRecordPtr _record);
 
   //-------------------------------------------------------------------//
   /// @brief a method to return a list of entities that are possible
@@ -88,7 +88,7 @@ public: //methods
   //-------------------------------------------------------------------//
 
   void getLocalEntities (
-        EntityRecordList &o_newList,
+        EntityRecordWCList &o_newList,
         float _minX,
         float _minZ,
         float _maxX,
@@ -203,7 +203,7 @@ protected: //attributes
   /// @brief this variable stores the base
   //-------------------------------------------------------------------//
 
-  EntityRecord m_base;
+  EntityRecordPtr m_base;
 
   //-------------------------------------------------------------------//
   /// @brief a varieable to store whether or not the base has been set

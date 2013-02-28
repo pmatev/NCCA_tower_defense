@@ -152,7 +152,7 @@ void Window::loop()
         double frameTime = newTime - currentTime;
         currentTime = newTime;
 
-        if(frameTime>1000/15.0)frameTime=1000/15.0; // cap simulation if frame is taking too long
+//        if(frameTime>1000/15.0)frameTime=1000/15.0; // cap simulation if frame is taking too long
 
         if(frameCount % 20 == 0)
         {
@@ -164,15 +164,16 @@ void Window::loop()
         avgFPS += fps;
 
 
-        accumulator += frameTime;
+//        accumulator += frameTime;
 
-        while (accumulator >= dt)
-        {
-            game->update(dt);
+//        while (accumulator >= dt)
+//        {
+//            game->update(dt);
 
-            accumulator -= dt;
-            m_time += dt;
-        }
+//            accumulator -= dt;
+//            m_time += dt;
+//        }
+        game->update(frameTime);
 
         Renderer *r = Renderer::instance();
 

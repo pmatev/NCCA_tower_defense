@@ -27,13 +27,13 @@ EntityPtr Bullet::create(
   //create and return a smart pointer to the bullet
 
   EntityPtr bullet(new Bullet(_pos,_aim, _id));
-  bullet->init();
+  bullet->stateInit();
   return bullet;
 }
 
 //-------------------------------------------------------------------//
 
-void Bullet::init()
+void Bullet::stateInit()
 {
   //state machine
   m_stateMachine = new StateMachine(EntityWPtr(shared_from_this()));
@@ -149,7 +149,7 @@ ngl::Vec3 Bullet::brain()
 
 //-------------------------------------------------------------------//
 
-void Bullet::filterViewVolume(EntityRecordList &o_localEntities)
+void Bullet::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
 }

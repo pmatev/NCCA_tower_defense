@@ -40,7 +40,7 @@ public:
 
   ~TestEnemy();
 
-  void init();
+  void stateInit();
 
   void generateMesh();
 
@@ -59,7 +59,7 @@ public:
 
 protected:
 
-  void filterViewVolume(EntityRecordList &o_localEntities);
+  void filterViewVolume(EntityRecordWCList &o_localEntities);
 
   //-------------------------------------------------------------------//
   /// @brief ctor

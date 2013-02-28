@@ -1,3 +1,5 @@
+#include <boost/foreach.hpp>
+
 #include "concrete/testenemy.h"
 #include "renderer.h"
 #include "fsm/states/enemystates.h"
@@ -35,7 +37,7 @@ TestEnemy::~TestEnemy()
   //currently using default
 }
 
-void TestEnemy::init()
+void TestEnemy::stateInit()
 {
   //state machine
   m_stateMachine = new StateMachine(EntityWPtr(shared_from_this()));
@@ -56,7 +58,7 @@ EntityPtr TestEnemy::create(
     )
 {
   EntityPtr a(new TestEnemy(_pos,_aim, _id));
-  a->init();
+  a->stateInit();
 
   return a;
 }
@@ -167,7 +169,36 @@ ngl::Vec3 TestEnemy::brain()
 
 //-------------------------------------------------------------------//
 
-void TestEnemy::filterViewVolume(EntityRecordList &o_localEntities)
+void TestEnemy::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
-  Q_UNUSED(o_localEntities);
+  //Q_UNUSED(o_localEntities);
+//  float maxSqrDist = 2;
+
+//  for(
+//      EntityRecordWCList::iterator it = o_localEntities.begin();
+//      it != o_localEntities.end();
+//      )
+//  {
+//    bool remove = false;
+//    EntityRecordCPtr recordStrong = it->lock();
+//    if(recordStrong)
+//    {
+//      if(recordStrong->m_generalType == ENEMY)
+//      {
+
+//      }
+//      else
+//      {
+//        remove = true;
+//      }
+//    }
+//    if(remove)
+//    {
+//      it = o_localEntities.erase(it);
+//    }
+//    else
+//    {
+//      ++it;
+//    }
+//  }
 }

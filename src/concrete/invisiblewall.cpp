@@ -91,7 +91,7 @@ void InvisibleWall::generateMesh()
 
 //-------------------------------------------------------------------//
 
-void InvisibleWall::filterViewVolume(EntityRecordList &o_localEntities)
+void InvisibleWall::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
 }

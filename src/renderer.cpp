@@ -36,7 +36,7 @@ void Renderer::destroy()
 
 void Renderer::init()
 {
-    m_cam = CameraPtr(new Camera(ngl::Vec4(10,10,10,1),Game::instance()->getBasePos(),ngl::Vec4(0,1,0,0)));
+  m_cam = CameraPtr(new Camera(ngl::Vec4(10,10,10,1),Game::instance()->getBasePos(),ngl::Vec4(0,1,0,0)));
 
     Window *window = Window::instance();
     ngl::ShaderLib *shader = ngl::ShaderLib::instance();

@@ -13,7 +13,7 @@ Database::Database(
     float _environMinX,
     float _environMinZ
     ) :
-  m_base(0,BASE,0,0,0,0,0,0,0,0,0,0,0,0),
+  m_base(EntityRecord::create(0,BASE,0,0,0,0,0,0,0,0,0,0,0,0)),
   m_environmentMaxX(_environMaxX),
   m_environmentMinX(_environMinX),
   m_environmentMaxZ(_environMaxZ),
@@ -131,11 +131,11 @@ void Database::destroy()
 
 //-------------------------------------file:///usr/share/doc/HTML/index.html------------------------------//
 
-void Database::addRecord(EntityRecord &_record)
+void Database::addRecord(EntityRecordPtr _record)
 {
   //check the type of the enemy and set it according to that variable
 
-  switch (_record.m_generalType)
+  switch (_record->m_generalType)
   {
   case ENEMY:
     m_enemyGrid->addRecord(_record);
@@ -162,7 +162,7 @@ void Database::addRecord(EntityRecord &_record)
 //-------------------------------------------------------------------//
 
 void Database::getLocalEntities(
-    EntityRecordList &o_newList,
+    EntityRecordWCList &o_newList,
     float _minX,
     float _minZ,
     float _maxX,
@@ -184,11 +184,11 @@ void Database::getLocalEntities(
 
   //and initialise an iterator for the return list
 
-  std::list<EntityRecord>::iterator returnListIt;
+  EntityRecordWCList::iterator returnListIt;
 
   //set up a tempory list to store the reult in
 
-  EntityRecordList tempList;
+  EntityRecordWCList tempList;
 
   //cycle through each element of the type list
 
@@ -285,11 +285,11 @@ void Database::unPublish(GeneralType _generalType, unsigned int _id)
     m_nodeGrid->unPublish(_id);
     break;
   case BASE:
-    m_base.m_generalType = BASE;
-    m_base.m_id = 0;
-    m_base.m_x = 0;
-    m_base.m_y = 0;
-    m_base.m_z = 0;
+    m_base->m_generalType = BASE;
+    m_base->m_id = 0;
+    m_base->m_x = 0;
+    m_base->m_y = 0;
+    m_base->m_z = 0;
     m_isBaseSet = false;
     break;
   }

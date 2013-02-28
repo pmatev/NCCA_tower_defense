@@ -1,3 +1,5 @@
+#include <boost/foreach.hpp>
+
 #include "databasegrid.h"
 #include "entity.h"
 
@@ -50,7 +52,7 @@ DatabaseGrid::DatabaseGrid(
   {
     for (int j = 0; j < _numCellsZ; j++)
     {
-      EntityRecordListPtr list (new std::list<EntityRecord>);
+      EntityRecordListPtr list (new EntityRecordList);
       m_grid.push_back(list);
     }
   }
@@ -88,12 +90,12 @@ DatabaseGridPtr DatabaseGrid::create(
 
 //-------------------------------------------------------------------//
 
-void DatabaseGrid::addRecord(EntityRecord &_record)
+void DatabaseGrid::addRecord(EntityRecordPtr _record)
 {
   //conversion to grid space for assigning to a grid cell
 
-  float gridSpaceX = (_record.m_x - m_environMinX)* m_scaleX;
-  float gridSpaceZ = (_record.m_z - m_environMinZ) * m_scaleZ;
+  float gridSpaceX = (_record->m_x - m_environMinX)* m_scaleX;
+  float gridSpaceZ = (_record->m_z - m_environMinZ) * m_scaleZ;
 
   //conversion from float to int
 
@@ -116,10 +118,11 @@ void DatabaseGrid::addRecord(EntityRecord &_record)
 //-------------------------------------------------------------------//
 
 void DatabaseGrid::getLocalEntities(
-    EntityRecordList &o_newList,
+    EntityRecordWCList &o_newList,
     float _minX,
     float _minZ,
-    float _maxX, float _maxZ
+    float _maxX,
+    float _maxZ
     ) const
 {
 //  if(!o_newList)
@@ -159,7 +162,7 @@ void DatabaseGrid::getLocalEntities(
 
   //and initialise an iterator for that list
 
-  std::list<EntityRecord>::iterator returnListIt;
+  EntityRecordWCList::iterator returnListIt;
 
   //loop through each index of a cell overlapped by the bounding
   //box
@@ -197,6 +200,10 @@ void DatabaseGrid::getLocalEntities(
               (*m_grid[j+(i*(m_numCellsX))]).begin(),
               (*m_grid[j+(i*(m_numCellsX))]).end()
               );
+//        BOOST_FOREACH(EntityRecordPtr record, *m_grid[id])
+//        {
+//          o_newList.push_back(EntityRecordWCPtr(record));
+//        }
       }
     }
   }
@@ -241,7 +248,7 @@ void DatabaseGrid::unPublish(unsigned int _id)
     {
       //then set an iterator to cycle through the currenly selected list
 
-      std::list<EntityRecord>::iterator listIt = m_grid[i]->begin();
+      EntityRecordList::iterator listIt = m_grid[i]->begin();
 
       //then cycle through each element and check it's id against the
       //one provided
@@ -250,7 +257,7 @@ void DatabaseGrid::unPublish(unsigned int _id)
       {
         //if the ids match
 
-        if ((*listIt).m_id == _id)
+        if ((*listIt)->m_id == _id)
         {
           //erase that element and set the boolean to true
 

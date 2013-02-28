@@ -184,7 +184,7 @@ protected:
   //-------------------------------------------------------------------//
   /// @brief filter view. This does nothing at the moment
   //-------------------------------------------------------------------//
-  void filterViewVolume(EntityRecordList &o_localEntities);
+  void filterViewVolume(EntityRecordWCList &o_localEntities);
 
   //-------------------------------------------------------------------//
   /// @brief parameterised constructor

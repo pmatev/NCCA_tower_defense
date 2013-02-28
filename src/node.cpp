@@ -162,7 +162,7 @@ void Node::resetSearchInfo()
 
 //-------------------------------------------------------------------//
 
-void Node::filterViewVolume(EntityRecordList &o_localEntities)
+void Node::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
 }

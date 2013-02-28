@@ -17,7 +17,7 @@ Base::Base(
 
 }
 
-void Base::init()
+void Base::stateInit()
 {
 
 }
@@ -116,7 +116,7 @@ void Base::generateMesh()
 //-------------------------------------------------------------------//
 
 
-void Base::filterViewVolume(EntityRecordList &o_localEntities)
+void Base::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
 }

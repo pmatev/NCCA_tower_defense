@@ -46,7 +46,7 @@ void Enemy::prepareForUpdate()
   types.push_back(TURRET);
   types.push_back(ENEMY);
   types.push_back(WALL);
-  m_localEntities = EntityRecordListPtr(new EntityRecordList());
+  m_localEntities = EntityRecordWCListPtr(new EntityRecordWCList());
   //EntityRecordList localEntities;
   calculateLocalEntities(*m_localEntities, types);
   // Filter the entities
