@@ -1,5 +1,7 @@
 #include <boost/foreach.hpp>
+#include "ngl/ShaderLib.h"
 
+#include "window.h"
 #include "concrete/testenemy.h"
 #include "renderer.h"
 #include "fsm/states/enemystates.h"
@@ -202,3 +204,22 @@ void TestEnemy::filterViewVolume(EntityRecordWCList &o_localEntities)
 //    }
 //  }
 }
+
+//-------------------------------------------------------------------//
+
+void TestEnemy::draw()
+{
+  Renderer *r = Renderer::instance();
+
+  ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  (*shader)["Phong"]->use();
+
+  shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
+
+  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
+
+  r->draw("enemy", "Phong");
+}
+

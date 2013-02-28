@@ -1,8 +1,11 @@
+#include "ngl/ShaderLib.h"
+
 #include "fwd/entity.h"
 #include "entity.h"
 #include "node.h"
 #include "renderer.h"
 #include "game.h"
+#include "window.h"
 
 #define PI 3.14159265
 
@@ -188,14 +191,27 @@ void Node::draw()
 {
   if(m_isVisible)
   {
+    Renderer *r = Renderer::instance();
+
+    ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+
+    r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+    (*shader)["Phong"]->use();
+    ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
+    c = c/255.0f;
+
+    shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
+
+
     if(m_isInSpawnPath)
     {
-      drawWithColour(ngl::Vec3(0, 0, 1));
-    }
-    else
+      shader->setShaderParam4f("colour", 0, 0, 1, 1);
+    } else
     {
-      drawWithColour(ngl::Vec3(1, 1, 1));
+      shader->setShaderParam4f("colour", 1, 0, 0, 1);
     }
+
+    r->draw("hexagon", "Phong");
   }
 }
 

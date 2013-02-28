@@ -2,6 +2,9 @@
 #include "include/fsm/states/turretstates.h"
 #include "renderer.h"
 
+#include "window.h"
+#include "ngl/ShaderLib.h"
+
 //-------------------------------------------------------------------//
 TestTurret::TestTurret(
     NodePtr _linkedNode,
@@ -237,4 +240,23 @@ void TestTurret::generateViewBBox()
         m_lsMeshBBox.m_maxZ*m_viewDistance + m_pos.m_z
         );
 }
+
 //-------------------------------------------------------------------//
+
+void TestTurret::draw()
+{
+  Renderer *r = Renderer::instance();
+
+  ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  (*shader)["Phong"]->use();
+  ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
+  c = c/255.0f;
+
+  shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
+
+  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
+
+  r->draw("turret", "Phong");
+}

@@ -61,7 +61,9 @@ SOURCES += src/main.cpp \
     src/fsm/states/projectilestates.cpp \
     src/billboard.cpp \
     src/concrete/invisiblewall.cpp \
-    src/concrete/standardwall.cpp
+    src/concrete/standardwall.cpp \
+    src/meshlib.cpp \
+    src/mesh.cpp
 
 
 
@@ -113,7 +115,9 @@ HEADERS += \
     include/fsm/states/projectilestates.h \
     include/billboard.h \
     include/concrete/invisiblewall.h \
-    include/concrete/standardwall.h
+    include/concrete/standardwall.h \
+    include/meshlib.h \
+    include/mesh.h
 
 
 
@@ -165,4 +169,6 @@ OTHER_FILES += \
     config/config.xml \
     models/turret.obj \
     shaders/Texture.vs \
-    shaders/Texture.fs
+    shaders/Texture.fs \
+    models/enemy.obj \
+    models/hexagon.obj

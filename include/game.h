@@ -11,6 +11,7 @@
 #include <ngl/Light.h>
 #include "uielement.h"
 #include "node.h"
+#include "meshlib.h"
 #include "wavemanager.h"
 #include "environment.h"
 #include "projectilemanager.h"
@@ -200,6 +201,11 @@ protected:
     /// @brief A map of IDs to Entity Pointers for game object management.
     //-------------------------------------------------------------------//
     std::map<unsigned int, EntityWPtr> m_IDMap;
+
+    //-------------------------------------------------------------------//
+    /// @brief pointer to the mesh lib
+    //-------------------------------------------------------------------//
+    MeshLibPtr m_meshLib;
 
     //-------------------------------------------------------------------//
     /// @brief pointer to the wavemanager

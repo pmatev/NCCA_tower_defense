@@ -1,3 +1,6 @@
+#include "ngl/ShaderLib.h"
+
+#include "window.h"
 #include "concrete/base.h"
 #include "renderer.h"
 
@@ -134,6 +137,22 @@ void Base::generateViewBBox()
         m_lsMeshBBox.m_maxY*1 + m_pos.m_y,
         m_lsMeshBBox.m_maxZ*1 + m_pos.m_z
         );
+}
+
+void Base::draw()
+{
+  Renderer *r = Renderer::instance();
+
+  ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  (*shader)["Phong"]->use();
+
+  shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
+
+  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
+
+  r->draw("base", "Phong");
 }
 
 //-------------------------------------------------------------------//

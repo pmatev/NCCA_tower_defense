@@ -63,6 +63,8 @@ public:
 
   void generateViewBBox();
 
+  void draw();
+
 protected:
 
   void filterViewVolume(EntityRecordWCList &o_localEntities);

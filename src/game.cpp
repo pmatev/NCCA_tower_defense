@@ -125,7 +125,8 @@ void Game::setupScene()
   //Grab the root node
   QDomElement docElem = document.documentElement();
 
-
+  //Create the meshlib
+  m_meshLib = MeshLib::create();
 
   //========================================================================//
   //                              SpawnCoords                               //
