@@ -1,4 +1,7 @@
+#include <ngl/ShaderLib.h>
+
 #include "include/concrete/standardwall.h"
+#include "window.h"
 
 #define PI 3.14159265
 
@@ -109,4 +112,20 @@ void StandardWall::generateViewBBox()
         m_lsMeshBBox.m_maxY*1 + m_pos.m_y,
         m_lsMeshBBox.m_maxZ*1 + m_pos.m_z
         );
+}
+
+void StandardWall::draw()
+{
+  Renderer *r = Renderer::instance();
+
+  ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  (*shader)["Phong"]->use();
+
+  shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
+
+  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
+
+  r->draw("wall", "Phong");
 }

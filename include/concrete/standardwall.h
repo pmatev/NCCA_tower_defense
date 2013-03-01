@@ -12,6 +12,7 @@ public:
   void generateMesh();
   void filterViewVolume(EntityRecordWCList &o_localEntities);
   void generateViewBBox();
+  void draw();
 protected:
   StandardWall(NodePtr _linkedNode, unsigned int _id);
 };

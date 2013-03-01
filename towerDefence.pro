@@ -171,4 +171,5 @@ OTHER_FILES += \
     shaders/Texture.vs \
     shaders/Texture.fs \
     models/enemy.obj \
-    models/hexagon.obj
+    models/hexagon.obj \
+    models/wall.obj

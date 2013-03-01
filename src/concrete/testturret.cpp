@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "include/concrete/testturret.h"
 #include "include/fsm/states/turretstates.h"
 #include "renderer.h"
@@ -21,6 +23,9 @@ TestTurret::TestTurret(
   m_fov = 360;
   m_viewDistance = 10;
   setRotationAngle(0.5);
+  m_shotPos = ngl::Vec3(m_pos.m_x,
+                        m_pos.m_y + 1.3,
+                        m_pos.m_z);
   // pass everything into the turret
   generateMesh();
   publish();
@@ -249,7 +254,10 @@ void TestTurret::draw()
 
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
+  m_transformStack.pushTransform();
+  m_transformStack.setPosition(m_pos);
   r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  std::cout << m_aim << std::endl;
   (*shader)["Phong"]->use();
   ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
   c = c/255.0f;
@@ -258,5 +266,19 @@ void TestTurret::draw()
 
   shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
 
-  r->draw("turret", "Phong");
+  r->draw("turret_base", "Phong");
+  m_transformStack.popTransform();
+
+  m_transformStack.pushTransform();
+  m_transformStack.setPosition(m_shotPos);
+  m_transformStack.setRotation(ngl::Vec3(0, (atan(m_aim[0] / m_aim[2])) * (180 / 3.14159263), 0));
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  (*shader)["Phong"]->use();
+
+  shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
+
+  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
+
+  r->draw("turret_cannon", "Phong");
+  m_transformStack.popTransform();
 }

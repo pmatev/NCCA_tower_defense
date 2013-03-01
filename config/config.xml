@@ -98,6 +98,26 @@
   </invisibleCoords>
 
   <wallCoords>
+    <wallCoord>
+      <x>5</x>
+      <y>5</y>
+    </wallCoord>
+    <wallCoord>
+      <x>5</x>
+      <y>6</y>
+    </wallCoord>
+    <wallCoord>
+      <x>5</x>
+      <y>7</y>
+    </wallCoord>
+    <wallCoord>
+      <x>5</x>
+      <y>8</y>
+    </wallCoord>
+    <wallCoord>
+      <x>5</x>
+      <y>9</y>
+    </wallCoord>
   </wallCoords>
 
   <waves>
