@@ -291,7 +291,6 @@ void TestTurret::draw()
   //Draw the turret base
   m_transformStack.pushTransform();
   m_transformStack.setPosition(m_pos);
-  std::cout << m_aim << std::endl;
 
   (*shader)["Constant"]->use();
   r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
@@ -313,8 +312,8 @@ void TestTurret::draw()
   //float turret_xz_rotation = (atan2(m_aim[1], m_aim[0])) * (180 / 3.14159263);
   m_transformStack.setRotation(ngl::Vec3(0, turret_y_rotation, 0));
 
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
-  (*shader)["Phong"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+  (*shader)["Constant"]->use();
 
   shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
 
