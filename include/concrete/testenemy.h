@@ -42,8 +42,6 @@ public:
 
   void stateInit();
 
-  void generateMesh();
-
 
 //  //-------------------------------------------------------------------//
 //  /// @brief draw the object

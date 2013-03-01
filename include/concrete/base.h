@@ -28,9 +28,6 @@ public:
 
   void stateInit();
   void update(const double _dt);
-//  void draw();
-//  void drawSelection();
-  void generateMesh();
   void filterViewVolume(EntityRecordWCList &o_localEntities);
 
   //-------------------------------------------------------------------//

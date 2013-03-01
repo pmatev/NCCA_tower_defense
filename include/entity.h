@@ -165,6 +165,11 @@ public: //methods
   void publish();
 
   //-------------------------------------------------------------------//
+  /// @brief initialises the mesh
+  //-------------------------------------------------------------------//
+  void initialiseMesh(std::string _name);
+
+  //-------------------------------------------------------------------//
   /// @brief method to return the health value
   /// @param [out] m_health, the health value of the entity
   //-------------------------------------------------------------------//
@@ -213,12 +218,6 @@ public: //methods
   //-------------------------------------------------------------------//
 
   inline BBox getMeshBBox() const {return m_lsMeshBBox;}
-
-  //-------------------------------------------------------------------//
-  /// @brief a method to generate the mesh of the entity, pure virtual
-  //-------------------------------------------------------------------//
-
-  virtual void generateMesh() = 0;
 
   //-------------------------------------------------------------------//
   /// @brief a method to calculate the local space bounding box of the

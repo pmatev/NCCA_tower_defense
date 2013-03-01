@@ -3,7 +3,6 @@
 #include <boost/foreach.hpp>
 
 #include "include/mesh.h"
-#include "renderer.h"
 
 // make a namespace for our parser to save writing boost::spirit:: all the time
 namespace spt=boost::spirit;
@@ -317,6 +316,8 @@ void Mesh::createVAO()
     boxData.push_back(d);
     }
   }
+
+  m_boxData = boxData;
 
   //call to generate the bounding box
 

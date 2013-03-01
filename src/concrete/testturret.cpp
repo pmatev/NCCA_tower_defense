@@ -24,10 +24,10 @@ TestTurret::TestTurret(
   m_viewDistance = 10;
   setRotationAngle(0.5);
   m_shotPos = ngl::Vec3(m_pos.m_x,
-                        m_pos.m_y + 1.3,
+                        m_pos.m_y + 0.75,
                         m_pos.m_z);
-  // pass everything into the turret
-  generateMesh();
+
+  initialiseMesh("turret_base");
   publish();
 }
 
@@ -77,134 +77,6 @@ void TestTurret::stateInit()
           )
         );
 }
-
-//-------------------------------------------------------------------//
-
-void TestTurret::generateMesh()
-{
-  const static GLubyte indices[]=  {
-    0,1,5,0,4,5, // back
-    3,2,6,7,6,3, // front
-    0,1,2,3,2,0, // top
-    4,5,6,7,6,4, // bottom
-    0,3,4,4,7,3,
-    1,5,2,2,6,5
-  };
-
-  GLfloat vertices[] = {-0.5,0.5,-0.5,
-                        0.5,0.5,-0.5,
-                        0.5,0.5,0.5,
-                        -0.5,0.5,0.5,
-                        -0.5,-0.5,-0.5,
-                        0.5,-0.5,-0.5,
-                        0.5,-0.5,0.5,
-                        -0.5,-0.5,0.5
-                       };
-  GLfloat normals[] = {1,0,0.5,
-                       1,0,0.5,
-                       1,0,0.5,
-                       1,0,0.5,
-                       1,0,1,
-                       1,0,1,
-                       1,0,1,
-                       1,0,1
-                      };
-
-  GLfloat uvs[] = { 0.0, 0.0,
-                    0.0, 0.0,
-                    0.0, 0.0,
-                    0.0, 0.0,
-                    0.0, 0.0,
-                    0.0, 0.0,
-                    1.0, 1.0,
-                    1.0, 1.0
-                    };
-
-  std::vector<Renderer::vertData> boxData;
-  Renderer::vertData d;
-  for(int j=0; j<8; j++)
-  {
-    d.x = vertices[j*3];
-    d.y = vertices[(j*3)+1];
-    d.z = vertices[(j*3)+2];
-    d.nx = normals[j*3];
-    d.ny = normals[(j*3)+1];
-    d.nz = normals[(j*3)+2];
-    d.u = uvs[j*2];
-    d.v = uvs[j*2+1];
-
-
-    boxData.push_back(d);
-  }
-
-
-  //call top generate the mesh bounding box
-
-  generateLsBBox(boxData);
-
-  Renderer *render = Renderer::instance();
-
-  render->createVAO(m_IDStr, GL_TRIANGLES);
-
-//  render->setIndexedDataToVAO(
-//        m_IDStr,
-//        sizeof(Renderer::vertData)*boxData.size(),
-//        3,
-//        boxData[0].x,
-//        sizeof(indices),
-//        &indices[0],
-//        sizeof(indices)/sizeof(GLubyte)
-//        );
-
-  VAOPtr vao = render->getVAObyID(m_IDStr);
-  vao->bind();
-
-  vao->setIndexedData(sizeof(Renderer::vertData)*boxData.size(),
-                      boxData[0].x,
-                      sizeof(indices),
-                      &indices[0],
-                      GL_UNSIGNED_BYTE,
-                      GL_STATIC_DRAW);
-
-  // vert position attribute
-  vao->setVertexAttributePointer(0,3,GL_FLOAT,sizeof(Renderer::vertData),0);
-  // vert normals attribute
-  vao->setVertexAttributePointer(1,3,GL_FLOAT,sizeof(Renderer::vertData),3);
-
-  vao->setVertexAttributePointer(2,2,GL_FLOAT,sizeof(Renderer::vertData),6);
-
-  vao->setNumIndices(sizeof(indices)/sizeof(GLubyte));
-
-  vao->unbind();
-}
-
-//-------------------------------------------------------------------//
-
-//void TestTurret::draw()
-//{
-//    Renderer *r = Renderer::instance();
-
-//    // draw to selection buffer
-//    r->bindFrameBuffer("Selection");
-//    r->loadMatrixToShader("Colour");
-//    r->draw(m_IDStr, "Colour");
-
-//    // draw to default buffer (screen)
-//    r->bindFrameBuffer(0);
-//    r->loadMatrixToShader(m_transformStack, "Phong");
-//    r->draw(m_IDStr, "Phong");
-//}
-
-//-------------------------------------------------------------------//
-
-//void TestTurret::drawSelection()
-//{
-//  Renderer *r = Renderer::instance();
-//  //m_transformStack.setScale(0.5, 0.5, 0.5);
-//  r->loadMatrixToShader(m_transformStack, "Colour");
-
-//  r->drawSelection(m_ID, m_IDStr);
-//}
 
 //-------------------------------------------------------------------//
 

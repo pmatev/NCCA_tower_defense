@@ -82,6 +82,23 @@ void Entity::publish()
 
 //-------------------------------------------------------------------//
 
+void Entity::initialiseMesh(std::string _name)
+{
+  MeshLibWPtr w_mesh_lib = MeshLib::instance();
+  MeshLibPtr mesh_lib = w_mesh_lib.lock();
+  if(mesh_lib)
+  {
+    generateLsBBox(mesh_lib->getVertDataFromMesh(_name));
+    publish();
+  }
+  else
+  {
+    std::cout << "Meshlib failed to load." << std::endl;
+  }
+}
+
+//-------------------------------------------------------------------//
+
 void Entity::calculateLocalEntities(
     EntityRecordWCList &o_newList,
     std::list<GeneralType> &_typeList

@@ -50,12 +50,6 @@ public: //methods
 
   void stateInit();
 
-  //-------------------------------------------------------------------//
-  /// @brief method to generate the mesh of the object
-  //-------------------------------------------------------------------//
-
-  void generateMesh();
-
   void filterViewVolume(EntityRecordWCList &o_localEntities);
 
 protected: //methods
@@ -80,6 +74,7 @@ protected: //methods
   //-------------------------------------------------------------------//
 
   ngl::Vec3 brain();
+
 };
 
 #endif // BULLET_H

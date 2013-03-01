@@ -126,7 +126,13 @@ void Game::setupScene()
   QDomElement docElem = document.documentElement();
 
   //Create the meshlib
-  m_meshLib = MeshLib::create();
+  MeshLibWPtr w_mesh_lib = MeshLib::instance();
+  MeshLibPtr mesh_lib = w_mesh_lib.lock();
+  if(mesh_lib)
+  {
+    std::cout << "initialised meshlib" << std::endl;
+    mesh_lib->init();
+  }
 
   //========================================================================//
   //                              SpawnCoords                               //
