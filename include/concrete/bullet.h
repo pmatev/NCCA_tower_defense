@@ -52,6 +52,13 @@ public: //methods
 
   void filterViewVolume(EntityRecordWCList &o_localEntities);
 
+  // TEST !!! THIS SOULD BE PUT INTO A MISSILE CLASS AND SHOULD BE MANAGED BETTER-----------------------------------
+  //-------------------------------------------------------------------//
+  /// @brief this is implemented so that we can create an explosion when the
+  /// bullet is deleted
+  //-------------------------------------------------------------------//
+  ~Bullet();
+
 protected: //methods
   //-------------------------------------------------------------------//
   /// @brief creator

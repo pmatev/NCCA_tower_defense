@@ -77,7 +77,7 @@ public:
   /// @param[out] list of Collisions with objects
   //-------------------------------------------------------------------//
 
-  std::list<Collision> checkCollisions() const;
+  std::list<Damage> checkCollisions() const;
 
   //-------------------------------------------------------------------//
   /// @brief start creating waves

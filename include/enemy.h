@@ -139,7 +139,10 @@ public:
   /// @brief method to check against the base
   //-------------------------------------------------------------------//
 
-  Collision baseTest() const;
+  Damage baseTest() const;
+
+  // for testing
+  ~Enemy();
 
 protected:
   //-------------------------------------------------------------------//

@@ -1,8 +1,10 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
+
 #include "smartpointers.h"
 #include "dynamicentity.h"
+#include "fwd/projectileManager.h"
 
 //-------------------------------------------------------------------//
 /// @file projectile.h
@@ -61,13 +63,30 @@ public://methods
   //-------------------------------------------------------------------//
 
   virtual void setVelocity(const ngl::Vec3 _velocity){m_velocity = _velocity;}
-  protected:
+
+  //-------------------------------------------------------------------//
+  /// @brief set the projectiles parent. This should be called in the
+  /// addProjectile method in ProjectileManager.
+  //-------------------------------------------------------------------//
+
+  inline void setParent(ProjectileManager *_parent) {m_parent = _parent;}
+
+protected:
 
     //-------------------------------------------------------------------//
     /// @brief a variable to store the emitter turret
     //-------------------------------------------------------------------//
 
     int m_emitterID;
+
+    //-------------------------------------------------------------------//
+    /// @brief pointer to parent. This is mainly used for creating
+    /// explosions
+    //-------------------------------------------------------------------//
+
+    ProjectileManager *m_parent;
+
+
 };
 
 #endif // PROJECTILE_H

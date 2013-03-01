@@ -657,10 +657,7 @@ bool NodeManager::getAStar(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr
       // If we've found the goal
       if(*current == _goal)
       {
-        #pragma omp critical
-        {
-          reconstructPath(o_newPath, current, _start);
-        }
+        reconstructPath(o_newPath, current, _start);
         std::cout<<"Completed path in "<<numSteps<<" steps"<<std::endl;
         return true;
       }

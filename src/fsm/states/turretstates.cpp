@@ -202,6 +202,7 @@ void BasicUpgrade::execute(EntityWPtr _turret)
     {
       // Edit all the values
       turretptr->setShotWaitTime(0.5);
+      turretptr->setRotationAngle(5);
       // When this is done it needs to change to the previous state
       StateMachine *sm = strongEntity->getStateMachine();
       if(sm)

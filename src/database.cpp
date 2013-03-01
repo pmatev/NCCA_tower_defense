@@ -215,7 +215,7 @@ void Database::getLocalEntities(
       m_nodeGrid->getLocalEntities(tempList, _minX,_minZ,_maxX,_maxZ);
       break;
     case BASE:
-      tempList.push_back(m_base);
+      tempList.push_back(EntityRecordWCPtr(m_base));
       break;
     }
 
@@ -250,6 +250,12 @@ void Database::getLocalEntities(
 
   }
 }
+
+void Database::getBaseRecord(EntityRecordWCPtr &o_baseRecord)
+{
+  o_baseRecord = EntityRecordWCPtr(m_base);
+}
+
 //-------------------------------------------------------------------//
 
 void Database::clearRecords()

@@ -96,6 +96,8 @@ public: //methods
         std::list<GeneralType> &_typeList
         )const;
 
+  void getBaseRecord(EntityRecordWCPtr &o_baseRecord);
+
   //-------------------------------------------------------------------//
   /// @brief method to clear out the dynamic database grids
   //-------------------------------------------------------------------//

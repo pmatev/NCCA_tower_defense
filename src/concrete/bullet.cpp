@@ -1,5 +1,6 @@
 #include "concrete/bullet.h"
 #include"include/fsm/states/projectilestates.h"
+#include "projectilemanager.h"
 #include "ngl/ShaderLib.h"
 
 //-------------------------------------------------------------------//
@@ -11,7 +12,7 @@ Bullet::Bullet(
     ) :
   Projectile(_pos,_aim, _id)
 {
-  m_damage =10;
+  m_damage =50;
   m_maxVelocity = 10;
   m_velocity = m_aimVector;
 
@@ -78,3 +79,15 @@ void Bullet::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
 }
+
+//-------------------------------------------------------------------//
+
+Bullet::~Bullet()
+{
+  if(m_parent)
+  {
+    m_parent->addExplosion(100, 10, 2, m_pos);
+  }
+}
+
+//-------------------------------------------------------------------//

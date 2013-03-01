@@ -53,7 +53,15 @@ public:
   /// @param [in] _dt, the timestep
   //-------------------------------------------------------------------//
 
-  void update(const double _dt);
+  virtual void update(const double _dt);
+
+  //-------------------------------------------------------------------//
+  /// @brief bring together all the forces and apply constraints to work out
+  /// what the dynamic entity should be doing. This should be called in the
+  /// update.
+  //-------------------------------------------------------------------//
+
+  void move(const double _dt);
 
   //-------------------------------------------------------------------//
   /// @brief a method to enforce the grid boundaries, pure virtual as
@@ -116,9 +124,17 @@ public:
   /// against
   //-------------------------------------------------------------------//
 
-  Collision collisionTest (
+  Damage collisionTest (
         std::list<GeneralType> &_types
         ) const;
+
+  //-------------------------------------------------------------------//
+  /// @brief deal an impulse to the dynamic entity
+  //-------------------------------------------------------------------//
+  inline void dealImpulse(const ngl::Vec3 &_impulse)
+  {
+    m_currentImpulses+=_impulse;
+  }
 
 protected:
 
@@ -223,6 +239,13 @@ protected:
   //-------------------------------------------------------------------//
 
   bool m_toBeRemoved;
+
+  //-------------------------------------------------------------------//
+  /// @brief the current impulses on a dynamic entity. These are forces that
+  /// only last for one frame
+  //-------------------------------------------------------------------//
+
+  ngl::Vec3 m_currentImpulses;
 
 };
 

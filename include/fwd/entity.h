@@ -1,6 +1,7 @@
 #ifndef ENTITY_FWD_H
 #define ENTITY_FWD_H
 
+#include <ngl/Vec3.h>
 #include "smartpointers.h"
 
 DECLARESMART(Entity)
@@ -20,10 +21,10 @@ enum GeneralType
 };
 
 //-------------------------------------------------------------------//
-/// @struct a struct to store collision info
+/// @struct a struct to store damage info
 //-------------------------------------------------------------------//
 
-struct Collision
+struct Damage
 {
   //-------------------------------------------------------------------//
   /// @brief the id of the entity that has been hit
@@ -41,10 +42,39 @@ struct Collision
   /// @brief constructor
   //-------------------------------------------------------------------//
 
-  Collision(int _id, float _damage) :
+  Damage(int _id, float _damage) :
     m_id(_id),
     m_damage(_damage)
   {}
+};
+
+//-------------------------------------------------------------------//
+/// @brief a struct to store impulses that should be applied to enemies
+//-------------------------------------------------------------------//
+
+struct Impulse
+{
+  //-------------------------------------------------------------------//
+/// @brief  the id of the entity that it should act on
+  //-------------------------------------------------------------------//
+
+  unsigned int m_id;
+
+  //-------------------------------------------------------------------//
+  /// @brief the impulse vector
+  //-------------------------------------------------------------------//
+
+  ngl::Vec3 m_vec;
+
+  //-------------------------------------------------------------------//
+  /// @brief ctor
+  //-------------------------------------------------------------------//
+
+  Impulse(unsigned int _id, const ngl::Vec3 &_vec):
+    m_id(_id),
+    m_vec(_vec)
+  {;}
+
 };
 
 #endif // ENTITY_FWD_H

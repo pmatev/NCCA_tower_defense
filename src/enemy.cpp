@@ -63,38 +63,55 @@ void Enemy::prepareForUpdate()
 
 void Enemy::update(const double _dt)
 {
-    //In seconds
-    float dt = _dt / 1000;
+  //    //In seconds
+  //    float dt = _dt / 1000;
 
-    //update the state machine
-    m_stateMachine->update();
+  //    //update the state machine
+  //    m_stateMachine->update();
 
-    ngl::Vec3 steeringForce = brain();
-    ngl::Vec3 acceleration = steeringForce / m_mass;
-    float maxAcceleration = 0.1;
+  //    ngl::Vec3 steeringForce = brain();
+  //    ngl::Vec3 acceleration = steeringForce / m_mass;
+  //    float maxAcceleration = 0.1;
 
-    //truncate acceleration to max acc
-    float accDiff = maxAcceleration / acceleration.length(); //COULD FAIL IF 0
-    float accScaleFactor = (accDiff < 1.0) ? accDiff : 1.0;
-    acceleration *= accScaleFactor;
+  //    //truncate acceleration to max acc
+  //    float accDiff = maxAcceleration / acceleration.length(); //COULD FAIL IF 0
+  //    float accScaleFactor = (accDiff < 1.0) ? accDiff : 1.0;
+  //    acceleration *= accScaleFactor;
 
-    m_velocity += acceleration;
+  ////    ngl::Vec3 impulses = m_currentImpulses;
+  ////    // if below the ground plane push up
+  ////    if(m_pos.m_y < 0)
+  ////    {
+  ////      impulses += ngl::Vec3(0, -m_pos.m_y, 0);
+  ////    }
+  ////    else
+  ////    {
+  ////      // gravity
+  ////      impulses += ngl::Vec3(0, -9.8, 0);
+  ////    }
 
-    //truncate velocity to max speed
-    float diff = m_maxVelocity / m_velocity.length(); //COULD FAIL IF 0
-    float scaleFactor = (diff < 1.0) ? diff : 1.0;
-    m_velocity *= scaleFactor;
+  ////    // Add in impulses
+  ////    acceleration += impulses / m_mass;
 
-    //update position
-    m_prevPos = m_pos;
-    m_pos += m_velocity * dt;
 
-    enforceGridBoundaries();
+  //    m_velocity += acceleration;
 
-    m_transformStack.setPosition(m_pos);
+  //    //truncate velocity to max speed
+  //    float diff = m_maxVelocity / m_velocity.length(); //COULD FAIL IF 0
+  //    float scaleFactor = (diff < 1.0) ? diff : 1.0;
+  //    m_velocity *= scaleFactor;
 
-    ngl::Vec4 healthBarPos(m_pos.m_x, m_pos.m_y+1, m_pos.m_z);
-    m_healthBar->setPos(healthBarPos);
+  //    //update position
+  //    m_prevPos = m_pos;
+  //    m_pos += m_velocity * dt;
+
+  //    enforceGridBoundaries();
+
+  //    m_transformStack.setPosition(m_pos);
+
+  move(_dt);
+  ngl::Vec4 healthBarPos(m_pos.m_x, m_pos.m_y+1, m_pos.m_z);
+  m_healthBar->setPos(healthBarPos);
 }
 
 //-------------------------------------------------------------------//
@@ -288,61 +305,89 @@ void Enemy::draw()
 
 //-------------------------------------------------------------------//
 
-Collision Enemy::baseTest() const
+Damage Enemy::baseTest() const
 {
   //first generate a list of local entity records
   Database* db = Database::instance();
-  std::list<GeneralType> typeList;
-  typeList.push_back(BASE);
-  EntityRecordWCList localEntities;
-  db->getLocalEntities(
-        localEntities,
-        m_pos.m_x+m_lsMeshBBox.m_minX-0.5,
-        m_pos.m_z+m_lsMeshBBox.m_minZ-0.5,
-        m_pos.m_x+m_lsMeshBBox.m_maxX+0.5,
-        m_pos.m_z+m_lsMeshBBox.m_maxZ+0.5,
-        typeList
-        );
+//  std::list<GeneralType> typeList;
+//  typeList.push_back(BASE);
+//  EntityRecordWCList localEntities;
+//  db->getLocalEntities(
+//        localEntities,
+//        m_pos.m_x+m_lsMeshBBox.m_minX-0.5,
+//        m_pos.m_z+m_lsMeshBBox.m_minZ-0.5,
+//        m_pos.m_x+m_lsMeshBBox.m_maxX+0.5,
+//        m_pos.m_z+m_lsMeshBBox.m_maxZ+0.5,
+//        typeList
+//        );
 
-  //initialise the return collision
+//  //initialise the return collision
 
-  Collision c(0,0);
+//  Damage c(0,0);
 
-  //if the list is not empty
+//  //if the list is not empty
 
-  if (localEntities.size() != 0)
+//  if (localEntities.size() != 0)
+//  {
+
+//    //then tent the iterator
+//    EntityRecordWCList::iterator listIt = localEntities.begin();
+
+//    //get the id of the element pointed to by the iterator
+//    EntityRecordCPtr recordStrong = listIt->lock();
+//    if(recordStrong)
+//    {
+//      //get the relevant information
+
+//      ngl::Vec3 pos (recordStrong->m_x,recordStrong->m_y,recordStrong->m_z);
+//      float  radius = (recordStrong->m_maxX -recordStrong->m_minX)/2;
+
+//      //check for collisions between the entity checking and the one
+//      //it's checking against
+
+//      bool result = sphereBBoxCollision(pos,radius);
+//      //if there was a collision
+
+//      if (result == true)
+//      {
+//        //set the id of the collision being returned from the null value
+//        //to the one tested
+
+//        c.m_id = recordStrong->m_id;
+
+//        //then set the damage value
+
+//        c.m_damage = m_damage;
+//      }
+//    }
+//  }
+    Damage c(0,0);
+  EntityRecordWCPtr recordWeak;
+  db->getBaseRecord(recordWeak);
+  EntityRecordCPtr recordStrong = recordWeak.lock();
+  if(recordStrong)
   {
+    //get the relevant information
 
-    //then tent the iterator
-    EntityRecordWCList::iterator listIt = localEntities.begin();
+    ngl::Vec3 pos (recordStrong->m_x,recordStrong->m_y,recordStrong->m_z);
+    float  radius = (recordStrong->m_maxX -recordStrong->m_minX)/2;
 
-    //get the id of the element pointed to by the iterator
-    EntityRecordCPtr recordStrong = listIt->lock();
-    if(recordStrong)
+    //check for collisions between the entity checking and the one
+    //it's checking against
+
+    bool result = sphereBBoxCollision(pos,radius);
+    //if there was a collision
+
+    if (result == true)
     {
+      //set the id of the collision being returned from the null value
+      //to the one tested
 
-      //get the relevant information
+      c.m_id = recordStrong->m_id;
 
-      ngl::Vec3 pos (recordStrong->m_x,recordStrong->m_y,recordStrong->m_z);
-      float  radius = (recordStrong->m_maxX -recordStrong->m_minX)/2;
+      //then set the damage value
 
-      //check for collisions between the entity checking and the one
-      //it's checking against
-
-      bool result = sphereBBoxCollision(pos,radius);
-      //if there was a collision
-
-      if (result == true)
-      {
-        //set the id of the collision being returned from the null value
-        //to the one tested
-
-        c.m_id = recordStrong->m_id;
-
-        //then set the damage value
-
-        c.m_damage = m_damage;
-      }
+      c.m_damage = m_damage;
     }
   }
 
@@ -352,3 +397,9 @@ Collision Enemy::baseTest() const
 }
 
 //-------------------------------------------------------------------//
+
+Enemy::~Enemy()
+{
+  std::cout<<"Enemy died"<<std::endl;
+  std::cout<<"At pos"<<m_pos<<std::endl;
+}

@@ -118,10 +118,10 @@ void Window::loop()
 
 
     m_time = 0.0;
-    const double dt = 10; // update interval
+//    const double dt = 10; // update interval
 
     double currentTime = SDL_GetTicks();
-    double accumulator = 0.0;
+//    double accumulator = 0.0;
 
     // flag to indicate if we need to exit
 
@@ -173,8 +173,15 @@ void Window::loop()
 //            accumulator -= dt;
 //            m_time += dt;
 //        }
-        game->update(frameTime);
-
+        float maxDt = 70;
+        if(frameTime > maxDt)
+        {
+          game->update(maxDt);
+        }
+        else
+        {
+          game->update(frameTime);
+        }
         Renderer *r = Renderer::instance();
 
     // render to texture

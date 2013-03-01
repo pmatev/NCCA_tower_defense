@@ -433,7 +433,11 @@ void Game::update(const double _dt)
   // 3 //
   m_projectileManager->update(_dt);
   // 4 //
-  dealDamage(m_projectileManager->checkCollisions());
+  std::list<Damage> damages;
+  std::list<Impulse> impulses;
+  m_projectileManager->checkCollisions(damages, impulses);
+  dealDamage(damages);
+  dealImpulses(impulses);
 
   m_projectileManager->checkDeaths();
   // 5 //
@@ -530,10 +534,10 @@ EnvironmentWPtr Game::getEnvironmentWeakPtr()
 //-------------------------------------------------------------------//
 
 
-void Game::dealDamage(std::list<Collision> _collisionList)
+void Game::dealDamage(const std::list<Damage> &_collisionList)
 {
   for(
-      std::list<Collision>::iterator it = _collisionList.begin();
+      std::list<Damage>::const_iterator it = _collisionList.begin();
       it != _collisionList.end();
       ++it
       )
@@ -543,6 +547,30 @@ void Game::dealDamage(std::list<Collision> _collisionList)
     if(entity)
     {
       entity->dealDamage(it->m_damage);
+    }
+  }
+}
+
+//-------------------------------------------------------------------//
+
+void Game::dealImpulses(const std::list<Impulse> &_impulses)
+{
+  for(
+      std::list<Impulse>::const_iterator it = _impulses.begin();
+      it != _impulses.end();
+      ++it
+      )
+  {
+    // Get smart pointer to object
+    EntityPtr entity = getEntityByID(it->m_id).lock();
+    if(entity)
+    {
+      // Impulses can only be applied to dynamic entities so need to cast
+      DynamicEntityPtr dynamicEntity = boost::dynamic_pointer_cast<DynamicEntity>(entity);
+      if(dynamicEntity)
+      {
+        dynamicEntity->dealImpulse(it->m_vec);
+      }
     }
   }
 }

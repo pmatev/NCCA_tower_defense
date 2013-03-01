@@ -147,7 +147,7 @@ public:
   /// @param[out] list of Collisions with objects
   //-------------------------------------------------------------------//
 
-  std::list<Collision> checkCollisions();
+  std::list<Damage> checkCollisions();
 
   //-------------------------------------------------------------------//
   /// @brief check if all the enemies have been killed

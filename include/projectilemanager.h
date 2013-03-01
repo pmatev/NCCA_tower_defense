@@ -1,8 +1,10 @@
 #ifndef PROJECTILEMANAGER_H
 #define PROJECTILEMANAGER_H
 
-#include "smartpointers.h"
+#include <boost/enable_shared_from_this.hpp>
+#include "fwd/projectileManager.h"
 #include "projectile.h"
+#include "explosion.h"
 
 //-------------------------------------------------------------------//
 /// @file projectilemanager.h
@@ -16,9 +18,7 @@
 /// @class ProjectileManager
 //-------------------------------------------------------------------//
 
-DECLARESMART(ProjectileManager)
-
-class ProjectileManager
+class ProjectileManager : public boost::enable_shared_from_this<ProjectileManager>
 {
 public://methods
   //-------------------------------------------------------------------//
@@ -43,7 +43,7 @@ public://methods
   /// @param [out] returns a list of collisions
   //-------------------------------------------------------------------//
 
-  std::list<Collision> checkCollisions();
+  void checkCollisions(std::list<Damage> &o_damages, std::list<Impulse> &o_impulses);
 
   //-------------------------------------------------------------------//
   /// @brief a method to call update on each of the projectiles
@@ -70,6 +70,20 @@ public://methods
         const ngl::Vec3 &_pos,
         const ngl::Vec3 &_velocity,
         int _emitterID
+        );
+
+  //-------------------------------------------------------------------//
+  /// @brief add new explosion
+  /// @param[in] _power power of the explosion
+  /// @param[in] _radius how far the explosion effects
+  /// @param[in] _pos center of explosion
+  //-------------------------------------------------------------------//
+
+  void addExplosion(
+        float _power,
+        float _damage,
+        float _radius,
+        const ngl::Vec3 &_pos
         );
 
   //-------------------------------------------------------------------//
@@ -107,6 +121,12 @@ protected://attributes
   //-------------------------------------------------------------------//
 
   ProjectileList m_projectiles;
+
+  //-------------------------------------------------------------------//
+  /// @brief list of all currently active explosions
+  //-------------------------------------------------------------------//
+
+  ExplosionList m_explosions;
 };
 
 #endif // PROJECTILEMANAGER_H

@@ -74,7 +74,6 @@ void Wave::update(const double _dt)
         currencyAdded += (*it)->getCurrencyValue();
         scoreAdded += (*it)->getScoreValue();
       }
-
       it = removeEnemy(it);
     }
     else
@@ -98,9 +97,9 @@ void Wave::update(const double _dt)
     enemy->prepareForUpdate();
   }
 
-#pragma omp parallel
-  {
-#pragma omp for
+//#pragma omp parallel
+//  {
+//#pragma omp for
     for(
         unsigned long int i = 0;
         i < m_enemies.size();
@@ -110,7 +109,7 @@ void Wave::update(const double _dt)
       // update enemy
       (m_enemies[i])->update(_dt);
     }
-  }
+//  }
   brain(_dt);
 }
 
@@ -349,11 +348,11 @@ void Wave::addToPathNodes(EnemyPtr _enemy)
 
 //-------------------------------------------------------------------//
 
-std::list<Collision> Wave::checkCollisions()
+std::list<Damage> Wave::checkCollisions()
 {
   //initialise a list of collisions to return
 
-  std::list<Collision> collisionList;
+  std::list<Damage> collisionList;
 
   // cycle through all of the enemies stored
 
@@ -364,7 +363,7 @@ std::list<Collision> Wave::checkCollisions()
        )
   {
 
-    Collision c = (*listIt)->baseTest();
+    Damage c = (*listIt)->baseTest();
 
     //check if there was a collision
 

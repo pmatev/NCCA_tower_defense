@@ -87,7 +87,7 @@ bool WaveManager::generatePaths(NodeWPtr _node)
 
 //-------------------------------------------------------------------//
 
-std::list<Collision> WaveManager::checkCollisions() const
+std::list<Damage> WaveManager::checkCollisions() const
 {
   if(m_currentWaveIt != m_waves.end())
   {
@@ -95,7 +95,7 @@ std::list<Collision> WaveManager::checkCollisions() const
   }
   else
   {
-    return std::list<Collision>();
+    return std::list<Damage>();
   }
 }
 

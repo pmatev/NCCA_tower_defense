@@ -11,7 +11,8 @@ ProjectileManagerPtr ProjectileManager::create()
 
 //-------------------------------------------------------------------//
 
-ProjectileManager::ProjectileManager()
+ProjectileManager::ProjectileManager():
+  boost::enable_shared_from_this<ProjectileManager>()
 {
   //currently using default
 }
@@ -44,14 +45,8 @@ ProjectileManager::~ProjectileManager()
 
 //-------------------------------------------------------------------//
 
-std::list<Collision> ProjectileManager::checkCollisions()
+void ProjectileManager::checkCollisions(std::list<Damage> &o_damages, std::list<Impulse> &o_impulses)
 {
-  //initialise a list of collisions to return
-
-  std::list<Collision> collisionList;
-
-
-
   // cycle through all of the projectiles stored
 
   for (
@@ -63,7 +58,7 @@ std::list<Collision> ProjectileManager::checkCollisions()
     //call call collision detection on the projectiles
     std::list<GeneralType> types;
     types.push_back(ENEMY);
-    Collision c = (*listIt)->collisionTest(types);
+    Damage c = (*listIt)->collisionTest(types);
 
     //check if there was a collision
 
@@ -71,12 +66,25 @@ std::list<Collision> ProjectileManager::checkCollisions()
     {
       //if there was, add it to the list
       (*listIt)->kill();
-      collisionList.push_back(c);
+      o_damages.push_back(c);
     }
   }
-  //finally return the resulting list
-
-  return collisionList;
+  // NEED TO DO SOMETHING WITH IMPULSES -----------------------------------------------------
+  for(
+      ExplosionList::iterator it = m_explosions.begin();
+      it != m_explosions.end();
+      )
+  {
+    // DT NEEDS TO BE PASSED DOWN OR DT NEEDS TO BE CHANGED SOMEWHERE ELSE!!! -----------------------------------------------------
+    if((*it)->execute(10, o_damages, o_impulses))
+    {
+      it = m_explosions.erase(it);
+    }
+    else
+    {
+      ++it;
+    }
+  }
 }
 
 //-------------------------------------------------------------------//
@@ -163,10 +171,25 @@ void ProjectileManager::addProjectile(
           )
         );
 
+  // Tell the projectile who its parent is
+
+  newProjectile->setParent(this);
   //add the projectile to the list of projectiles
   newProjectile->setEmitterID(_emitterID);
   newProjectile->setVelocity(_velocity);
   m_projectiles.push_back(newProjectile);
+}
+
+//-------------------------------------------------------------------//
+
+void ProjectileManager::addExplosion(
+    float _power,
+    float _damage,
+    float _radius,
+    const ngl::Vec3 &_pos
+    )
+{
+  m_explosions.push_back(Explosion::create(_power, _damage, _radius, _pos));
 }
 
 //-------------------------------------------------------------------//

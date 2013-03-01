@@ -50,6 +50,11 @@ void DynamicEntity::prepareForUpdate()
 
 void DynamicEntity::update(const double _dt)
 {
+  move(_dt);
+}
+
+void DynamicEntity::move(const double _dt)
+{
   //In seconds
   float dt = _dt / 1000;
 
@@ -57,7 +62,7 @@ void DynamicEntity::update(const double _dt)
   m_stateMachine->update();
 
   ngl::Vec3 steeringForce = brain();
-  ngl::Vec3 acceleration = steeringForce / m_mass;
+  ngl::Vec3 acceleration = (steeringForce) / m_mass;
   float maxAcceleration = 0.1;
 
   //truncate acceleration to max acc
@@ -65,7 +70,11 @@ void DynamicEntity::update(const double _dt)
   float accScaleFactor = (accDiff < 1.0) ? accDiff : 1.0;
   acceleration *= accScaleFactor;
 
+
+  acceleration += m_currentImpulses / m_mass;
+
   m_velocity += acceleration;
+
 
   //truncate velocity to max speed
   float diff = m_maxVelocity / m_velocity.length(); //COULD FAIL IF 0
@@ -76,7 +85,7 @@ void DynamicEntity::update(const double _dt)
   m_prevPos = m_pos;
   m_pos += m_velocity * dt;
 
-  //Collision check
+  //Damage check
   //Iterate over the neighbours.
   if(m_localEntities)
   {
@@ -115,6 +124,8 @@ void DynamicEntity::update(const double _dt)
 
   m_transformStack.setPosition(m_pos);
 
+  // Reset impulses
+  m_currentImpulses.null();
 }
 
 //-------------------------------------------------------------------//
@@ -465,7 +476,7 @@ bool DynamicEntity::isIntersecting(
 
 //-------------------------------------------------------------------//
 
-Collision DynamicEntity::collisionTest(
+Damage DynamicEntity::collisionTest(
     std::list<GeneralType> &_types
     ) const
 {
@@ -488,7 +499,7 @@ Collision DynamicEntity::collisionTest(
   //initialise the result and the return collision
 
   bool result = false;
-  Collision c(0,0);
+  Damage c(0,0);
 
   while(listIt != localEntities.end() && result != true)
   {

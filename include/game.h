@@ -186,7 +186,13 @@ protected:
     /// collided and the damage to be dealt.
     //-------------------------------------------------------------------//
 
-    void dealDamage(std::list<Collision> _collisionList);
+    void dealDamage(const std::list<Damage> &_collisionList);
+
+    //-------------------------------------------------------------------//
+    /// @brief apply impulses
+    /// @param[in] _impulses list of impulses to be applied to enemies
+    //-------------------------------------------------------------------//
+    void dealImpulses(const std::list<Impulse> &_impulses);
 
     //-------------------------------------------------------------------//
     /// @brief setup the whole scene. This is where any scene information
