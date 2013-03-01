@@ -188,12 +188,7 @@ void TestTurret::draw()
   (*shader)["Constant"]->use();
 
   shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
-
   shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
-
-  m_transformStack.setPosition(m_shotPos);
-  m_transformStack.setRotation(ngl::Vec3(0, (atan(m_aim[0] / m_aim[2])) * (180 / 3.14159263), 0));
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
 
   r->draw("turret_cannon", "Constant");
   m_transformStack.popTransform();

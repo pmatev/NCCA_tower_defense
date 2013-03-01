@@ -1,6 +1,6 @@
 //Maya ASCII 2012 scene
 //Name: tower.ma
-//Last modified: Fri, Mar 01, 2013 09:33:02 PM
+//Last modified: Fri, Mar 01, 2013 11:38:12 PM
 //Codeset: UTF-8
 requires maya "2012";
 currentUnit -l centimeter -a degree -t film;
@@ -12,12 +12,12 @@ fileInfo "osv" "Linux 2.6.32-279.19.1.el6.x86_64 #1 SMP Wed Dec 19 07:05:20 UTC 
 fileInfo "license" "education";
 createNode transform -s -n "persp";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" 7.1194013389402526 2.4465197931188296 2.6703792200644383 ;
-	setAttr ".r" -type "double3" -12.938352730752445 430.59999999985388 0 ;
+	setAttr ".t" -type "double3" 7.7390614324987945 1.2901814388813979 0.056945410654464346 ;
+	setAttr ".r" -type "double3" -4.5383527307517451 450.19999999984964 0 ;
 createNode camera -s -n "perspShape" -p "persp";
 	setAttr -k off ".v" no;
 	setAttr ".fl" 34.999999999999986;
-	setAttr ".coi" 7.9870772832881185;
+	setAttr ".coi" 7.9870772832882864;
 	setAttr ".imn" -type "string" "persp";
 	setAttr ".den" -type "string" "persp_depth";
 	setAttr ".man" -type "string" "persp_mask";
@@ -75,10 +75,8 @@ createNode transform -n "transform6" -p "pPrism1";
 createNode mesh -n "pPrismShape1" -p "transform6";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
-	setAttr -s 5 ".iog";
 	setAttr ".vir" yes;
 	setAttr ".vif" yes;
-	setAttr -s 5 ".ciog";
 	setAttr ".uvst[0].uvsn" -type "string" "map1";
 	setAttr -s 50 ".uvst[0].uvsp[0:49]" -type "float2" 0.49732804 0.31250003 0.50624931
 		 0.68843985 0.5026719 0.31250006 0.53899467 0.31250006 0.49814141 0.32926896 0.49999997
@@ -410,6 +408,7 @@ createNode mesh -n "pCubeShape1" -p "transform19";
 	setAttr ".cdvm[0]"  0 1 1;
 createNode transform -n "polySurface14";
 	setAttr ".t" -type "double3" 0 0.74163899977401149 0 ;
+	setAttr ".r" -type "double3" 0 180 0 ;
 createNode mesh -n "polySurfaceShape4" -p "polySurface14";
 	setAttr -k off ".v";
 	setAttr -s 2 ".iog[0].og";
@@ -573,9 +572,8 @@ createNode polyMergeVert -n "polyMergeVert2";
 	setAttr ".am" yes;
 createNode polyTweak -n "polyTweak1";
 	setAttr ".uopa" yes;
-	setAttr -s 10 ".tk";
-	setAttr ".tk[24:26]" -type "float3" 0.089293122 0.12302107 0.07630676  0.00027994812 
-		0.047863007 0.012060136  0 0 0 ;
+	setAttr -s 3 ".tk[24:26]" -type "float3"  0.089293122 0.12302107 0.07630676 0.00027994812
+		 0.047863007 0.012060136 0 0 0;
 createNode polyMergeVert -n "polyMergeVert3";
 	setAttr ".ics" -type "componentList" 2 "vtx[3]" "vtx[24]";
 	setAttr ".ix" -type "matrix" 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1;
@@ -753,10 +751,9 @@ createNode polyExtrudeFace -n "polyExtrudeFace10";
 	setAttr ".cbx" -type "double3" 0.078668701335104022 0.80543372889390019 0.30694396489081893 ;
 createNode polyTweak -n "polyTweak2";
 	setAttr ".uopa" yes;
-	setAttr -s 10 ".tk";
-	setAttr ".tk[72:75]" -type "float3" 0.069719665 -0.19919041 1.6122799e-08  0.069719665 
-		0.19919041 1.6122799e-08  -0.069719665 0.19919041 -1.6122799e-08  -0.069719665 -0.19919041 
-		-1.6122799e-08 ;
+	setAttr -s 4 ".tk[72:75]" -type "float3"  0.069719665 -0.19919041 1.6122799e-08 0.069719665
+		 0.19919041 1.6122799e-08 -0.069719665 0.19919041 -1.6122799e-08 -0.069719665 -0.19919041
+		 -1.6122799e-08;
 createNode polyCube -n "polyCube1";
 	setAttr ".cuv" 4;
 createNode polyExtrudeFace -n "polyExtrudeFace11";
@@ -819,18 +816,17 @@ createNode polyExtrudeFace -n "polyExtrudeFace13";
 	setAttr ".cbx" -type "double3" 0.05781731884228334 0.79407256476477162 0.86155662025381341 ;
 createNode polyTweak -n "polyTweak4";
 	setAttr ".uopa" yes;
-	setAttr -s 29 ".tk";
-	setAttr ".tk[144:167]" -type "float3" 0.011044251 0.0049501671 0.027326256  0.018143091 
-		0.0049501671 0.023227699  0.02918734 0.0049501671 0.004098522  0.029187329 0.0049501671 
-		-0.0040985304  0.018143101 0.0049501671 -0.02322774  0.011044247 0.0049501671 -0.027326254  
-		-0.011044251 0.0049501671 -0.027326256  -0.018143091 0.0049501671 -0.023227703  -0.02918734 
-		0.0049501671 -0.004098529  -0.029187329 0.0049501671 0.0040985239  -0.018143101 0.0049501671 
-		0.023227725  -0.011044247 0.0049501671 0.02732625  0.011044251 -0.010603736 0.027326256  
-		0.018143091 -0.010603736 0.023227703  0.02918734 -0.010603736 0.0040985262  0.029187329 
-		-0.010603736 -0.0040985257  0.018143101 -0.010603736 -0.023227725  0.011044247 -0.010603736 
-		-0.02732625  -0.011044251 -0.010603736 -0.027326256  -0.018143091 -0.010603736 -0.023227699  
-		-0.02918734 -0.010603736 -0.0040985248  -0.029187329 -0.010603736 0.0040985285  -0.018143101 
-		-0.010603736 0.02322774  -0.011044247 -0.010603736 0.027326254 ;
+	setAttr -s 24 ".tk[144:167]" -type "float3"  0.011044251 0.0049501671 0.027326256
+		 0.018143091 0.0049501671 0.023227699 0.02918734 0.0049501671 0.004098522 0.029187329
+		 0.0049501671 -0.0040985304 0.018143101 0.0049501671 -0.02322774 0.011044247 0.0049501671
+		 -0.027326254 -0.011044251 0.0049501671 -0.027326256 -0.018143091 0.0049501671 -0.023227703
+		 -0.02918734 0.0049501671 -0.004098529 -0.029187329 0.0049501671 0.0040985239 -0.018143101
+		 0.0049501671 0.023227725 -0.011044247 0.0049501671 0.02732625 0.011044251 -0.010603736
+		 0.027326256 0.018143091 -0.010603736 0.023227703 0.02918734 -0.010603736 0.0040985262
+		 0.029187329 -0.010603736 -0.0040985257 0.018143101 -0.010603736 -0.023227725 0.011044247
+		 -0.010603736 -0.02732625 -0.011044251 -0.010603736 -0.027326256 -0.018143091 -0.010603736
+		 -0.023227699 -0.02918734 -0.010603736 -0.0040985248 -0.029187329 -0.010603736 0.0040985285
+		 -0.018143101 -0.010603736 0.02322774 -0.011044247 -0.010603736 0.027326254;
 createNode deleteComponent -n "deleteComponent12";
 	setAttr ".dc" -type "componentList" 1 "e[98]";
 createNode deleteComponent -n "deleteComponent13";
@@ -871,7 +867,7 @@ createNode polyTriangulate -n "polyTriangulate1";
 	setAttr ".ics" -type "componentList" 1 "f[*]";
 createNode polyTweak -n "polyTweak5";
 	setAttr ".uopa" yes;
-	setAttr -s 40 ".tk";
+	setAttr -s 36 ".tk";
 	setAttr ".tk[48:71]" -type "float3" -2.9802322e-08 4.4703484e-08 8.1956387e-08  
 		7.4505806e-09 4.4703484e-08 0  7.4505806e-09 -4.4703484e-08 0  -2.9802322e-08 -4.4703484e-08 
 		8.1956387e-08  -1.4901161e-08 4.4703484e-08 -3.7252903e-08  3.7252903e-09 4.4703484e-08 
@@ -945,8 +941,6 @@ select -ne :hardwareRenderingGlobals;
 select -ne :defaultHardwareRenderGlobals;
 	setAttr ".fn" -type "string" "im";
 	setAttr ".res" -type "string" "ntsc_4d 646 485 1.333";
-select -ne :ikSystem;
-	setAttr -s 4 ".sol";
 connectAttr ":initialShadingGroup.mwc" "|polySurface1|transform12|polySurfaceShape1.iog.og[0].gco"
 		;
 connectAttr "groupId1.id" "|polySurface1|transform12|polySurfaceShape1.iog.og[0].gid"
