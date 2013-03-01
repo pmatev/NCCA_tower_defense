@@ -179,7 +179,7 @@ void Turret::fire()
     //add a projectile, at the moment starts it at the centre of the turret
     //might need to add some way of setting where the end of the turret's
     //barrel is
-    pm->addProjectile(m_projectileType,m_pos,m_aim*m_projectileSpeed,m_ID);
+    pm->addProjectile(m_projectileType,m_shotPos,m_aim*m_projectileSpeed,m_ID);
 
     //then set the doFire and time since last shot values back to their default
     // values

@@ -66,7 +66,7 @@ void Camera::track(int _oldX, int _oldY, int _newX, int _newY)
     v.normalize();
     v = getViewMatrix()*v;
 
-    v *= 0.1;
+    v *= 0.3;
 
     m_eye += v;
     m_look += v;

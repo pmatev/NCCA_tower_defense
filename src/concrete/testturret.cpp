@@ -288,6 +288,7 @@ void TestTurret::draw()
 
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
+  //Draw the turret base
   m_transformStack.pushTransform();
   m_transformStack.setPosition(m_pos);
   std::cout << m_aim << std::endl;
@@ -304,8 +305,21 @@ void TestTurret::draw()
   r->draw("turret_base", "Constant");
   m_transformStack.popTransform();
 
-
+  //Draw the cannon
   m_transformStack.pushTransform();
+  m_transformStack.setPosition(m_shotPos);
+  //Get the rotation based on the aim vector
+  float turret_y_rotation = (atan2(m_aim[0], m_aim[2])) * (180 / 3.14159263);
+  //float turret_xz_rotation = (atan2(m_aim[1], m_aim[0])) * (180 / 3.14159263);
+  m_transformStack.setRotation(ngl::Vec3(0, turret_y_rotation, 0));
+
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  (*shader)["Phong"]->use();
+
+  shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
+
+  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
+
   m_transformStack.setPosition(m_shotPos);
   m_transformStack.setRotation(ngl::Vec3(0, (atan(m_aim[0] / m_aim[2])) * (180 / 3.14159263), 0));
   r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");

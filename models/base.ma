@@ -1,6 +1,6 @@
 //Maya ASCII 2012 scene
 //Name: base.ma
-//Last modified: Fri, Mar 01, 2013 04:21:30 PM
+//Last modified: Fri, Mar 01, 2013 06:15:36 PM
 //Codeset: UTF-8
 requires maya "2012";
 currentUnit -l centimeter -a degree -t film;
@@ -12,12 +12,12 @@ fileInfo "osv" "Linux 2.6.32-279.19.1.el6.x86_64 #1 SMP Wed Dec 19 07:05:20 UTC 
 fileInfo "license" "education";
 createNode transform -s -n "persp";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" -12.885775226449301 2.9948801746601283 -2.114838534019122 ;
-	setAttr ".r" -type "double3" -11.738352729363354 -819.39999999978033 0 ;
+	setAttr ".t" -type "double3" -4.5917909629445202 4.8934942472690635 1.9184499707946905 ;
+	setAttr ".r" -type "double3" -42.938352729357852 -787.3999999997759 1.6552658821971701e-14 ;
 createNode camera -s -n "perspShape" -p "persp";
 	setAttr -k off ".v" no;
 	setAttr ".fl" 34.999999999999993;
-	setAttr ".coi" 13.320007525784488;
+	setAttr ".coi" 6.7651171608257048;
 	setAttr ".imn" -type "string" "persp";
 	setAttr ".den" -type "string" "persp_depth";
 	setAttr ".man" -type "string" "persp_mask";
@@ -75,10 +75,6 @@ createNode mesh -n "pPrismShape1" -p "pPrism2";
 	setAttr ".dcc" -type "string" "Ambient+Diffuse";
 	setAttr ".covm[0]"  0 1 1;
 	setAttr ".cdvm[0]"  0 1 1;
-	setAttr -s 7 ".pt";
-	setAttr ".pt[6:11]" -type "float3" -0.055151843 0 0.095525689  0.05515179 0 0.095525727  
-		0.1103036 0 1.3149214e-08  0.055151809 0 -0.095525712  -0.055151798 0 -0.095525742  
-		-0.1103036 0 -3.2873035e-09 ;
 createNode lightLinker -s -n "lightLinker1";
 	setAttr -s 3 ".lnk";
 	setAttr -s 3 ".slnk";
@@ -177,6 +173,14 @@ createNode polyExtrudeFace -n "polyExtrudeFace1";
 	setAttr ".c[0]"  0 1 1;
 	setAttr ".cbn" -type "double3" -1 0 -0.86602550745010376 ;
 	setAttr ".cbx" -type "double3" 1 0 0.86602544784545898 ;
+createNode polyTriangulate -n "polyTriangulate1";
+	setAttr ".ics" -type "componentList" 1 "f[*]";
+createNode polyTweak -n "polyTweak1";
+	setAttr ".uopa" yes;
+	setAttr -s 7 ".tk";
+	setAttr ".tk[6:11]" -type "float3" -0.055151843 0 0.095525689  0.05515179 0 0.095525727  
+		0.1103036 0 1.3149214e-08  0.055151809 0 -0.095525712  -0.055151798 0 -0.095525742  
+		-0.1103036 0 -3.2873035e-09 ;
 select -ne :time1;
 	setAttr ".o" 1;
 	setAttr ".unw" 1;
@@ -204,7 +208,7 @@ select -ne :defaultHardwareRenderGlobals;
 	setAttr ".res" -type "string" "ntsc_4d 646 485 1.333";
 select -ne :ikSystem;
 	setAttr -s 4 ".sol";
-connectAttr "polyExtrudeFace1.out" "pPrismShape1.i";
+connectAttr "polyTriangulate1.out" "pPrismShape1.i";
 relationship "link" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" ":initialParticleSE.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" "phong1SG.message" ":defaultLightSet.message";
@@ -220,6 +224,8 @@ connectAttr "polyPrism1.out" "deleteComponent1.ig";
 connectAttr "deleteComponent1.og" "transformGeometry1.ig";
 connectAttr "transformGeometry1.og" "polyExtrudeFace1.ip";
 connectAttr "pPrismShape1.wm" "polyExtrudeFace1.mp";
+connectAttr "polyTweak1.out" "polyTriangulate1.ip";
+connectAttr "polyExtrudeFace1.out" "polyTweak1.ip";
 connectAttr "phong1SG.pa" ":renderPartition.st" -na;
 connectAttr "pPrismShape1.iog" ":initialShadingGroup.dsm" -na;
 connectAttr "phong1.msg" ":defaultShaderList1.s" -na;
