@@ -609,10 +609,10 @@ bool NodeManager::traverseChildren(
           }
         }
       }
-//      if(lowestDepth == -1)
-//      {
-//        return false;
-//      }
+      if(lowestDepth == -1)
+      {
+        return false;
+      }
       if (foundSomething)
       {
         return traverseChildren(o_newPath, _goal,bestChild, false);

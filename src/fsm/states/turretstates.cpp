@@ -140,28 +140,17 @@ void LockedOn::execute(EntityWPtr _turret)
           aim /= len;
         }
 
-        //check the cosine of the angles between the aims
-
-        float cos = aim.dot(turretptr->getAim());
-
         //set the desired aim
 
         turretptr->setDesiredAim(aim);
 
-        //if it is greater than the cosine of the max rotation speed,
-        //and therefore within the cone defined by it
+        //if the time since the last shot is great enough
 
-        if (cos >= turretptr->getCosRotationSpeed())
+        if (turretptr->getShotWaitTime() <= turretptr->getDtSinceShot())
         {
+          //set the doShot boolean to true
 
-          //if the time since the last shot is great enough
-
-          if (turretptr->getShotWaitTime() <= turretptr->getDtSinceShot())
-          {
-            //set the doShot boolean to true
-
-            turretptr->setDoShot(true);
-          }
+          turretptr->setDoShot(true);
         }
       }
       else

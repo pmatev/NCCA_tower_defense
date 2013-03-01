@@ -130,6 +130,13 @@ public:
     inline void addCurrency(int _value) {m_player->addCurrency(_value);}
 
     //-------------------------------------------------------------------//
+    /// @brief a method to add the inputted score
+    /// @param [in] _value, the value to add to the score
+    //-------------------------------------------------------------------//
+
+    inline void addScore(int _value) {m_player->addScore(_value);}
+
+    //-------------------------------------------------------------------//
     /// @brief tell wavemanager to start sending enemies
     //-------------------------------------------------------------------//
 

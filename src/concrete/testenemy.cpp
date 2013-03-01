@@ -17,6 +17,7 @@ TestEnemy::TestEnemy(
     _aim,
     _id,
     5, // currency value
+    20, //score value
     3.0 // max distance from nearest path node
     )
 
@@ -26,7 +27,7 @@ TestEnemy::TestEnemy(
   generateMesh();
   //  m_active = false;
 
-  m_damage = 100;
+  m_damage = 5;
   m_velocity = 0;
   m_maxVelocity = 2.0;
   m_maxForce = ngl::Vec3(5, 5, 5);

@@ -39,6 +39,7 @@ public:
         const ngl::Vec3 &_aim,
         unsigned int _id,
         int _currencyValue,
+        int _scoreValue,
         float _maxPathDistance
         );
 
@@ -75,6 +76,21 @@ public:
   inline int getCurrencyValue() const {return m_currencyValue;}
 
   //-------------------------------------------------------------------//
+  /// @brief a method to return the score value
+  /// @param [out] the currency value of the enemy
+  //-------------------------------------------------------------------//
+
+  inline int getScoreValue() const {return m_scoreValue;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the score value
+  /// @param [out] whether or not the enemy was killed by a projectile
+  /// from a turret
+  //-------------------------------------------------------------------//
+
+  inline bool getKilledByUser() const {return m_killedByUser;}
+
+  //-------------------------------------------------------------------//
   /// @brief a method to detect collisions based on a sphere and the
   /// square distances from the position passed in
   /// @param [in] _pos, the position of the object to check against
@@ -106,6 +122,19 @@ public:
   //-------------------------------------------------------------------//
 
   inline float getMaxPathDistance() const {return m_maxPathDistance;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to call the kill while setting the killed by user
+  /// flag to false
+  //-------------------------------------------------------------------//
+
+  inline void suicide() {m_killedByUser = false;kill();}
+
+  //-------------------------------------------------------------------//
+  /// @brief method to check against the base
+  //-------------------------------------------------------------------//
+
+  Collision baseTest() const;
 
 protected:
   //-------------------------------------------------------------------//
@@ -143,6 +172,21 @@ protected:
   //-------------------------------------------------------------------//
 
   int m_currencyValue;
+
+  //-------------------------------------------------------------------//
+  /// @brief the score value for the enemy
+  //-------------------------------------------------------------------//
+
+  int m_scoreValue;
+
+  //-------------------------------------------------------------------//
+  /// @brief boolean defining whether or not the enemy was killed by
+  /// a turret, defaults to true, suicide method calls kill and sets
+  /// this value to false. suicide method for collisions with base
+  /// plus potential self destruct methods
+  //-------------------------------------------------------------------//
+
+  bool m_killedByUser;
 
 
 

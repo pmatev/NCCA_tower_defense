@@ -3,7 +3,8 @@
 //-------------------------------------------------------------------//
 
 Player::Player(int _startCurrency) :
-  m_currency(_startCurrency)
+  m_currency(_startCurrency),
+  m_score(0)
 {
   //currently nothing in the constructor
 }

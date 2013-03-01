@@ -12,7 +12,8 @@ DynamicEntity::DynamicEntity(
     ):
   Entity(_pos,_type,_id),
   m_aimVector(_aim),
-  m_prevPos(_pos)
+  m_prevPos(_pos),
+  m_toBeRemoved(false)
 
 {
   //variables initialised before the constructor body
@@ -512,47 +513,27 @@ Collision DynamicEntity::collisionTest(
         //it's checking against
 
         result = intersectTest(bBox);
-        //if there was a collision
 
         if (result == true)
         {
-          //check for collisions between the entity checking and the one
-          //it's checking against
+          //set the id of the collision being returned from the null value
+          //to the one tested
 
-          result = intersectTest(bBox);
-          //if there was a collision
+          c.m_id = id;
 
-          if (result == true)
-          {
-            //set the id of the collision being returned from the null value
-            //to the one tested
+          //then set the damage value
 
-            c.m_id = id;
+          c.m_damage = m_damage;
 
-            //then set the damage value
-
-            c.m_damage = m_damage;
-          }
 
         }
-    }
+      }
 
     }
     //increment the iterator
     listIt++;
   }
   //finally return the collision struct
-
-  return c;
-}
-
-//-------------------------------------------------------------------//
-
-Collision DynamicEntity::collisionDetection(std::list<GeneralType> _types) const
-{
-  //call the collision test method and store the result
-
-  Collision c = collisionTest(_types);
 
   return c;
 }
@@ -570,6 +551,15 @@ void DynamicEntity::generateViewBBox()
         m_lsMeshBBox.m_maxY*4 + m_pos.m_y,
         m_lsMeshBBox.m_maxZ*4 + m_pos.m_z
         );
+}
+
+//-------------------------------------------------------------------//
+
+void DynamicEntity::kill()
+{
+  //at the moment just sets the to be removed boolean to true
+
+  m_toBeRemoved = true;
 }
 
 //-------------------------------------------------------------------//

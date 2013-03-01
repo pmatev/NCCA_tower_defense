@@ -41,7 +41,7 @@ public: //methods
   /// @param [in] _offset, the value to offset the currency by
   //-------------------------------------------------------------------//
 
-  inline void addCurrency (int _offset) {m_currency += _offset;}
+  inline void addCurrency (int _offset) {m_currency += _offset;if(_offset!= 0 )std::cout << "SCORE: "<< m_currency<<"\n";}
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the currency
@@ -49,6 +49,22 @@ public: //methods
   //-------------------------------------------------------------------//
 
   inline int getCurrency() const {return m_currency;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to add the offset to the score value, so a
+  /// positive number increases the currency ans a negative one decreases
+  /// it
+  /// @param [in] _offset, the value to offset the score by
+  //-------------------------------------------------------------------//
+
+  inline void addScore (int _offset) {m_score+= _offset;}
+
+  //-------------------------------------------------------------------//
+  /// @brief a method to return the currency
+  /// @param [out] the current currency value
+  //-------------------------------------------------------------------//
+
+  inline int getScore() const {return m_score;}
 
 protected: //methods
 
@@ -67,6 +83,12 @@ protected: //attributes
   //-------------------------------------------------------------------//
 
   int m_currency;
+
+  //-------------------------------------------------------------------//
+  /// @brief The score that the user has achieved
+  //-------------------------------------------------------------------//
+
+  int m_score;
 
 };
 

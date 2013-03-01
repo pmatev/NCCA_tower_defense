@@ -63,7 +63,7 @@ std::list<Collision> ProjectileManager::checkCollisions()
     //call call collision detection on the projectiles
     std::list<GeneralType> types;
     types.push_back(ENEMY);
-    Collision c = (*listIt)->collisionDetection(types);
+    Collision c = (*listIt)->collisionTest(types);
 
     //check if there was a collision
 
@@ -122,10 +122,18 @@ void ProjectileManager::checkDeaths()
 
       if ((*listIt)->getHealth() <= 0)
       {
-        //erase it
+        //call kill
+
+        (*listIt) -> kill();
+      }
+
+      if ((*listIt)->getToBeRemoved() == true)
+      {
+        //remove the projectile
 
         listIt = removeProjectile(listIt);
       }
+
       else
       {
         //increment the iterator
