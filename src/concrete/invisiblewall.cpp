@@ -1,4 +1,5 @@
 #include "include/concrete/invisiblewall.h"
+#include "ngl/ShaderLib.h"
 
 #define PI 3.14159265
 
@@ -109,4 +110,18 @@ void InvisibleWall::generateViewBBox()
         m_lsMeshBBox.m_maxY*1 + m_pos.m_y,
         m_lsMeshBBox.m_maxZ*1 + m_pos.m_z
         );
+}
+void InvisibleWall::draw()
+{
+//    Renderer *r = Renderer::instance();
+
+//    ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+
+//    (*shader)["Constant"]->use();
+//    r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+
+//    shader->setShaderParam4f("colour", 0, 0, 0, 0);
+//    shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
+
+//    r->draw("wall", "Constant");
 }

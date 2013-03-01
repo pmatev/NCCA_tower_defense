@@ -2,6 +2,7 @@
 #include "renderer.h"
 #include "uimenu.h"
 #include "ngl/ShaderLib.h"
+#include "texturelib.h"
 #include "window.h"
 
 
@@ -37,41 +38,43 @@ void UIButton::generateMesh()
 {
   // Load Texture
 
-  QImage *image = new QImage();
-  const char *str = m_imageFile.c_str();
-  bool loaded=image->load(str, "JPG");
-  if(loaded == true)
-  {
-    int width=image->width();
-    int height=image->height();
+//  QImage *image = new QImage();
+//  const char *str = m_imageFile.c_str();
+//  bool loaded=image->load(str, "JPG");
+//  if(loaded == true)
+//  {
+//    int width=image->width();
+//    int height=image->height();
 
-    unsigned char *data = new unsigned char[ width*height*3];
-    unsigned int index=0;
-    QRgb colour;
-    for( int y=0; y<height; ++y)
-    {
-      for( int x=0; x<width; ++x)
-      {
-        colour=image->pixel(x,y);
+//    unsigned char *data = new unsigned char[ width*height*3];
+//    unsigned int index=0;
+//    QRgb colour;
+//    for( int y=0; y<height; ++y)
+//    {
+//      for( int x=0; x<width; ++x)
+//      {
+//        colour=image->pixel(x,y);
 
-        data[index++]=qRed(colour);
-        data[index++]=qGreen(colour);
-        data[index++]=qBlue(colour);
-      }
-    }
+//        data[index++]=qRed(colour);
+//        data[index++]=qGreen(colour);
+//        data[index++]=qBlue(colour);
+//      }
+//    }
 
-    glGenTextures(1,&m_texture);
-    glBindTexture(GL_TEXTURE_2D, m_texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+//    glGenTextures(1,&m_texture);
+//    glBindTexture(GL_TEXTURE_2D, m_texture);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,data);
-    glGenerateMipmapEXT(GL_TEXTURE_2D); //  Allocate the mipmaps
-  }
-  else
-  {
-    std::cerr<<"Couldn't load texture"<<std::endl;
-  }
+//    glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,data);
+//    glGenerateMipmapEXT(GL_TEXTURE_2D); //  Allocate the mipmaps
+//  }
+//  else
+//  {
+//    std::cerr<<"Couldn't load texture"<<std::endl;
+//  }
+
+
 
   // BUILD BILLBOARD
   struct quadVertData
@@ -151,7 +154,10 @@ void UIButton::draw()
   ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
   shader->setRegisteredUniform4f("colourSelect", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
 
-  glBindTexture(GL_TEXTURE_2D, m_texture);
+  TextureLib *tex = TextureLib::instance();
+  tex->bindTexture("debug");
+
+//  glBindTexture(GL_TEXTURE_2D, m_texture);
   render->draw(m_IDStr, "UI");
 
   glEnable(GL_DEPTH_TEST);

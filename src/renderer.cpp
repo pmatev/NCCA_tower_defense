@@ -57,26 +57,51 @@ void Renderer::init()
 //    createShader("Colour",2);
 
 
-    shader->createShaderProgram("Phong");
+    shader->createShaderProgram("Constant");
 
-    shader->attachShader("PhongVertex",ngl::VERTEX);
-    shader->attachShader("PhongFragment",ngl::FRAGMENT);
-    shader->loadShaderSource("PhongVertex", "shaders/Phong.vs");
-    shader->loadShaderSource("PhongFragment","shaders/Phong.fs");
+    shader->attachShader("ConstantVertex",ngl::VERTEX);
+    shader->attachShader("ConstantFragment",ngl::FRAGMENT);
+    shader->loadShaderSource("ConstantVertex", "shaders/Constant.vs");
+    shader->loadShaderSource("ConstantFragment","shaders/Constant.fs");
 
-    shader->compileShader("PhongVertex");
-    shader->compileShader("PhongFragment");
+    shader->compileShader("ConstantVertex");
+    shader->compileShader("ConstantFragment");
 
-    shader->attachShaderToProgram("Phong","PhongVertex");
-    shader->attachShaderToProgram("Phong","PhongFragment");
+    shader->attachShaderToProgram("Constant","ConstantVertex");
+    shader->attachShaderToProgram("Constant","ConstantFragment");
 
-    shader->bindAttribute("Phong", 0, "inVert");
-    shader->bindAttribute("Phong", 1, "inUV");
-    shader->linkProgramObject("Phong");
+    shader->bindAttribute("Constant", 0, "inVert");
+    shader->bindAttribute("Constant", 1, "inUV");
+    shader->bindAttribute("Constant", 2, "inNormal");
+    shader->linkProgramObject("Constant");
 
-    glBindFragDataLocation(shader->getProgramID("Phong"),0,"outColour");
+    glBindFragDataLocation(shader->getProgramID("Constant"),0,"outColour");
 
-    m_shaderNames.push_back("Phong");
+    m_shaderNames.push_back("Constant");
+
+
+    shader->createShaderProgram("TexturedConstant");
+
+    shader->attachShader("TexturedConstVertex",ngl::VERTEX);
+    shader->attachShader("TexturedConstFragment",ngl::FRAGMENT);
+    shader->loadShaderSource("TexturedConstVertex", "shaders/TexturedConst.vs");
+    shader->loadShaderSource("TexturedConstFragment","shaders/TexturedConst.fs");
+
+    shader->compileShader("TexturedConstVertex");
+    shader->compileShader("TexturedConstFragment");
+
+    shader->attachShaderToProgram("TexturedConstant","TexturedConstVertex");
+    shader->attachShaderToProgram("TexturedConstant","TexturedConstFragment");
+
+    shader->bindAttribute("TexturedConstant", 0, "inVert");
+    shader->bindAttribute("TexturedConstant", 1, "inUV");
+    shader->bindAttribute("TexturedConstant", 2, "inNormal");
+    shader->linkProgramObject("TexturedConstant");
+
+    glBindFragDataLocation(shader->getProgramID("TexturedConstant"),0,"outColour");
+
+    m_shaderNames.push_back("TexturedConstant");
+
 
     shader->createShaderProgram("UI");
 
@@ -283,28 +308,32 @@ void Renderer::draw(std::string _id, std::string _shader)
   (*shader)[_shader]->use();
 
   VAOPtr v = getVAObyID(_id);
-  v->bind();
-  v->draw();
-  v->unbind();
+  if(v){
+      v->bind();
+      v->draw();
+      v->unbind();
+  }else{
+      std::cerr<<"Error drawing VAO. ID: "<< _id<<std::endl;
+  }
 }
 //-------------------------------------------------------------------//
 
-void Renderer::drawSelection(unsigned int _id, std::string _idStr)
-{
-  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
-  (*shader)["Colour"]->use();
+//void Renderer::drawSelection(unsigned int _id, std::string _idStr)
+//{
+//  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
+//  (*shader)["Colour"]->use();
 
-  VAOPtr v = getVAObyID(_idStr);
+//  VAOPtr v = getVAObyID(_idStr);
 
-  ngl::Vec3 c = Window::instance()->IDToColour(_id);
+//  ngl::Vec3 c = Window::instance()->IDToColour(_id);
 
-  shader->setShaderParam4f("colour", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
+//  shader->setShaderParam4f("colour", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
 
-  //std::cout<<c<<std::endl;
-  v->bind();
-  v->draw();
-  v->unbind();
-}
+//  //std::cout<<c<<std::endl;
+//  v->bind();
+//  v->draw();
+//  v->unbind();
+//}
 
 //-------------------------------------------------------------------//
 void Renderer::prepareDrawSelection()

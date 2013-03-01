@@ -36,16 +36,12 @@ public:
       GLfloat x; // position
       GLfloat y;
       GLfloat z;
+      GLfloat u;
+      GLfloat v;
       GLfloat nx; // normal
       GLfloat ny;
       GLfloat nz;
     };
-    struct vertData2D
-    {
-      GLfloat x;
-      GLfloat y;
-    };
-
 
     //-------------------------------------------------------------------//
     /// @brief instances the singleton
@@ -124,7 +120,7 @@ public:
     /// @param [in] _id, integer ID of the object to draw
     /// @param [in] _idStr, string ID (to avoid conversion within the function)
     //-------------------------------------------------------------------//
-    void drawSelection(unsigned int _id, std::string _idStr);
+//    void drawSelection(unsigned int _id, std::string _idStr);
 
     //-------------------------------------------------------------------//
     /// PROBABLY SHOULD BE REMOVED

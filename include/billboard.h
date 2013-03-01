@@ -25,16 +25,20 @@ public:
     };
 
 
-    Billboard(const Type _type, const ngl::Vec4 _pos, const float _width, const float _height);
-
+    static BillboardPtr create(const Type &_type, const ngl::Vec4 &_pos, const float &_width, const float &_height);
     void init();
 
     void draw(const std::string &_shader);
 
+
+    void setUVScale(const float _s);
     inline void setPos(const ngl::Vec4 _v){m_pos = _v;}
     inline void setMatrix(const ngl::Mat4 _m){m_transform = _m;}
     inline ngl::Vec4 getPos() const {return m_pos;}
     inline ngl::Mat4 getMatrix() const {return m_transform;}
+
+    void setTextureID(const unsigned int &_id);
+    unsigned int getTextureID() const {return m_texture;}
 
 protected:
 
@@ -43,12 +47,16 @@ protected:
     float m_width;
     float m_height;
 
+    unsigned int m_texture;
+
     ngl::Mat4 m_transform;
 
     unsigned int m_ID;
 
     std::string m_IDStr;
 
+private:
+    Billboard(const Type &_type, const ngl::Vec4 &_pos, const float &_width, const float &_height);
 };
 
 #endif // BILLBOARD_H

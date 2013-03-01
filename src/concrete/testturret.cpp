@@ -110,6 +110,16 @@ void TestTurret::generateMesh()
                        1,0,1
                       };
 
+  GLfloat uvs[] = { 0.0, 0.0,
+                    0.0, 0.0,
+                    0.0, 0.0,
+                    0.0, 0.0,
+                    0.0, 0.0,
+                    0.0, 0.0,
+                    1.0, 1.0,
+                    1.0, 1.0
+                    };
+
   std::vector<Renderer::vertData> boxData;
   Renderer::vertData d;
   for(int j=0; j<8; j++)
@@ -120,6 +130,9 @@ void TestTurret::generateMesh()
     d.nx = normals[j*3];
     d.ny = normals[(j*3)+1];
     d.nz = normals[(j*3)+2];
+    d.u = uvs[j*2];
+    d.v = uvs[j*2+1];
+
 
     boxData.push_back(d);
   }
@@ -133,15 +146,36 @@ void TestTurret::generateMesh()
 
   render->createVAO(m_IDStr, GL_TRIANGLES);
 
-  render->setIndexedDataToVAO(
-        m_IDStr,
-        sizeof(Renderer::vertData)*boxData.size(),
-        3,
-        boxData[0].x,
-        sizeof(indices),
-        &indices[0],
-        sizeof(indices)/sizeof(GLubyte)
-        );
+//  render->setIndexedDataToVAO(
+//        m_IDStr,
+//        sizeof(Renderer::vertData)*boxData.size(),
+//        3,
+//        boxData[0].x,
+//        sizeof(indices),
+//        &indices[0],
+//        sizeof(indices)/sizeof(GLubyte)
+//        );
+
+  VAOPtr vao = render->getVAObyID(m_IDStr);
+  vao->bind();
+
+  vao->setIndexedData(sizeof(Renderer::vertData)*boxData.size(),
+                      boxData[0].x,
+                      sizeof(indices),
+                      &indices[0],
+                      GL_UNSIGNED_BYTE,
+                      GL_STATIC_DRAW);
+
+  // vert position attribute
+  vao->setVertexAttributePointer(0,3,GL_FLOAT,sizeof(Renderer::vertData),0);
+  // vert normals attribute
+  vao->setVertexAttributePointer(1,3,GL_FLOAT,sizeof(Renderer::vertData),3);
+
+  vao->setVertexAttributePointer(2,2,GL_FLOAT,sizeof(Renderer::vertData),6);
+
+  vao->setNumIndices(sizeof(indices)/sizeof(GLubyte));
+
+  vao->unbind();
 }
 
 //-------------------------------------------------------------------//
@@ -256,29 +290,26 @@ void TestTurret::draw()
 
   m_transformStack.pushTransform();
   m_transformStack.setPosition(m_pos);
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
   std::cout << m_aim << std::endl;
-  (*shader)["Phong"]->use();
+
+  (*shader)["Constant"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
   ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
   c = c/255.0f;
 
+  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
   shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
 
-  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
 
-  r->draw("turret_base", "Phong");
+  r->draw("turret_base", "Constant");
   m_transformStack.popTransform();
+
 
   m_transformStack.pushTransform();
   m_transformStack.setPosition(m_shotPos);
   m_transformStack.setRotation(ngl::Vec3(0, (atan(m_aim[0] / m_aim[2])) * (180 / 3.14159263), 0));
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
-  (*shader)["Phong"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
 
-  shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
-
-  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
-
-  r->draw("turret_cannon", "Phong");
+  r->draw("turret_cannon", "Constant");
   m_transformStack.popTransform();
 }

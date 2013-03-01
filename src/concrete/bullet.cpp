@@ -1,5 +1,6 @@
 #include "concrete/bullet.h"
 #include"include/fsm/states/projectilestates.h"
+#include "ngl/ShaderLib.h"
 
 //-------------------------------------------------------------------//
 
@@ -47,17 +48,14 @@ void Bullet::stateInit()
 void Bullet::draw()
 {
   Renderer *r = Renderer::instance();
-  //m_transformStack.setScale(0.3, 0.3, 0.3);
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  ngl::ShaderLib *shader =  ngl::ShaderLib::instance();
 
-//void Bullet::draw()
-//{
-//  Renderer *r = Renderer::instance();
-//  //m_transformStack.setScale(0.3, 0.3, 0.3);
-//  r->loadMatrixToShader(m_transformStack, "Phong");
+  (*shader)["Constant"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
 
+  shader->setShaderParam4f("colour", 1,0,0,1);
 
-  r->draw(m_IDStr, "Phong");
+  r->draw(m_IDStr, "Constant");
 }
 
 //-------------------------------------------------------------------//
@@ -125,16 +123,6 @@ void Bullet::generateMesh()
 }
 
 
-//-------------------------------------------------------------------//
-
-//void Bullet::drawSelection()
-//{
-//  Renderer *r = Renderer::instance();
-//  //m_transformStack.setScale(0.3, 0.3, 0.3);
-//  r->loadMatrixToShader(m_transformStack, "Colour");
-
-//  r->drawSelection(m_ID, m_IDStr);
-//}
 
 //-------------------------------------------------------------------//
 

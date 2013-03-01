@@ -5,6 +5,8 @@
 #include "fwd/database.h"
 #include "database.h"
 #include "fsm/states/enemystates.h"
+#include "ngl/ShaderLib.h"
+#include "texturelib.h"
 
 //-------------------------------------------------------------------//
 
@@ -25,6 +27,8 @@ Enemy::Enemy(
   m_scoreValue(_scoreValue),
   m_killedByUser(true)
 {
+  m_healthBar = Billboard::create(Billboard::b3D, ngl::Vec4(m_pos), 1, 0.07);
+
   if(generateTempPath())
   {
     finalisePath();
@@ -55,6 +59,42 @@ void Enemy::prepareForUpdate()
   calculateLocalEntities(*m_localEntities, types);
   // Filter the entities
   filterViewVolume(*m_localEntities);
+}
+
+void Enemy::update(const double _dt)
+{
+    //In seconds
+    float dt = _dt / 1000;
+
+    //update the state machine
+    m_stateMachine->update();
+
+    ngl::Vec3 steeringForce = brain();
+    ngl::Vec3 acceleration = steeringForce / m_mass;
+    float maxAcceleration = 0.1;
+
+    //truncate acceleration to max acc
+    float accDiff = maxAcceleration / acceleration.length(); //COULD FAIL IF 0
+    float accScaleFactor = (accDiff < 1.0) ? accDiff : 1.0;
+    acceleration *= accScaleFactor;
+
+    m_velocity += acceleration;
+
+    //truncate velocity to max speed
+    float diff = m_maxVelocity / m_velocity.length(); //COULD FAIL IF 0
+    float scaleFactor = (diff < 1.0) ? diff : 1.0;
+    m_velocity *= scaleFactor;
+
+    //update position
+    m_prevPos = m_pos;
+    m_pos += m_velocity * dt;
+
+    enforceGridBoundaries();
+
+    m_transformStack.setPosition(m_pos);
+
+    ngl::Vec4 healthBarPos(m_pos.m_x, m_pos.m_y+1, m_pos.m_z);
+    m_healthBar->setPos(healthBarPos);
 }
 
 //-------------------------------------------------------------------//
@@ -224,6 +264,26 @@ bool Enemy::sphereBBoxCollision(const ngl::Vec3 &_pos,
   }
 
   return result;
+}
+
+void Enemy::draw()
+{
+    Renderer *r = Renderer::instance();
+    TextureLib *tex = TextureLib::instance();
+    ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+
+    // draw enemy
+    (*shader)["Constant"]->use();
+    r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+
+    shader->setShaderParam4f("colour", 0.1,0.1,0.1,1);
+    shader->setShaderParam4f("colourSelect", 0,0,0,0);
+    r->draw(m_IDStr, "Constant");
+
+    // draw healthbar
+    m_healthBar->setUVScale(50/m_health);
+    tex->bindTexture("healthbar");
+    m_healthBar->draw("TexturedConstant");
 }
 
 //-------------------------------------------------------------------//

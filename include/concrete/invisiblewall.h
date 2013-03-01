@@ -11,6 +11,7 @@ class InvisibleWall : public Wall
 public:
   static EntityPtr create(NodePtr _linkedNode, unsigned int _id);
   void update(double _dt);
+  void draw();
   void generateMesh();
   void filterViewVolume(EntityRecordWCList &o_localEntities);
   void generateViewBBox();

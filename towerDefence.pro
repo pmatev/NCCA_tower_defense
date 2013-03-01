@@ -59,6 +59,8 @@ SOURCES += src/main.cpp \
     src/player.cpp \
     src/fsm/states/turretstates.cpp \
     src/fsm/states/projectilestates.cpp \
+    src/texturelib.cpp \
+    src/texture.cpp \
     src/billboard.cpp \
     src/concrete/invisiblewall.cpp \
     src/concrete/standardwall.cpp \
@@ -113,6 +115,8 @@ HEADERS += \
     include/player.h \
     include/fsm/states/turretstates.h \
     include/fsm/states/projectilestates.h \
+    include/texturelib.h \
+    include/texture.h \
     include/billboard.h \
     include/concrete/invisiblewall.h \
     include/concrete/standardwall.h \
@@ -160,16 +164,22 @@ LIBS += -lgomp
 
 
 OTHER_FILES += \
-    shaders/Phong.vs \
-    shaders/Phong.fs \
+    config/config.xml \
     shaders/UI.vs \
     shaders/UI.fs \
-    textures/grid.png \
-    textures/default_texture.jpg \
-    config/config.xml \
-    models/turret.obj \
     shaders/Texture.vs \
     shaders/Texture.fs \
+    shaders/Constant.vs \
+    shaders/Constant.fs \
+    shaders/TexturedConst.vs \
+    shaders/TexturedConst.fs \
+    textures/grid.png \
+    textures/default_texture.jpg \
+    textures/HealthBar.png \
+    textures/default_texture.png \
+    textures/HealthBar_flat.png \
+    models/turret_base.obj \
+    model/turret_cannon.obj \
     models/enemy.obj \
     models/hexagon.obj \
-    models/wall.obj
+    models/wall.obj \

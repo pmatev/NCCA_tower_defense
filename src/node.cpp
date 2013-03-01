@@ -55,9 +55,9 @@ Node::~Node()
 void Node::generateMesh()
 {
   const static GLubyte indices[]=  {
-                                      0,1,5, // back
-                                      1,2,3, // front
-                                      3,4,5, // top
+                                      0,1,5,
+                                      1,2,3,
+                                      3,4,5,
                                       1,3,5
                                    };
 
@@ -75,6 +75,8 @@ void Node::generateMesh()
                        0.8,0.8,0.8,
                        0.8,0.8,0.8
                        };
+
+  // CALCULATE UVs FROM VERTs (PLANAR MAP)
 
   std::vector<Renderer::vertData> boxData;
   Renderer::vertData d;
@@ -119,40 +121,6 @@ void Node::update(const double _dt)
 
 //-------------------------------------------------------------------//
 
-//void Node::draw()
-//{
-//  Renderer *r = Renderer::instance();
-//  r->loadMatrixToShader(m_transformStack, "Phong");
-//  if(m_highlighted == false)
-//  {
-//      r->draw(m_IDStr, "Phong");
-//      //std::cout<<"POS: "<<m_transformStack<<std::endl;
-//  }
-//  else
-//  {
-//      std::cout<<"rendering selected node "<<m_ID<<std::endl;
-//      r->draw(m_IDStr, "Phong"); //change either shader or colour
-
-//      //need to change this system for changing highlighted back
-//      // at uiselection level
-
-//  }
-
-
-
-//}
-
-////-------------------------------------------------------------------//
-
-//void Node::drawSelection()
-//{
-//  Renderer *r = Renderer::instance();
-//  r->loadMatrixToShader(m_transformStack, "Colour");
-//  r->drawSelection(m_ID, m_IDStr);
-//}
-
-////-------------------------------------------------------------------//
-
 //-------------------------------------------------------------------//
 
 void Node::resetSearchInfo()
@@ -195,8 +163,8 @@ void Node::draw()
 
     ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-    r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
-    (*shader)["Phong"]->use();
+    (*shader)["Constant"]->use();
+    r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
     ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
     c = c/255.0f;
 
@@ -208,10 +176,10 @@ void Node::draw()
       shader->setShaderParam4f("colour", 0, 0, 1, 1);
     } else
     {
-      shader->setShaderParam4f("colour", 1, 0, 0, 1);
+      shader->setShaderParam4f("colour", 0.1, 0.1, 0.15, 1);
     }
 
-    r->draw("hexagon", "Phong");
+    r->draw("hexagon", "Constant");
   }
 }
 

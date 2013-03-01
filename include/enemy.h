@@ -4,6 +4,7 @@
 #include "smartpointers.h"
 #include "dynamicentity.h"
 #include "node.h"
+#include "billboard.h"
 
 //-------------------------------------------------------------------//
 /// @file enemy.h
@@ -123,6 +124,10 @@ public:
 
   inline float getMaxPathDistance() const {return m_maxPathDistance;}
 
+  void update(const double _dt);
+
+  void draw();
+
   //-------------------------------------------------------------------//
   /// @brief a method to call the kill while setting the killed by user
   /// flag to false
@@ -173,6 +178,7 @@ protected:
 
   int m_currencyValue;
 
+  BillboardPtr m_healthBar;
   //-------------------------------------------------------------------//
   /// @brief the score value for the enemy
   //-------------------------------------------------------------------//
@@ -187,8 +193,6 @@ protected:
   //-------------------------------------------------------------------//
 
   bool m_killedByUser;
-
-
 
 };
 

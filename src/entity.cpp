@@ -7,6 +7,7 @@
 #include "ngl/Vec3.h"
 #include "ngl/TransformStack.h"
 #include "ngl/ShaderLib.h"
+#include "texturelib.h"
 
 //-------------------------------------------------------------------//
 
@@ -195,14 +196,15 @@ void Entity::draw()
 void Entity::drawWithColour(const ngl::Vec3 &_colour)
 {
   Renderer *r = Renderer::instance();
-
+  TextureLib *tex = TextureLib::instance();
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
-  (*shader)["Phong"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+  (*shader)["Constant"]->use();
   ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
   c = c/255.0f;
 
+  shader->setShaderParam4f("colour", 1,1,1,1);
 
   if(m_generalType != ENEMY)
   {
@@ -211,13 +213,6 @@ void Entity::drawWithColour(const ngl::Vec3 &_colour)
       shader->setShaderParam4f("colourSelect",0,0,0,0);
   }
 
-  if(m_generalType == WALL)
-  {
-    shader->setShaderParam4f("colour", 0, 0, 0, 0);
-  } else
-  {
-    shader->setShaderParam4f("colour", _colour[0], _colour[1], _colour[2], 1);
-  }
 
-  r->draw(m_IDStr, "Phong");
+  r->draw(m_IDStr, "Constant");
 }

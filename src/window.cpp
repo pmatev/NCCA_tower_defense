@@ -6,6 +6,7 @@
 #include <string>
 #include "game.h"
 #include "boost/lexical_cast.hpp"
+#include "texturelib.h"
 
 
 
@@ -85,19 +86,18 @@ void Window::init()
     Game *game = Game::instance(); //initialize the game on creation
     game->init();
 
-
     Renderer *render = Renderer::instance();
     render->init();
 
+    TextureLib *tex = TextureLib::instance();
+    tex->init();
 
     m_UI = UIPtr(new UI());
 
     m_UI->createTestMenu();
 
 
-    m_screenBillboard = BillboardPtr(new Billboard(Billboard::b2D, ngl::Vec4(0,0,0,1),1,1));
-    m_screenBillboard->init();
-
+    m_screenBillboard = Billboard::create(Billboard::b2D, ngl::Vec4(0,0,0,1),2,2);
 
     m_viewmode=0;
 }
