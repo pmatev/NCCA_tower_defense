@@ -66,7 +66,8 @@ SOURCES += src/main.cpp \
     src/concrete/standardwall.cpp \
     src/explosion.cpp \
     src/meshlib.cpp \
-    src/mesh.cpp
+    src/mesh.cpp \
+    src/concrete/missile.cpp
 
 
 
@@ -124,7 +125,8 @@ HEADERS += \
     include/explosion.h \
     include/fwd/projectileManager.h \
     include/meshlib.h \
-    include/mesh.h
+    include/mesh.h \
+    include/concrete/missile.h
 
 
 

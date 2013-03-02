@@ -262,6 +262,15 @@ public:
   void setRotationAngle (float _maxRotation);
 
   //-------------------------------------------------------------------//
+  /// @brief set the projectile type
+  //-------------------------------------------------------------------//
+
+  inline void setProjectileType(const std::string &_projectileType)
+  {
+    m_projectileType = _projectileType;
+  }
+
+  //-------------------------------------------------------------------//
   /// @brief move turret to the next available upgrade
   //-------------------------------------------------------------------//
 

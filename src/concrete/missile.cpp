@@ -1,16 +1,15 @@
-#include "concrete/bullet.h"
-#include"include/fsm/states/projectilestates.h"
-#include "projectilemanager.h"
+#include "include/concrete/missile.h"
+#include "include/fsm/states/projectilestates.h"
 #include "ngl/ShaderLib.h"
-
+#include "projectilemanager.h"
 //-------------------------------------------------------------------//
 
-Bullet::Bullet(
+Missile::Missile(
     const ngl::Vec3 &_pos,
     const ngl::Vec3 &_aim,
     unsigned int _id
-    ) :
-  Projectile(_pos,_aim, _id)
+    ):
+  Projectile(_pos, _aim, _id)
 {
   m_damage =50;
   m_maxVelocity = 10;
@@ -22,22 +21,20 @@ Bullet::Bullet(
 
 //-------------------------------------------------------------------//
 
-EntityPtr Bullet::create(
+EntityPtr Missile::create(
     const ngl::Vec3 &_pos,
     const ngl::Vec3 &_aim,
     unsigned int _id
     )
 {
-  //create and return a smart pointer to the bullet
-
-  EntityPtr bullet(new Bullet(_pos,_aim, _id));
-  bullet->stateInit();
-  return bullet;
+  EntityPtr missile(new Missile(_pos,_aim, _id));
+  missile->stateInit();
+  return missile;
 }
 
 //-------------------------------------------------------------------//
 
-void Bullet::stateInit()
+void Missile::stateInit()
 {
   //state machine
   m_stateMachine = new StateMachine(EntityWPtr(shared_from_this()));
@@ -48,7 +45,7 @@ void Bullet::stateInit()
 
 //-------------------------------------------------------------------//
 
-void Bullet::draw()
+void Missile::draw()
 {
   Renderer *r = Renderer::instance();
 
@@ -64,7 +61,7 @@ void Bullet::draw()
 
 //-------------------------------------------------------------------//
 
-ngl::Vec3 Bullet::brain()
+ngl::Vec3 Missile::brain()
 {
   // for the moment just have the bullet follow it's aim
 
@@ -75,15 +72,16 @@ ngl::Vec3 Bullet::brain()
 
 //-------------------------------------------------------------------//
 
-void Bullet::filterViewVolume(EntityRecordWCList &o_localEntities)
+void Missile::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
 }
 
-//-------------------------------------------------------------------//
 
-Bullet::~Bullet()
+Missile::~Missile()
 {
+  if(m_parent)
+  {
+    m_parent->addExplosion(1000, 10, 2, m_pos);
+  }
 }
-
-//-------------------------------------------------------------------//
