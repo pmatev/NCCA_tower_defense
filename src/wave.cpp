@@ -46,6 +46,9 @@ Wave::~Wave()
 
 void Wave::update(const double _dt)
 {
+  // create new enemies before update
+  brain(_dt);
+
   //set a variable for the currency
 
   int currencyAdded = 0;
@@ -60,7 +63,6 @@ void Wave::update(const double _dt)
     if ((*it)->getHealth() <= 0)
     {
       // KILL ENEMY!!!
-
       (*it)->kill();
     }
     if ((*it)->getToBeRemoved() == true)
@@ -97,9 +99,9 @@ void Wave::update(const double _dt)
     enemy->prepareForUpdate();
   }
 
-//#pragma omp parallel
-//  {
-//#pragma omp for
+#pragma omp parallel
+  {
+#pragma omp for
     for(
         unsigned long int i = 0;
         i < m_enemies.size();
@@ -109,8 +111,7 @@ void Wave::update(const double _dt)
       // update enemy
       (m_enemies[i])->update(_dt);
     }
-//  }
-  brain(_dt);
+  }
 }
 
 //-------------------------------------------------------------------//
