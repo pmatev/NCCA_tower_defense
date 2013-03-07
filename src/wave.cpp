@@ -18,6 +18,7 @@ Wave::Wave(
   m_time(0)
 {
   // Clone the start enemies
+  m_totalEnemiesForCreation.clear();
   BOOST_FOREACH(EnemyPairPtr pair, m_enemiesForCreation)
   {
     m_totalEnemiesForCreation.push_back(pair->clone());
@@ -30,6 +31,7 @@ void Wave::reset()
 {
   m_time = 0;
   // Start again by cloning
+  m_enemiesForCreation.clear();
   BOOST_FOREACH(EnemyPairPtr pair, m_totalEnemiesForCreation)
   {
     m_enemiesForCreation.push_back(pair->clone());
@@ -116,9 +118,9 @@ void Wave::update(const double _dt)
     enemy->prepareForUpdate();
   }
 
-//#pragma omp parallel
-//  {
-//#pragma omp for
+#pragma omp parallel
+  {
+#pragma omp for
     for(
         unsigned long int i = 0;
         i < m_enemies.size();
@@ -128,7 +130,7 @@ void Wave::update(const double _dt)
       // update enemy
       (m_enemies[i])->update(_dt);
     }
-//  }
+  }
 }
 
 //-------------------------------------------------------------------//
@@ -262,7 +264,7 @@ void Wave::brain(const double _dt)
   // Work out which enemies need creating and where
   // If there are enemies that haven't been created yet then create them at
   // random positions
-  m_time += _dt / 1000.0;
+  m_time += _dt;
 
   if(m_time > m_birthRate)
   {

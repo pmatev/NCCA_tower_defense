@@ -55,9 +55,6 @@ void DynamicEntity::update(const double _dt)
 
 void DynamicEntity::move(const double _dt)
 {
-  //In seconds
-  float dt = _dt / 1000;
-
   //update the state machine
   m_stateMachine->update();
 
@@ -70,7 +67,7 @@ void DynamicEntity::move(const double _dt)
   acceleration *= accScaleFactor;
 
 
-  m_velocity += acceleration * dt;
+  m_velocity += acceleration * _dt;
 
 
   //truncate velocity to max speed
@@ -79,11 +76,11 @@ void DynamicEntity::move(const double _dt)
   m_velocity *= scaleFactor;
 
   // Add in impulses, we do this after capping max velocities
-  m_velocity += (m_currentImpulses / m_mass)*dt;
+  m_velocity += (m_currentImpulses / m_mass)*_dt;
 
   //update position
   m_prevPos = m_pos;
-  m_pos += m_velocity * dt;
+  m_pos += m_velocity * _dt;
 
   //Damage check
   //Iterate over the neighbours.

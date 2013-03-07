@@ -32,7 +32,7 @@ public:
         float _damage,
         float _radius,
         const ngl::Vec3 &_pos,
-        float _lifetime = 0
+        float _lifetime
         );
 
   //-------------------------------------------------------------------//
@@ -47,6 +47,13 @@ public:
         std::list<Damage> &o_damages,
         std::list<Impulse> &o_impulses
         );
+
+  //-------------------------------------------------------------------//
+  /// @brief draw the explosion
+  //-------------------------------------------------------------------//
+  void draw();
+
+  ~Explosion();
 
 protected:
   //-------------------------------------------------------------------//
@@ -106,6 +113,13 @@ protected:
         const ngl::Vec3 &_pos,
         float _lifetime
       );
+  //-------------------------------------------------------------------//
+  /// @brief apply damage and impulses
+  //-------------------------------------------------------------------//
+  void preformExplosion(
+        std::list<Damage> &o_damages,
+        std::list<Impulse> &o_impulses
+        );
 };
 
 #endif // EXPLOSION_H

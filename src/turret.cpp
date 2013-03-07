@@ -50,7 +50,7 @@ void Turret::update(const double _dt)
 {
   //add the dt to the dt since last shot
 
-  m_dtSinceLastShot += _dt/1000;
+  m_dtSinceLastShot += _dt;
 
   //call the brain
 

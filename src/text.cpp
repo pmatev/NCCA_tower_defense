@@ -91,7 +91,7 @@ void Text::draw()
     shader->setShaderParam1f("scaleY",scaleY);
     shader->setShaderParam4f("colourSelect", 0,0,0,0);
 
-    glEnable(GL_BLEND);
+
     glDisable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
@@ -99,8 +99,6 @@ void Text::draw()
     v->bind();
     v->draw();
     v->unbind();
-
-    glDisable(GL_BLEND);
 
 
     glEnable(GL_DEPTH_TEST);

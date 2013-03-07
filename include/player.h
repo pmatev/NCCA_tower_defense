@@ -41,7 +41,7 @@ public: //methods
   /// @param [in] _offset, the value to offset the currency by
   //-------------------------------------------------------------------//
 
-  inline void addCurrency (int _offset) {m_currency += _offset;if(_offset!= 0 )std::cout << "money added: "<< m_currency<<"\n";}
+  inline void addCurrency (int _offset) {m_currency += _offset;}
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the currency

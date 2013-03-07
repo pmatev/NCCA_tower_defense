@@ -1,6 +1,8 @@
 #include "include/explosion.h"
 #include <boost/foreach.hpp>
+#include <ngl/ShaderLib.h>
 #include "database.h"
+#include "renderer.h"
 
 
 //-------------------------------------------------------------------//
@@ -32,8 +34,22 @@ bool Explosion::execute(
     std::list<Impulse> &o_impulses
     )
 {
+  if(m_currentAge == 0)
+  {
+    preformExplosion(o_damages, o_impulses);
+  }
   // adjust time
   m_currentAge += _dt;
+
+  // Check if dead and return
+  return m_currentAge > m_lifetime;
+}
+
+void Explosion::preformExplosion(
+    std::list<Damage> &o_damages,
+    std::list<Impulse> &o_impulses
+    )
+{
 
   // Get local entities
   EntityRecordWCList localRecords;
@@ -97,7 +113,45 @@ bool Explosion::execute(
       }
     }
   }
+}
 
-  // Check if dead and return
-  return m_currentAge > m_lifetime;
+//-------------------------------------------------------------------//
+
+void Explosion::draw()
+{
+  Renderer *r = Renderer::instance();
+
+  ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+
+  (*shader)["Constant"]->use();
+
+  float explosionSize;
+  float weight;
+  if(m_currentAge)
+  {
+    weight = (m_lifetime - m_currentAge) / m_lifetime;
+    explosionSize = m_radius * weight;
+  }
+  else
+  {
+    explosionSize = m_radius;
+  }
+  explosionSize *= 10; // adjust for bullet size
+
+  ngl::Mat4 matrix;
+  matrix.translate(m_pos.m_x, m_pos.m_y, m_pos.m_z);
+  matrix.scale(explosionSize, explosionSize, explosionSize);
+  r->loadMatrixToShader(matrix, "Constant");
+
+  shader->setShaderParam4f("colour", 1,1,1,weight*weight);
+
+  r->draw("bullet", "Constant");
+
+}
+
+//-------------------------------------------------------------------//
+
+Explosion::~Explosion()
+{
+  //std::cout<<"Explosion killed"<<std::endl;
 }

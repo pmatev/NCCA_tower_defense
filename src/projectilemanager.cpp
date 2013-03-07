@@ -1,3 +1,4 @@
+#include <boost/foreach.hpp>
 #include "projectilemanager.h"
 #include "entityfactory.h"
 #include "game.h"
@@ -45,7 +46,11 @@ ProjectileManager::~ProjectileManager()
 
 //-------------------------------------------------------------------//
 
-void ProjectileManager::checkCollisions(std::list<Damage> &o_damages, std::list<Impulse> &o_impulses)
+void ProjectileManager::checkCollisions(
+    float _dt,
+    std::list<Damage> &o_damages,
+    std::list<Impulse> &o_impulses
+    )
 {
   // cycle through all of the projectiles stored
 
@@ -69,14 +74,12 @@ void ProjectileManager::checkCollisions(std::list<Damage> &o_damages, std::list<
       o_damages.push_back(c);
     }
   }
-  // NEED TO DO SOMETHING WITH IMPULSES -----------------------------------------------------
   for(
       ExplosionList::iterator it = m_explosions.begin();
       it != m_explosions.end();
       )
   {
-    // DT NEEDS TO BE PASSED DOWN OR DT NEEDS TO BE CHANGED SOMEWHERE ELSE!!! -----------------------------------------------------
-    if((*it)->execute(10, o_damages, o_impulses))
+    if((*it)->execute(_dt, o_damages, o_impulses))
     {
       it = m_explosions.erase(it);
     }
@@ -187,10 +190,19 @@ void ProjectileManager::addExplosion(
     float _power,
     float _damage,
     float _radius,
-    const ngl::Vec3 &_pos
+    const ngl::Vec3 &_pos,
+    float _lifetime
     )
 {
-  m_explosions.push_back(Explosion::create(_power, _damage, _radius, _pos));
+  m_explosions.push_back(
+        Explosion::create(
+          _power,
+          _damage,
+          _radius,
+          _pos,
+          _lifetime
+          )
+        );
 }
 
 //-------------------------------------------------------------------//
@@ -236,7 +248,7 @@ void ProjectileManager::publish()
 
 void ProjectileManager::draw()
 {
-  // Go through all the enemies and call their publish
+  // draw all projectiles
   for(
       ProjectileList::iterator it = m_projectiles.begin();
       it != m_projectiles.end();
@@ -244,6 +256,11 @@ void ProjectileManager::draw()
       )
   {
     (*it)->draw();
+  }
+  // draw explosions
+  BOOST_FOREACH(ExplosionPtr explosion, m_explosions)
+  {
+    explosion->draw();
   }
 }
 

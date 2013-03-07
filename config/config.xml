@@ -134,7 +134,7 @@
       <enemyTypes>
         <enemyType>
           <type>TestEnemy</type>
-          <count>100</count>
+          <count>400</count>
         </enemyType>
       </enemyTypes>
       <spawnRate>0.1</spawnRate>

@@ -201,11 +201,11 @@ void Window::loop()
         float maxDt = 70;
         if(frameTime > maxDt)
         {
-          game->update(maxDt);
+          game->update(maxDt / 1000.0);
         }
         else
         {
-          game->update(frameTime);
+          game->update(frameTime / 1000.0);
         }
         Renderer *r = Renderer::instance();
 
@@ -217,7 +217,7 @@ void Window::loop()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         game->draw();
-        m_UI->updatePlayerInfo();
+        //m_UI->updatePlayerInfo();
         m_UI->draw();
 
 
@@ -327,7 +327,7 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
 
     ngl::Vec4 pixel = render->readPixels(_event.x, _event.y);
     int id = colourToID(pixel.toVec3());
-    std::cout<<pixel<<std::endl;
+    //std::cout<<pixel<<std::endl;
 
     m_motionEvent = _event;
 
@@ -399,7 +399,7 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 
     ngl::Vec4 pixel = r->readPixels(_event.x, _event.y);
     int id = colourToID(pixel.toVec3());
-    std::cout<<pixel<<std::endl;
+//    std::cout<<pixel<<std::endl;
     if(_event.button == SDL_BUTTON_LEFT)
     {
           m_UI->mouseLeftUp(id);

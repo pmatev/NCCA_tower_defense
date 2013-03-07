@@ -49,7 +49,6 @@ NodePtr Node::create(const ngl::Vec3 &_pos, float _hexagonSize)
 Node::~Node()
 {
   //currently using default destructor
-  std::cout<<"deleting node "<<m_ID<<std::endl;
 }
 
 void Node::generateMesh()

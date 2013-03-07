@@ -440,7 +440,7 @@ void Game::update(const double _dt)
   // 4 //
   std::list<Damage> damages;
   std::list<Impulse> impulses;
-  m_projectileManager->checkCollisions(damages, impulses);
+  m_projectileManager->checkCollisions(_dt, damages, impulses);
   dealDamage(damages);
   dealImpulses(impulses);
 

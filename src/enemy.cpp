@@ -400,6 +400,4 @@ Damage Enemy::baseTest() const
 
 Enemy::~Enemy()
 {
-  std::cout<<"Enemy died"<<std::endl;
-  std::cout<<"At pos"<<m_pos<<std::endl;
 }

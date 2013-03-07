@@ -43,7 +43,11 @@ public://methods
   /// @param [out] returns a list of collisions
   //-------------------------------------------------------------------//
 
-  void checkCollisions(std::list<Damage> &o_damages, std::list<Impulse> &o_impulses);
+  void checkCollisions(
+      float _dt,
+      std::list<Damage> &o_damages,
+      std::list<Impulse> &o_impulses
+      );
 
   //-------------------------------------------------------------------//
   /// @brief a method to call update on each of the projectiles
@@ -85,7 +89,8 @@ public://methods
         float _power,
         float _damage,
         float _radius,
-        const ngl::Vec3 &_pos
+        const ngl::Vec3 &_pos,
+        float _lifetime = 0
         );
 
   //-------------------------------------------------------------------//

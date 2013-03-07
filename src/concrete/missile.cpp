@@ -29,6 +29,7 @@ void Missile::setVelocity(const ngl::Vec3 _velocity)
 {
   Q_UNUSED(_velocity);
   calculateTarget();
+//  m_targetPos = ngl::Vec3();
   aim();
 }
 
@@ -77,8 +78,6 @@ void Missile::calculateTarget()
 
 void Missile::aim()
 {
-  // this presumes that the start and target are on the same plane ------------------------
-
   // Make sure to adjust the aimVector so that we hit the target
   ngl::Vec3 relVec =  m_targetPos - m_pos;
   // Find the different in height
@@ -177,6 +176,6 @@ Missile::~Missile()
 {
   if(m_parent)
   {
-    m_parent->addExplosion(100, 10, 5, m_pos);
+    m_parent->addExplosion(100, 10, 5, m_pos, 2);
   }
 }
