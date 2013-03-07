@@ -207,7 +207,7 @@ private:
     //-------------------------------------------------------------------//
     void placeDownStaticEntity(const std::string &_type, NodePtr _node);
 
-    int m_tmpUpgradeTowerID;
+    unsigned int m_tmpUpgradeTowerID;
 
 
 

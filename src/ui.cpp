@@ -52,42 +52,47 @@ UIElementPtr UI::checkUIClicked(const unsigned int _ID)
 void UI::mouseLeftUp(const unsigned int _ID)
 {
     Game *game = Game::instance();
+    // if we are in creation mode
     if(m_creationMode == 0)
     {
         UIElementPtr UIClick = checkUIClicked(_ID);
 
         EntityPtr entityClick;
         std::cout<<_ID<<std::endl;
+
         if(!UIClick)
         {
+            // if it is not a ui that is pressed check if it is an entity
+
             entityClick = game->getEntityByID(_ID).lock();
 
-            if(!entityClick)
+            if(!entityClick) // if it is not an entity
             {
               std::cout<<"i am background"<<std::endl;
             }
-            else
+
+            else // it is a valid entity
             {
                 if(entityClick->getGeneralType() == TURRET)
                 {
                     turretClicked(_ID);
                     std::cout<<"turrent clicked"<<std::endl;
                 }
-
-
-
             }
         }
+
+
+        // if the thing that is pressed is a ui element
         else
         {
-            if(UIClick->getType() == "create") // button is a tower create button
+            if(UIClick->getType() == "create") // if button is a tower create button
             {
                 CreateTowerButtonPtr button = boost::dynamic_pointer_cast<CreateTowerButton>(UIClick);
 
                 //if the tower is affordable set tmp parameters
                 //used in creation mode
 
-                if(button && button->getAffordable() == true)
+                if(button && button->getAffordable() == true) //check it is affordable
                 {
                     m_tmpCost = button->getCost();
                     m_tmptowerType = button->getTowertype();
@@ -95,44 +100,75 @@ void UI::mouseLeftUp(const unsigned int _ID)
                     std::cout<<"i am GUI"<<std::endl;
                 }
             }
+
             else if (UIClick->getType() == "button")
+
+            //if it is a standard button execute command
             {
                 UIButtonPtr button = boost::dynamic_pointer_cast<UIButton>(UIClick);
                 if(button)
                 {
-                    button->execute();
+                    button->execute();//run the buttons function
                 }
-
             }
         }
     }
+
     else //button has already been pressed and can be afforded
     {
         EntityPtr entityClick;
         entityClick = game->getEntityByID(_ID).lock();
 
-        //check that it is a valid entity and it is a node
-        if(entityClick && entityClick->getGeneralType() == NODE)
+        //check that it is a valid entity and it is a node and it can be afforded
+
+        if(entityClick &&
+                entityClick->getGeneralType() == NODE &&
+                (game->getPlayerCurrency()-m_tmpCost) >= 0
+                )
         {
             Game* game = Game::instance(); //get instance of game
             NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
 
             //try to create tower and if it can build it
             bool isCreated = game->tryToCreateTower((m_tmptowerType),
-                                                     node
+                                                    node
                                                     );
-            if(isCreated == true)
+            if(isCreated == true) // if the tower was built
             {
-                m_creationMode = 0; // turn off creation mode
                 game->addCurrency(-m_tmpCost); // update player currency
                 std::cout<<game->getPlayerCurrency();
                 node->setHighlighted(false);
-                checkButtonAffordable(); // check whether towers are affordable
                 std::cout<<"tower was created properly"<<std::endl;
             }
             else
             {
                 node->setHighlighted(2);
+            }
+
+        }
+
+        //else check the ui to see if other buttons have been pressed
+
+        else
+        {
+            UIElementPtr element = checkUIClicked(_ID);
+
+            if(element && element->getType() == "create") // if it is a create button
+            {
+                CreateTowerButtonPtr button = boost::dynamic_pointer_cast<CreateTowerButton>(element);
+
+                if(button && button->getTowertype() == m_tmptowerType)
+
+                    //if the button is the same as what has already been pressed
+                {
+                    m_creationMode = 0;
+                    game->setNodehighlighted(m_highlightedNode, 0);
+                }
+                else if(button && button->getAffordable() == true)
+                    //if it is affordable
+                {
+                    m_tmptowerType = button->getTowertype();
+                }
             }
         }
     }
@@ -571,6 +607,8 @@ void UI::updatePlayerInfo()
     menu->setText(0,0,final.c_str());
     menu->setText(1,0,finalMoney.c_str());
     menu->setText(2,0,finalHealth.c_str());
+
+    checkButtonAffordable();
 }
 
 
