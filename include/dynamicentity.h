@@ -76,9 +76,9 @@ public:
   inline SteeringBehaviours* getSteeringBehaviours() const {return m_steering;}
 
   //-------------------------------------------------------------------//
-  /// @brief returns the max force
+  /// @brief returns the max acceleration
   //-------------------------------------------------------------------//
-  inline ngl::Vec3 getMaxForce(){return m_maxForce;}
+  inline float getMaxAccn(){return m_maxAccn;}
 
   //-------------------------------------------------------------------//
   /// @brief returns the max force
@@ -218,10 +218,10 @@ protected:
   float m_maxVelocity;
 
   //-------------------------------------------------------------------//
-  /// @brief the max force of the entity
+  /// @brief the max acceleration of the entity
   //-------------------------------------------------------------------//
 
-  ngl::Vec3 m_maxForce;
+  float m_maxAccn;
 
   //-------------------------------------------------------------------//
   /// @brief a vector storing the previous position of the dynamic entity

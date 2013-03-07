@@ -70,18 +70,8 @@ bool Explosion::execute(
 
         if(sqrDist < m_sqrRadius)
         {
-          // make the enemy is not exactly on the edge
-//          float weight;
-//          if(m_sqrRadius - sqrDist == 0)
-//          {
-//            weight = 0;
-//          }
-//          else
-//          {
-//            weight  = m_sqrRadius/(m_sqrRadius - sqrDist);
-
-//          }
           float weight  = (m_sqrRadius - sqrDist) / m_sqrRadius;
+          //weight = 1 - weight;
           o_damages.push_back(
                 Damage(
                   recordStrong->m_id,
@@ -89,25 +79,14 @@ bool Explosion::execute(
                   )
                 );
           ngl::Vec3 impulseVec = relVec;
+          // cap the vector to the plane
+          impulseVec[1] = 0;
           float len = impulseVec.length();
           if(len)
           {
             impulseVec /= len;
             impulseVec *= weight * m_power * -1;
-            impulseVec[1] = 0;
           }
-          // invert vector
-//          for(int i =0; i<3; ++i)
-//          {
-//            if(impulseVec[i] != 0)
-//            {
-//              impulseVec[i] = (1.0 / impulseVec[i]) * m_power;
-//            }
-//            else
-//            {
-//              impulseVec[i] = m_power;
-//            }
-//          }
           o_impulses.push_back(
                 Impulse(
                   recordStrong->m_id,

@@ -39,6 +39,11 @@ public:
 
   void filterViewVolume(EntityRecordWCList &o_localEntities);
 
+  //-------------------------------------------------------------------//
+  /// @brief overload this so we can compute the intial velocity
+  //-------------------------------------------------------------------//
+  void setVelocity(const ngl::Vec3 _velocity);
+
   ~Missile();
 
 public:
@@ -48,6 +53,36 @@ public:
   Missile(const ngl::Vec3 &_pos, const ngl::Vec3 &_aim, unsigned int _id);
 
   ngl::Vec3 brain();
+
+protected:
+  //-------------------------------------------------------------------//
+  /// @brief find the best target, save it in target pos
+  //-------------------------------------------------------------------//
+  void calculateTarget();
+
+  //-------------------------------------------------------------------//
+  /// @brief adjust the aim vector to hit the target
+  //-------------------------------------------------------------------//
+  void aim();
+
+protected:
+  //-------------------------------------------------------------------//
+  /// @brief position of the target
+  //-------------------------------------------------------------------//
+  ngl::Vec3 m_targetPos;
+
+
+  //-------------------------------------------------------------------//
+  /// @brief gravity used in constant accn calculations. This defaults to
+  /// -9.81
+  //-------------------------------------------------------------------//
+  float m_gravity;
+
+  //-------------------------------------------------------------------//
+  /// @brief aproximate time between when lanch and collision
+  //-------------------------------------------------------------------//
+  float m_horizontalSpeed;
+
 };
 
 #endif // MISSILE_H

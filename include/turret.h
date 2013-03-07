@@ -141,7 +141,7 @@ public:
   /// @brief a method to fire a projectile
   //-------------------------------------------------------------------//
 
-  void fire();
+  virtual void fire();
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the doShot boolean

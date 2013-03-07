@@ -2,7 +2,10 @@
 
 #include "include/concrete/testturret.h"
 #include "include/fsm/states/turretstates.h"
+#include "projectilemanager.h"
 #include "renderer.h"
+#include "include/concrete/missile.h"
+#include "game.h"
 
 #include "window.h"
 #include "ngl/ShaderLib.h"

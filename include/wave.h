@@ -61,6 +61,16 @@ public:
       return a;
     }
 
+    //-------------------------------------------------------------------//
+    /// @brief deep copy
+    //-------------------------------------------------------------------//
+
+    inline EnemyPairPtr clone()
+    {
+      EnemyPairPtr a(new EnemyPair(m_count, m_type));
+      return a;
+    }
+
     protected:
 
     //-------------------------------------------------------------------//
@@ -79,6 +89,8 @@ public:
       m_count(_count),
       m_type(_type)
     {;}
+
+
 
   };
 
@@ -155,6 +167,12 @@ public:
 
   bool isDead() const ;
 
+  //-------------------------------------------------------------------//
+  /// @brief reset the wave to its original state
+  //-------------------------------------------------------------------//
+
+  void reset();
+
 protected:
   //typedef std::list<DynamicEntityPtr> EnemyVec;
   //typedef boost::shared_ptr<EnemyVec> EnemyVecPtr;
@@ -223,10 +241,18 @@ protected:
   EnemyVec m_enemies;
 
   //-------------------------------------------------------------------//
-  /// @brief list of possible enemy types
+  /// @brief list of possible enemy types and how many can be created currently
   //-------------------------------------------------------------------//
 
   EnemyPairList m_enemiesForCreation;
+
+  //-------------------------------------------------------------------//
+  /// @brief list of possible enemy types and how many can be created in total.
+  /// This is used for resetting the wave. This keeps a copy of how many
+  /// of each type of enemy can be created over the whole wave
+  //-------------------------------------------------------------------//
+
+  EnemyPairList m_totalEnemiesForCreation;
 
   //-------------------------------------------------------------------//
   /// @brief approximate time between between enemy creation

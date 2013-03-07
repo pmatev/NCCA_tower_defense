@@ -122,15 +122,20 @@ void LockedOn::execute(EntityWPtr _turret)
       {
 
         //get the aim vector from the method
-
-        ngl::Vec3 aim(turretptr->calculateAimVec(ngl::Vec3(recordStrong->m_pos[0],
-                                                           recordStrong->m_pos[1],
-                                                           recordStrong->m_pos[2]
-                                                           ),
-                                                 ngl::Vec3(recordStrong->m_velocity[0],
-                                                           recordStrong->m_velocity[1],
-                                                           recordStrong->m_velocity[2]
-                                                           )));
+        ngl::Vec3 aim(
+              turretptr->calculateAimVec(
+                ngl::Vec3(
+                  (recordStrong->m_minX + recordStrong->m_maxX) / 2.0,
+                  (recordStrong->m_minY + recordStrong->m_maxY) / 2.0,
+                  (recordStrong->m_minZ + recordStrong->m_maxZ) / 2.0
+                  ),
+                ngl::Vec3(
+                  recordStrong->m_velocity[0],
+                  recordStrong->m_velocity[1],
+                  recordStrong->m_velocity[2]
+                  )
+                )
+              );
 
         //normalise the aim
 
@@ -251,7 +256,7 @@ void AdvancedUpgrade::execute(EntityWPtr _turret)
     if (turretptr)
     {
       // Edit all the values
-      turretptr->setShotWaitTime(0.1);
+      turretptr->setShotWaitTime(1);
       turretptr->setProjectileType("Missile");
       // When this is done it needs to change to the previous state
       StateMachine *sm = strongEntity->getStateMachine();

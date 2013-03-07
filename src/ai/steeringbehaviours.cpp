@@ -150,7 +150,7 @@ bool SteeringBehaviours::accumulateForce(ngl::Vec3 _force)
   EntityPtr strongEntity = m_entity.lock();
   EnemyPtr enemyPtr = boost::dynamic_pointer_cast<Enemy>(strongEntity);
 
-  float forceDiff = enemyPtr->getMaxForce().length() - m_steeringForce.length();
+  float forceDiff = enemyPtr->getMaxAccn() - m_steeringForce.length();
 
   //if there is no force remaining, return false
   if(forceDiff <= 0)

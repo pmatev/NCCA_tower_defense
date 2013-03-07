@@ -63,9 +63,11 @@ public://methods
   /// @param[in] _type, type of projectile to create
   /// @param[in] _pos, initital position of enemy
   /// @param [in] _aim the aim vector of the projectile
+  /// @return returns a weak pointer to the projectile that was just created
+  /// this can be very useful for initialising further attributes after creation
   //-------------------------------------------------------------------//
 
-  void addProjectile(
+  ProjectileWPtr addProjectile(
         const std::string &_type,
         const ngl::Vec3 &_pos,
         const ngl::Vec3 &_velocity,

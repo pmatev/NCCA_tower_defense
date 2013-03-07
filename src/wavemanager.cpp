@@ -49,6 +49,10 @@ void WaveManager::update(const double _dt)
     if((*m_currentWaveIt)->isDead())
     {
       ++m_currentWaveIt;
+      if(m_currentWaveIt == m_waves.end())
+      {
+        startWaves();
+      }
     }
   }
 }
@@ -103,6 +107,9 @@ std::list<Damage> WaveManager::checkCollisions() const
 
 void WaveManager::startWaves()
 {
-
   m_currentWaveIt = m_waves.begin();
+  BOOST_FOREACH(WavePtr wave, m_waves)
+  {
+    wave->reset();
+  }
 }

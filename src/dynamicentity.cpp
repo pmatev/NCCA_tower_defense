@@ -13,11 +13,11 @@ DynamicEntity::DynamicEntity(
   Entity(_pos,_type,_id),
   m_aimVector(_aim),
   m_prevPos(_pos),
+  m_maxAccn(0.1),
   m_toBeRemoved(false)
-
 {
   //variables initialised before the constructor body
-  m_mass = 10.0;
+  m_mass = 0.5;
   m_velocity = ngl::Vec3(0.0, 0.0, 0.0);
 }
 
@@ -63,23 +63,23 @@ void DynamicEntity::move(const double _dt)
 
   ngl::Vec3 steeringForce = brain();
   ngl::Vec3 acceleration = (steeringForce) / m_mass;
-  float maxAcceleration = 0.1;
 
   //truncate acceleration to max acc
-  float accDiff = maxAcceleration / acceleration.length(); //COULD FAIL IF 0
+  float accDiff = m_maxAccn / acceleration.length(); //COULD FAIL IF 0
   float accScaleFactor = (accDiff < 1.0) ? accDiff : 1.0;
   acceleration *= accScaleFactor;
 
 
-  acceleration += m_currentImpulses / m_mass;
-
-  m_velocity += acceleration;
+  m_velocity += acceleration * dt;
 
 
   //truncate velocity to max speed
   float diff = m_maxVelocity / m_velocity.length(); //COULD FAIL IF 0
   float scaleFactor = (diff < 1.0) ? diff : 1.0;
   m_velocity *= scaleFactor;
+
+  // Add in impulses, we do this after capping max velocities
+  m_velocity += (m_currentImpulses / m_mass)*dt;
 
   //update position
   m_prevPos = m_pos;

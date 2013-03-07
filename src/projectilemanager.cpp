@@ -154,7 +154,7 @@ void ProjectileManager::checkDeaths()
 
 //-------------------------------------------------------------------//
 
-void ProjectileManager::addProjectile(
+ProjectileWPtr ProjectileManager::addProjectile(
     const std::string &_type,
     const ngl::Vec3 &_pos,
     const ngl::Vec3 &_velocity,
@@ -178,6 +178,7 @@ void ProjectileManager::addProjectile(
   newProjectile->setEmitterID(_emitterID);
   newProjectile->setVelocity(_velocity);
   m_projectiles.push_back(newProjectile);
+  return ProjectileWPtr(newProjectile);
 }
 
 //-------------------------------------------------------------------//
