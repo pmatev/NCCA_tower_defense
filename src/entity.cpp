@@ -89,7 +89,7 @@ void Entity::initialiseMesh(std::string _name)
   if(mesh_lib)
   {
     generateLsBBox(mesh_lib->getVertDataFromMesh(_name));
-    publish();
+    //publish();
   }
   else
   {

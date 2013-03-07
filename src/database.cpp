@@ -293,9 +293,9 @@ void Database::unPublish(GeneralType _generalType, unsigned int _id)
   case BASE:
     m_base->m_generalType = BASE;
     m_base->m_id = 0;
-    m_base->m_x = 0;
-    m_base->m_y = 0;
-    m_base->m_z = 0;
+//    m_base->m_x = 0;
+//    m_base->m_y = 0;
+//    m_base->m_z = 0;
     m_isBaseSet = false;
     break;
   }

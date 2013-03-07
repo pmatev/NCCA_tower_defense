@@ -227,6 +227,11 @@ void Game::setupScene()
           invisibleCoords,
           wallCoords
           );
+    // This should be done to make sure that the database gets initialised
+    // correctly, otherwise new environment would publish before the old one
+    // has been deleted. When the old one gets deleted it will unpublish the
+    // new records
+    m_environment.reset();
     m_environment = Environment::create(envInfo);
   }
 

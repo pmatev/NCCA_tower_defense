@@ -108,7 +108,7 @@ Environment::~Environment()
 
 void Environment::update(const double _dt)
 {
-  // Go through all the towers and draw
+  // Go through all the towers and update
   for(
       StaticEntityList::iterator it = m_towers.begin();
       it != m_towers.end();

@@ -88,7 +88,7 @@ void Wave::update(const double _dt)
 
       if ((*it)->getKilledByUser() == true)
       {
-        //add teh currency and score to the appropriate variables
+        //add the currency and score to the appropriate variables
 
         currencyAdded += (*it)->getCurrencyValue();
         scoreAdded += (*it)->getScoreValue();

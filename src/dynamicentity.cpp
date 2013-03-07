@@ -12,8 +12,8 @@ DynamicEntity::DynamicEntity(
     ):
   Entity(_pos,_type,_id),
   m_aimVector(_aim),
-  m_prevPos(_pos),
   m_maxAccn(0.1),
+  m_prevPos(_pos),
   m_toBeRemoved(false)
 {
   //variables initialised before the constructor body
