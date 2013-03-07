@@ -508,7 +508,7 @@ void UI::createTowerMenu()
                     "testTowerCreate",
                     menu,
                     50,
-                    "TestTurret",
+                    "MissileSilo",
                     100,
                     100
                     );

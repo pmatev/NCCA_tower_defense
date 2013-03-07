@@ -87,6 +87,7 @@ void Explosion::preformExplosion(
         if(sqrDist < m_sqrRadius)
         {
           float weight  = (m_sqrRadius - sqrDist) / m_sqrRadius;
+          pow(weight, 2);
           //weight = 1 - weight;
           o_damages.push_back(
                 Damage(
@@ -136,7 +137,7 @@ void Explosion::draw()
   {
     explosionSize = m_radius;
   }
-  explosionSize *= 10; // adjust for bullet size
+  explosionSize *= 15; // adjust for bullet size
 
   ngl::Mat4 matrix;
   matrix.translate(m_pos.m_x, m_pos.m_y, m_pos.m_z);

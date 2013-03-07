@@ -5,14 +5,14 @@
 #include "fsm/state.h"
 #include "smartpointers.h"
 
-class Normal : public State
+class TestEnemyNormal : public State
 {
 public:
   //----------------------------------------------------------------------------
-  /// @brief returns the instance of the Normal state
+  /// @brief returns the instance of the TestEnemyNormal state
   /// @param [in] _enemy the enemy whose using this state
   //----------------------------------------------------------------------------
-  static Normal* instance();
+  static TestEnemyNormal* instance();
 
   //----------------------------------------------------------------------------
   /// @brief called when the current state is changed to this state
@@ -36,7 +36,7 @@ private:
   //----------------------------------------------------------------------------
   /// @brief private constructor
   //----------------------------------------------------------------------------
-  Normal(){}
+  TestEnemyNormal(){}
 };
 
 #endif // ENEMYSTATES_H

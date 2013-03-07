@@ -29,6 +29,12 @@ void Projectile::enforceGridBoundaries()
   // Collide with ground
   if(m_pos.m_y < -0.01)
   {
+    // Make sure it hasn't passed through the plane, this is important for
+    // explosions.
+    if(m_pos.m_y < 0)
+    {
+      m_pos.m_y = 0;
+    }
     m_health = 0;
     return;
   }
@@ -37,15 +43,14 @@ void Projectile::enforceGridBoundaries()
   //axis but a vec2 has no m_z component
 
   if (
-      m_pos.m_y < -0.01 // Check against ground
-      || m_pos.m_x < minExts.m_x
+      m_pos.m_x < minExts.m_x
       || m_pos.m_x > maxExts.m_x
       || m_pos.m_z < minExts.m_y
       || m_pos.m_z > maxExts.m_y
       )
   {
-    // set the health to 0
 
+    // set the health to 0
     m_health = 0;
   }
 }

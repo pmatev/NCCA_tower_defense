@@ -6,23 +6,23 @@
 #include "enemy.h"
 
 
-// Normal //
+// TestEnemyNormal //
 // ====== //
 
-Normal* Normal::instance()
+TestEnemyNormal* TestEnemyNormal::instance()
 {
-  static Normal instance;
+  static TestEnemyNormal instance;
 
   return &instance;
 }
 
-void Normal::enter(EntityWPtr _enemy)
+void TestEnemyNormal::enter(EntityWPtr _enemy)
 {
   //q_unused to remove warnings
   Q_UNUSED(_enemy)
 }
 
-void Normal::execute(EntityWPtr _enemy)
+void TestEnemyNormal::execute(EntityWPtr _enemy)
 {
   EntityPtr strong_entity = _enemy.lock();
   if(strong_entity)
@@ -36,7 +36,7 @@ void Normal::execute(EntityWPtr _enemy)
   }
 }
 
-void Normal::exit(EntityWPtr _enemy)
+void TestEnemyNormal::exit(EntityWPtr _enemy)
 {
   //q_unused to remove warnings
   Q_UNUSED(_enemy)

@@ -4,7 +4,7 @@
 #include "include/fsm/states/turretstates.h"
 #include "projectilemanager.h"
 #include "renderer.h"
-#include "include/concrete/missile.h"
+#include "include/concrete/grenade.h"
 #include "game.h"
 
 #include "window.h"
@@ -13,7 +13,7 @@
 //-------------------------------------------------------------------//
 TestTurret::TestTurret(
     NodePtr _linkedNode,
-    unsigned int &_id
+    unsigned int _id
     ):
   Turret(
     _linkedNode,
@@ -58,11 +58,11 @@ EntityPtr TestTurret::create(
 void TestTurret::stateInit()
 {
   m_stateMachine = new StateMachine(EntityWPtr(shared_from_this()));
-  m_stateMachine->setCurrentState(BasicUpgrade::instance());
+  m_stateMachine->setCurrentState(TestTurretBasicUpgrade::instance());
   m_stateMachine->setPreviousState(Seek::instance());
 
   registerUpgrade(
-        BasicUpgrade::instance(),
+        TestTurretBasicUpgrade::instance(),
         UpgradeData::create(
           "Initial Upgrade",
           "descriptiony thing",
@@ -71,7 +71,7 @@ void TestTurret::stateInit()
           )
         );
   registerUpgrade(
-        AdvancedUpgrade::instance(),
+        TestTurretAdvancedUpgrade::instance(),
         UpgradeData::create(
           "Super Advanced Upgrade",
           "makes bullets shoot faster",
@@ -109,12 +109,12 @@ void TestTurret::filterViewVolume(EntityRecordWCList &o_localEntities)
         //check if the square dist is greater than the view distance
         // squared
 
-        float sqDist =
+        float sqrDist =
             pow(strongRecord->m_x - m_pos.m_x, 2)+
             pow(strongRecord->m_y - m_pos.m_y, 2)+
             pow(strongRecord->m_z - m_pos.m_z, 2);
 
-        if (sqDist > m_viewDistance*m_viewDistance)
+        if (sqrDist > m_viewDistance*m_viewDistance)
         {
           //if it is bigger, remove it from the local entities
 

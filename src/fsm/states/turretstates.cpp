@@ -177,23 +177,23 @@ void LockedOn::exit(EntityWPtr _turret)
 
 //-------------------------------------------------------------------//
 
-BasicUpgrade * BasicUpgrade::instance()
+TestTurretBasicUpgrade * TestTurretBasicUpgrade::instance()
 {
-  static BasicUpgrade lockOnInstance;
+  static TestTurretBasicUpgrade lockOnInstance;
 
   return &lockOnInstance;
 }
 
 //-------------------------------------------------------------------//
 
-void BasicUpgrade::enter(EntityWPtr _turret)
+void TestTurretBasicUpgrade::enter(EntityWPtr _turret)
 {
   Q_UNUSED(_turret);
 }
 
 //-------------------------------------------------------------------//
 
-void BasicUpgrade::execute(EntityWPtr _turret)
+void TestTurretBasicUpgrade::execute(EntityWPtr _turret)
 {
   //get a strong pointer from the waek pointer passed in
   EntityPtr strongEntity = _turret.lock();
@@ -220,30 +220,30 @@ void BasicUpgrade::execute(EntityWPtr _turret)
 
 //-------------------------------------------------------------------//
 
-void BasicUpgrade::exit(EntityWPtr _turret)
+void TestTurretBasicUpgrade::exit(EntityWPtr _turret)
 {
   Q_UNUSED(_turret);
 }
 
 //-------------------------------------------------------------------//
 
-AdvancedUpgrade * AdvancedUpgrade::instance()
+TestTurretAdvancedUpgrade * TestTurretAdvancedUpgrade::instance()
 {
-  static AdvancedUpgrade lockOnInstance;
+  static TestTurretAdvancedUpgrade lockOnInstance;
 
   return &lockOnInstance;
 }
 
 //-------------------------------------------------------------------//
 
-void AdvancedUpgrade::enter(EntityWPtr _turret)
+void TestTurretAdvancedUpgrade::enter(EntityWPtr _turret)
 {
   Q_UNUSED(_turret);
 }
 
 //-------------------------------------------------------------------//
 
-void AdvancedUpgrade::execute(EntityWPtr _turret)
+void TestTurretAdvancedUpgrade::execute(EntityWPtr _turret)
 {
   //get a strong pointer from the waek pointer passed in
   EntityPtr strongEntity = _turret.lock();
@@ -256,8 +256,8 @@ void AdvancedUpgrade::execute(EntityWPtr _turret)
     if (turretptr)
     {
       // Edit all the values
-      turretptr->setShotWaitTime(1);
-      turretptr->setProjectileType("Missile");
+      turretptr->setShotWaitTime(3);
+      turretptr->setProjectileType("Grenade");
       // When this is done it needs to change to the previous state
       StateMachine *sm = strongEntity->getStateMachine();
       if(sm)
@@ -270,7 +270,7 @@ void AdvancedUpgrade::execute(EntityWPtr _turret)
 
 //-------------------------------------------------------------------//
 
-void AdvancedUpgrade::exit(EntityWPtr _turret)
+void TestTurretAdvancedUpgrade::exit(EntityWPtr _turret)
 {
   Q_UNUSED(_turret);
 }

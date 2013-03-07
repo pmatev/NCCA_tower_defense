@@ -73,7 +73,9 @@ SOURCES += src/main.cpp \
     src/explosion.cpp \
     src/meshlib.cpp \
     src/mesh.cpp \
-    src/concrete/missile.cpp
+    src/concrete/grenade.cpp \
+    src/concrete/missilesilo.cpp \
+    src/fsm/states/missilesilostate.cpp
 
 
 
@@ -138,7 +140,9 @@ HEADERS += \
     include/fwd/projectileManager.h \
     include/meshlib.h \
     include/mesh.h \
-    include/concrete/missile.h
+    include/concrete/grenade.h \
+    include/concrete/missilesilo.h \
+    include/fsm/states/missilesilostate.h
 
 
 

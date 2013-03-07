@@ -1,78 +1,30 @@
-#ifndef TURRETSTATES_H
-#define TURRETSTATES_H
+#ifndef MISSILESILOSTATE_H
+#define MISSILESILOSTATE_H
 
 #include "entity.h"
-//-------------------------------------------------------------------//
-/// @file turretstates.h
-//-------------------------------------------------------------------//
 
 //-------------------------------------------------------------------//
-/// @brief Seek class, for when a turret is searching for a target
-/// @author Peter May
+/// @file missilesilostates.h
+/// @author Jared Auty
 /// @version 1
-/// @date 26/02/2013
+/// @date 7/3/13
 /// Revision History :
-/// Initial Version 26/02/2013
-/// @class Seek
+/// Initial Version 7/3/13
+/// @class MissileSiloNormal
 //-------------------------------------------------------------------//
 
-class Seek : public State
-{
-public: //methods
-  //-------------------------------------------------------------------//
-  /// @brief returns the static instance of the state machine
-  //-------------------------------------------------------------------//
-
-  static Seek * instance();
-
-  //-------------------------------------------------------------------//
-  /// @brief method called when the current state is entered
-  /// @param [in] _turret, the turret which is moving into the state
-  //-------------------------------------------------------------------//
-
-  void enter (EntityWPtr _turret);
-
-  //-------------------------------------------------------------------//
-  /// @brief called every frame that the state is active
-  /// @param [in] _turret, the turret which is in the current state
-  //-------------------------------------------------------------------//
-
-  void execute(EntityWPtr _turret);
-
-  //-------------------------------------------------------------------//
-  /// @brief called as the turret moves into a new state
-  /// @param [in] _turret, the turret which is in the leaving the state
-  //-------------------------------------------------------------------//
-
-  void exit(EntityWPtr _turret);
-
-private: //methods
-
-  //-------------------------------------------------------------------//
-  /// @brief private constructor
-  //-------------------------------------------------------------------//
-
-  Seek(){}
-};
-
 //-------------------------------------------------------------------//
-/// @brief LockOn class, for when a turret is aiming at an enemy
-/// @author Peter May
-/// @version 1
-/// @date 26/02/2013
-/// Revision History :
-/// Initial Version 26/02/2013
-/// @class LockOn
+/// @brief default state for grenade silo
 //-------------------------------------------------------------------//
 
-class LockedOn : public State
+class MissileSiloNormal : public State
 {
 public:
   //-------------------------------------------------------------------//
   /// @brief returns the static instance of the state machine
   //-------------------------------------------------------------------//
 
-  static LockedOn * instance();
+  static MissileSiloNormal * instance();
 
   //-------------------------------------------------------------------//
   /// @brief method called when the current state is entered
@@ -95,13 +47,56 @@ public:
 
   void exit(EntityWPtr _turret);
 
-private: //methods
-
+private:
   //-------------------------------------------------------------------//
   /// @brief private constructor
   //-------------------------------------------------------------------//
 
-  LockedOn(){}
+  MissileSiloNormal(){}
+
+};
+
+//-------------------------------------------------------------------//
+/// @brief default state for grenade silo
+//-------------------------------------------------------------------//
+
+class MissileSiloSeek : public State
+{
+public:
+  //-------------------------------------------------------------------//
+  /// @brief returns the static instance of the state machine
+  //-------------------------------------------------------------------//
+
+  static MissileSiloSeek * instance();
+
+  //-------------------------------------------------------------------//
+  /// @brief method called when the current state is entered
+  /// @param [in] _turret, the turret which is moving into the state
+  //-------------------------------------------------------------------//
+
+  void enter (EntityWPtr _turret);
+
+  //-------------------------------------------------------------------//
+  /// @brief called every frame that the state is active
+  /// @param [in] _turret, the turret which is in the current state
+  //-------------------------------------------------------------------//
+
+  void execute(EntityWPtr _turret);
+
+  //-------------------------------------------------------------------//
+  /// @brief called as the turret moves into a new state
+  /// @param [in] _turret, the turret which is in the leaving the state
+  //-------------------------------------------------------------------//
+
+  void exit(EntityWPtr _turret);
+
+private:
+  //-------------------------------------------------------------------//
+  /// @brief private constructor
+  //-------------------------------------------------------------------//
+
+  MissileSiloSeek(){}
+
 };
 
 //-------------------------------------------------------------------//
@@ -111,17 +106,17 @@ private: //methods
 /// @date 27/02/2013
 /// Revision History :
 /// Initial Version 27/02/2013
-/// @class TestTurretBasicUpgrade
+/// @class MissileSiloBasicUpgrade
 //-------------------------------------------------------------------//
 
-class TestTurretBasicUpgrade : public State
+class MissileSiloBasicUpgrade : public State
 {
 public:
   //-------------------------------------------------------------------//
   /// @brief returns the static instance of the state machine
   //-------------------------------------------------------------------//
 
-  static TestTurretBasicUpgrade * instance();
+  static MissileSiloBasicUpgrade * instance();
 
   //-------------------------------------------------------------------//
   /// @brief method called when the current state is entered
@@ -150,7 +145,7 @@ private: //methods
   /// @brief private constructor
   //-------------------------------------------------------------------//
 
-  TestTurretBasicUpgrade(){}
+  MissileSiloBasicUpgrade(){}
 };
 
 //-------------------------------------------------------------------//
@@ -160,17 +155,17 @@ private: //methods
 /// @date 27/02/2013
 /// Revision History :
 /// Initial Version 27/02/2013
-/// @class TestTurretAdvancedUpgrade
+/// @class MissileSiloAdvancedUpgrade
 //-------------------------------------------------------------------//
 
-class TestTurretAdvancedUpgrade : public State
+class MissileSiloAdvancedUpgrade : public State
 {
 public:
   //-------------------------------------------------------------------//
   /// @brief returns the static instance of the state machine
   //-------------------------------------------------------------------//
 
-  static TestTurretAdvancedUpgrade * instance();
+  static MissileSiloAdvancedUpgrade * instance();
 
   //-------------------------------------------------------------------//
   /// @brief method called when the current state is entered
@@ -199,10 +194,8 @@ private: //methods
   /// @brief private constructor
   //-------------------------------------------------------------------//
 
-  TestTurretAdvancedUpgrade(){}
+  MissileSiloAdvancedUpgrade(){}
 };
 
 
-
-#endif // TURRETSTATES_H
-
+#endif // MISSILESILOSTATE_H

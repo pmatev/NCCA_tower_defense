@@ -45,8 +45,8 @@ void TestEnemy::stateInit()
 {
   //state machine
   m_stateMachine = new StateMachine(EntityWPtr(shared_from_this()));
-  m_stateMachine->setCurrentState(Normal::instance());
-  m_stateMachine->setPreviousState(Normal::instance());
+  m_stateMachine->setCurrentState(TestEnemyNormal::instance());
+  m_stateMachine->setPreviousState(TestEnemyNormal::instance());
   m_stateMachine->setGlobalState(0);
 
   //steering behaviours
