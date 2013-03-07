@@ -5,8 +5,8 @@
 #include "uielement.h"
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
-#include "fwd/uimenu.h"
 #include "fwd/uibutton.h"
+#include "uLayout/table.h"
 
 //-------------------------------------------------------------------//
 /// @file uibutton.h
@@ -27,65 +27,113 @@ class UIButton : public UIElement
 {
 public:
 
+    typedef  boost::function<void()> functionPtr;
+
     //-------------------------------------------------------------------//
     /// @brief a parameterised constructor
     /// @param [in] _pos, a Vec2 value for the starting position of the
     /// button
     /// @param [in] _imageFile, a string containing the image file path name
     /// @param [in] inputs a string for the name of the element
+    /// @param [in] stores a pointer to the menu it is stored in
+    /// @param [in] string saying what type of element it is
+    /// @param [in] maxX used for size of button
+    /// @param [in] maxY used for size of button
     //-------------------------------------------------------------------//
+    UIButton
+    (
+            ngl::Vec2 _pos,
+            std::string _imageFile,
+            std::string _name,
+            TablePtr _parent,
+            float _maxX,
+            float _maxY
+            );
 
-    UIButton(ngl::Vec2 _pos,
-             std::string _imageFile,
-             std::string _name,
-             UIMenu *_parent);
 
     //-------------------------------------------------------------------//
-    /// @brief default ctor
+    /// @brief a parameterised constructor
+    /// @param [in] _pos, a Vec2 value for the starting position of the
+    /// button
+    /// @param [in] _imageFile, a string containing the image file path name
+    /// @param [in] inputs a string for the name of the element
+    /// @param [in] stores a pointer to the menu it is stored in
+    /// @param [in] string saying what type of element it is
+    /// @param [in] maxX used for size of button
+    /// @param [in] maxY used for size of button
     //-------------------------------------------------------------------//
-
-    UIButton();
+    UIButton
+    (
+            ngl::Vec2 _pos,
+            std::string _imageFile,
+            std::string _name,
+            std::string _type,
+            TablePtr _parent,
+            float _maxX,
+            float _maxY
+            );
 
     //-------------------------------------------------------------------//
     /// @brief dtor
     //-------------------------------------------------------------------//
-
     ~UIButton();
-
-
-    //-------------------------------------------------------------------//
-    /// @brief defines the virtual setFubction which in this case prints
-    /// out and error message
-    /// @param [in] takes in a boost function and stores it within the button
-    //-------------------------------------------------------------------//
-
-    inline void setFunction(functionPtr _func)  {m_execute = _func;}
-
-    //-------------------------------------------------------------------//
-    /// @brief executes the buttons command
-    //-------------------------------------------------------------------//
-
-    inline void isClicked() {m_execute();}
-
-
 
     //-------------------------------------------------------------------//
     /// @brief draws the button
     //-------------------------------------------------------------------//
-
     void draw();
 
-    void generateMesh();
-
+    //-------------------------------------------------------------------//
+    /// @brief draws the selection used mouse clicks
+    //-------------------------------------------------------------------//
     void drawSelection();
+
+    //-------------------------------------------------------------------//
+    /// @brief deafault function for m_execute it does nothing
+    //-------------------------------------------------------------------//
+    void blankFunction();
+
+    //-------------------------------------------------------------------//
+    /// @brief sets the isPressed parameter
+    /// @param[in] bool value to set the ispressed variable
+    //-------------------------------------------------------------------//
+    inline void setPressed(bool _pressed) {m_isPressed = _pressed;}
+
+    //-------------------------------------------------------------------//
+    /// @brief defines the function to be run by the button
+    /// @param [in] boost function pointer to the function to be executed by
+    /// the button
+    //-------------------------------------------------------------------//
+    inline void setFunction(functionPtr _func)  {m_execute = _func;}
+
+    inline void execute() {m_execute();}
+
+
 
 protected:
 
-      UIMenu *m_parent;
 
-      std::string m_imageFile;
+    //-------------------------------------------------------------------//
+    /// @brief stores a pointer to its parent
+    //-------------------------------------------------------------------//
+    TablePtr m_parent;
 
-      GLuint m_texture;
+    //-------------------------------------------------------------------//
+    /// @brief states whether the button is currently clicked
+    //-------------------------------------------------------------------//
+    bool m_isPressed;
+
+    //-------------------------------------------------------------------//
+    /// @brief states whether the button is in relative or absolute position
+    //-------------------------------------------------------------------//
+    bool m_relativePos;
+
+    //-------------------------------------------------------------------//
+    /// @brief stores the function to be executed by the button
+    //-------------------------------------------------------------------//
+    functionPtr m_execute;
+
+
 };
 
 #endif // UIBUTTON_H

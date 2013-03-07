@@ -79,6 +79,7 @@ ngl::Vec3 TestEnemy::brain()
 
 //-------------------------------------------------------------------//
 
+
 void TestEnemy::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);

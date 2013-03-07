@@ -8,7 +8,11 @@
 #include "ui.h"
 #include <SDL.h>
 #include "renderer.h"
+#include <ngl/Text.h>
+#include <SDL_ttf.h>
+#include "text.h"
 #include "billboard.h"
+
 
 //-------------------------------------------------------------------//
 /// @file window.h
@@ -24,6 +28,7 @@
 
 class Window
 {
+
 public:
 
 
@@ -48,9 +53,6 @@ public:
     //-------------------------------------------------------------------//
     void destroy();
 
-
-
-
     //-------------------------------------------------------------------//
     /// @brief getter for time.
     //-------------------------------------------------------------------//
@@ -63,7 +65,6 @@ public:
     //-------------------------------------------------------------------//
     /// @brief getter for screen height.
     //-------------------------------------------------------------------//
-
     inline double getScreenHeight() const {return m_height;}
 
     //-------------------------------------------------------------------//
@@ -105,13 +106,15 @@ public:
     //-------------------------------------------------------------------//
     /// @brief a method to get a unique id
     //-------------------------------------------------------------------//
-
     unsigned int getID();
 
     //-------------------------------------------------------------------//
-    /// @brief renders the game selection buffer and returns the corresponding pixel id
+    /// @brief returns the sdl window
+    /// @param[out] sdl surface containing the window
     //-------------------------------------------------------------------//
-    unsigned int getIDFromGameSelection();
+    inline SDL_Surface* getWindow() {return m_window;}
+
+
 
 
 
@@ -161,10 +164,12 @@ protected:
     /// @brief width of window
     //-------------------------------------------------------------------//
     double m_width;
+
     //-------------------------------------------------------------------//
     /// @brief height of window
     //-------------------------------------------------------------------//
     double m_height;
+
     //-------------------------------------------------------------------//
     /// @brief current mouse X coord
     //-------------------------------------------------------------------//
@@ -213,9 +218,14 @@ protected:
     //-------------------------------------------------------------------//
     SDL_Event m_event;
 
+
+    bool m_fullscreen;
+
+
     int m_viewmode;
 
     BillboardPtr m_screenBillboard;
+
 
 
 

@@ -33,9 +33,9 @@ public:
     /// @brief ctor
     //-------------------------------------------------------------------//
     UpgradeData(
-          const std::string &_title,
-          const std::string &_description,
-          const std::string &_texture,
+          const char *_title,
+          const char *_description,
+          std::string _texture,
           int _cost
           ):
       m_title(_title),
@@ -49,9 +49,9 @@ public:
     //-------------------------------------------------------------------//
 
     inline static UpgradeDataPtr create(
-          const std::string &_title,
-          const std::string &_description,
-          const std::string &_texture,
+          const char *_title,
+          const char *_description,
+          std::string _texture,
           int _cost
           )
     {
@@ -69,14 +69,14 @@ public:
     /// @brief title of the upgrade
     //-------------------------------------------------------------------//
 
-    std::string m_title;
+    const char *m_title;
 
     //-------------------------------------------------------------------//
     /// @brief description of the upgrade. This will be displayed by the ui
     /// when the user wants to update.
     //-------------------------------------------------------------------//
 
-    std::string m_description;
+    const char *m_description;
 
     //-------------------------------------------------------------------//
     /// @brief This can be used to store a path to a custom texture related

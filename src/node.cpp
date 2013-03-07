@@ -15,7 +15,7 @@ Node::Node(const ngl::Vec3 &_pos, float _hexagonSize, unsigned int _id):
   Entity(_pos, NODE,_id),
   m_isOccupied(false),
   m_hexagonSize(_hexagonSize),
-  m_highlighted(false),
+  m_highlighted(0),
   m_isVisible(true),
   m_isFound(false),
   m_searchDepth(-1)
@@ -119,7 +119,6 @@ void Node::update(const double _dt)
   Q_UNUSED(_dt);
 }
 
-//-------------------------------------------------------------------//
 
 //-------------------------------------------------------------------//
 
@@ -157,30 +156,41 @@ void Node::generateViewBBox()
 
 void Node::draw()
 {
-  if(m_isVisible)
-  {
-    Renderer *r = Renderer::instance();
 
-    ngl::ShaderLib *shader = ngl::ShaderLib::instance();
-
-    (*shader)["Constant"]->use();
-    r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
-    ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
-    c = c/255.0f;
-
-    shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
-
-
-    if(m_isInSpawnPath)
+    if(m_isVisible)
     {
-      shader->setShaderParam4f("colour", 0, 0, 1, 1);
-    } else
-    {
-      shader->setShaderParam4f("colour", 0.1, 0.1, 0.15, 1);
+        Renderer *r = Renderer::instance();
+
+        ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+
+        (*shader)["Constant"]->use();
+        r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+        ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
+        c = c/255.0f;
+
+        shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
+
+        if(m_highlighted == 1)
+        {
+            shader->setShaderParam4f("colour", 0, 0, 0, 1);
+        }
+        else if(m_highlighted == 2)
+        {
+            shader->setShaderParam4f("colour", 1, 0, 1, 1);
+        }
+        else if(m_isInSpawnPath)
+        {
+            shader->setShaderParam4f("colour", 0, 0, 1, 1);
+        }
+        else
+        {
+            shader->setShaderParam4f("colour", 0.1, 0.1, 0.15, 1);
+        }
+
+        r->draw("hexagon", "Constant");
     }
 
-    r->draw("hexagon", "Constant");
-  }
+
 }
 
 //-------------------------------------------------------------------//

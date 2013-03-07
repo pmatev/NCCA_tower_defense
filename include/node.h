@@ -91,7 +91,7 @@ public:
   /// @param [in] _isHighlighted, a boolean value to set the occupied flag
   /// to
   //-------------------------------------------------------------------//
-  inline void setHighlighted(bool _isHighlighted){
+  inline void setHighlighted(int _isHighlighted){
                                     m_highlighted = _isHighlighted;}
 
   //-------------------------------------------------------------------//
@@ -180,6 +180,8 @@ public:
 
   void setVisibility(bool _visibility);
 
+  inline int getHighlighted() {return m_highlighted;}
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief filter view. This does nothing at the moment
@@ -219,7 +221,7 @@ protected:
   /// be set to true and the node will be rendered differently
   //-------------------------------------------------------------------//
 
-  bool m_highlighted;
+  int m_highlighted;
 
   //-------------------------------------------------------------------//
   /// @brief whether the node should draw or not
@@ -247,6 +249,8 @@ protected:
   //-------------------------------------------------------------------//
 
   bool m_isInSpawnPath;
+
+
 
 };
 

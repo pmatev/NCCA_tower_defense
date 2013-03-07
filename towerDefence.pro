@@ -6,7 +6,10 @@
 
 QT       += core \
             opengl \
+            gui \
+            opengl \
             xml
+
 
 
 TARGET = towerDefence
@@ -35,7 +38,6 @@ SOURCES += src/main.cpp \
     src/database.cpp \
     src/uiwindow.cpp \
     src/uielement.cpp \
-    src/uimenu.cpp \
     src/game.cpp \
     src/camera.cpp \
     src/window.cpp \
@@ -52,11 +54,15 @@ SOURCES += src/main.cpp \
     src/concrete/base.cpp \
     src/concrete/testenemy.cpp \
     src/concrete/testturret.cpp \
-    #src/user.cpp \
+    src/text.cpp \
+    src/createtowerbutton.cpp \
     src/fsm/statemachine.cpp \
     src/fsm/states/enemystates.cpp \
     src/ai/steeringbehaviours.cpp \
     src/player.cpp \
+    src/uLayout/column.cpp \
+    src/uLayout/row.cpp \
+    src/uLayout/table.cpp \
     src/fsm/states/turretstates.cpp \
     src/fsm/states/projectilestates.cpp \
     src/texturelib.cpp \
@@ -68,6 +74,7 @@ SOURCES += src/main.cpp \
     src/meshlib.cpp \
     src/mesh.cpp \
     src/concrete/missile.cpp
+
 
 
 
@@ -92,7 +99,6 @@ HEADERS += \
     include/uibutton.h \  
     include/uiwindow.h \
     include/uielement.h \
-    include/uimenu.h \
     include/ui.h \
     include/projectile.h \
     include/projectilemanager.h \
@@ -105,16 +111,22 @@ HEADERS += \
     include/fwd/database.h \
     include/fwd/entity.h \
     include/fwd/game.h \
-    include/fwd/uimenu.h \
     include/fwd/uibutton.h \
-    #include/user.h \
     include/fwd/ui.h \
+    include/text.h \
+    include/createtowerbutton.h \
     include/fwd/camera.h \
     include/fsm/statemachine.h \
     include/fsm/state.h \
     include/fsm/states/enemystates.h \
     include/ai/steeringbehaviours.h \
     include/player.h \
+    include/uLayout/column.h \
+    include/uLayout/row.h \
+    include/uLayout/table.h \
+    include/fwd/table.h \
+    include/fwd/row.h \
+    include/fwd/column.h \
     include/fsm/states/turretstates.h \
     include/fsm/states/projectilestates.h \
     include/texturelib.h \
@@ -131,18 +143,19 @@ HEADERS += \
 
 
 
-#including the NGL library
 
 QMAKE_CXXFLAGS+=$$system($$(HOME)/SDL1/bin/sdl-config  --cflags)
+
 message(output from sdl-config --cflags added to CXXFLAGS= $$QMAKE_CXXFLAGS)
 
-LIBS+=$$system($$(HOME)/SDL1/bin/sdl-config  --libs)
+LIBS+=$$system($$(HOME)/SDL1/bin/sdl-config --libs) -lSDL_ttf
 message(output from sdl-config --libs added to LIB=$$LIBS)
+
+
 
 #include for threading
 QMAKE_CXXFLAGS += -fopenmp
 QMAKE_CXXFLAGS += -lgomp
-
 
 #including the NGL library
 INCLUDEPATH += $$(HOME)/NGL/include/
@@ -180,6 +193,12 @@ OTHER_FILES += \
     shaders/TexturedConst.fs \
     textures/grid.png \
     textures/default_texture.jpg \
+    fonts/Abyssinica_SIL.ttf \
+    fonts/Roboto-Regular.ttf \
+    config/config.xml \
+    models/turret.obj \
+    shaders/Texture.vs \
+    shaders/Texture.fs \
     textures/HealthBar.png \
     textures/default_texture.png \
     textures/HealthBar_flat.png \
@@ -188,3 +207,4 @@ OTHER_FILES += \
     models/enemy.obj \
     models/hexagon.obj \
     models/wall.obj \
+

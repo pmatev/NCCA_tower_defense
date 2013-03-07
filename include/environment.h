@@ -77,6 +77,8 @@ public:
 
   ngl::Vec3 getBasePos();
 
+  float getBaseHealth() const ;
+
   NodeManagerWPtr getNodeManagerWeakPtr();
 
   void recalculateSearchTree();

@@ -1,12 +1,17 @@
 #include "renderer.h"
 #include "window.h"
 #include "ngl/NGLInit.h"
+#include <QtGui>
+#include "ngl/Text.h"
 #include "ui.h"
 #include <iostream>
 #include <string>
 #include "game.h"
 #include "boost/lexical_cast.hpp"
+#include <SDL_ttf.h>
+#include "text.h"
 #include "texturelib.h"
+
 
 
 
@@ -64,14 +69,16 @@ void Window::init()
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 
-    // set size of initial window
 
-    m_width = 600;
-    m_height = 600;
 
     //initialize openGl Window
 
-    m_window = SDL_SetVideoMode(m_width, m_height, 16, SDL_OPENGL | SDL_RESIZABLE);
+    m_window = SDL_SetVideoMode(1280, 860, 16, SDL_OPENGL | SDL_RESIZABLE);
+
+    const SDL_VideoInfo* videoSize = SDL_GetVideoInfo();
+
+    m_width = videoSize->current_w;
+    m_height = videoSize->current_h;
 
     ngl::NGLInit *Init = ngl::NGLInit::instance();
 
@@ -79,6 +86,12 @@ void Window::init()
      #ifdef WIN32
       glewInit(); // need a local glew init as well as lib one for windows
     #endif
+
+
+    if (TTF_Init() == -1)
+    {
+      printf("Unable to initialize SDL_ttf: %s \n", TTF_GetError());
+    }
 
     // Init factory
     EntityFactory::initialiseFactory();
@@ -94,21 +107,20 @@ void Window::init()
 
     m_UI = UIPtr(new UI());
 
-    m_UI->createTestMenu();
+
+    m_UI->setupUI();
 
 
     m_screenBillboard = Billboard::create(Billboard::b2D, ngl::Vec4(0,0,0,1),2,2);
 
     m_viewmode=0;
+
 }
 
 
 //-------------------------------------------------------------------//
 void Window::loop()
 {
-
-
-
     Game *game = Game::instance();
     Renderer *renderer = Renderer::instance();
 
@@ -122,6 +134,8 @@ void Window::loop()
 
     double currentTime = SDL_GetTicks();
 //    double accumulator = 0.0;
+
+
 
     // flag to indicate if we need to exit
 
@@ -143,8 +157,19 @@ void Window::loop()
             case SDL_MOUSEBUTTONDOWN : mouseButtonDownEvent(m_event.button); break;
             case SDL_MOUSEBUTTONUP : mouseButtonUpEvent(m_event.button); break;
             case SDL_VIDEORESIZE :windowResizeEvent(m_event.resize, renderer);break;
-            case SDL_KEYUP : keyEvent(m_event.key); break;
+            case SDL_KEYUP : keyEvent(m_event.key);break;
 
+            case SDL_KEYDOWN:
+            {
+              switch(m_event.key.keysym.sym )
+              {
+                // if it's the escape key quit
+                case SDLK_ESCAPE : quit = true; break;
+
+
+                default : break;
+              } // end of key process
+            }
             }
         }
 
@@ -192,9 +217,10 @@ void Window::loop()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         game->draw();
+        m_UI->updatePlayerInfo();
         m_UI->draw();
 
-    // render textured billboard to screen
+
         r->bindFrameBuffer(0);
         glViewport(0,0,m_width, m_height);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -204,7 +230,6 @@ void Window::loop()
 
         SDL_GL_SwapBuffers();
         frameCount++;
-
     }
 }
 
@@ -219,6 +244,30 @@ void Window::keyEvent(const SDL_KeyboardEvent &_event)
     {
        game->reset();
     }
+
+    if(_event.keysym.sym == SDLK_f)
+    {
+        Renderer *renderer = Renderer::instance();
+
+        Uint16 flags = SDL_OPENGL | SDL_RESIZABLE;
+
+        flags = m_window->flags; /* Save the current flags in case toggling fails */
+
+        if(m_fullscreen == false)
+        {
+            m_window = SDL_SetVideoMode(0, 0, 0, m_window->flags ^ SDL_FULLSCREEN); /*Toggles FullScreen Mode */
+            if(m_window == NULL) m_window = SDL_SetVideoMode(0, 0, 0, flags); /* If toggle FullScreen failed, then switch back */
+            if(m_window == NULL) exit(1); /* If you can't switch back for some reason, then epic fail */
+            renderer->resize(m_width,m_height);
+        }
+        else
+        {
+            m_window = SDL_SetVideoMode(m_width, m_height,0, flags);
+            renderer->resize(m_width,m_height);
+        }
+
+    }
+
     if(_event.keysym.sym == SDLK_1)
     {
         m_viewmode = 0;
@@ -235,6 +284,7 @@ void Window::keyEvent(const SDL_KeyboardEvent &_event)
     {
       game->startWaves();
     }
+
 }
 
 //-------------------------------------------------------------------//
@@ -246,6 +296,7 @@ void Window::windowResizeEvent(const SDL_ResizeEvent &_event, Renderer *_rendere
 
     SDL_SetVideoMode(m_width, m_height, 16, SDL_OPENGL | SDL_RESIZABLE);
     _renderer->resize(m_width, m_height);
+
 
 }
 
@@ -272,6 +323,12 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
     Renderer *render = Renderer::instance();
     CameraPtr cam = render->getCam().lock();
 
+    render->bindFrameBuffer("Texture");
+
+    ngl::Vec4 pixel = render->readPixels(_event.x, _event.y);
+    int id = colourToID(pixel.toVec3());
+    std::cout<<pixel<<std::endl;
+
     m_motionEvent = _event;
 
     // Left Mouse Tumble
@@ -296,7 +353,7 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
     m_oldMouseY = m_mouseY;
 
 
-//    m_UI->mouseMoveEvent();
+    m_UI->mouseMoveEvent(id);
 
 }
 //-------------------------------------------------------------------//
@@ -397,4 +454,4 @@ unsigned int Window::getID()
 }
 
 
-//-------------------------------------------------------------------//
+

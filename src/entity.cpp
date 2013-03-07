@@ -215,6 +215,8 @@ void Entity::drawWithColour(const ngl::Vec3 &_colour)
   Renderer *r = Renderer::instance();
   TextureLib *tex = TextureLib::instance();
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+  Q_UNUSED(_colour);
+  Q_UNUSED(tex);
 
   r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
   (*shader)["Constant"]->use();

@@ -2,7 +2,6 @@
 #define GAME_H
 
 #include <QtXml/QDomDocument>
-
 #include "fwd/game.h"
 #include "fwd/window.h"
 #include <map>
@@ -70,7 +69,6 @@ public:
     //-------------------------------------------------------------------//
     /// @brief returns an ID for an entity
     //-------------------------------------------------------------------//
-
     unsigned int getID();
 
     //-------------------------------------------------------------------//
@@ -107,7 +105,7 @@ public:
     //-------------------------------------------------------------------//
     /// @brief return weak smart pointer to the environment
     //-------------------------------------------------------------------//
-    void setNodehighlighted(int _id, bool _highlighted);
+    void setNodehighlighted(int _id, int _highlighted);
 
 
     EnvironmentWPtr getEnvironmentWeakPtr();
@@ -126,8 +124,21 @@ public:
     /// currency
     /// @param [in] _value, the value to add to the currency
     //-------------------------------------------------------------------//
-
     inline void addCurrency(int _value) {m_player->addCurrency(_value);}
+
+
+    //-------------------------------------------------------------------//
+    /// @brief returns players score
+    //-------------------------------------------------------------------//
+    inline int getPlayerScore() {return m_player->getScore();}
+
+
+    //-------------------------------------------------------------------//
+    /// @brief method to get the players currency
+    /// @param [out] returns players currency
+    //-------------------------------------------------------------------//
+    inline int getPlayerCurrency() {return m_player->getCurrency();}
+
 
     //-------------------------------------------------------------------//
     /// @brief a method to add the inputted score
@@ -142,12 +153,14 @@ public:
 
     void startWaves();
 
+    float getBaseHealth() const;
+
     //-------------------------------------------------------------------//
     /// @brief upgrade the tower with ID _id
     /// @param[in] _id identifier for the tower that should be upgraded.
     //-------------------------------------------------------------------//
 
-    bool upgrateTurret(int _id);
+    bool upgradeTurret(int _id);
 
     //-------------------------------------------------------------------//
     /// @brief get the upgrade data about the current upgrade level
@@ -169,6 +182,7 @@ public:
 
     bool getNextUpgrade(Turret::UpgradeDataWPtr &o_upgradeData, int _id);
 
+
 protected:
     //-------------------------------------------------------------------//
     /// @brief hidden ctor for singleton
@@ -185,7 +199,6 @@ protected:
     /// @param[in] _collisionList, is of all the entities that have been
     /// collided and the damage to be dealt.
     //-------------------------------------------------------------------//
-
     void dealDamage(const std::list<Damage> &_collisionList);
 
     //-------------------------------------------------------------------//
@@ -194,11 +207,11 @@ protected:
     //-------------------------------------------------------------------//
     void dealImpulses(const std::list<Impulse> &_impulses);
 
+
     //-------------------------------------------------------------------//
     /// @brief setup the whole scene. This is where any scene information
     /// should be read from file, interpreted and initialisd.
     //-------------------------------------------------------------------//
-
     void setupScene();
 
     //-------------------------------------------------------------------//

@@ -1,14 +1,15 @@
 #ifndef UI_H
 #define UI_H
 
-#include "uimenu.h"
+
 #include "staticentity.h"
 #include "uielement.h"
 #include "entityfactory.h"
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
-#include "uimenu.h"
-#include "ui.h"
+#include "fwd/ui.h"
+#include "fwd/table.h"
+
 
 //-------------------------------------------------------------------//
 /// @file ui.h
@@ -37,10 +38,7 @@ public:
     //-------------------------------------------------------------------//
     /// @brief the destructor
     //-------------------------------------------------------------------//
-
     ~UI();
-
-
 
     //-------------------------------------------------------------------//
     /// @brief draw element
@@ -59,7 +57,6 @@ public:
     //-------------------------------------------------------------------//
     UIElementPtr checkUIClicked(const unsigned int _ID);
 
-
     //-------------------------------------------------------------------//
     /// @brief checks to see if an entity has been clicked
     /// @param [in] _ID, the colourID given by clickEvent from game.h
@@ -68,7 +65,6 @@ public:
     //-------------------------------------------------------------------//
     EntityWPtr checkEntityClicked();
 
-
     //-------------------------------------------------------------------//
     /// @brief the function which is run when the left mouse button is
     /// clicked down
@@ -76,12 +72,10 @@ public:
     //-------------------------------------------------------------------//
     void mouseLeftUp(const unsigned int _ID);
 
-
     //-------------------------------------------------------------------//
     /// @brief the function which is run when the mouse is moved
     //-------------------------------------------------------------------//
-    void mouseMoveEvent();
-
+    void mouseMoveEvent(const unsigned int _ID);
 
     //-------------------------------------------------------------------//
     /// @brief register UIElement into IDMap
@@ -89,7 +83,6 @@ public:
     /// @param [out] returns the id for the element
     //-------------------------------------------------------------------//
     void registerID(UIElementPtr _e, unsigned int _ID);
-
 
     //-------------------------------------------------------------------//
     /// @brief unregister UIElement via ID
@@ -104,23 +97,53 @@ public:
     //-------------------------------------------------------------------//
     void createTestTower();
 
-
     //-------------------------------------------------------------------//
     /// @brief creates a new menu
-    /// @param [in] takes in a uimenuptr to create a new object and store
+    /// @param [in] takes in a tableptr to create a new object and store
     /// in m_menus
     //-------------------------------------------------------------------//
-    void createMenu(UIMenuPtr _menu);
-
+    void createMenu(TablePtr _menu);
 
     //-------------------------------------------------------------------//
     /// @brief searches the m_menus map and returns the object with the name
     /// specified in the parameters
     /// @param [in] takes in a string to the name of the menu you are trying
     /// to access
-    /// @param [out] returns a UIMenuPtr with the name specified
+    /// @param [out] returns a TablePtr with the name specified
     //-------------------------------------------------------------------//
-    UIMenuPtr getMenu(std::string _name);
+    TablePtr getMenu(std::string _name);
+
+    //-------------------------------------------------------------------//
+    /// @brief goes through menus and checks the towers the buttons create
+    /// are affordable
+    //-------------------------------------------------------------------//
+    void checkButtonAffordable();
+
+    //-------------------------------------------------------------------//
+    /// @brief initializes and creates the tower create menu
+    //-------------------------------------------------------------------//
+    void createTowerBuildMenu();
+
+
+    void createTowerMenu();
+
+    void createUpgradeMenu();
+
+    void createDisplayScoreMenu();
+
+    void upgradeButtonCommand();
+
+    void updatePlayerInfo();
+
+    void closeUpgradeMenu();
+
+    void displayUpgradeMenu(const unsigned int _ID);
+
+    void turretClicked(int _ID);
+
+    inline void setUpgradeTowerId(int _ID) {m_tmpUpgradeTowerID = _ID;}
+
+    void setupUI();
 
 
     //-------------------------------------------------------------------//
@@ -132,6 +155,7 @@ public:
 
     void createTestMenu();
 
+
     void mouseLeftUpTowerCreate(const unsigned int _ID);
 
     //-------------------------------------------------------------------//
@@ -142,7 +166,7 @@ public:
 
 private:
 
-    typedef std::map<unsigned int, UIMenuPtr> menuMap;
+    typedef std::map<unsigned int, TablePtr> menuMap;
 
 
     //-------------------------------------------------------------------//
@@ -158,20 +182,22 @@ private:
     //-------------------------------------------------------------------//
     /// @brief temp storage for tower while it is being placed down
     //-------------------------------------------------------------------//
-    std::string m_staticEntityTypeTemp;
-
+    std::string m_tmptowerType;
 
     //-------------------------------------------------------------------//
     /// @brief value to say whether we are in creation mode or not
     //-------------------------------------------------------------------//
     bool m_creationMode;
 
-
     //-------------------------------------------------------------------//
     /// @brief stores id to highlighted node for selection
     //-------------------------------------------------------------------//
-    int m_highlightedNode;
+    unsigned int m_highlightedNode;
 
+    //-------------------------------------------------------------------//
+    /// @brief stores cost of tower that will be created
+    //-------------------------------------------------------------------//
+    int m_tmpCost;
 
     //-------------------------------------------------------------------//
     /// @brief when in creation mode this checks if the staticEntity can be
@@ -181,22 +207,12 @@ private:
     //-------------------------------------------------------------------//
     void placeDownStaticEntity(const std::string &_type, NodePtr _node);
 
-
-
-    //-------------------------------------------------------------------//
-    //-------------------------------------------------------------------//
-    //-------------------------------------------------------------------//
-    UIMenuPtr m_menuTest;
+    int m_tmpUpgradeTowerID;
 
 
 
 
 
-
-
-    //-------------------------------------------------------------------//
-    //-------------------------------------------------------------------//
-    //-------------------------------------------------------------------//
 
 
 

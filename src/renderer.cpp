@@ -170,6 +170,7 @@ void Renderer::resize(const unsigned int _w, const unsigned int _h)
 
 
 //  std::cout<<"resized window"<<std::endl;
+
 }
 
 
@@ -488,8 +489,6 @@ void Renderer::set2DPosToShader(ngl::Vec2 _pos,  std::string _shader)
     shader->setRegisteredUniform3f("colour",0.3,0.4,0.6);
 
 }
-
-
 
 
 //-------------------------------------------------------------------//

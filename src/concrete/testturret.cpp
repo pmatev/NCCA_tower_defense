@@ -61,8 +61,8 @@ void TestTurret::stateInit()
   registerUpgrade(
         BasicUpgrade::instance(),
         UpgradeData::create(
-          std::string("Initial Upgrade"),
-          std::string("descriptiony thing"),
+          "Initial Upgrade",
+          "descriptiony thing",
           std::string("test.jpg"),
           0
           )
@@ -70,8 +70,8 @@ void TestTurret::stateInit()
   registerUpgrade(
         AdvancedUpgrade::instance(),
         UpgradeData::create(
-          std::string("Super Advanced Upgrade"),
-          std::string("other descriptiony thing\nmakes bullets shoot faster"),
+          "Super Advanced Upgrade",
+          "makes bullets shoot faster",
           std::string("otherTest.jpg"),
           100
           )

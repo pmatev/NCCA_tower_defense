@@ -271,3 +271,8 @@ void Environment::resetSpawnPathHighlighting()
     }
   }
 }
+
+float Environment::getBaseHealth() const
+{
+    return m_base->getHealth();
+}

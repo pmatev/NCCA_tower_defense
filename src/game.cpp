@@ -586,21 +586,20 @@ ProjectileManagerWPtr Game::getProjectileManagerWeakPtr()
 
 //-------------------------------------------------------------------//
 
-void Game::setNodehighlighted(int _id, bool _highlighted)
+void Game::setNodehighlighted(int _id, int _highlighted)
 {
     EntityPtr entityClick = getEntityByID(_id).lock();
 
-    Q_UNUSED(_highlighted);
-    Q_UNUSED(entityClick);
 
-//    NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
+    NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
 
 
-//    if(node) // check that it is a valid node
-//    {
-//        node->setHighlighted(_highlighted); //change highlighted flag
+    if(node) // check that it is a valid node
+    {
+        node->setHighlighted(_highlighted); //change highlighted flag
+        std::cout<<node->getHighlighted()<<std::endl;
 
-//    }
+    }
 
 }
 
@@ -613,7 +612,7 @@ void Game::startWaves()
 
 //-------------------------------------------------------------------//
 
-bool Game::upgrateTurret(int _id)
+bool Game::upgradeTurret(int _id)
 {
   EntityPtr entity = getEntityByID(_id).lock();
   if(entity)
@@ -659,4 +658,9 @@ bool Game::getNextUpgrade(Turret::UpgradeDataWPtr &o_upgradeData, int _id)
   return false;
 }
 
-//-------------------------------------------------------------------//
+
+float Game::getBaseHealth() const
+{
+    return m_environment->getBaseHealth();
+}
+

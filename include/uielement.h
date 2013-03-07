@@ -6,6 +6,7 @@
 #include"smartpointers.h"
 #include <QString>
 
+
 DECLARESMART(UIElement)
 
 //-------------------------------------------------------------------//
@@ -25,7 +26,6 @@ class UIElement
 
 public:
 
-    typedef  boost::function<void()> functionPtr;
     //-------------------------------------------------------------------//
     /// @brief a parameterised constructor
     /// @param [in] _pos, a Vec2 value for the starting position of the
@@ -36,7 +36,9 @@ public:
 
     /* ADD ID TO CONSTRUCTOR + SETUP RELEVANT SYSTEMS */
     UIElement( ngl::Vec2 _pos,
-               std::string _name);
+               std::string _name,
+               std::string _type,
+               std::string _imageFile);
 
 
     //-------------------------------------------------------------------//
@@ -57,24 +59,15 @@ public:
     /// the menus with a colour which will then be used for selection
     /// purposes
     //-------------------------------------------------------------------//
-
     virtual void generateMesh();
 
 //    virtual void drawSelection() = 0;
 
     //-------------------------------------------------------------------//
-    /// @brief virtual execute function passed through to other elements
-    /// only elements which can interact with user will have anything
-    /// implemeneted in it
-    //-------------------------------------------------------------------//
-    virtual void isClicked() = 0;
-
-
-    //-------------------------------------------------------------------//
     /// @brief sets the position of the button
     /// @param [in] takes in an vector for position
     //-------------------------------------------------------------------//
-    void setPosition(ngl::Vec2 _pos);
+    virtual void setPosition(ngl::Vec2 _pos);
 
 
     //-------------------------------------------------------------------//
@@ -83,15 +76,6 @@ public:
     //-------------------------------------------------------------------//
     inline const std::string getName() {return m_name;}
 
-
-
-    //-------------------------------------------------------------------//
-    /// @brief sets the function to run
-    /// @param [in] takes in a boost::function
-    //-------------------------------------------------------------------//
-    virtual void setFunction(functionPtr _func) = 0;
-
-
     //-------------------------------------------------------------------//
     /// @brief converts the percentage values for screen space into absolute
     /// values
@@ -99,13 +83,47 @@ public:
     //-------------------------------------------------------------------//
     void percentageToPixels(int _maxX);
 
+    //-------------------------------------------------------------------//
+    /// @brief returns the m_type variable
+    /// @param [out] returns a string value refering to the type
+    //-------------------------------------------------------------------//
+    inline std::string getType() {return m_type;}
 
+    //-------------------------------------------------------------------//
+    /// @brief sets the elements id value
+    /// @param [in] takes in an id value
+    //-------------------------------------------------------------------//
     void setID(unsigned int _ID) ;
 
+    inline unsigned int getID() {return m_ID;}
 
+    //-------------------------------------------------------------------//
+    /// @brief get function for max x
+    /// @param [out] returns the m_maxX variable
+    //-------------------------------------------------------------------//
+    inline ngl::Vec2 getSize() {return m_size;}
+
+
+    //-------------------------------------------------------------------//
+    /// @brief get function for image file
+    /// @param [out] returns the m_imagefile variable
+    //-------------------------------------------------------------------//
     std::string getImagefile();
 
-    inline ngl::TransformStack getTransformStack(){return m_transformStack;}
+    //-------------------------------------------------------------------//
+    /// @brief get function for position
+    /// @param [out] returns the m_pos variable
+    //-------------------------------------------------------------------//
+    inline ngl::Vec2 getPosition() {return m_pos;}
+
+    //-------------------------------------------------------------------//
+    /// @brief setter function for texture
+    /// @param [in] string containing path to texure file
+    //-------------------------------------------------------------------//
+    inline void setTexture(std::string _texture) {m_imageFile = _texture;
+                                                 generateMesh();}
+
+
 
 
 
@@ -122,30 +140,37 @@ protected:
     ngl::Vec2 m_pos;
 
     //-------------------------------------------------------------------//
-    /// @brief stores the elements function
-    //-------------------------------------------------------------------//
-    functionPtr m_execute;
-
-    //-------------------------------------------------------------------//
     /// @brief ID used to query whether it has been clicked or not
     //-------------------------------------------------------------------//
     unsigned int m_ID;
 
+    //-------------------------------------------------------------------//
+    /// @brief string version of ID used for openGL
+    //-------------------------------------------------------------------//
     std::string m_IDStr;
 
-    ngl::TransformStack m_transformStack;
+    //-------------------------------------------------------------------//
+    /// @brief stores a string value to type of element
+    //-------------------------------------------------------------------//
+    std::string m_type;
 
     //-------------------------------------------------------------------//
     /// @brief stores the maximum size in x direction can either be percentage
     /// or pixel value. Will be relative to size of menu
     //-------------------------------------------------------------------//
-    float m_maxBoundsX;
+    ngl::Vec2 m_size;
 
     //-------------------------------------------------------------------//
-    /// @brief stores the maximum size in y direction can either be percentage
-    /// or pixel value. Will be relative to size of menu
+    /// @brief texture id for the button
     //-------------------------------------------------------------------//
-    float m_maxBoundsY;
+    GLuint m_texture;
+
+    //-------------------------------------------------------------------//
+    /// @brief string containing image file location
+    //-------------------------------------------------------------------//
+    std::string m_imageFile;
+
+
 
 };
 
