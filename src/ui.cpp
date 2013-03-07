@@ -14,7 +14,6 @@ UI::UI():
 
 }
 
-
 //-------------------------------------------------------------------//
 UI::~UI()
 {
@@ -88,6 +87,7 @@ void UI::mouseLeftUp(const unsigned int _ID)
             if(UIClick->getType() == "create") // if button is a tower create button
             {
                 CreateTowerButtonPtr button = boost::dynamic_pointer_cast<CreateTowerButton>(UIClick);
+                TablePtr menu = getMenu("upgradeMenu");
 
                 //if the tower is affordable set tmp parameters
                 //used in creation mode
@@ -98,12 +98,14 @@ void UI::mouseLeftUp(const unsigned int _ID)
                     m_tmptowerType = button->getTowertype();
                     m_creationMode = true;
                     std::cout<<"i am GUI"<<std::endl;
+                    menu->setDrawable(false);
                 }
             }
 
             else if (UIClick->getType() == "button")
 
             //if it is a standard button execute command
+
             {
                 UIButtonPtr button = boost::dynamic_pointer_cast<UIButton>(UIClick);
                 if(button)
@@ -130,6 +132,7 @@ void UI::mouseLeftUp(const unsigned int _ID)
             NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
 
             //try to create tower and if it can build it
+
             bool isCreated = game->tryToCreateTower((m_tmptowerType),
                                                     node
                                                     );
@@ -147,6 +150,14 @@ void UI::mouseLeftUp(const unsigned int _ID)
 
         }
 
+        //else if it is a turret come out of creation mode and go to uprgade menu
+
+        else if(entityClick && entityClick->getGeneralType()==TURRET)
+        {
+            m_creationMode = 0;
+            turretClicked(_ID);
+            game->setNodehighlighted(m_highlightedNode, 0);
+        }
         //else check the ui to see if other buttons have been pressed
 
         else
