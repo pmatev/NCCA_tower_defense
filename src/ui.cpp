@@ -498,7 +498,7 @@ void UI::createTowerMenu()
     if (menu)
     {
         menu->createRows(1);
-        menu->createColumns(0,2);
+        menu->createColumns(0,3);
         menu->createTowerButton
                 (
                     0,
@@ -507,8 +507,8 @@ void UI::createTowerMenu()
                     "textures/default_texture.jpg",
                     "testTowerCreate",
                     menu,
-                    50,
-                    "MissileSilo",
+                    100,
+                    "TestTurret",
                     100,
                     100
                     );
@@ -518,13 +518,27 @@ void UI::createTowerMenu()
                     1,
                     ngl::Vec2 (0,0),
                     "textures/default_texture.jpg",
+                    "missileSiloCreate",
+                    menu,
+                    200,
+                    "MissileSilo",
+                    100,
+                    100
+                    );
+        menu->createTowerButton
+                (
+                    0,
+                    2,
+                    ngl::Vec2 (0,0),
+                    "textures/default_texture.jpg",
                     "standardWallCreate",
                     menu,
-                    50,
+                    10,
                     "StandardWall",
                     100,
                     100
                     );
+
         menu->setSize();
         menu->screenAlignment(Table::BOTTOM);
         menu->screenAlignment(Table::CENTREX);

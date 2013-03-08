@@ -94,6 +94,6 @@ Grenade::~Grenade()
 {
   if(m_parent)
   {
-    m_parent->addExplosion(1000, 10, 3, m_pos, 0.5);
+    m_parent->addExplosion(1000, 40, 3, m_pos, 0.5);
   }
 }

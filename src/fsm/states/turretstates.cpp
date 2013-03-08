@@ -206,7 +206,7 @@ void TestTurretBasicUpgrade::execute(EntityWPtr _turret)
     if (turretptr)
     {
       // Edit all the values
-      turretptr->setShotWaitTime(0.1);
+      turretptr->setShotWaitTime(0.5);
       turretptr->setRotationAngle(5);
       // When this is done it needs to change to the previous state
       StateMachine *sm = strongEntity->getStateMachine();
@@ -256,8 +256,8 @@ void TestTurretAdvancedUpgrade::execute(EntityWPtr _turret)
     if (turretptr)
     {
       // Edit all the values
-      turretptr->setShotWaitTime(3);
-      turretptr->setProjectileType("Grenade");
+      turretptr->setShotWaitTime(0.05);
+      turretptr->setRotationAngle(30);
       // When this is done it needs to change to the previous state
       StateMachine *sm = strongEntity->getStateMachine();
       if(sm)

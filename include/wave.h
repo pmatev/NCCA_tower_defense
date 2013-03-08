@@ -280,6 +280,12 @@ protected:
 
   float m_time;
 
+  //-------------------------------------------------------------------//
+  /// @brief maximum number of enemies that can be on the field at any one
+  /// point.
+  //-------------------------------------------------------------------//
+  unsigned int m_maxActiveEnemies;
+
 
 
 };

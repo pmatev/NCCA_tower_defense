@@ -658,7 +658,6 @@ bool NodeManager::getAStar(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr
       if(*current == _goal)
       {
         reconstructPath(o_newPath, current, _start);
-        std::cout<<"Completed path in "<<numSteps<<" steps"<<std::endl;
         return true;
       }
 

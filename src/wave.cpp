@@ -15,7 +15,8 @@ Wave::Wave(
   m_enemiesForCreation(_waveInfo.m_enemiesForCreation),
   m_birthRate(_waveInfo.m_birthRate),
   m_spawnNodes(_spawnNodes),
-  m_time(0)
+  m_time(0),
+  m_maxActiveEnemies(200)
 {
   // Clone the start enemies
   m_totalEnemiesForCreation.clear();
@@ -266,42 +267,33 @@ void Wave::brain(const double _dt)
   // random positions
   m_time += _dt;
 
-  if(m_time > m_birthRate)
+  if(m_enemies.size() < m_maxActiveEnemies)
   {
-    Node::NodeWVecPtr spawnNodes = m_spawnNodes.lock();
-    if(spawnNodes)
+    if(m_time > m_birthRate)
     {
-      BOOST_FOREACH(EnemyPairPtr pair, m_enemiesForCreation)
+      Node::NodeWVecPtr spawnNodes = m_spawnNodes.lock();
+      if(spawnNodes)
       {
-        if(pair->m_count)
+        BOOST_FOREACH(EnemyPairPtr pair, m_enemiesForCreation)
         {
-          // pick a node to generate on
-          int randomInt = std::rand() % spawnNodes->size();
-          NodePtr startNode = (*spawnNodes)[randomInt].lock();
-          if(startNode)
+          if(pair->m_count)
           {
-            addEnemy(pair->m_type, startNode->getPos(), ngl::Vec3(0, 0, 0));
-            --pair->m_count;
+            // pick a node to generate on
+            int randomInt = std::rand() % spawnNodes->size();
+            NodePtr startNode = (*spawnNodes)[randomInt].lock();
+            if(startNode)
+            {
+              addEnemy(pair->m_type, startNode->getPos(), ngl::Vec3(0, 0, 0));
+              --pair->m_count;
+            }
+            // Break so we don't make one of each type
+            break;
           }
-          // Break so we don't make one of each type
-          break;
         }
+        m_time = 0;
       }
-      m_time = 0;
     }
   }
-
-  //  // ctor
-  //  //---------------------------------------------TEST--------------------------------------------------
-  //  // create shit load o enemies!!!
-  //  int numEnemies = 200;
-  //  for(int i=0; i < numEnemies; ++i)
-  //  {
-  //    float randomX = std::rand() / float(RAND_MAX);
-  //    float randomZ = std::rand() / float(RAND_MAX);
-  //    addEnemy("TestEnemy", ngl::Vec3((10 * randomX) + 20, 0, i*(40.0/numEnemies)* randomZ), ngl::Vec3(0, 0, 0));
-  //  }
-  //  //-------------------------------------------END TEST------------------------------------------------
 }
 
 //-------------------------------------------------------------------//

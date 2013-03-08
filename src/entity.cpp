@@ -41,6 +41,11 @@ Entity::~Entity()
 {
   Renderer *r = Renderer::instance();
   r->deleteVAO(m_IDStr);
+  if(m_stateMachine)
+  {
+    std::cout<<"Deleting state machine"<<std::endl;
+    delete m_stateMachine;
+  }
 }
 
 //-------------------------------------------------------------------//

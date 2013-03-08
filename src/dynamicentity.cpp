@@ -118,6 +118,8 @@ void DynamicEntity::move(const double _dt)
     }
   }
   enforceGridBoundaries();
+  // make sure velocity is properly integrated
+  m_velocity = (m_pos - m_prevPos) / _dt;
 
   m_transformStack.setPosition(m_pos);
 
