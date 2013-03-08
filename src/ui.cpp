@@ -47,6 +47,90 @@ UIElementPtr UI::checkUIClicked(const unsigned int _ID)
 }
 
 //-------------------------------------------------------------------//
+void UI::creationModeClick(const unsigned int _ID)
+{
+    Game* game = Game::instance();
+    EntityPtr entityClick;
+    entityClick = game->getEntityByID(_ID).lock();
+
+    //check that it is a valid entity and it is a node and it can be afforded
+
+    if(entityClick &&
+            entityClick->getGeneralType() == NODE
+            )
+    {
+        Game* game = Game::instance(); //get instance of game
+        NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
+
+        if((game->getPlayerCurrency()-m_tmpCost) >= 0)
+
+            //if the player can afford to build the turret
+        {
+            //try to create tower and if it can build it
+            bool isCreated = game->tryToCreateTower((m_tmptowerType),
+                                                    node
+                                                    );
+            if(isCreated == true) // if the tower was built
+            {
+                game->addCurrency(-m_tmpCost); // update player currency
+                std::cout<<game->getPlayerCurrency();
+                node->setHighlighted(false);
+                std::cout<<"tower was created properly"<<std::endl;
+
+                if(game->getPlayerCurrency() == 0)
+                    // if there is no money left come out of creation mode
+                {
+                    m_creationMode = 0;
+                }
+            }
+            else
+            {
+                node->setHighlighted(2); //cannot be placed down there so make red
+            }
+        }
+        else //you dont have enough money come out of creation mode
+        {
+            m_creationMode = 0;
+            game->setNodehighlighted(m_highlightedNode, 0);
+        }
+    }
+
+    //else if it is a turret come out of creation mode and go to uprgade menu
+
+    else if(entityClick && entityClick->getGeneralType()==TURRET)
+    {
+        m_creationMode = 0;
+        turretClicked(_ID);
+        game->setNodehighlighted(m_highlightedNode, 0);
+    }
+
+    //else check the ui to see if other buttons have been pressed
+
+    else
+    {
+        UIElementPtr element = checkUIClicked(_ID);
+
+        if(element && element->getType() == "create") // if it is a create button
+        {
+            CreateTowerButtonPtr button = boost::dynamic_pointer_cast<CreateTowerButton>(element);
+
+            if(button && button->getTowertype() == m_tmptowerType)
+
+                //if the button is the same as what has already been pressed
+            {
+                m_creationMode = 0;
+                game->setNodehighlighted(m_highlightedNode, 0);
+            }
+            else if(button && button->getAffordable() == true)
+                //if it is affordable
+            {
+                m_tmptowerType = button->getTowertype();
+            }
+        }
+    }
+}
+
+//-------------------------------------------------------------------//
 
 void UI::mouseLeftUp(const unsigned int _ID)
 {
@@ -75,7 +159,6 @@ void UI::mouseLeftUp(const unsigned int _ID)
                 if(entityClick->getGeneralType() == TURRET)
                 {
                     turretClicked(_ID);
-                    std::cout<<"turrent clicked"<<std::endl;
                 }
             }
         }
@@ -118,70 +201,7 @@ void UI::mouseLeftUp(const unsigned int _ID)
 
     else //button has already been pressed and can be afforded
     {
-        EntityPtr entityClick;
-        entityClick = game->getEntityByID(_ID).lock();
-
-        //check that it is a valid entity and it is a node and it can be afforded
-
-        if(entityClick &&
-                entityClick->getGeneralType() == NODE &&
-                (game->getPlayerCurrency()-m_tmpCost) >= 0
-                )
-        {
-            Game* game = Game::instance(); //get instance of game
-            NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
-
-            //try to create tower and if it can build it
-
-            bool isCreated = game->tryToCreateTower((m_tmptowerType),
-                                                    node
-                                                    );
-            if(isCreated == true) // if the tower was built
-            {
-                game->addCurrency(-m_tmpCost); // update player currency
-                std::cout<<game->getPlayerCurrency();
-                node->setHighlighted(false);
-                std::cout<<"tower was created properly"<<std::endl;
-            }
-            else
-            {
-                node->setHighlighted(2);
-            }
-
-        }
-
-        //else if it is a turret come out of creation mode and go to uprgade menu
-
-        else if(entityClick && entityClick->getGeneralType()==TURRET)
-        {
-            m_creationMode = 0;
-            turretClicked(_ID);
-            game->setNodehighlighted(m_highlightedNode, 0);
-        }
-        //else check the ui to see if other buttons have been pressed
-
-        else
-        {
-            UIElementPtr element = checkUIClicked(_ID);
-
-            if(element && element->getType() == "create") // if it is a create button
-            {
-                CreateTowerButtonPtr button = boost::dynamic_pointer_cast<CreateTowerButton>(element);
-
-                if(button && button->getTowertype() == m_tmptowerType)
-
-                    //if the button is the same as what has already been pressed
-                {
-                    m_creationMode = 0;
-                    game->setNodehighlighted(m_highlightedNode, 0);
-                }
-                else if(button && button->getAffordable() == true)
-                    //if it is affordable
-                {
-                    m_tmptowerType = button->getTowertype();
-                }
-            }
-        }
+        creationModeClick(_ID);
     }
 }
 
@@ -189,7 +209,7 @@ void UI::mouseLeftUp(const unsigned int _ID)
 void UI::draw()
 {
 
-    for(menuMap::iterator it = m_menus.begin();
+    for(MenuMap::iterator it = m_menus.begin();
         it != m_menus.end();
         ++it)
     {
@@ -204,7 +224,7 @@ void UI::draw()
 void UI::checkButtonAffordable()
 {
 
-    for(menuMap::iterator it = m_menus.begin();
+    for(MenuMap::iterator it = m_menus.begin();
         it != m_menus.end();
         ++it)
     {
@@ -217,14 +237,14 @@ void UI::checkButtonAffordable()
 
 TablePtr UI::getMenu(std::string _name)
 {
-    for(menuMap::iterator it = m_menus.begin();
+    for(MenuMap::iterator it = m_menus.begin();
         it != m_menus.end();
         ++it)
     {
-        TablePtr drawEl = (*it).second;
-        if(drawEl->getName() == _name)
+        TablePtr menu = it->second;
+        if(menu->getName() == _name)
         {
-           return drawEl;
+           return menu;
         }
     }
     return TablePtr();
@@ -260,6 +280,7 @@ void UI::placeDownStaticEntity(const std::string &_type, NodePtr _node)
 void UI::upgradeButtonCommand()
 {
     Game* game = Game::instance();
+    TablePtr upgradeMenu = getMenu("upgradeMenu");
 
     Turret::UpgradeDataWPtr nextUpgradeDataWeak;
     bool successful = game->getNextUpgrade(nextUpgradeDataWeak,m_tmpUpgradeTowerID);
@@ -277,6 +298,7 @@ void UI::upgradeButtonCommand()
                     turretClicked(m_tmpUpgradeTowerID);
                     std::cout<<"tower successfully upgraded"<<std::endl;
                     game->addCurrency(-nextData->m_cost);
+                    upgradeMenu->setDrawable(false);
                 }
             }
             else
@@ -285,9 +307,8 @@ void UI::upgradeButtonCommand()
             }
         }
     }
-    TablePtr upgradeMenu = getMenu("upgradeMenu");
 
-    upgradeMenu->setDrawable(false);
+
 }
 
 //-------------------------------------------------------------------//
@@ -297,81 +318,92 @@ void UI::turretClicked(int _ID)
     EntityPtr entityClick = game->getEntityByID(_ID).lock();
 
     TablePtr menu = getMenu("upgradeMenu");
-    setUpgradeTowerId(_ID);
 
     if(entityClick)
     {
-        Turret::UpgradeDataWPtr nextUpgradeDataWeak;
-        bool successful = game->getNextUpgrade(nextUpgradeDataWeak,_ID);
-        if(successful)
+        if(m_tmpUpgradeTowerID == _ID)
         {
-            Turret::UpgradeDataPtr nextData = nextUpgradeDataWeak.lock();
-            if(nextData)
+            menu->setDrawable(true);
+            std::cout<<"turret the same"<<std::endl;
+        }
+        else
+        {
+            setUpgradeTowerId(_ID);
+            Turret::UpgradeDataWPtr nextUpgradeDataWeak;
+            bool successful = game->getNextUpgrade(nextUpgradeDataWeak,_ID);
+            if(successful)
             {
-
-                try
+                Turret::UpgradeDataPtr nextData = nextUpgradeDataWeak.lock();
+                if(nextData)
                 {
-                    UIElementPtr element = menu->getElement(1,1).lock();
 
-                    TablePtr upgradeMenu = boost::dynamic_pointer_cast<Table>(element);
+                    try
+                    {
+                        UIElementPtr element = menu->getElement(1,1).lock();
 
-                    std::string cost = boost::lexical_cast<std::string>(nextData->m_cost);
-                    std::string cost1 = "Cost : ";
-                    std::string finalCost = cost1 + cost;
+                        TablePtr upgradeMenu = boost::dynamic_pointer_cast<Table>(element);
 
-                    upgradeMenu->setText(2,0,nextData->m_title);
-                    upgradeMenu->setText(1,1,finalCost.c_str());
-                    upgradeMenu->setText(0,0,nextData->m_description);
-                    UIElementPtr button = upgradeMenu->getElement(1,0).lock();
-                    //button->setTexture = nextData->m_texture;
-                    upgradeMenu->setSize();
+                        std::string cost = boost::lexical_cast<std::string>(nextData->m_cost);
+                        std::string cost1 = "Cost : ";
+                        std::string finalCost = cost1 + cost;
 
-                    UIElementPtr upgradeElement = upgradeMenu->getElement(1,0).lock();
+                        upgradeMenu->setText(2,0,nextData->m_title);
+                        upgradeMenu->setText(1,1,finalCost.c_str());
+                        upgradeMenu->setText(0,0,nextData->m_description);
 
-                    UIButtonPtr upgradeButton = boost::dynamic_pointer_cast<UIButton>(upgradeElement);
+                        //                    UIElementPtr button = upgradeMenu->getElement(1,0).lock();
+                        //                    //button->setTexture = nextData->m_texture;
 
-                    upgradeButton->setFunction(boost::bind(&UI::upgradeButtonCommand, this));
+                        upgradeMenu->setSize();
+
+                        UIElementPtr upgradeElement = upgradeMenu->getElement(1,0).lock();
+
+                        UIButtonPtr upgradeButton = boost::dynamic_pointer_cast<UIButton>(upgradeElement);
+
+                        upgradeButton->setFunction(boost::bind(&UI::upgradeButtonCommand, this));
+                    }
+
+                    catch( const boost::bad_lexical_cast & )
+                    {
+                        //unable to convert
+                        std::cout<<"can't do this shit"<<std::endl;
+                    }
                 }
-
-                catch( const boost::bad_lexical_cast & )
+            }
+            Turret::UpgradeDataWPtr currentUpgradeDataWeak;
+            successful = game->getCurrentUpgrade(currentUpgradeDataWeak,_ID);
+            if(successful)
+            {
+                Turret::UpgradeDataPtr currentData = currentUpgradeDataWeak.lock();
+                if(currentData)
                 {
-                    //unable to convert
-                    std::cout<<"can't do this shit"<<std::endl;
+
+                    try
+                    {
+                        UIElementPtr element = menu->getElement(0,1).lock();
+
+                        TablePtr currentMenu = boost::dynamic_pointer_cast<Table>(element);
+
+                        std::string cost = boost::lexical_cast<std::string>(currentData->m_cost);
+
+                        currentMenu->setText(2,0,currentData->m_title);
+                        currentMenu->setText(1,1,cost.c_str());
+                        currentMenu->setText(0,0,currentData->m_description);
+                        UIElementPtr button = currentMenu->getElement(1,0).lock();
+
+                        //button->setTexture = nextData->m_texture;
+                        currentMenu->setSize();
+
+                    }
+                    catch( const boost::bad_lexical_cast & )
+                    {
+                        //unable to convert
+                        std::cout<<"can't do this shit"<<std::endl;
+                    }
                 }
             }
         }
-        Turret::UpgradeDataWPtr currentUpgradeDataWeak;
-        successful = game->getCurrentUpgrade(currentUpgradeDataWeak,_ID);
-        if(successful)
-        {
-            Turret::UpgradeDataPtr currentData = currentUpgradeDataWeak.lock();
-            if(currentData)
-            {
 
-                try
-                {
-                    UIElementPtr element = menu->getElement(0,1).lock();
-
-                    TablePtr currentMenu = boost::dynamic_pointer_cast<Table>(element);
-
-                    std::string cost = boost::lexical_cast<std::string>(currentData->m_cost);
-
-                    currentMenu->setText(2,0,currentData->m_title);
-                    currentMenu->setText(1,1,cost.c_str());
-                    currentMenu->setText(0,0,currentData->m_description);
-                    UIElementPtr button = currentMenu->getElement(1,0).lock();
-
-                    //button->setTexture = nextData->m_texture;
-                    currentMenu->setSize();
-
-                }
-                catch( const boost::bad_lexical_cast & )
-                {
-                    //unable to convert
-                    std::cout<<"can't do this shit"<<std::endl;
-                }
-            }
-        }
         menu->setSize();
         menu->setDrawable(true);
         menu->screenAlignment(Table::CENTREY);
@@ -434,56 +466,6 @@ void UI::setupUI()
 
 }
 
-//-------------------------------------------------------------------//
-void UI::createTowerBuildMenu()
-{
-    createMenu(TablePtr(new Table(ngl::Vec2 (0,0),
-                                    "towerbuildMenu",
-                                    "textures/default_texture.jpg",
-                                    this)));
-
-    TablePtr menu = getMenu("towerbuildMenu");
-
-    TablePtr menu2 =TablePtr(new Table(ngl::Vec2 (0,0),
-                                       "towerMenu",
-                                       "textures/default_texture.jpg",
-                                       this));
-
-
-
-    if(menu)
-    {
-        if(menu2)
-        {
-            menu2->createRows(2);
-            menu2->createColumns(0,2);
-            menu2->createColumns(1,1);
-            menu2->createElement(0,0,CreateTowerButtonPtr(new CreateTowerButton(ngl::Vec2(0,0),"textures/default_texture.jpg","testButton2", menu, 50,"testturret",50,50)));
-            menu2->createElement(0,1,CreateTowerButtonPtr(new CreateTowerButton(ngl::Vec2(0,0),"textures/default_texture.jpg","testButton3", menu, 50,"testturret",50,50)));
-            menu2->createElement(1,0,TextPtr(new Text(ngl::Vec2(0,0), "hello peeps","fonts/Roboto-Regular.ttf",14,"texttest")));
-            menu2->setPosition(ngl::Vec2 (0,0));
-            menu2->setBackground(false);
-            menu2->setSize();
-
-
-
-
-            menu->createRows(3);
-            menu->createColumns(0,2);
-            menu->createColumns(1,3);
-            menu->createColumns(2,1);
-            menu->createElement(0,0,CreateTowerButtonPtr(new CreateTowerButton(ngl::Vec2(0,0),"textures/default_texture.jpg","testButton", menu, 50,"testturret",50,50)));
-            menu->createElement(0,1,CreateTowerButtonPtr(new CreateTowerButton(ngl::Vec2(0,0),"textures/default_texture.jpg","button", menu, 50,"testturret",50,50)));
-            menu->createElement(1,0,CreateTowerButtonPtr(new CreateTowerButton(ngl::Vec2(0,0),"textures/default_texture.jpg","button2", menu, 50,"testturret", 25,25)));
-            menu->createElement(1,1,TextPtr(new Text(ngl::Vec2(0,0), "hello","fonts/Roboto-Regular.ttf",14,"texttest")));
-            menu->createElement(1,2,CreateTowerButtonPtr(new CreateTowerButton(ngl::Vec2(0,0),"textures/default_texture.jpg","button3", menu, 50,"testturret", 50,50)));
-            menu->createElement(2,0,menu2);
-            menu->setSize();
-            menu->screenAlignment(Table::BOTTOM);
-            menu->screenAlignment(Table::CENTREX);
-        }
-    }
-}
 
 //-------------------------------------------------------------------//
 void UI::createTowerMenu()
@@ -838,121 +820,7 @@ void UI::closeUpgradeMenu()
 
 
 
-//-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
 
-
-//-------------------------------------------------------------------//
-//-------------------------Test Function-----------------------------//
-//-------------------------------------------------------------------//
-
-//void UI::mouseLeftUp(const unsigned int _ID)
-//{
-
-//    Game *game = Game::instance();
-
-//    UIElementPtr UIClick = checkUIClicked(_ID);
-
-//    EntityPtr entityClick;
-//    std::cout<<_ID<<" ";
-//    if(!UIClick)
-//    {
-//        entityClick = game->getEntityByID(_ID).lock();
-
-//        if(!entityClick)
-//        {
-//          std::cout<<"i am background"<<std::endl;
-//        }
-//        else
-//        {
-//            if(entityClick->getGeneralType() == NODE)
-//            {
-//                Game* game = Game::instance();
-
-//                NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
-
-//                bool isCreated = game->tryToCreateTower("TestTurret",
-//                                                         node);
-
-//                if(isCreated == true)
-//                {
-//                    //m_creationMode = 0;
-
-//                    std::cout<<"tower was created properly"<<std::endl;
-//                }
-
-//            }
-//            else
-//            {
-//                std::cout<<"i'm not a node"<<std::endl;
-//            }
-//            if(entityClick->getGeneralType() == TURRET)
-//            {
-//              Game* game = Game::instance();
-
-//              Turret::UpgradeDataWPtr upgradeDataWeak;
-//              bool successful = game->upgrateTurret(_ID);
-//              if(successful)
-//              {
-//                successful = game->getCurrentUpgrade(upgradeDataWeak,_ID);
-//              }
-//              if(successful)
-//              {
-//                Turret::UpgradeDataPtr data = upgradeDataWeak.lock();
-//                if(data)
-//                {
-//                  std::cout<<"Upgrading to "<<std::endl;
-//                  std::cout<<"   "<<data->m_title<<std::endl;
-//                  std::cout<<"   "<<data->m_description<<std::endl;
-//                  std::cout<<"   "<<data->m_cost<<std::endl;
-//                }
-//              }
-//            }
-
-//        }
-
-//    }
-//    else
-//    {
-////        UIClick->isClicked();
-//        std::cout<<"i am GUI"<<std::endl;
-//    }
-//}
-
-//-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
-
-
-void UI::createTestTower()
-{
-    m_creationMode = true;
-    m_tmptowerType = "testTurret";
-}
-
-
-void UI::displayUpgradeMenu(const unsigned int _ID)
-{
-    Game* game = Game::instance();
-    Turret::UpgradeDataWPtr upgradeDataWeak;
-                  bool successful = game->upgradeTurret(_ID);
-                  if(successful)
-                  {
-                    successful = game->getCurrentUpgrade(upgradeDataWeak,_ID);
-                  }
-                  if(successful)
-                  {
-                    Turret::UpgradeDataPtr data = upgradeDataWeak.lock();
-                    if(data)
-                    {
-                      std::cout<<"Upgrading to "<<std::endl;
-                      std::cout<<"   "<<data->m_title<<std::endl;
-                      std::cout<<"   "<<data->m_description<<std::endl;
-                      std::cout<<"   "<<data->m_cost<<std::endl;
-                    }
-                  }
-}
 
 
 

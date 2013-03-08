@@ -211,4 +211,5 @@ OTHER_FILES += \
     models/enemy.obj \
     models/hexagon.obj \
     models/wall.obj \
+    textures/noMoney.png
 

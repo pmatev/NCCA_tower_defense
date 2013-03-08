@@ -79,6 +79,8 @@ public:
     inline std::string getTowertype() {return m_towerType;}
 
 
+
+
 protected:
     //-------------------------------------------------------------------//
     /// @brief cost of turret
@@ -94,6 +96,17 @@ protected:
     /// @brief stores which tower type to create
     //-------------------------------------------------------------------//
     std::string m_towerType;
+
+    //-------------------------------------------------------------------//
+    /// @brief stores the image file to draw when the button
+    /// is not affordable
+    //-------------------------------------------------------------------//
+    std::string m_noMoneyImage;
+
+    //-------------------------------------------------------------------//
+    /// @brief GLUinnt to store the noMoneyTexture
+    //-------------------------------------------------------------------//
+    GLuint m_noMoneyTexture;
 
 };
 

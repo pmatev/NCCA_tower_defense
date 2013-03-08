@@ -122,57 +122,74 @@ public:
     //-------------------------------------------------------------------//
     /// @brief initializes and creates the tower create menu
     //-------------------------------------------------------------------//
-    void createTowerBuildMenu();
-
-
     void createTowerMenu();
 
+    //-------------------------------------------------------------------//
+    /// @brief initializes and creates the upgrade menu
+    //-------------------------------------------------------------------//
     void createUpgradeMenu();
 
+    //-------------------------------------------------------------------//
+    /// @brief creates the heads up display for score and money
+    //-------------------------------------------------------------------//
     void createDisplayScoreMenu();
 
+    //-------------------------------------------------------------------//
+    /// @brief command for when the upgrade button is clicked to upgrade
+    /// currently selected tower
+    //-------------------------------------------------------------------//
     void upgradeButtonCommand();
 
+    //-------------------------------------------------------------------//
+    /// @brief update function which runs the ui's every frame updates e.g.
+    /// score
+    //-------------------------------------------------------------------//
     void updatePlayerInfo();
 
+    //-------------------------------------------------------------------//
+    /// @brief function used by the button in the upgrade menu to close it
+    //-------------------------------------------------------------------//
     void closeUpgradeMenu();
 
-    void displayUpgradeMenu(const unsigned int _ID);
-
+    //-------------------------------------------------------------------//
+    /// @brief this is ran when a turret is clicked. it initialises the the
+    /// upgrade value with its details
+    //-------------------------------------------------------------------//
     void turretClicked(int _ID);
 
+    //-------------------------------------------------------------------//
+    /// @brief sets the upgrade id
+    //-------------------------------------------------------------------//
     inline void setUpgradeTowerId(int _ID) {m_tmpUpgradeTowerID = _ID;}
 
+    //-------------------------------------------------------------------//
+    /// @brief initalise function for the ui
+    //-------------------------------------------------------------------//
     void setupUI();
 
+    //-------------------------------------------------------------------//
+    /// @brief when in creation mode this checks if the staticEntity can be
+    /// placed on node if it can add to the list of towers else wait for
+    /// do nothing until next click
+    /// @param [in] takes in the _ID
+    //-------------------------------------------------------------------//
+    void placeDownStaticEntity(const std::string &_type, NodePtr _node);
 
     //-------------------------------------------------------------------//
+    /// @brief function to run on click event when in creation mode
+    /// @param [in] takes in the _ID
     //-------------------------------------------------------------------//
-    //-------------------------------------------------------------------//
-    void printTest();
-
-    void printTest2();
-
-    void createTestMenu();
-
-
-    void mouseLeftUpTowerCreate(const unsigned int _ID);
-
-    //-------------------------------------------------------------------//
-    //-------------------------------------------------------------------//
-    //-------------------------------------------------------------------//
-
-
+    void creationModeClick(const unsigned int _ID);
 
 private:
 
-    typedef std::map<unsigned int, TablePtr> menuMap;
+    typedef std::map<unsigned int, TablePtr> MenuMap;
 
 
     //-------------------------------------------------------------------//
     /// @brief stores all the menus for the game
     //-------------------------------------------------------------------//
-    menuMap m_menus;
+    MenuMap m_menus;
 
     //-------------------------------------------------------------------//
     /// @brief A map of IDs to element Pointers for game object management.
@@ -200,13 +217,8 @@ private:
     int m_tmpCost;
 
     //-------------------------------------------------------------------//
-    /// @brief when in creation mode this checks if the staticEntity can be
-    /// placed on node if it can add to the list of towers else wait for
-    /// do nothing until next click
-    /// @param [in] takes in the _ID
+    /// @brief stores the id value of the towers id used for the upgrade menu
     //-------------------------------------------------------------------//
-    void placeDownStaticEntity(const std::string &_type, NodePtr _node);
-
     unsigned int m_tmpUpgradeTowerID;
 
 
