@@ -43,7 +43,7 @@ public://methods
   /// @brief a method to enforce the grid boundaries
   //-------------------------------------------------------------------//
 
-  void enforceGridBoundaries();
+//  void enforceGridBoundaries();
 
   //-------------------------------------------------------------------//
   /// @brief a method to get the emmiter Id

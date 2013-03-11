@@ -254,7 +254,7 @@ void Game::setupScene()
     //Get the children of the wave node
     QDomNode waveEntries = waveNode.firstChild();
 
-    Wave::EnemyPairList creationEnemies;
+    Wave::EnemyInfoList creationEnemies;
     float spawnRate;
 
     //Loops through the wave children
@@ -282,6 +282,8 @@ void Game::setupScene()
 
           std::string type;
           int count;
+          float shield;
+          float maxSpeed;
 
           //This will loop through the enemyType children
           while(!enemyTypeEntries.isNull())
@@ -298,6 +300,12 @@ void Game::setupScene()
             else if(enemyTypeDataTagName == "count")
             {
               count = boost::lexical_cast<int>(enemyTypeData.text().toStdString());
+            }else if(enemyTypeDataTagName == "shield")
+            {
+              shield = boost::lexical_cast<float>(enemyTypeData.text().toStdString());
+            }else if(enemyTypeDataTagName == "maxSpeed")
+            {
+              maxSpeed = boost::lexical_cast<float>(enemyTypeData.text().toStdString());
             }
 
             enemyTypeEntries = enemyTypeEntries.nextSibling();
@@ -305,9 +313,11 @@ void Game::setupScene()
 
           //Add a new enemytype
           creationEnemies.push_back(
-                Wave::EnemyPair::create(
+                Wave::EnemyInfo::create(
                   count,
-                  type
+                  type,
+                  shield,
+                  maxSpeed
                   )
                 );
         }

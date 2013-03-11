@@ -133,6 +133,14 @@ protected:
 
   void resetSpawnPathHighlighting();
 
+  void createHexagonShape(
+        int _gridX,
+        int _gridZ,
+        const ngl::Vec2 &_start,
+        int _size,
+        std::list<ngl::Vec2> &o_coords
+        );
+
 private:
 
   //-------------------------------------------------------------------//

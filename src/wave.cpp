@@ -20,7 +20,7 @@ Wave::Wave(
 {
   // Clone the start enemies
   m_totalEnemiesForCreation.clear();
-  BOOST_FOREACH(EnemyPairPtr pair, m_enemiesForCreation)
+  BOOST_FOREACH(EnemyInfoPtr pair, m_enemiesForCreation)
   {
     m_totalEnemiesForCreation.push_back(pair->clone());
   }
@@ -33,7 +33,7 @@ void Wave::reset()
   m_time = 0;
   // Start again by cloning
   m_enemiesForCreation.clear();
-  BOOST_FOREACH(EnemyPairPtr pair, m_totalEnemiesForCreation)
+  BOOST_FOREACH(EnemyInfoPtr pair, m_totalEnemiesForCreation)
   {
     m_enemiesForCreation.push_back(pair->clone());
   }
@@ -274,7 +274,7 @@ void Wave::brain(const double _dt)
       Node::NodeWVecPtr spawnNodes = m_spawnNodes.lock();
       if(spawnNodes)
       {
-        BOOST_FOREACH(EnemyPairPtr pair, m_enemiesForCreation)
+        BOOST_FOREACH(EnemyInfoPtr pair, m_enemiesForCreation)
         {
           if(pair->m_count)
           {
@@ -283,7 +283,10 @@ void Wave::brain(const double _dt)
             NodePtr startNode = (*spawnNodes)[randomInt].lock();
             if(startNode)
             {
-              addEnemy(pair->m_type, startNode->getPos(), ngl::Vec3(0, 0, 0));
+              addEnemy(
+                    pair,
+                    startNode->getPos()
+                    );
               --pair->m_count;
             }
             // Break so we don't make one of each type
@@ -298,22 +301,21 @@ void Wave::brain(const double _dt)
 
 //-------------------------------------------------------------------//
 void Wave::addEnemy(
-    std::string _type,
-    const ngl::Vec3 &_pos,
-    const ngl::Vec3 &_aim
+    EnemyInfoCPtr _enemyInfo,
+    const ngl::Vec3 &_pos
     )
 {
   // use EntityFactory to create enemy then save it in m_enemies
   EnemyPtr newEnemy = boost::dynamic_pointer_cast<Enemy>(
         EntityFactory::createDynamicEntity(
-          _type,
+          _enemyInfo->m_type,
           _pos,
-          _aim
+          ngl::Vec3()
           )
         );
+  newEnemy->setShield(_enemyInfo->m_shield);
+  newEnemy->setMaxSpeed(_enemyInfo->m_maxSpeed);
   m_enemies.push_back(newEnemy);
-  addToPathNodes(newEnemy);
-
 }
 
 //-------------------------------------------------------------------//
@@ -405,7 +407,7 @@ bool Wave::isDead() const
   if(m_enemies.size() == 0)
   {
     // Make sure there are no enemies left to be created
-    BOOST_FOREACH(EnemyPairPtr pair, m_enemiesForCreation)
+    BOOST_FOREACH(EnemyInfoPtr pair, m_enemiesForCreation)
     {
       if(pair->m_count != 0)
       {
@@ -423,7 +425,7 @@ bool Wave::isDead() const
 //-------------------------------- WaveInfo ----------------------------------//
 
 WaveInfoPtr WaveInfo::create(
-    const Wave::EnemyPairList &_enemiesForCreation,
+    const Wave::EnemyInfoList &_enemiesForCreation,
     float _birthRate
     )
 {

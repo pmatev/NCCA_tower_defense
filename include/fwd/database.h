@@ -185,7 +185,7 @@ struct EntityRecord
   {
     EntityRecordPtr a(
           new EntityRecord(
-             _id,
+            _id,
             _type,
             _x,
             _y,
@@ -199,10 +199,38 @@ struct EntityRecord
             _maxY,
             _minZ,
             _maxZ
-                        )
+            )
           );
     return a;
   }
+
+  //-------------------------------------------------------------------//
+  /// @brief create a new copy if record
+  //-------------------------------------------------------------------//
+
+  inline EntityRecordPtr clone() const
+  {
+    EntityRecordPtr a(
+          new EntityRecord(
+            m_id,
+            m_generalType,
+            m_x,
+            m_y,
+            m_z,
+            m_velX,
+            m_velY,
+            m_velZ,
+            m_minX,
+            m_maxX,
+            m_minY,
+            m_maxY,
+            m_minZ,
+            m_maxZ
+            )
+          );
+    return a;
+  }
+
 
   //-------------------------------------------------------------------//
   /// @brief creator of helping with smart pointer creation

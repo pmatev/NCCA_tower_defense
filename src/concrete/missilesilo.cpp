@@ -21,7 +21,8 @@ MissileSilo::MissileSilo(
     15
     ),
   m_gravity(-9.81),
-  m_hasTarget(false)
+  m_hasTarget(false),
+  m_horizontalSpeed(5)
 {
   m_shotPos = ngl::Vec3(m_pos.m_x,
                         m_pos.m_y + 0.75,
@@ -126,6 +127,12 @@ void MissileSilo::filterViewVolume(EntityRecordWCList &o_localEntities)
 
 void MissileSilo::calculateTarget()
 {
+  // This uses a rating system. Enemies are rated according to how many
+  // neighbours they have, how close the neighbours are and how close the enemy
+  // is to the base. The enemy with the highest rating is aimed at. The
+  // targeting system also takes into account how fast the enemy is travelling
+  // and tries to predict where it will be when the grenade lands.
+
   // Adjust the view size
   float viewSize = 10;
   m_wsViewBBox = BBox(
@@ -141,37 +148,79 @@ void MissileSilo::calculateTarget()
   types.push_back(ENEMY);
   calculateLocalEntities(localEntities, types);
 
-  // Go through localEntities and find the best place to target
 
   if(localEntities.size() == 0)
   {
     m_hasTarget = false;
     return;
   }
-  // to start with just find the average position
-  ngl::Vec3 averagePos;
-  int numEntities = 0;
+
+  // Go through all localEntities and work out which has most neighbours
+  float neighbourSqrRadius = viewSize * 0.2;
+  float maxNeighboursWeight = -1;
+  EntityRecordPtr bestRecord;
   BOOST_FOREACH(EntityRecordWCPtr recordWeak, localEntities)
   {
     EntityRecordCPtr record = recordWeak.lock();
     if(record)
     {
-      averagePos += ngl::Vec3(record->m_x,record->m_y, record->m_z);
-      ++numEntities;
+      float neighbourWeight = 0;
+      // Find neighbours
+      BOOST_FOREACH(EntityRecordWCPtr recordNeighbourWeak, localEntities)
+      {
+        EntityRecordCPtr recordNeighbour = recordNeighbourWeak.lock();
+        if(record && record->m_id != recordNeighbour->m_id)
+        {
+          float sqrDist =
+              pow(record->m_pos[0] - recordNeighbour->m_pos[0], 2) +
+              pow(record->m_pos[1] - recordNeighbour->m_pos[1], 2) +
+              pow(record->m_pos[2] - recordNeighbour->m_pos[2], 2);
+          float weight = 0;
+          if(sqrDist < neighbourSqrRadius)
+          {
+            weight = (neighbourSqrRadius - sqrDist) / neighbourSqrRadius;
+          }
+          neighbourWeight += weight;
+        }
+      }
+      // Enemies that are closer to the base should have a higher weighting
+      float sqrDistToBase =
+          pow(record->m_pos[0] - m_basePos.m_x, 2) +
+          pow(record->m_pos[1] - m_basePos.m_y, 2) +
+          pow(record->m_pos[2] - m_basePos.m_z, 2);
+      if(sqrDistToBase < viewSize)
+      {
+        neighbourWeight += (viewSize - sqrDistToBase) / viewSize;
+      }
+      if(neighbourWeight > maxNeighboursWeight)
+      {
+        maxNeighboursWeight = neighbourWeight;
+        bestRecord = record->clone();
+      }
     }
   }
-  if(numEntities != 0)
+  if(bestRecord)
   {
-    averagePos /= numEntities;
+    // Calculate based on the horizontal speed, the distance to the enemy
+    // and the speed of the enemy, where to shoot.
+    ngl::Vec3 relVec(
+          m_pos.m_x - bestRecord->m_x,
+          m_pos.m_y - bestRecord->m_y,
+          m_pos.m_z - bestRecord->m_z
+          );
+    float timeToHit = relVec.length() / m_horizontalSpeed;
+    m_hasTarget = true;
+    m_targetPos = ngl::Vec3(
+          bestRecord->m_x + (bestRecord->m_velX * timeToHit),
+          bestRecord->m_y + (bestRecord->m_velY * timeToHit),
+          bestRecord->m_z + (bestRecord->m_velZ * timeToHit)
+          );
   }
-  m_hasTarget = true;
-  m_targetPos = averagePos;
-  return ;
 }
 
 //-------------------------------------------------------------------//
 
-ngl::Vec3 MissileSilo::aim(const ngl::Vec3 &_target, float _horizontalSpeed)
+ngl::Vec3 MissileSilo::aim(const ngl::Vec3 &_target)
 {
   // Make sure to adjust the aimVector so that we hit the target
   ngl::Vec3 relVec =  _target - m_shotPos;
@@ -183,11 +232,11 @@ ngl::Vec3 MissileSilo::aim(const ngl::Vec3 &_target, float _horizontalSpeed)
   float len = relVec.length();
   if(len)
   {
-    vX = (relVec / len) * _horizontalSpeed;
+    vX = (relVec / len) * m_horizontalSpeed;
   }
   // velocity in x
 
-  float timeToHit = len / _horizontalSpeed;
+  float timeToHit = len / m_horizontalSpeed;
 
   // velocity in y
   ngl::Vec3 vY(
@@ -211,9 +260,8 @@ void MissileSilo::fire()
   ProjectileManagerPtr pm = game->getProjectileManagerWeakPtr().lock();
   if(pm)
   {
-    float horizontalSpeed = 5; // THIS NEEDS TO BE PROPERLY INSTANTIATED -----------------------------------
     calculateTarget();
-    ngl::Vec3 velocity = aim(m_targetPos, horizontalSpeed);
+    ngl::Vec3 velocity = aim(m_targetPos);
 
     //add a projectile, at the moment starts it at the centre of the turret
     //might need to add some way of setting where the end of the turret's

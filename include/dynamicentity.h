@@ -68,7 +68,7 @@ public:
   /// there are different responses to the limits for different sub classes
   //-------------------------------------------------------------------//
 
-  virtual void enforceGridBoundaries () = 0;
+  virtual void enforceGridBoundaries ();
 
   //-------------------------------------------------------------------//
   /// @brief returns the steering behaviours object
@@ -83,7 +83,13 @@ public:
   //-------------------------------------------------------------------//
   /// @brief returns the max force
   //-------------------------------------------------------------------//
-  inline ngl::Vec3 getVelocity(){return m_velocity;}
+  inline ngl::Vec3 getVelocity() const {return m_velocity;}
+
+  //-------------------------------------------------------------------//
+  /// @brief set the max speed
+  /// @param[in] _maxSpeed maximum speed
+  //-------------------------------------------------------------------//
+  inline void setMaxSpeed(float _maxSpeed){m_maxSpeed = _maxSpeed;}
 
   //-------------------------------------------------------------------//
   /// @brief gets the aim
@@ -215,7 +221,7 @@ protected:
   /// @brief the max velocity of the entity
   //-------------------------------------------------------------------//
 
-  float m_maxVelocity;
+  float m_maxSpeed;
 
   //-------------------------------------------------------------------//
   /// @brief the max acceleration of the entity

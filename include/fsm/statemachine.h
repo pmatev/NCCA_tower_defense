@@ -41,6 +41,8 @@ public:
   //----------------------------------------------------------------------------
   void changeToPreviousState();
 
+  ~StateMachine();
+
 protected:
   //----------------------------------------------------------------------------
   /// @brief the owner of this state machine

@@ -51,3 +51,7 @@ void StateMachine::changeToPreviousState()
   changeState(m_previousState);
 }
 
+StateMachine::~StateMachine()
+{
+  std::cout<<"Deleting state machine"<<std::endl;
+}

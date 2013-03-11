@@ -1,6 +1,7 @@
 #include "include/fsm/states/missilesilostate.h"
 #include "turret.h"
 #include "concrete/missilesilo.h"
+#include "game.h"
 
 //-------------------------------------------------------------------//
 
@@ -124,11 +125,12 @@ void MissileSiloBasicUpgrade::execute(EntityWPtr _turret)
   if (strongEntity)
   {
     //cast strong entity pointer to a turret pointer
-    TurretPtr turretptr = boost::dynamic_pointer_cast<Turret>(strongEntity);
+    MissileSiloPtr turretptr = boost::dynamic_pointer_cast<MissileSilo>(strongEntity);
     if (turretptr)
     {
       // Edit all the values
       turretptr->setShotWaitTime(5);
+      turretptr->setBasePos(Game::instance()->getBasePos());
       // When this is done it needs to change to the previous state
       StateMachine *sm = strongEntity->getStateMachine();
       if(sm)

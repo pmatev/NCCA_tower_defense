@@ -34,7 +34,7 @@ void TextureLib::init()
 {
     load("debug", "textures/default_texture.png");
     load("healthbar", "textures/HealthBar_flat.png");
-    load("noMoneyButton","textures/noMoney.png");
+    //load("noMoneyButton","textures/noMoney.png");
 }
 //-------------------------------------------------------------------//
 void TextureLib::load(const std::string &_name, const std::string &_file)

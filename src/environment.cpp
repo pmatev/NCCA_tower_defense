@@ -56,8 +56,44 @@ Environment::Environment(
           );
   }
 
+//  // Add invisible nodes around the edge
+  std::list<ngl::Vec2> invisibleCoords;
+  for(int i = 0; i < _info.m_gridWidth; ++i)
+  {
+    for(int j = 0; j < _info.m_gridHeight; ++j)
+    {
+      if(
+         i == 0 ||
+         i == _info.m_gridWidth -1 ||
+         j == 0 ||
+         j == _info.m_gridHeight -1
+         )
+      {
+        // Add left and right edges
+        invisibleCoords.push_back(ngl::Vec2(i, j));
+      }
+    }
+  }
+
+//  // Make a hexagon
+//  int greatestDimention;
+//  _info.m_gridWidth > _info.m_gridHeight ? greatestDimention = _info.m_gridWidth : greatestDimention = _info.m_gridHeight;
+//  createHexagonShape(
+//        _info.m_gridWidth,
+//        _info.m_gridHeight,
+//        ngl::Vec2(0, 0),
+//        greatestDimention,
+//        invisibleCoords
+//        );
+
+  invisibleCoords.insert(
+        invisibleCoords.end(),
+        _info.m_invisibleCoords.begin(),
+        _info.m_invisibleCoords.end()
+        );
+
   // Set invisible nodes to be invisible.
-  BOOST_FOREACH(ngl::Vec2 visCoord, _info.m_invisibleCoords)
+  BOOST_FOREACH(ngl::Vec2 visCoord, invisibleCoords)
   {
     NodePtr visNode = m_nodeMap->getNodeFromCoords(
           visCoord[0],
@@ -69,8 +105,15 @@ Environment::Environment(
     }
   }
 
+  std::list<ngl::Vec2> wallCoords;
+  wallCoords.insert(
+        wallCoords.end(),
+        _info.m_wallCoords.begin(),
+        _info.m_wallCoords.end()
+        );
+
   // Create walls from coordinates.
-  BOOST_FOREACH(ngl::Vec2 wallCoord, _info.m_wallCoords)
+  BOOST_FOREACH(ngl::Vec2 wallCoord, wallCoords)
   {
     NodePtr wallNode = m_nodeMap->getNodeFromCoords(
           wallCoord[0],
@@ -84,6 +127,98 @@ Environment::Environment(
 
   m_nodeMap->recalculateSearchTree(NodeWPtr(linkedNode));
   resetSpawnPathHighlighting();
+
+}
+
+//-------------------------------------------------------------------//
+
+void Environment::createHexagonShape(
+    int _gridX,
+    int _gridZ,
+    const ngl::Vec2 &_start,
+    int _size,
+    std::list<ngl::Vec2> &o_coords
+    )
+{
+  // THIS SECTION DOES NOT WORK YET --------------------------------------------------------
+  // finding the start position doesn't work on some odd numbered _size
+  int sideLength;
+  ngl::Vec2 start;
+  if(_size % 2 == 0)
+  {
+   sideLength = std::ceil((_size - 1.0) / 2.0);
+  }
+  else
+  {
+     sideLength = _size / 2.0 + 1;
+  }
+  start = ngl::Vec2(_start.m_x, _start.m_y + std::ceil((_size - sideLength) / 2));
+ // ngl::Vec2 start(_start.m_x, _start.m_y + std::floor((_size - sideLength) / 2) + 1);
+  if(_size % 2 != 0 && _size % 3 != 0) // every second odd number
+  {
+    start.m_y +=1;
+  }
+  // THIS SECTION DOES NOT WORK YET --------------------------------------------------------
+  int xSize = (sideLength * 2) - 1;
+  int evenOffset;
+  if(int(start.m_x) % 2 == 0)
+  {
+    evenOffset = -1;
+  }
+  else
+  {
+    evenOffset = 0;
+  }
+  for(int i = 0; i < _gridX; ++i)
+  {
+    int rightStop = _gridZ;
+    int leftStop = 0;
+    if(i ==  start.m_x || i == start.m_x + xSize  - 1)
+    {
+      // Top and Bottom edges
+      rightStop = start.m_y;
+      leftStop = start.m_y + sideLength - 1;
+    }
+    else
+    {
+      // Top diagonals
+      if(i > start.m_x && i < start.m_x + sideLength)
+      {
+        if(i % 2 == 0) // even
+        {
+          rightStop = start.m_y + (start.m_x - i) / 2 + 1 + evenOffset;
+          leftStop =  start.m_y + sideLength -(start.m_x - i) / 2 +evenOffset;
+        }
+        else // odd
+        {
+          rightStop = start.m_y + (start.m_x - i) / 2;
+          leftStop = start.m_y + sideLength -(start.m_x - i) / 2 - 1;
+        }
+      }
+      // Bottom diagonals
+      if(i >= start.m_x + sideLength && i < start.m_x + xSize)
+      {
+        if(i % 2 == 0) // even
+        {
+          rightStop = start.m_y + (i - start.m_x) / 2  - sideLength + 2+ evenOffset;
+          leftStop = start.m_y + sideLength*2 - (i - start.m_x) / 2 -1+ evenOffset;
+        }
+        else // odd
+        {
+          rightStop =  start.m_y + (i - start.m_x) / 2  - sideLength + 1;
+          leftStop = start.m_y + sideLength*2 - (i - start.m_x) / 2  - 2;
+        }
+      }
+    }
+
+    for(int j = 0; j < _gridZ; ++j)
+    {
+      if(j > leftStop || j < rightStop)
+      {
+        o_coords.push_back(ngl::Vec2(i, j));
+      }
+    }
+  }
 
 }
 

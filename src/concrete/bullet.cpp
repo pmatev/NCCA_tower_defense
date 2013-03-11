@@ -13,7 +13,7 @@ Bullet::Bullet(
   Projectile(_pos,_aim, _id)
 {
   m_damage =10;
-  m_maxVelocity = 10;
+  m_maxSpeed = 10;
   m_velocity = m_aimVector;
 
   initialiseMesh("bullet");

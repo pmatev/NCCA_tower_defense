@@ -15,7 +15,7 @@ Grenade::Grenade(
   m_horizontalSpeed(5)
 {
   m_damage =50;
-  m_maxVelocity = 100;
+  m_maxSpeed = 100;
   m_maxAccn = 100;
   m_velocity = m_aimVector;
 
@@ -94,6 +94,6 @@ Grenade::~Grenade()
 {
   if(m_parent)
   {
-    m_parent->addExplosion(1000, 40, 3, m_pos, 0.5);
+    m_parent->addExplosion(100, 40, 3, m_pos, 0.5);
   }
 }

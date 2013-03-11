@@ -5,24 +5,47 @@
     <gridWidth>20</gridWidth>
     <gridHeight>20</gridHeight>
     <hexSize>2</hexSize>
-    <baseX>0</baseX>
-    <baseY>0</baseY>
-    <dbGridSizeX>10</dbGridSizeX>
-    <dbGridSizeZ>10</dbGridSizeZ>
+    <baseX>2</baseX>
+    <baseY>2</baseY>
+    <dbGridSizeX>12</dbGridSizeX>
+    <dbGridSizeZ>12</dbGridSizeZ>
   </environment>
 
   <spawnCoords>
+  <spawnCoord>
+    <x>18</x>
+    <y>18</y>
+  </spawnCoord>
+    <!--
+    <spawnCoord>
+      <x>38</x>
+      <y>29</y>
+    </spawnCoord>
+    <spawnCoord>
+      <x>0</x>
+      <y>30</y>
+    </spawnCoord>
+    <spawnCoord>
+      <x>38</x>
+      <y>30</y>
+    </spawnCoord>
     <spawnCoord>
       <x>19</x>
-      <y>19</y>
+      <y>39</y>
     </spawnCoord>
+    <spawnCoord>
+      <x>38</x>
+      <y>10</y>
+    </spawnCoord>
+    <spawnCoord>
+      <x>19</x>
+      <y>0</y>
+    </spawnCoord>
+    -->
+
   </spawnCoords>
 
   <invisibleCoords>
-    <invisibleCoord>
-      <x>0</x>
-      <y>10</y>
-    </invisibleCoord>
     <invisibleCoord>
       <x>1</x>
       <y>10</y>
@@ -91,13 +114,14 @@
       <x>18</x>
       <y>10</y>
     </invisibleCoord>
-    <invisibleCoord>
-      <x>19</x>
-      <y>10</y>
-    </invisibleCoord>
   </invisibleCoords>
 
   <wallCoords>
+  <!--
+  <wallCoord>
+    <x>5</x>
+    <y>5</y>
+  </wallCoord>
     <wallCoord>
       <x>5</x>
       <y>5</y>
@@ -118,23 +142,34 @@
       <x>5</x>
       <y>9</y>
     </wallCoord>
+    -->
   </wallCoords>
 
   <waves>
+  <wave>
+    <enemyTypes>
+      <enemyType>
+        <type>TestEnemy</type>
+        <count>400</count>
+        <shield>0.5</shield>
+        <maxSpeed>10</maxSpeed>
+      </enemyType>
+      <enemyType>
+        <type>TestEnemy</type>
+        <count>3</count>
+        <shield>10</shield>
+        <maxSpeed>0.5</maxSpeed>
+      </enemyType>
+    </enemyTypes>
+    <spawnRate>0.1</spawnRate>
+  </wave>
     <wave>
       <enemyTypes>
         <enemyType>
           <type>TestEnemy</type>
           <count>400</count>
-        </enemyType>
-      </enemyTypes>
-      <spawnRate>0.1</spawnRate>
-    </wave>
-    <wave>
-      <enemyTypes>
-        <enemyType>
-          <type>TestEnemy</type>
-          <count>400</count>
+          <shield>5</shield>
+          <maxSpeed>3.0</maxSpeed>
         </enemyType>
       </enemyTypes>
       <spawnRate>0.1</spawnRate>
@@ -142,7 +177,7 @@
   </waves>
 
   <player>
-    <startCurrency>500</startCurrency>
+    <startCurrency>10000</startCurrency>
   </player>
 
 </data>

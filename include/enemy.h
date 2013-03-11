@@ -66,7 +66,7 @@ public:
   /// @brief a method to enforce the grid boundaries
   //-------------------------------------------------------------------//
 
-  void enforceGridBoundaries();
+//  void enforceGridBoundaries();
 
 
   //-------------------------------------------------------------------//

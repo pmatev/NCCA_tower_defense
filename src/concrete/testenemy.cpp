@@ -18,7 +18,7 @@ TestEnemy::TestEnemy(
     _id,
     5, // currency value
     20, //score value
-    3.0 // max distance from nearest path node
+    2.0 // max distance from nearest path node
     )
 
 {
@@ -30,8 +30,9 @@ TestEnemy::TestEnemy(
 
   m_damage = 5;
   m_velocity = 0;
-  m_maxVelocity = 2.0;
+  m_maxSpeed = 2.0;
   m_maxAccn = 20;
+  m_mass = 0.1;
 }
 
 //-------------------------------------------------------------------//

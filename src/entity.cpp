@@ -15,6 +15,7 @@ Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type, unsigned int _id) :
   m_ID(_id),
   m_pos(_pos),
   m_health(100.0),
+  m_shieldPercentage(1.0),
   m_wsViewBBox(0,0,0,0,0,0),
   m_lsMeshBBox(0,0,0,0,0,0),
   m_generalType(_type)
@@ -41,11 +42,6 @@ Entity::~Entity()
 {
   Renderer *r = Renderer::instance();
   r->deleteVAO(m_IDStr);
-  if(m_stateMachine)
-  {
-    std::cout<<"Deleting state machine"<<std::endl;
-    delete m_stateMachine;
-  }
 }
 
 //-------------------------------------------------------------------//

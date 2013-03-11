@@ -177,13 +177,26 @@ public: //methods
   inline float getHealth() const {return m_health;}
 
   //-------------------------------------------------------------------//
+  /// @brief set sheild value
+  /// @param[in] _shield the amount of shielding the entity has.
+  /// This value should start at 1 and increase with increased shielding.
+  /// For example a value of 2 should mean that the amount of damage is halved.
+  //-------------------------------------------------------------------//
+
+  inline void setShield(float _shield)
+  {
+    _shield = std::max(1.0f, _shield);
+    m_shieldPercentage = 1.0 / _shield;
+  }
+
+  //-------------------------------------------------------------------//
   /// @brief Deal a certain amount of damage to the entity.
   /// @param[in] _damage, the amount of damage to deal
   //-------------------------------------------------------------------//
 
   inline void dealDamage(float _damage)
   {
-    m_health-= _damage;
+    m_health-= m_shieldPercentage * _damage;
   }
 
   //-------------------------------------------------------------------//
@@ -309,6 +322,15 @@ protected: //attributes
   //-------------------------------------------------------------------//
 
   float m_health;
+
+  //-------------------------------------------------------------------//
+  /// @brief this gives the ability to create entity that are hard to kill
+  /// this is a multiplier for all damage dealt to an entity. This value
+  /// should be between 0 and 1, a value of 0.5 means that all damage is
+  /// halved before being dealt.
+  //-------------------------------------------------------------------//
+
+  float m_shieldPercentage;
 
   //-------------------------------------------------------------------//
   /// @brief a pointer to a list of entity records

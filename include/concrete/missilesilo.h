@@ -38,7 +38,16 @@ public:
 
   void draw();
 
+  //-------------------------------------------------------------------//
+  /// @brief set the position to shoot at. This can be used if you wanted
+  /// the user to specify where to shoot.
+  //-------------------------------------------------------------------//
   inline void setTargetPos(const ngl::Vec3 &_pos) {m_targetPos = _pos;}
+
+  //-------------------------------------------------------------------//
+  /// @brief set the base position
+  //-------------------------------------------------------------------//
+  inline void setBasePos(const ngl::Vec3 &_pos) {m_basePos = _pos;}
 
   inline bool getHasTarget() const {return m_hasTarget;}
 
@@ -75,7 +84,7 @@ protected:
   //-------------------------------------------------------------------//
   /// @brief adjust the aim vector to hit the target
   //-------------------------------------------------------------------//
-  ngl::Vec3 aim(const ngl::Vec3 &_target, float _horizontalSpeed);
+  ngl::Vec3 aim(const ngl::Vec3 &_target);
 
   //-------------------------------------------------------------------//
   /// @brief overload fire so that we can calculate target
@@ -93,6 +102,17 @@ protected:
   ngl::Vec3 m_targetPos;
 
   bool m_hasTarget;
+
+  //-------------------------------------------------------------------//
+  /// @brief the position of the base can be used when calculating the target
+  /// position. Enemies that are near to the base should have a higher priority.
+  //-------------------------------------------------------------------//
+  ngl::Vec3 m_basePos;
+
+  //-------------------------------------------------------------------//
+  /// @brief horizontal speed that missiles fire at towards target
+  //-------------------------------------------------------------------//
+  float m_horizontalSpeed;
 
 };
 

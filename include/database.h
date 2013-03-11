@@ -121,8 +121,8 @@ public: //methods
 
   inline ngl::Vec2 getMinGridExtents() {
     return ngl::Vec2(
-          m_environmentMinX,
-          m_environmentMinZ);
+          m_environmentMinX + 1,
+          m_environmentMinZ + 1);
   }
 
   //-------------------------------------------------------------------//
@@ -131,8 +131,8 @@ public: //methods
 
   inline ngl::Vec2 getMaxGridExtents() {
     return ngl::Vec2(
-          m_environmentMaxX,
-          m_environmentMaxZ);
+          m_environmentMaxX - 1,
+          m_environmentMaxZ - 1);
   }
 
 protected: //methods

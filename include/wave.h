@@ -27,14 +27,14 @@ DECLARESMARTLIST(WaveInfo)
 class Wave
 {
 public:
-  DECLARESMART(EnemyPair)
+  DECLARESMART(EnemyInfo)
   //-------------------------------------------------------------------//
   /// @class pair for storing the number and type of a specific enemy
   /// this will be used when creating lists of available enemies for passing
   /// into the wave
   //-------------------------------------------------------------------//
 
-  class EnemyPair
+  class EnemyInfo
   {
     public:
 
@@ -49,15 +49,30 @@ public:
     //-------------------------------------------------------------------//
     std::string m_type;
 
+    //-------------------------------------------------------------------//
+    /// @brief the shield value of the enemies
+    //-------------------------------------------------------------------//
+    float m_shield;
+
+    //-------------------------------------------------------------------//
+    /// @brief maximum speed that an enemy can go
+    //-------------------------------------------------------------------//
+    float m_maxSpeed;
+
     public:
 
     //-------------------------------------------------------------------//
     /// @brief default creator
     //-------------------------------------------------------------------//
 
-    inline static EnemyPairPtr create(int _count, const std::string &_type)
+    inline static EnemyInfoPtr create(
+          int _count,
+          const std::string &_type,
+          float _shield,
+          float _maxSpeed
+          )
     {
-      EnemyPairPtr a(new EnemyPair(_count, _type));
+      EnemyInfoPtr a(new EnemyInfo(_count, _type, _shield, _maxSpeed));
       return a;
     }
 
@@ -65,9 +80,9 @@ public:
     /// @brief deep copy
     //-------------------------------------------------------------------//
 
-    inline EnemyPairPtr clone()
+    inline EnemyInfoPtr clone()
     {
-      EnemyPairPtr a(new EnemyPair(m_count, m_type));
+      EnemyInfoPtr a(new EnemyInfo(m_count, m_type, m_shield, m_maxSpeed));
       return a;
     }
 
@@ -76,29 +91,36 @@ public:
     //-------------------------------------------------------------------//
     /// @brief default ctor
     //-------------------------------------------------------------------//
-    EnemyPair():
+    EnemyInfo():
       m_count(0),
-      m_type("")
+      m_type(""),
+      m_shield(1.0),
+      m_maxSpeed(1.0)
     {;}
 
     //-------------------------------------------------------------------//
     /// @brief paramatized ctor
     //-------------------------------------------------------------------//
 
-    EnemyPair(int _count, const std::string &_type):
+    EnemyInfo(
+          int _count,
+          const std::string &_type,
+          float _shield,
+          float _maxSpeed
+          ):
       m_count(_count),
-      m_type(_type)
+      m_type(_type),
+      m_shield(_shield),
+      m_maxSpeed(_maxSpeed)
     {;}
-
-
 
   };
 
   //-------------------------------------------------------------------//
-  /// @brief typedef for lists of EnemyPairs
+  /// @brief typedef for lists of EnemyInfos
   //-------------------------------------------------------------------//
 
-  typedef std::list<EnemyPairPtr> EnemyPairList;
+  typedef std::list<EnemyInfoPtr> EnemyInfoList;
 
 
 public:
@@ -204,9 +226,8 @@ protected:
   //-------------------------------------------------------------------//
 
   void addEnemy(
-        std::string _type,
-        const ngl::Vec3 &_pos,
-        const ngl::Vec3 &_aim
+         EnemyInfoCPtr _enemyInfo,
+        const ngl::Vec3 &_pos
         );
 
   //-------------------------------------------------------------------//
@@ -244,7 +265,7 @@ protected:
   /// @brief list of possible enemy types and how many can be created currently
   //-------------------------------------------------------------------//
 
-  EnemyPairList m_enemiesForCreation;
+  EnemyInfoList m_enemiesForCreation;
 
   //-------------------------------------------------------------------//
   /// @brief list of possible enemy types and how many can be created in total.
@@ -252,7 +273,7 @@ protected:
   /// of each type of enemy can be created over the whole wave
   //-------------------------------------------------------------------//
 
-  EnemyPairList m_totalEnemiesForCreation;
+  EnemyInfoList m_totalEnemiesForCreation;
 
   //-------------------------------------------------------------------//
   /// @brief approximate time between between enemy creation
@@ -299,13 +320,13 @@ class WaveInfo
 {
   public:
   static WaveInfoPtr create(
-        const Wave::EnemyPairList &_enemiesForCreation,
+        const Wave::EnemyInfoList &_enemiesForCreation,
         float _birthRate
         );
   //-------------------------------------------------------------------//
   /// @brief List of enemy types and corresponding enemy counts
   //-------------------------------------------------------------------//
-  Wave::EnemyPairList m_enemiesForCreation;
+  Wave::EnemyInfoList m_enemiesForCreation;
 
   //-------------------------------------------------------------------//
   /// @brief time interval between each enemy creation
@@ -314,7 +335,7 @@ class WaveInfo
 
   protected:
   inline WaveInfo(
-        const Wave::EnemyPairList &_enemiesForCreation,
+        const Wave::EnemyInfoList &_enemiesForCreation,
         float _birthRate
         ):
     m_enemiesForCreation(_enemiesForCreation),
