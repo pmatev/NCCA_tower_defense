@@ -73,7 +73,7 @@ void Window::init()
 
     //initialize openGl Window
 
-    m_window = SDL_SetVideoMode(1280, 860, 16, SDL_OPENGL | SDL_RESIZABLE);
+    m_window = SDL_SetVideoMode(800,800, 16, SDL_OPENGL | SDL_RESIZABLE);
 
     const SDL_VideoInfo* videoSize = SDL_GetVideoInfo();
 
@@ -139,12 +139,12 @@ void Window::loop()
 
     // flag to indicate if we need to exit
 
-    bool quit=false;
+    m_quit=false;
 
     int frameCount = 0;
     float avgFPS = 0;
 
-    while(!quit)
+    while(!m_quit)
     {
         //event handling by SDL
 
@@ -152,7 +152,7 @@ void Window::loop()
         {
             switch(m_event.type)
             {
-            case SDL_QUIT : quit = true; break;
+            case SDL_QUIT : m_quit = true; break;
             case SDL_MOUSEMOTION : mouseMotionEvent(m_event.motion); break;
             case SDL_MOUSEBUTTONDOWN : mouseButtonDownEvent(m_event.button); break;
             case SDL_MOUSEBUTTONUP : mouseButtonUpEvent(m_event.button); break;
@@ -164,7 +164,7 @@ void Window::loop()
               switch(m_event.key.keysym.sym )
               {
                 // if it's the escape key quit
-                case SDLK_ESCAPE : quit = true; break;
+                case SDLK_ESCAPE : m_quit = true; break;
 
 
                 default : break;
@@ -188,25 +188,31 @@ void Window::loop()
         float fps = 1000.0/frameTime;
         avgFPS += fps;
 
-
-//        accumulator += frameTime;
-
-//        while (accumulator >= dt)
-//        {
-//            game->update(dt);
-
-//            accumulator -= dt;
-//            m_time += dt;
-//        }
         float maxDt = 70;
-        if(frameTime > maxDt)
+
+        if(game->getPaused() == false)
         {
-          game->update(maxDt / 1000.0);
+            if(frameTime > maxDt)
+            {
+                game->update(maxDt / 1000.0);
+            }
+            else
+            {
+                game->update(frameTime / 1000.0);
+            }
+
+            m_UI->updatePlayerInfo();
         }
-        else
+
+        if(game->getBaseHealth() <=0)
         {
-          game->update(frameTime / 1000.0);
+            if(!game->getLost())
+            {
+                m_UI->gameLost();
+                game->setLost(true);
+            }
         }
+
         Renderer *r = Renderer::instance();
 
     // render to texture
@@ -216,8 +222,9 @@ void Window::loop()
         glViewport(0,0,Renderer::TEXTURE_WIDTH,Renderer::TEXTURE_HEIGHT);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
         game->draw();
-        m_UI->updatePlayerInfo();
+
         m_UI->draw();
 
 
@@ -306,7 +313,6 @@ void Window::windowResizeEvent(const SDL_ResizeEvent &_event, Renderer *_rendere
 void Window::SDLErrorExit(const std::string &_msg)
 {
     //***** Based on Jon Macey's SDLNGL demo ******//
-
   std::cerr<<_msg<<"\n";
   std::cerr<<SDL_GetError()<<"\n";
   SDL_Quit();
@@ -421,7 +427,6 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 
 //  Q_UNUSED(_event)
 //}
-
 
 unsigned int Window::colourToID(ngl::Vec3 _c)
 {

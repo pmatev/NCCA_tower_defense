@@ -16,7 +16,7 @@ Text::Text(ngl::Vec2 _pos,
     UIElement(_pos, _name, "text",""),
     m_text(_text)
 {
-    setColour(255,0,0,1);
+    setColour(255,255,255,1);
     setFont(_fontFile, _ptsize);
 }
 

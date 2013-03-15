@@ -58,7 +58,7 @@ void MissileSilo::stateInit()
         UpgradeData::create(
           "Basic Upgrade",
           "descriptiony thing",
-          std::string("test.jpg"),
+          std::string("sellGrenadeImage"),
           0
           )
         );
@@ -67,7 +67,7 @@ void MissileSilo::stateInit()
         UpgradeData::create(
           "Advanced Upgrade",
           "does something awesome",
-          std::string("otherTest.jpg"),
+          std::string("upgrade2GrenadeImage"),
           100
           )
         );

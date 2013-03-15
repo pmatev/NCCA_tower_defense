@@ -26,7 +26,7 @@ public:
     /// @brief overloaded constructor
     /// @param [in] number of columns to create
     //-------------------------------------------------------------------//
-    Row(int _numColumns);
+    Row(const int &_numColumns);
 
     //-------------------------------------------------------------------//
     /// @brief default constructor
@@ -48,14 +48,14 @@ public:
     /// @brief creates columns in the row
     /// @param [in] specifies number of columns to create
     //-------------------------------------------------------------------//
-    void createColumns(int _numColumns);
+    void createColumns(const int &_numColumns);
 
     //-------------------------------------------------------------------//
     /// @brief sets the element in the column
     /// @param [in] column to set the element to
     /// @param [in] element to set
     //-------------------------------------------------------------------//
-    void setElement(int _column, UIElementPtr _element);
+    void setElement(const int &_column,UIElementPtr _element);
 
     //-------------------------------------------------------------------//
     /// @brief sets the rows position
@@ -90,7 +90,7 @@ public:
     /// @param [in] column to return
     /// @param [out] returns a smart pointer to the column
     //-------------------------------------------------------------------//
-    inline ColumnPtr getColumn(int _column) {return m_columns[_column];}
+    inline ColumnPtr getColumn(const int &_column) {return m_columns[_column];}
 
 
     //-------------------------------------------------------------------//
@@ -98,8 +98,11 @@ public:
     /// @param [in] column to return
     /// @param [out] returns a smart pointer to the element within the column
     //-------------------------------------------------------------------//
-    inline UIElementWPtr getElement(int _column) {ColumnPtr column = m_columns[_column];
-                                                 return column->getElement();}
+    inline UIElementWPtr getElement(const int &_column)
+    {
+        ColumnPtr column = m_columns[_column];
+        return column->getElement();
+    }
 
     //-------------------------------------------------------------------//
     /// @brief sets the rows size

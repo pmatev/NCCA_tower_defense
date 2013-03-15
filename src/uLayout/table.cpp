@@ -1,8 +1,7 @@
 #include "uLayout/table.h"
 #include "src/uLayout/row.cpp"
-#include "createtowerbutton.h"
-
-
+#include "costbutton.h"
+#include "texturelib.h"
 
 
 Table::Table(ngl::Vec2 _pos,
@@ -26,7 +25,7 @@ Table::~Table()
 }
 
 //-------------------------------------------------------------------//
-void Table::createRows(int _numRows)
+void Table::createRows(const int &_numRows)
 {
     for(int i= 0; i < _numRows; i++)
     {
@@ -36,7 +35,7 @@ void Table::createRows(int _numRows)
 }
 
 //-------------------------------------------------------------------//
-void Table::createColumns(int _row, int _numColumns)
+void Table::createColumns(const int &_row,const int &_numColumns)
 {
     RowPtr row = m_rows[_row];
 
@@ -44,7 +43,7 @@ void Table::createColumns(int _row, int _numColumns)
 }
 
 //-------------------------------------------------------------------//
-void Table::createElement(int _row, int _column, UIElementPtr _element)
+void Table::createElement(const int &_row,const int &_column,const UIElementPtr &_element)
 {
     Window* window = Window::instance();
 
@@ -95,7 +94,6 @@ void Table::draw()
 
         if(m_backgroundVisible == true)
         {
-            VAOPtr v = render->getVAObyID(m_IDStr);
             (*shader)["UI"]->use();
 
             float scaleX = 2.0/window->getScreenWidth();
@@ -107,18 +105,16 @@ void Table::draw()
             shader->setShaderParam1f("scaleY",scaleY);
             shader->setShaderParam4f("colourSelect",0,0,0,0);
 
-            glBindTexture(GL_TEXTURE_2D, m_texture);
-
-            v->bind();
-            v->draw();
-            v->unbind();
+            TextureLib *tex = TextureLib::instance();
+            tex->bindTexture(m_imageFile);
+            render->draw(m_IDStr, "UI");
 
         }
 
         //now draw all its elements
         //glDisable(GL_BLEND);
 
-        for(std::vector<RowPtr>::iterator it=m_rows.begin(); it!=m_rows.end(); it++)
+        for(RowVector::iterator it=m_rows.begin(); it!=m_rows.end(); it++)
         {
           (*it)->draw();
         }
@@ -159,7 +155,7 @@ void Table::setSize()
 
 
 //-------------------------------------------------------------------//
-void Table::screenAlignment(AlignType _alignment)
+void Table::screenAlignment(const AlignType &_alignment)
 {
     Window* window = Window::instance();
 
@@ -200,7 +196,7 @@ void Table::screenAlignment(AlignType _alignment)
 
 
 //-------------------------------------------------------------------//
-void Table::setText(int _row, int _column, const char *_text)
+void Table::setText(const int &_row,const int &_column, const char *_text)
 {
     UIElementPtr element = m_rows[_row]->getElement(_column).lock();
     if(element)
@@ -216,13 +212,13 @@ void Table::setText(int _row, int _column, const char *_text)
 //-------------------------------------------------------------------//
 void Table::createText
 (
-        int _row,
-        int _column,
-        ngl::Vec2 _pos,
+        const int &_row,
+        const int &_column,
+        const ngl::Vec2 &_pos,
         const char *_text,
         const char *_fontFile,
-        int _ptsize,
-        std::string _name
+        const int &_ptsize,
+        const std::string &_name
         )
 {
     Window* window = Window::instance();
@@ -249,34 +245,32 @@ void Table::createText
 }
 
 //-------------------------------------------------------------------//
-void Table::createTowerButton
+void Table::createCostButton
 (
-        int _row,
-        int _column,
-        ngl::Vec2 _pos,
-        std::string _imageFile,
-        std::string _name,
-        TablePtr _parent,
-        int _cost,
-        std::string _towerType,
-        float _maxX,
-        float _maxY
+        const int &_row,
+        const int &_column,
+        const ngl::Vec2 &_pos,
+        const std::string &_imageFile,
+        const std::string &_name,
+        const std::string &_type,
+        const int &_cost,
+        const float &_maxX,
+        const float &_maxY
         )
 {
     Window* window = Window::instance();
 
     RowPtr row = m_rows[_row];
 
-    UIElementPtr element = CreateTowerButtonPtr
+    UIElementPtr element = CostButtonPtr
             (
-                new CreateTowerButton
+                new CostButton
                 (
                     _pos,
                     _imageFile,
-                     _name,
-                    _parent,
-                     _cost,
-                    _towerType,
+                    _name,
+                    _type,
+                    _cost,
                     _maxX,
                     _maxY
                     )
@@ -291,14 +285,13 @@ void Table::createTowerButton
 //-------------------------------------------------------------------//
 void Table::createButton
 (
-        int _row,
-        int _column,
-        ngl::Vec2 _pos,
-        std::string _imageFile,
-        std::string _name,
-        TablePtr _parent,
-        float _maxX,
-        float _maxY
+        const int &_row,
+        const int &_column,
+        const ngl::Vec2 &_pos,
+        const std::string &_imageFile,
+        const std::string &_name,
+        const float &_maxX,
+        const float &_maxY
         )
 {
     Window* window = Window::instance();
@@ -312,7 +305,6 @@ void Table::createButton
                     _pos,
                     _imageFile,
                      _name,
-                    _parent,
                     _maxX,
                     _maxY
                     )
@@ -325,10 +317,76 @@ void Table::createButton
 }
 
 //-------------------------------------------------------------------//
-UIElementWPtr Table::getElement(int _row, int _column)
+UIElementWPtr Table::getElement(const int &_row, const int &_column)
 {
     RowPtr row = m_rows[_row];
     UIElementWPtr element = row->getElement(_column);
     return element;
 }
 
+//-------------------------------------------------------------------//
+void Table::setFunction
+(
+    const int &_row,
+    const int &_column,
+    boost::function<void()> _function
+    )
+{
+    UIElementPtr element = getElement(_row, _column).lock();
+
+    if(element)
+    {
+        UIButtonPtr button = boost::dynamic_pointer_cast<UIButton>(element);
+
+        if(button)
+        {
+            button->setFunction(_function);
+        }
+    }
+}
+
+
+//-------------------------------------------------------------------//
+void Table::setCost(const int &_row, const int &_column, int _cost)
+{
+    UIElementPtr element = getElement(_row, _column).lock();
+
+    if(element)
+    {
+        CostButtonPtr button = boost::dynamic_pointer_cast<CostButton>(element);
+        if(button)
+        {
+            button->setCost(_cost);
+        }
+    }
+}
+
+//-------------------------------------------------------------------//
+void Table::setTexture(const int &_row, const int &_column, std::string _texture)
+{
+    UIElementPtr element = getElement(_row, _column).lock();
+
+    if(element)
+    {
+        UIButtonPtr button = boost::dynamic_pointer_cast<UIButton>(element);
+        if(button)
+        {
+            button->setTexture(_texture);
+        }
+    }
+}
+
+//-------------------------------------------------------------------//
+void Table::setPressed(const int &_row, const int &_column, bool _isPressed)
+{
+    UIElementPtr element = getElement(_row, _column).lock();
+
+    if(element)
+    {
+        UIButtonPtr button = boost::dynamic_pointer_cast<UIButton>(element);
+        if(button)
+        {
+            button->setPressed(_isPressed);
+        }
+    }
+}

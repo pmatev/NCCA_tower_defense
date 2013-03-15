@@ -39,7 +39,7 @@ void UIElement::generateMesh()
 
   QImage *image = new QImage();
   const char *str = m_imageFile.c_str();
-  bool loaded=image->load(str, "JPG");
+  bool loaded=image->load(str, "PNG");
   if(loaded == true)
   {
     int width=image->width();

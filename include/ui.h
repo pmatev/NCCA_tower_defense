@@ -1,7 +1,6 @@
 #ifndef UI_H
 #define UI_H
 
-
 #include "staticentity.h"
 #include "uielement.h"
 #include "entityfactory.h"
@@ -9,6 +8,8 @@
 #include <boost/function.hpp>
 #include "fwd/ui.h"
 #include "fwd/table.h"
+#include "fwd/uwindow.h"
+
 
 
 //-------------------------------------------------------------------//
@@ -91,18 +92,24 @@ public:
     void unregisterID(const unsigned int _i);
 
     //-------------------------------------------------------------------//
-    /// @brief creates tower into temporary storage to be placed down
-    /// @param [in] takes in string refering to type of staticEntity
-    /// @param [in] takes in the node which it will be placed on
-    //-------------------------------------------------------------------//
-    void createTestTower();
-
-    //-------------------------------------------------------------------//
     /// @brief creates a new menu
     /// @param [in] takes in a tableptr to create a new object and store
     /// in m_menus
     //-------------------------------------------------------------------//
     void createMenu(TablePtr _menu);
+
+    //-------------------------------------------------------------------//
+    /// @brief creates a new window
+    /// @param [in] takes a uiwindow in and stores it within m_menus
+    //-------------------------------------------------------------------//
+    void createWindow
+    (
+        ngl::Vec2 _pos,
+        std::string _name,
+        std::string _imageFile,
+        UI *_parent,
+        ngl::Vec2 _size
+        );
 
     //-------------------------------------------------------------------//
     /// @brief searches the m_menus map and returns the object with the name
@@ -112,6 +119,8 @@ public:
     /// @param [out] returns a TablePtr with the name specified
     //-------------------------------------------------------------------//
     TablePtr getMenu(std::string _name);
+
+    UWindowPtr getUWindow(std::string _name);
 
     //-------------------------------------------------------------------//
     /// @brief goes through menus and checks the towers the buttons create
@@ -149,13 +158,13 @@ public:
     //-------------------------------------------------------------------//
     /// @brief function used by the button in the upgrade menu to close it
     //-------------------------------------------------------------------//
-    void closeUpgradeMenu();
+    void closeUpgradeMenuFunction();
 
     //-------------------------------------------------------------------//
     /// @brief this is ran when a turret is clicked. it initialises the the
     /// upgrade value with its details
     //-------------------------------------------------------------------//
-    void turretClicked(int _ID);
+    void turretClicked(const unsigned int _ID);
 
     //-------------------------------------------------------------------//
     /// @brief sets the upgrade id
@@ -181,15 +190,110 @@ public:
     //-------------------------------------------------------------------//
     void creationModeClick(const unsigned int _ID);
 
+    //-------------------------------------------------------------------//
+    /// @brief function to initialise the start menu
+    //-------------------------------------------------------------------//
+    void createStartMenu();
+
+    //-------------------------------------------------------------------//
+    /// @brief button function used to launch the game
+    //-------------------------------------------------------------------//
+    void startGameFunction();
+
+    //-------------------------------------------------------------------//
+    /// @brief says that the missile silo is wanting to be built
+    //-------------------------------------------------------------------//
+
+    inline void createMissileSiloFunction() {m_tmptowerType = "MissileSilo";
+                                            m_tmpTowerMesh = "turret_base";}
+
+    //-------------------------------------------------------------------//
+    /// @brief says that the test turret is wanting to be built
+    //-------------------------------------------------------------------//
+    inline void createTestTowerFunction(){m_tmptowerType = "TestTurret";
+                                         m_tmpTowerMesh = "turret_base";}
+
+    //-------------------------------------------------------------------//
+    /// @brief says that the wall is wanting to be built
+    //-------------------------------------------------------------------//
+    inline void createWallfunction() {m_tmptowerType ="StandardWall";
+                                     m_tmpTowerMesh = "wall";}
+
+    //-------------------------------------------------------------------//
+    /// @brief creates the lose window
+    //-------------------------------------------------------------------//
+    void createLoseRestartMenu();
+
+    //-------------------------------------------------------------------//
+    /// @brief when in creation mode this functions draws the temporary
+    /// tower on the grid where the mouse is
+    //-------------------------------------------------------------------//
+    void drawTmpTower();
+
+    //-------------------------------------------------------------------//
+    /// @brief used by the restart button to reset the game and ui
+    //-------------------------------------------------------------------//
+    void resetFunction();
+
+    //-------------------------------------------------------------------//
+    /// @brief used by the play pause button to play and pause the game
+    //-------------------------------------------------------------------//
+    void playPauseFunction();
+
+    //-------------------------------------------------------------------//
+    /// @brief this function is run when the players base health is 0
+    //-------------------------------------------------------------------//
+    void gameLost();
+
+    //-------------------------------------------------------------------//
+    /// @brief resets the ui back to the start ready for to start the game
+    /// again
+    //-------------------------------------------------------------------//
+    void resetUI();
+
+    //-------------------------------------------------------------------//
+    /// @brief used by the back to start window button to take the player back
+    /// to the start menu
+    //-------------------------------------------------------------------//
+    void backToStartFunction();
+
+    //-------------------------------------------------------------------//
+    /// @brief creates the in game settings menu
+    //-------------------------------------------------------------------//
+    void createInGameSettingsWindow();
+
+    //-------------------------------------------------------------------//
+    /// @brief function called when you hit the close menu button in settings
+    /// window
+    //-------------------------------------------------------------------//
+    void closeMenuFunction();
+
+    //-------------------------------------------------------------------//
+    /// @brief function called when the in games settings button is pressed
+    //-------------------------------------------------------------------//
+    void inGameSettingsFunction();
+
+
+    void quitFunction();
+
+
 private:
 
     typedef std::map<unsigned int, TablePtr> MenuMap;
+
+    typedef std::map<unsigned int, UWindowPtr> UWindowMap;
 
 
     //-------------------------------------------------------------------//
     /// @brief stores all the menus for the game
     //-------------------------------------------------------------------//
     MenuMap m_menus;
+
+
+    //-------------------------------------------------------------------//
+    /// @brief stores all the windows for the game
+    //-------------------------------------------------------------------//
+    UWindowMap m_windows;
 
     //-------------------------------------------------------------------//
     /// @brief A map of IDs to element Pointers for game object management.
@@ -217,17 +321,35 @@ private:
     int m_tmpCost;
 
     //-------------------------------------------------------------------//
+    /// @brief stores the id value of the tower button pressed. used for
+    /// creation mode checking
+    //-------------------------------------------------------------------//
+    int m_tmpTowerButtonID;
+
+    //-------------------------------------------------------------------//
+    /// @brief transform stack used in creation mode for tmp mesh
+    //-------------------------------------------------------------------//
+    ngl::TransformStack m_transformStack;
+
+    //-------------------------------------------------------------------//
+    /// @brief position of node when in creation mode for mesh movement
+    //-------------------------------------------------------------------//
+    ngl::Vec3 m_tmpNodePos;
+
+    //-------------------------------------------------------------------//
+    /// @brief mesh object to be drawn when in creation mode
+    //-------------------------------------------------------------------//
+    std::string m_tmpTowerMesh;
+
+    //-------------------------------------------------------------------//
     /// @brief stores the id value of the towers id used for the upgrade menu
     //-------------------------------------------------------------------//
     unsigned int m_tmpUpgradeTowerID;
 
-
-
-
-
-
-
-
+    //-------------------------------------------------------------------//
+    /// @brief bool stating whether or not the first wave has been initialized
+    //-------------------------------------------------------------------//
+    bool m_gameStart;
 
 };
 

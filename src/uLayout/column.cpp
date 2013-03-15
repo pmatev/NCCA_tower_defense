@@ -1,5 +1,5 @@
 #include "uLayout/column.h"
-#include "createtowerbutton.h"
+#include "costbutton.h"
 
 
 Column::Column()
@@ -26,7 +26,7 @@ void Column::setElementPosition()
 
 }
 
-void Column::setElement(UIElementPtr _element)
+void Column::setElement(const UIElementPtr &_element)
 {
     m_element = _element;
 
@@ -40,13 +40,22 @@ void Column::checkAffordable()
 {
     if(m_element)
     {
-        if(m_element->getType() == "create")
+        if(m_element->getType() == "create" || m_element->getType() == "upgrade")
         {
-            CreateTowerButtonPtr createButton = boost::dynamic_pointer_cast<CreateTowerButton>(m_element);
+            CostButtonPtr createButton = boost::dynamic_pointer_cast<CostButton>(m_element);
 
             if(createButton)
             {
                 createButton->checkAffordable();
+            }
+        }
+        else if(m_element->getType() == "table")
+        {
+            TablePtr table = boost::dynamic_pointer_cast<Table>(m_element);
+
+            if(table)
+            {
+                table->checkButtonAffordable();
             }
         }
     }
@@ -69,6 +78,7 @@ void Column::setSize()
        m_size.m_y += 10;
    }
 }
+
 
 
 

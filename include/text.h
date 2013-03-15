@@ -84,7 +84,8 @@ public:
     inline void setText(const char *_text) {m_text =_text;
                                            generateMesh();}
 
-    void drawSelection();
+    inline void setTexture(std::string _texture) {m_imageFile = _texture;
+                                                     generateMesh();}
 
 
 private:

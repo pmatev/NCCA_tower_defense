@@ -34,7 +34,32 @@ void TextureLib::init()
 {
     load("debug", "textures/default_texture.png");
     load("healthbar", "textures/HealthBar_flat.png");
-    //load("noMoneyButton","textures/noMoney.png");
+    load("startMenuButton", "textures/startMenuButton_700x150.png");
+    load("settingsMenuButton", "textures/settingsMenuButton");
+    load("backToStartMenuButton", "textures/backToStartMenuButton.png");
+    load("restartMenuButton", "textures/restartMenuButton.png");
+    load("quitGameMenuButton", "textures/quitGameMenuButton.png");
+    load("grenadeButton", "textures/grenadeButton.png");
+    load("grenadeButtonNoMoney", "textures/grenadeButtonNoMoney.png");
+    load("machineGunButton", "textures/machineGun.png");
+    load("machineGunButtonNoMoney", "textures/machineGunNoMoney.png");
+    load("wallButton", "textures/wallButton.png");
+    load("wallButtonNoMoney", "textures/wallButtonNoMoney");
+    load("playButton", "textures/playButton.png");
+    load("pauseButton", "textures/pauseButton.png");
+    load("sellButton", "textures/sellButton.png");
+    load("settingButton", "textures/settingsButton.png");
+    load("upgrade2BulletImage", "textures/upgrade2BulletImage.png");
+    load("upgrade2GrenadeImage", "textures/upgrade2GrenadeImage.png");
+    load("upgradeButton", "textures/upgradeButton.png");
+    load("upgradeButtonNoMoney","textures/upgradeButtonNoMoney");
+    load("background", "textures/backgroundTexture.png");
+    load("closeButton", "textures/closeButton.png");
+    load("createBackground","textures/createBackground.png");
+    load("sellBulletImage", "textures/sellBulletImage.png");
+    load("sellGrenadeImage", "textures/sellGrenadeImage.png");
+    load("backToGameButton", "textures/closeMenuButton.png");
+
 }
 //-------------------------------------------------------------------//
 void TextureLib::load(const std::string &_name, const std::string &_file)

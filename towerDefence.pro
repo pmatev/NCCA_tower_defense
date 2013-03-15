@@ -36,7 +36,6 @@ SOURCES += src/main.cpp \
     src/wavemanager.cpp \
     src/entityfactory.cpp \
     src/database.cpp \
-    src/uiwindow.cpp \
     src/uielement.cpp \
     src/game.cpp \
     src/camera.cpp \
@@ -55,7 +54,6 @@ SOURCES += src/main.cpp \
     src/concrete/testenemy.cpp \
     src/concrete/testturret.cpp \
     src/text.cpp \
-    src/createtowerbutton.cpp \
     src/fsm/statemachine.cpp \
     src/fsm/states/enemystates.cpp \
     src/ai/steeringbehaviours.cpp \
@@ -75,7 +73,9 @@ SOURCES += src/main.cpp \
     src/mesh.cpp \
     src/concrete/grenade.cpp \
     src/concrete/missilesilo.cpp \
-    src/fsm/states/missilesilostate.cpp
+    src/fsm/states/missilesilostate.cpp \
+    src/uLayout/uwindow.cpp \
+    src/costbutton.cpp
 
 
 
@@ -99,7 +99,6 @@ HEADERS += \
     include/environment.h \
     include/nodemanager.h \
     include/uibutton.h \  
-    include/uiwindow.h \
     include/uielement.h \
     include/ui.h \
     include/projectile.h \
@@ -116,7 +115,6 @@ HEADERS += \
     include/fwd/uibutton.h \
     include/fwd/ui.h \
     include/text.h \
-    include/createtowerbutton.h \
     include/fwd/camera.h \
     include/fsm/statemachine.h \
     include/fsm/state.h \
@@ -142,7 +140,10 @@ HEADERS += \
     include/mesh.h \
     include/concrete/grenade.h \
     include/concrete/missilesilo.h \
-    include/fsm/states/missilesilostate.h
+    include/fsm/states/missilesilostate.h \
+    include/uLayout/uwindow.h \
+    include/fwd/uwindow.h \
+    include/costbutton.h
 
 
 
@@ -211,5 +212,34 @@ OTHER_FILES += \
     models/enemy.obj \
     models/hexagon.obj \
     models/wall.obj \
-    textures/noMoney.png
-
+    textures/noMoney.png \
+    textures/playButton.png \
+    textures/playButtonNo.png \
+    textures/missileButtonNo.png \
+    textures/missileButton.png \
+    textures/wallButtonNoMoney.png \
+    textures/wallButton.png \
+    textures/upgradeButton.png \
+    textures/upgrade2GrenadeImage.png \
+    textures/upgrade2BulletImage.png \
+    textures/startMenuButton_700x150.png \
+    textures/settingsMenuButton.png \
+    textures/settingsButton.png \
+    textures/sellButton.png \
+    textures/restartMenuButton.png \
+    textures/quitGameMenuButton.png \
+    textures/pauseButton.png \
+    textures/machineGunNoMoney.png \
+    textures/machineGun.png \
+    textures/grenadeButtonNoMoney.png \
+    textures/grenadeButton.png \
+    textures/closeButton.png \
+    textures/backToStartMenuButton.png \
+    textures/backgroundTexture.png \
+    textures/upgradeButtonNoMoney.png \
+    textures/createBackground.png \
+    textures/sellGrenadeImage.png \
+    textures/sellBulletImage.png \
+    textures/closeMenuButton.png \
+    textures/closeMenuButton .png \
+    textures/closeMenuButton.png

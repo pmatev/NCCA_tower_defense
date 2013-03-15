@@ -1,14 +1,15 @@
-#ifndef CREATETOWERBUTTON_H
-#define CREATETOWERBUTTON_H
+#ifndef COSTBUTTON_H
+#define COSTBUTTON_H
 
 #include "smartpointers.h"
 #include "uibutton.h"
 
 
 //-------------------------------------------------------------------//
-/// @file createbutton.h
-/// @brief specific type of button used only for creating towers,
-/// inherits from uibutton class
+/// @file costbutton.h
+/// @brief specific type of button used only for any button which has
+/// to check cost attributes i.e upgrade or create tower buttons inherits
+/// from uibutton class
 /// @author Luke Gravett
 /// @version 1
 /// @date 25/02/13
@@ -17,9 +18,9 @@
 /// @class createButton
 //-------------------------------------------------------------------//
 
-DECLARESMART(CreateTowerButton)
+DECLARESMART(CostButton)
 
-class CreateTowerButton : public UIButton
+class CostButton : public UIButton
 {
 public:
 
@@ -36,14 +37,13 @@ public:
     /// @param [in] max x size of button
     /// @param [in] max y size of button
     //-------------------------------------------------------------------//
-    CreateTowerButton
+    CostButton
             (
                 ngl::Vec2 _pos,
                 std::string _imageFile,
                 std::string _name,
-                TablePtr _parent,
+                std::string _type,
                 int _cost,
-                std::string _towerType,
                 float _maxX,
                 float _maxY
                 );
@@ -51,7 +51,7 @@ public:
     //-------------------------------------------------------------------//
     /// @brief default destructor
     //-------------------------------------------------------------------//
-    ~CreateTowerButton();
+    ~CostButton();
 
     //-------------------------------------------------------------------//
     /// @brief checks to see if the tower can be bought if not it switches the
@@ -73,10 +73,15 @@ public:
     inline int getCost() {return m_cost;}
 
     //-------------------------------------------------------------------//
-    /// @brief gets the type of turret to create
-    /// @param [out] returns m_m_towertype
+    /// @brief sets m_cost
+    /// @param [in] integer containg the cost
     //-------------------------------------------------------------------//
-    inline std::string getTowertype() {return m_towerType;}
+    void setCost(int _cost) {m_cost = _cost;}
+
+    //-------------------------------------------------------------------//
+    /// @brief draw function
+    //-------------------------------------------------------------------//
+    void draw();
 
 
 
@@ -92,24 +97,8 @@ protected:
     //-------------------------------------------------------------------//
     bool m_affordable;
 
-    //-------------------------------------------------------------------//
-    /// @brief stores which tower type to create
-    //-------------------------------------------------------------------//
-    std::string m_towerType;
-
-    //-------------------------------------------------------------------//
-    /// @brief stores the image file to draw when the button
-    /// is not affordable
-    //-------------------------------------------------------------------//
-    std::string m_noMoneyImage;
-
-    //-------------------------------------------------------------------//
-    /// @brief GLUinnt to store the noMoneyTexture
-    //-------------------------------------------------------------------//
-    GLuint m_noMoneyTexture;
-
 };
 
 
 
-#endif // CREATETOWERBUTTON_H
+#endif // COSTBUTTON_H

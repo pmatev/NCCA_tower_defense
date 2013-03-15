@@ -8,16 +8,15 @@
 //-------------------------------------------------------------------//
 UIButton::UIButton
 (
-        ngl::Vec2 _pos,
-        std::string _imageFile,
-        std::string _name,
-        TablePtr _parent,
-        float _maxX,
-        float _maxY
-        ):
+    ngl::Vec2 _pos,
+    std::string _imageFile,
+    std::string _name,
+    float _maxX,
+    float _maxY
+    ):
 
-UIElement( _pos, _name, "button", _imageFile),
-m_parent(_parent)
+    UIElement( _pos, _name, "button", _imageFile),
+    m_isPressed(false)
 
 {
     m_size.m_x = _maxX;
@@ -27,29 +26,29 @@ m_parent(_parent)
 }
 
 //-------------------------------------------------------------------//
-void UIButton::blankFunction()
-{
-
-}
-
-//-------------------------------------------------------------------//
 UIButton::UIButton
 (
         ngl::Vec2 _pos,
         std::string _imageFile,
         std::string _name,
         std::string _type,
-        TablePtr _parent,
         float _maxX,
         float _maxY
         ):
 
-    UIElement( _pos, _name, _type, _imageFile),
-    m_parent(_parent)
+UIElement( _pos, _name, _type, _imageFile)
 
 {
-    m_size.m_x = _maxX;
-    m_size.m_y = _maxY;
+m_size.m_x = _maxX;
+m_size.m_y = _maxY;
+m_execute = boost::bind(&UIButton::blankFunction
+            , this);
+}
+
+//-------------------------------------------------------------------//
+void UIButton::blankFunction()
+{
+
 }
 
 //-------------------------------------------------------------------//
@@ -77,7 +76,7 @@ void UIButton::draw()
 
   (*shader)["UI"]->use();
 
- shader->setRegisteredUniform1f("xpos",m_pos.m_x);
+  shader->setRegisteredUniform1f("xpos",m_pos.m_x);
   shader->setRegisteredUniform1f("ypos",m_pos.m_y);
   shader->setRegisteredUniform1f("scaleX",scaleX);
   shader->setRegisteredUniform1f("scaleY",scaleY);
@@ -86,16 +85,16 @@ void UIButton::draw()
   shader->setRegisteredUniform4f("colourSelect", c.m_x/255.0f, c.m_y/255.0f, c.m_z/255.0f, 1);
 
   TextureLib *tex = TextureLib::instance();
-  tex->bindTexture("debug");
 
-//  glBindTexture(GL_TEXTURE_2D, m_texture);
+  if(m_isPressed == false)
+  {
+      tex->bindTexture(m_imageFile);
+
+  }
+
   render->draw(m_IDStr, "UI");
 
   glEnable(GL_DEPTH_TEST);
-
-//  std::cout<<"drawing button "<<m_name<<" "<<m_pos<<std::endl;
-
-
 }
 
 

@@ -107,6 +107,8 @@ void Game::setupScene()
   //Load configuration
   QFile* file = new QFile("config/config.xml");
 
+  setLost(false);
+
   //Test if the file failed to open
   if(!file->open(QIODevice::ReadOnly | QIODevice::Text))
   {
@@ -432,35 +434,35 @@ EntityWPtr Game::getEntityByID(const unsigned int _i) const
 void Game::update(const double _dt)
 {
     // update code by timestep _dt
-  // 1. clear database records
-  // 2. publish dynamic entities (m_wavemanager & m_projectilemanager)
-  // 3. update projectiles
-  // 4. deal with collisions with enemies
-  // 5. update enemies
-  // 6. deal with collisions with base
-  // 7. update environment
+    // 1. clear database records
+    // 2. publish dynamic entities (m_wavemanager & m_projectilemanager)
+    // 3. update projectiles
+    // 4. deal with collisions with enemies
+    // 5. update enemies
+    // 6. deal with collisions with base
+    // 7. update environment
 
-  // 1 //
-  Database::instance()->clearRecords();
-  // 2 //
-  m_waveManager->publish();
-  m_projectileManager->publish();
-  // 3 //
-  m_projectileManager->update(_dt);
-  // 4 //
-  std::list<Damage> damages;
-  std::list<Impulse> impulses;
-  m_projectileManager->checkCollisions(_dt, damages, impulses);
-  dealDamage(damages);
-  dealImpulses(impulses);
+    // 1 //
+    Database::instance()->clearRecords();
+    // 2 //
+    m_waveManager->publish();
+    m_projectileManager->publish();
+    // 3 //
+    m_projectileManager->update(_dt);
+    // 4 //
+    std::list<Damage> damages;
+    std::list<Impulse> impulses;
+    m_projectileManager->checkCollisions(_dt, damages, impulses);
+    dealDamage(damages);
+    dealImpulses(impulses);
 
-  m_projectileManager->checkDeaths();
-  // 5 //
-  m_waveManager->update(_dt);
-  // 6 //
-  dealDamage(m_waveManager->checkCollisions());
-  // 7 //
-  m_environment->update(_dt);
+    m_projectileManager->checkDeaths();
+    // 5 //
+    m_waveManager->update(_dt);
+    // 6 //
+    dealDamage(m_waveManager->checkCollisions());
+    // 7 //
+    m_environment->update(_dt);
 }
 //-------------------------------------------------------------------//
 void Game::draw()

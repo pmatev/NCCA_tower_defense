@@ -35,7 +35,6 @@ public:
     /// button
     /// @param [in] _imageFile, a string containing the image file path name
     /// @param [in] inputs a string for the name of the element
-    /// @param [in] stores a pointer to the menu it is stored in
     /// @param [in] string saying what type of element it is
     /// @param [in] maxX used for size of button
     /// @param [in] maxY used for size of button
@@ -45,7 +44,6 @@ public:
             ngl::Vec2 _pos,
             std::string _imageFile,
             std::string _name,
-            TablePtr _parent,
             float _maxX,
             float _maxY
             );
@@ -57,7 +55,6 @@ public:
     /// button
     /// @param [in] _imageFile, a string containing the image file path name
     /// @param [in] inputs a string for the name of the element
-    /// @param [in] stores a pointer to the menu it is stored in
     /// @param [in] string saying what type of element it is
     /// @param [in] maxX used for size of button
     /// @param [in] maxY used for size of button
@@ -68,7 +65,6 @@ public:
             std::string _imageFile,
             std::string _name,
             std::string _type,
-            TablePtr _parent,
             float _maxX,
             float _maxY
             );
@@ -106,17 +102,14 @@ public:
     //-------------------------------------------------------------------//
     inline void setFunction(functionPtr _func)  {m_execute = _func;}
 
+    //-------------------------------------------------------------------//
+    /// @brief runs the buttons function
+    //-------------------------------------------------------------------//
     inline void execute() {m_execute();}
 
 
 
 protected:
-
-
-    //-------------------------------------------------------------------//
-    /// @brief stores a pointer to its parent
-    //-------------------------------------------------------------------//
-    TablePtr m_parent;
 
     //-------------------------------------------------------------------//
     /// @brief states whether the button is currently clicked

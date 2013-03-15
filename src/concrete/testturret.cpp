@@ -66,7 +66,7 @@ void TestTurret::stateInit()
         UpgradeData::create(
           "Initial Upgrade",
           "descriptiony thing",
-          std::string("test.jpg"),
+          std::string("sellBulletImage"),
           0
           )
         );
@@ -75,7 +75,7 @@ void TestTurret::stateInit()
         UpgradeData::create(
           "Super Advanced Upgrade",
           "makes bullets shoot faster",
-          std::string("otherTest.jpg"),
+          std::string("upgrade2BulletImage"),
           100
           )
         );

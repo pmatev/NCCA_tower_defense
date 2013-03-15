@@ -3,7 +3,7 @@ Row::Row()
 {
 
 }
-Row::Row(int _numColumns)
+Row::Row(const int &_numColumns)
 
 {
    createColumns(_numColumns);
@@ -14,7 +14,7 @@ Row::~Row()
 
 }
 
-void Row::setElement(int _column, UIElementPtr _element)
+void Row::setElement(const int &_column, UIElementPtr _element)
 {
     ColumnPtr column = m_columns[_column];
     if(column)
@@ -42,7 +42,7 @@ void Row::setSize()
 
 }
 
-void Row::createColumns(int _numColumns)
+void Row::createColumns(const int &_numColumns)
 {
     for(int i= 0; i <= _numColumns; i++)
     {
@@ -90,5 +90,6 @@ void Row::setPosition(ngl::Vec2 _position)
     m_position = _position;
     setColumnPositions();
 }
+
 
 

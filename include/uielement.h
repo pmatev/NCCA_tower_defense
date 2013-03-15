@@ -38,7 +38,8 @@ public:
     UIElement( ngl::Vec2 _pos,
                std::string _name,
                std::string _type,
-               std::string _imageFile);
+               std::string _imageFile
+              );
 
 
     //-------------------------------------------------------------------//
@@ -95,6 +96,10 @@ public:
     //-------------------------------------------------------------------//
     void setID(unsigned int _ID) ;
 
+    //-------------------------------------------------------------------//
+    /// @brief returns the elements id
+    /// @param [out] returns the m_id attribute
+    //-------------------------------------------------------------------//
     inline unsigned int getID() {return m_ID;}
 
     //-------------------------------------------------------------------//
@@ -120,12 +125,7 @@ public:
     /// @brief setter function for texture
     /// @param [in] string containing path to texure file
     //-------------------------------------------------------------------//
-    inline void setTexture(std::string _texture) {m_imageFile = _texture;
-                                                 generateMesh();}
-
-
-
-
+    virtual inline void setTexture(std::string _texture) {m_imageFile = _texture;}
 
 
 protected:
@@ -169,8 +169,6 @@ protected:
     /// @brief string containing image file location
     //-------------------------------------------------------------------//
     std::string m_imageFile;
-
-
 
 };
 

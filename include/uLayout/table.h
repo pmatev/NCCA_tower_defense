@@ -6,13 +6,13 @@
 #include "uielement.h"
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
-#include "fwd/uibutton.h"
 #include "fwd/ui.h"
 #include "fwd/table.h"
 #include "text.h"
 #include "uLayout/row.h"
 #include "window.h"
 #include "ngl/ShaderLib.h"
+#include "uibutton.h"
 
 
 //-------------------------------------------------------------------//
@@ -55,14 +55,14 @@ public:
     /// @brief creates rows in the table
     /// @param [in] int value specifying the number of rows to create
     //-------------------------------------------------------------------//
-    void createRows(int _numRows);
+    void createRows(const int &_numRows);
 
     //-------------------------------------------------------------------//
     /// @brief creates columns in rows
     /// @param [in] value of the row you want to add columns too
     /// @param [in] number of columns to add
     //-------------------------------------------------------------------//
-    void createColumns(int _row,int _numColumns);
+    void createColumns(const int &_row,const int &_numColumns);
 
     //-------------------------------------------------------------------//
     /// @brief overloaded constructor
@@ -70,7 +70,7 @@ public:
     /// @param [in] name of table
     /// @param [in] string of image path file
     //-------------------------------------------------------------------//
-    void createElement(int _row,int _column, UIElementPtr _element);
+    void createElement(const int &_row,const int &_column, const UIElementPtr &_element);
 
     //-------------------------------------------------------------------//
     /// @brief if a create button then it checks if it is affordable if it
@@ -103,7 +103,7 @@ public:
     /// @brief aligns the menu to screen edges
     /// @param [in] enum which will specify where to align the table to
     //-------------------------------------------------------------------//
-    void screenAlignment(AlignType _alignment);
+    void screenAlignment(const AlignType &_alignment);
 
     //-------------------------------------------------------------------//
     /// @brief sets whether the table will be drawn as will as its rows
@@ -116,7 +116,7 @@ public:
     /// @param [in] row where element is stored
     /// @param [in] column where the element is store
     //-------------------------------------------------------------------//
-    UIElementWPtr getElement(int _row, int _column);
+    UIElementWPtr getElement(const int &_row,const int &_column);
 
     //-------------------------------------------------------------------//
     /// @brief sets the elements text if it is a text element
@@ -124,7 +124,7 @@ public:
     /// @param [in] column the text is in
     /// @param [in] the text to store in it
     //-------------------------------------------------------------------//
-    void setText(int _row, int _column, const char *_text);
+    void setText(const int &_row, const int &_column, const char *_text);
 
     //-------------------------------------------------------------------//
     /// @brief sets whether the entire table is drawn including its rows
@@ -133,7 +133,7 @@ public:
     void setDrawable(bool _drawable) {m_isDrawable = _drawable;}
 
     //-------------------------------------------------------------------//
-    /// @brief function to create a create tower button
+    /// @brief function to create a cost button
     /// @param [in] row where to create the button
     /// @param [in] column within the row to create it in
     /// @param [in] initial position of element
@@ -141,22 +141,20 @@ public:
     /// @param [in] name of element
     /// @param [in] pointer to this table
     /// @param [in] cost of the tower
-    /// @param [in] string containing the towers type the button will create
     /// @param [in] x size of button
     /// @param [in] y size of button
     //-------------------------------------------------------------------//
-    void createTowerButton
+    void createCostButton
     (
-            int _row,
-            int _column,
-            ngl::Vec2 _pos,
-            std::string _imageFile,
-            std::string _name,
-            TablePtr _parent,
-            int _cost,
-            std::string _towerType,
-            float _maxX,
-            float _maxY
+            const int &_row,
+            const int &_column,
+            const ngl::Vec2 &_pos,
+            const std::string &_imageFile,
+            const std::string &_name,
+            const std::string &_type,
+            const int &_cost,
+            const float &_maxX,
+            const float &_maxY
             );
 
     //-------------------------------------------------------------------//
@@ -171,13 +169,13 @@ public:
     //-------------------------------------------------------------------//
     void createText
     (
-            int _row,
-            int _column,
-            ngl::Vec2 _pos,
+            const int &_row,
+            const int &_column,
+            const ngl::Vec2 &_pos,
             const char *_text,
             const char *_fontFile,
-            int _ptsize,
-            std::string _name
+            const int &_ptsize,
+            const std::string &_name
             );
 
     //-------------------------------------------------------------------//
@@ -197,15 +195,47 @@ public:
     //-------------------------------------------------------------------//
     void createButton
     (
-            int _row,
-            int _column,
-            ngl::Vec2 _pos,
-            std::string _imageFile,
-            std::string _name,
-            TablePtr _parent,
-            float _maxX,
-            float _maxY
+            const int &_row,
+            const int &_column,
+            const ngl::Vec2 &_pos,
+            const std::string &_imageFile,
+            const std::string &_name,
+            const float &_maxX,
+            const float &_maxY
             );
+
+    //-------------------------------------------------------------------//
+    /// @brief sets a buttons function
+    /// @param [in] _row defines the row the button is in
+    /// @param [in] _column defines the column within the row the button is stored in
+    /// @param [in] function to set in the button
+    //-------------------------------------------------------------------//
+    void setFunction(const int &_row, const int &_column, boost::function<void()> _function);
+
+
+    //-------------------------------------------------------------------//
+    /// @brief sets a cost buttons cost
+    /// @param [in] _row defines the row the button is in
+    /// @param [in] _column defines the column within the row the button is stored in
+    /// @param [in] cost to add into the button
+    //-------------------------------------------------------------------//
+    void setCost(const int &_row, const int &_column, int _cost);
+
+    //-------------------------------------------------------------------//
+    /// @brief sets the texture of the element
+    /// @param [in] _row defines the row the button is in
+    /// @param [in] _column defines the column within the row the button is stored in
+    /// @param [in] string with the texture you want to set
+    //-------------------------------------------------------------------//
+    void setTexture(const int &_row, const int &_column, std::string _texture);
+
+    //-------------------------------------------------------------------//
+    /// @brief sets whether a button has been pressed or not
+    /// @param [in] _row defines the row the button is in
+    /// @param [in] _column defines the column within the row the button is stored in
+    /// @param [in] bool to say whether the button has been pressed or not
+    //-------------------------------------------------------------------//
+    void setPressed(const int &_row, const int &_column, bool _isPressed);
 
 protected:
 
@@ -220,8 +250,6 @@ protected:
     /// @brief vector container containg pointers to the rows
     //-------------------------------------------------------------------//
     RowVector m_rows;
-
-
 
     //-------------------------------------------------------------------//
     /// @brief flag to specify if the background will be drawn

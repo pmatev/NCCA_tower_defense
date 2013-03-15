@@ -114,6 +114,13 @@ public:
     //-------------------------------------------------------------------//
     inline SDL_Surface* getWindow() {return m_window;}
 
+    //-------------------------------------------------------------------//
+    /// @brief quits the game completely
+    //-------------------------------------------------------------------//
+    inline void quit() {m_quit = true;}
+
+
+
 
 
 
@@ -223,6 +230,9 @@ protected:
 
 
     int m_viewmode;
+
+    bool m_quit;
+
 
     BillboardPtr m_screenBillboard;
 

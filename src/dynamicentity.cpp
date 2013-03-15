@@ -25,11 +25,13 @@ DynamicEntity::DynamicEntity(
 
 DynamicEntity::~DynamicEntity()
 {
+
   //currently using default destructor
   if(m_stateMachine)
   {
     delete m_stateMachine;
   }
+
 }
 
 //-------------------------------------------------------------------//

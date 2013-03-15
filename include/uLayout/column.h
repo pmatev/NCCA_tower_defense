@@ -42,7 +42,7 @@ public:
     /// @brief set the element in the column
     /// @param [in] smart point to the element
     //-------------------------------------------------------------------//
-    void setElement(UIElementPtr _element);
+    void setElement(const UIElementPtr &_element);
 
     //-------------------------------------------------------------------//
     /// @brief set method for the position

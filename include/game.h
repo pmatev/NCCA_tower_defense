@@ -153,6 +153,10 @@ public:
 
     void startWaves();
 
+    //-------------------------------------------------------------------//
+    /// @brief returns the bases health
+    /// @param [out] returns the bases health
+    //-------------------------------------------------------------------//
     float getBaseHealth() const;
 
     //-------------------------------------------------------------------//
@@ -181,6 +185,34 @@ public:
     //-------------------------------------------------------------------//
 
     bool getNextUpgrade(Turret::UpgradeDataWPtr &o_upgradeData, int _id);
+
+    //-------------------------------------------------------------------//
+    /// @brief set whether the game is paused or not
+    /// @param [in] _paused is a bool which specifies whether the game is
+    /// paused or not
+    //-------------------------------------------------------------------//
+    inline void setPaused(bool _paused){m_pause = _paused;}
+
+    //-------------------------------------------------------------------//
+    /// @brief returns m_paused variable
+    /// @param [out] m_paused specifies the pause condition
+    //-------------------------------------------------------------------//
+    inline bool getPaused() {return m_pause;}
+
+    //-------------------------------------------------------------------//
+    /// @brief set whether the game is lost or not
+    /// @param [in] _lost is a bool which specifies whether the game is
+    /// lost or not
+    //-------------------------------------------------------------------//
+    inline void setLost(bool _lost) {m_gamelost =_lost;}
+
+    //-------------------------------------------------------------------//
+    /// @brief returns m_gameLost bool
+    /// @param [out] m_lost is a bool which specifies whether the game is
+    /// lost or not
+    //-------------------------------------------------------------------//
+    inline bool getLost() {return m_gamelost;}
+
 
 
 protected:
@@ -251,6 +283,11 @@ protected:
     //-------------------------------------------------------------------//
 
     PlayerPtr m_player;
+
+    bool m_pause;
+
+    bool m_gamelost;
+
 private:
     //-------------------------------------------------------------------//
     /// @brief instance pointer for singleton

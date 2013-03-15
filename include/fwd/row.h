@@ -1,5 +1,5 @@
-#ifndef FWDROW_H
-#define FWDROW_H
+#ifndef FWD_ROW_H
+#define FWD_ROW_H
 
 #include "smartpointers.h"
 DECLARESMART(Row)
