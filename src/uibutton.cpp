@@ -54,7 +54,7 @@ void UIButton::blankFunction()
 //-------------------------------------------------------------------//
 UIButton::~UIButton()
 {
-    std::cout<<"button dtor called"<<std::endl;
+//    std::cout<<"button dtor called"<<std::endl;
 
 }
 

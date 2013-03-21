@@ -122,7 +122,6 @@ void Window::init()
 void Window::loop()
 {
     Game *game = Game::instance();
-    Renderer *renderer = Renderer::instance();
 
     // ------- GAME LOOP ------- //
 
@@ -156,17 +155,14 @@ void Window::loop()
             case SDL_MOUSEMOTION : mouseMotionEvent(m_event.motion); break;
             case SDL_MOUSEBUTTONDOWN : mouseButtonDownEvent(m_event.button); break;
             case SDL_MOUSEBUTTONUP : mouseButtonUpEvent(m_event.button); break;
-            case SDL_VIDEORESIZE :windowResizeEvent(m_event.resize, renderer);break;
-            case SDL_KEYUP : keyEvent(m_event.key);break;
-
+            case SDL_VIDEORESIZE :windowResizeEvent(m_event.resize);break;
+            case SDL_KEYUP : keyEvent(m_event.key); break;
             case SDL_KEYDOWN:
             {
               switch(m_event.key.keysym.sym )
               {
                 // if it's the escape key quit
                 case SDLK_ESCAPE : m_quit = true; break;
-
-
                 default : break;
               } // end of key process
             }
@@ -216,6 +212,8 @@ void Window::loop()
 
         Renderer *r = Renderer::instance();
 
+        r->loadLightsToShader("Phong");
+
     // render to texture
         r->bindFrameBuffer("Texture");
         GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
@@ -225,6 +223,7 @@ void Window::loop()
 
 
         game->draw();
+        r->visualiseLights();
 
         m_UI->draw();
 
@@ -266,12 +265,12 @@ void Window::keyEvent(const SDL_KeyboardEvent &_event)
             m_window = SDL_SetVideoMode(0, 0, 0, m_window->flags ^ SDL_FULLSCREEN); /*Toggles FullScreen Mode */
             if(m_window == NULL) m_window = SDL_SetVideoMode(0, 0, 0, flags); /* If toggle FullScreen failed, then switch back */
             if(m_window == NULL) exit(1); /* If you can't switch back for some reason, then epic fail */
-            renderer->resize(m_width,m_height);
+            renderer->resize();
         }
         else
         {
             m_window = SDL_SetVideoMode(m_width, m_height,0, flags);
-            renderer->resize(m_width,m_height);
+            renderer->resize();
         }
 
     }
@@ -297,13 +296,15 @@ void Window::keyEvent(const SDL_KeyboardEvent &_event)
 
 //-------------------------------------------------------------------//
 
-void Window::windowResizeEvent(const SDL_ResizeEvent &_event, Renderer *_renderer)
+void Window::windowResizeEvent(const SDL_ResizeEvent &_event)
 {
     m_width = _event.w;
     m_height = _event.h;
 
     SDL_SetVideoMode(m_width, m_height, 16, SDL_OPENGL | SDL_RESIZABLE);
-    _renderer->resize(m_width, m_height);
+
+    Renderer *r = Renderer::instance();
+    r->resize();
 
 
 }

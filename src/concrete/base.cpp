@@ -71,14 +71,14 @@ void Base::draw()
   Renderer *r = Renderer::instance();
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-  (*shader)["Constant"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+  (*shader)["Phong"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
 
   shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
 
   shader->setShaderParam4f("colour", 1, 0.1, 1, 1);
 
-  r->draw("base", "Constant");
+  r->draw("base", "Phong");
 }
 
 //-------------------------------------------------------------------//

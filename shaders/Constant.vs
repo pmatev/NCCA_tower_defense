@@ -1,4 +1,4 @@
-#version 150
+#version 330
 
 /// @brief projection matrix passed in from camera class in main app
 uniform mat4 MVP;

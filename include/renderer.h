@@ -7,6 +7,7 @@
 #include "ngl/VertexArrayObject.h"
 #include "ngl/TransformStack.h"
 #include "ngl/Obj.h"
+#include "pointlight.h"
 
 
 
@@ -62,7 +63,7 @@ public:
     /// @param [in] _w, width
     /// @param [in] _h, height
     //-------------------------------------------------------------------//
-    void resize(const unsigned int _w, const unsigned int _h);
+    void resize();
 
     //-------------------------------------------------------------------//
     /// SHOULD BE REMOVED
@@ -153,13 +154,6 @@ public:
     void set2DPosToShader(ngl::Vec2 _pos, std::string _shader);
 
     //-------------------------------------------------------------------//
-    /// @brief laod a light to a given 3D shader
-    /// @param [in] _light, pointer to a light object
-    /// @param [in] _shader, shader to upload the light to
-    //-------------------------------------------------------------------//
-    void loadLightToShader(ngl::Light *_light, std::string _shader);
-
-    //-------------------------------------------------------------------//
     /// @brief creates a frame buffer object and puts it in the map with
     /// given "nice" name.
     /// @param [in] _name, nice name to store the fbo id under in the map
@@ -191,8 +185,13 @@ public:
     void fboError(GLenum _error);
 
 
+    void loadLightsToShader(const std::string &_name) const;
 
     GLuint getTexture(const unsigned int &_i){return m_textures[_i];}
+
+    void visualiseLights();
+
+
 
 protected:
     //-------------------------------------------------------------------//
@@ -204,6 +203,8 @@ protected:
     //-------------------------------------------------------------------//
     ~Renderer();
 
+
+
     //-------------------------------------------------------------------//
     /// @brief static singleton variable
     //-------------------------------------------------------------------//
@@ -213,11 +214,6 @@ protected:
     /// @brief list of all created shaders
     //-------------------------------------------------------------------//
     std::vector<std::string> m_shaderNames;
-
-    //-------------------------------------------------------------------//
-    /// @brief list of all created lights
-    //-------------------------------------------------------------------//
-    std::vector<ngl::Light> m_lights;
 
     //-------------------------------------------------------------------//
     /// @brief map of idstrings to vaos
@@ -238,6 +234,8 @@ protected:
     /// @brief the camera
     //-------------------------------------------------------------------//
     CameraPtr m_cam;
+
+    std::vector<PointLightPtr> m_lights;
 
     // TMP //
     GLuint m_textures[3];

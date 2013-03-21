@@ -5,6 +5,7 @@
 #include <boost/function.hpp>
 #include"smartpointers.h"
 #include <QString>
+#include "texture.h"
 
 
 DECLARESMART(UIElement)
@@ -166,11 +167,6 @@ protected:
     /// or pixel value. Will be relative to size of menu
     //-------------------------------------------------------------------//
     ngl::Vec2 m_size;
-
-    //-------------------------------------------------------------------//
-    /// @brief texture id for the button
-    //-------------------------------------------------------------------//
-    GLuint m_texture;
 
     //-------------------------------------------------------------------//
     /// @brief string containing image file location

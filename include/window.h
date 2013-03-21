@@ -87,7 +87,7 @@ public:
     //-------------------------------------------------------------------//
     /// @brief function called on resize event
     //-------------------------------------------------------------------//
-    void windowResizeEvent(const SDL_ResizeEvent &_event, Renderer *_renderer);
+    void windowResizeEvent(const SDL_ResizeEvent &_event);
 
     //-------------------------------------------------------------------//
     /// @brief funcation called for key event

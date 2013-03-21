@@ -48,7 +48,7 @@ NodePtr Node::create(const ngl::Vec3 &_pos, float _hexagonSize)
 
 Node::~Node()
 {
-  //currently using default destructor
+
 }
 
 void Node::generateMesh()
@@ -162,8 +162,8 @@ void Node::draw()
 
         ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-        (*shader)["Constant"]->use();
-        r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+        (*shader)["Phong"]->use();
+        r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
         ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
         c = c/255.0f;
 
@@ -183,10 +183,11 @@ void Node::draw()
         }
         else
         {
-            shader->setShaderParam4f("colour", 0.1, 0.1, 0.15, 1);
+            shader->setShaderParam4f("colour", 0.8, 0.8, 0.8, 1);
         }
 
-        r->draw("hexagon", "Constant");
+        r->draw("hexagon", "Phong");
+
     }
 
 

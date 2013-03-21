@@ -70,6 +70,7 @@ SOURCES += src/main.cpp \
     src/concrete/standardwall.cpp \
     src/explosion.cpp \
     src/meshlib.cpp \
+    src/pointlight.cpp \
     src/mesh.cpp \
     src/concrete/grenade.cpp \
     src/concrete/missilesilo.cpp \
@@ -137,6 +138,7 @@ HEADERS += \
     include/explosion.h \
     include/fwd/projectileManager.h \
     include/meshlib.h \
+    include/pointlight.h \
     include/mesh.h \
     include/concrete/grenade.h \
     include/concrete/missilesilo.h \
@@ -144,7 +146,6 @@ HEADERS += \
     include/uLayout/uwindow.h \
     include/fwd/uwindow.h \
     include/costbutton.h
-
 
 
 
@@ -188,6 +189,7 @@ LIBS += -lgomp
 
 OTHER_FILES += \
     config/config.xml \
+    \
     shaders/UI.vs \
     shaders/UI.fs \
     shaders/Texture.vs \
@@ -196,22 +198,13 @@ OTHER_FILES += \
     shaders/Constant.fs \
     shaders/TexturedConst.vs \
     shaders/TexturedConst.fs \
+    shaders/Phong.vs \
+    shaders/Phong.fs \
+    \
     textures/grid.png \
     textures/default_texture.jpg \
-    fonts/Abyssinica_SIL.ttf \
-    fonts/Roboto-Regular.ttf \
-    config/config.xml \
-    models/turret.obj \
-    shaders/Texture.vs \
-    shaders/Texture.fs \
     textures/HealthBar.png \
-    textures/default_texture.png \
     textures/HealthBar_flat.png \
-    models/turret_base.obj \
-    model/turret_cannon.obj \
-    models/enemy.obj \
-    models/hexagon.obj \
-    models/wall.obj \
     textures/noMoney.png \
     textures/playButton.png \
     textures/playButtonNo.png \
@@ -241,8 +234,6 @@ OTHER_FILES += \
     textures/sellGrenadeImage.png \
     textures/sellBulletImage.png \
     textures/closeMenuButton.png \
-    textures/closeMenuButton .png \
-    textures/closeMenuButton.png \
     textures/startMenuButton_700x150Hover.png \
     textures/settingsMenuButtonHover.png \
     textures/restartMenuButtonHover.png \
@@ -252,4 +243,16 @@ OTHER_FILES += \
     textures/wallButtonCreation.png \
     textures/machineGunCreation.png \
     textures/grenadeButtonCreation.png \
-    textures/settingsButtonHover.png
+    textures/settingsButtonHover.png \
+    textures/closeMenuButton.png \
+    \
+    fonts/Abyssinica_SIL.ttf \
+    fonts/Roboto-Regular.ttf \
+    \
+    models/turret.obj \
+    models/turret_base.obj \
+    model/turret_cannon.obj \
+    models/enemy.obj \
+    models/hexagon.obj \
+    models/wall.obj \
+

@@ -1,4 +1,4 @@
-#version 150
+#version 330
 uniform sampler2D tex;
 in vec2 vertUV;
 out vec4 fragColour;

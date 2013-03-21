@@ -32,59 +32,67 @@ void TextureLib::destroy()
 //-------------------------------------------------------------------//
 void TextureLib::init()
 {
-    load("debug", "textures/default_texture.png");
-    load("healthbar", "textures/HealthBar_flat.png");
-    load("startMenuButton", "textures/startMenuButton_700x150.png");
-    load("startMenuButtonHover", "textures/startMenuButton_700x150Hover.png");
-    load("settingsMenuButton", "textures/settingsMenuButton");
-    load("settingsMenuButtonHover", "textures/settingsMenuButtonHover");
-    load("backToStartMenuButton", "textures/backToStartMenuButton.png");
-    load("backToStartMenuButtonHover", "textures/backToStartMenuButtonHover.png");
-    load("restartMenuButton", "textures/restartMenuButton.png");
-    load("restartMenuButtonHover", "textures/restartMenuButtonHover.png");
-    load("quitGameMenuButton", "textures/quitGameMenuButton.png");
-    load("quitGameMenuButtonHover", "textures/quitGameMenuButtonHover.png");
-    load("backToGameButton", "textures/closeMenuButton.png");
-    load("backToGameButtonHover", "textures/closeMenuButtonHover.png");
-    load("grenadeButton", "textures/grenadeButton.png");
-    load("grenadeButtonCreation", "textures/grenadeButtonCreation.png");
-    load("grenadeButtonNoMoney", "textures/grenadeButtonNoMoney.png");
-    load("machineGunButton", "textures/machineGun.png");
-    load("machineGunButtonCreation", "textures/machineGunCreation.png");
-    load("machineGunButtonNoMoney", "textures/machineGunNoMoney.png");
-    load("wallButton", "textures/wallButton.png");
-    load("wallButtonCreation", "textures/wallButtonCreation.png");
-    load("wallButtonNoMoney", "textures/wallButtonNoMoney");
-    load("playButton", "textures/playButton.png");
-    load("pauseButton", "textures/pauseButton.png");
-    load("sellButton", "textures/sellButton.png");
-    load("settingButton", "textures/settingsButton.png");
-    load("settingButtonHover", "textures/settingsButtonHover.png");
-    load("upgrade2BulletImage", "textures/upgrade2BulletImage.png");
-    load("upgrade2GrenadeImage", "textures/upgrade2GrenadeImage.png");
-    load("upgradeButton", "textures/upgradeButton.png");
-    load("upgradeButtonNoMoney","textures/upgradeButtonNoMoney");
-    load("background", "textures/backgroundTexture.png");
-    load("closeButton", "textures/closeButton.png");
-    load("createBackground","textures/createBackground.png");
-    load("sellBulletImage", "textures/sellBulletImage.png");
-    load("sellGrenadeImage", "textures/sellGrenadeImage.png");
+        createTexture("debug", "textures/default_texture.png");
+        createTexture("healthbar", "textures/HealthBar_flat.png");
+        createTexture("startMenuButton", "textures/startMenuButton_700x150.png");
+        createTexture("startMenuButtonHover", "textures/startMenuButton_700x150Hover.png");
+        createTexture("settingsMenuButton", "textures/settingsMenuButton");
+        createTexture("settingsMenuButtonHover", "textures/settingsMenuButtonHover");
+        createTexture("backToStartMenuButton", "textures/backToStartMenuButton.png");
+        createTexture("backToStartMenuButtonHover", "textures/backToStartMenuButtonHover.png");
+        createTexture("restartMenuButton", "textures/restartMenuButton.png");
+        createTexture("restartMenuButtonHover", "textures/restartMenuButtonHover.png");
+        createTexture("quitGameMenuButton", "textures/quitGameMenuButton.png");
+        createTexture("quitGameMenuButtonHover", "textures/quitGameMenuButtonHover.png");
+        createTexture("backToGameButton", "textures/closeMenuButton.png");
+        createTexture("backToGameButtonHover", "textures/closeMenuButtonHover.png");
+        createTexture("grenadeButton", "textures/grenadeButton.png");
+        createTexture("grenadeButtonCreation", "textures/grenadeButtonCreation.png");
+        createTexture("grenadeButtonNoMoney", "textures/grenadeButtonNoMoney.png");
+        createTexture("machineGunButton", "textures/machineGun.png");
+        createTexture("machineGunButtonCreation", "textures/machineGunCreation.png");
+        createTexture("machineGunButtonNoMoney", "textures/machineGunNoMoney.png");
+        createTexture("wallButton", "textures/wallButton.png");
+        createTexture("wallButtonCreation", "textures/wallButtonCreation.png");
+        createTexture("wallButtonNoMoney", "textures/wallButtonNoMoney");
+        createTexture("playButton", "textures/playButton.png");
+        createTexture("pauseButton", "textures/pauseButton.png");
+        createTexture("sellButton", "textures/sellButton.png");
+        createTexture("settingButton", "textures/settingsButton.png");
+        createTexture("settingButtonHover", "textures/settingsButtonHover.png");
+        createTexture("upgrade2BulletImage", "textures/upgrade2BulletImage.png");
+        createTexture("upgrade2GrenadeImage", "textures/upgrade2GrenadeImage.png");
+        createTexture("upgradeButton", "textures/upgradeButton.png");
+        createTexture("upgradeButtonNoMoney","textures/upgradeButtonNoMoney");
+        createTexture("background", "textures/backgroundTexture.png");
+        createTexture("closeButton", "textures/closeButton.png");
+        createTexture("createBackground","textures/createBackground.png");
+        createTexture("sellBulletImage", "textures/sellBulletImage.png");
+        createTexture("sellGrenadeImage", "textures/sellGrenadeImage.png");
 
 }
 //-------------------------------------------------------------------//
-void TextureLib::load(const std::string &_name, const std::string &_file)
+void TextureLib::createTexture(const std::string &_name)
 {
-    Texture t(_file);
-
-    m_mapTextureIDs[_name] = t.getID();
+    m_mapTextures[_name] = Texture::create(_name);
 
 }
+
+//-------------------------------------------------------------------//
+
+void TextureLib::createTexture(const std::string &_name, const std::string &_file)
+{
+    TexturePtr texture = Texture::create(_name, _file);
+    m_mapTextures[_name] = texture;
+}
+
 //-------------------------------------------------------------------//
 void TextureLib::bindTexture(const std::string &_name)
 {
-    if(m_mapTextureIDs[_name])
+    if(m_mapTextures[_name])
     {
-        glBindTexture(GL_TEXTURE_2D, m_mapTextureIDs[_name]);
+        TexturePtr t = m_mapTextures[_name];
+        glBindTexture(GL_TEXTURE_2D, t->getID());
         m_boundTexture = _name;
     }
     else

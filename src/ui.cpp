@@ -252,7 +252,7 @@ void UI::mouseLeftUp(const unsigned int _ID, ngl::Vec2 _mousePos)
         UIElementPtr UIClick = checkUIClicked(_ID);
 
         EntityPtr entityClick;
-        std::cout<<_ID<<std::endl;
+//        std::cout<<_ID<<std::endl;
 
         if(!UIClick)
         {
@@ -262,6 +262,9 @@ void UI::mouseLeftUp(const unsigned int _ID, ngl::Vec2 _mousePos)
 
             if(!entityClick) // if it is not an entity
             {
+
+//              std::cout<<"i am background"<<std::endl;
+
             }
 
             else // it is a valid entity
@@ -292,6 +295,9 @@ void UI::mouseLeftUp(const unsigned int _ID, ngl::Vec2 _mousePos)
                     button->execute();
                     button->setPressed(true);
                     m_creationMode = true;
+
+//                    std::cout<<"i am GUI"<<std::endl;
+
                     menu->setDrawable(false);
                 }
             }

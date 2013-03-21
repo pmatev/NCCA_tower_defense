@@ -46,7 +46,7 @@ void Column::setElement(const UIElementPtr &_element)
 
 
     setElementPosition();
-    m_element->generateMesh();
+    //m_element->generateMesh();
 
 }
 

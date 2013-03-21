@@ -167,8 +167,8 @@ void TestTurret::draw()
   m_transformStack.pushTransform();
   m_transformStack.setPosition(m_pos);
 
-  (*shader)["Constant"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+  (*shader)["Phong"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
   ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
   c = c/255.0f;
 
@@ -176,7 +176,7 @@ void TestTurret::draw()
   shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
 
 
-  r->draw("turret_base", "Constant");
+  r->draw("turret_base", "Phong");
   m_transformStack.popTransform();
 
   //Draw the cannon
@@ -187,12 +187,18 @@ void TestTurret::draw()
   //float turret_xz_rotation = (atan2(m_aim[1], m_aim[0])) * (180 / 3.14159263);
   m_transformStack.setRotation(ngl::Vec3(0, turret_y_rotation, 0));
 
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
-  (*shader)["Constant"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  (*shader)["Phong"]->use();
 
   shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
+
   shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
 
-  r->draw("turret_cannon", "Constant");
+  m_transformStack.setPosition(m_shotPos);
+  m_transformStack.setRotation(ngl::Vec3(0, (atan(m_aim[0] / m_aim[2])) * (180 / 3.14159263), 0));
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+
+  r->draw("turret_cannon", "Phong");
+
   m_transformStack.popTransform();
 }

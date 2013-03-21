@@ -326,8 +326,8 @@ void MissileSilo::draw()
   m_transformStack.pushTransform();
   m_transformStack.setPosition(m_pos);
 
-  (*shader)["Constant"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+  (*shader)["Phong"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
   ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
   c = c/255.0f;
 
@@ -335,7 +335,7 @@ void MissileSilo::draw()
   shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
 
 
-  r->draw("turret_base", "Constant");
+  r->draw("turret_base", "Phong");
   m_transformStack.popTransform();
 
   // Test code to render the targets for each grenade -------------------------------------

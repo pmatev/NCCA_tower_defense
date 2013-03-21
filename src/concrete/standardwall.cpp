@@ -63,12 +63,12 @@ void StandardWall::draw()
 
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-  (*shader)["Constant"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+  (*shader)["Phong"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
 
   shader->setShaderParam4f("colour", 0.4, 0.1, 0.8, 1);
   shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
 
-  r->draw("wall", "Constant");
+  r->draw("wall", "Phong");
 
 }

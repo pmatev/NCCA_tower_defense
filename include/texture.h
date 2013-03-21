@@ -3,12 +3,19 @@
 
 #include <string>
 #include "ngl/Types.h"
+#include "smartpointers.h"
+
+DECLARESMART(Texture)
+
 
 class Texture
 {
 public:
-    Texture();
-    Texture(const std::string &_file);
+
+    static TexturePtr create(const std::string &_name);
+
+    static TexturePtr create(const std::string &_name,
+                             const std::string &_file);
     ~Texture();
 
     bool load(const std::string &_file);
@@ -17,13 +24,20 @@ public:
     GLuint getWidth() const {return m_width;}
     GLuint getHeight() const {return m_height;}
     std::string getFilePath() const {return m_filepath;}
+    void loadData(const int _width, const int _height, const int _bpp, const void *_data);
 
 protected:
+    Texture(const std::string &_name);
+    Texture(const std::string &_name, const std::string &_file);
+
+
     void generateGLTex();
+
+    std::string m_name;
 
     std::string m_filepath;
 
-    unsigned char *m_data;
+    std::vector<unsigned char> m_data;
 
     GLuint m_width;
 

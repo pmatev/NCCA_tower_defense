@@ -289,12 +289,12 @@ void Enemy::draw()
     ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
     // draw enemy
-    (*shader)["Constant"]->use();
-    r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+    (*shader)["Phong"]->use();
+    r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
 
     shader->setShaderParam4f("colour", 0.1,0.1,0.1,1);
     shader->setShaderParam4f("colourSelect", 0,0,0,0);
-    r->draw(m_IDStr, "Constant");
+    r->draw(m_IDStr, "Phong");
 
     // draw healthbar
     m_healthBar->setUVScale(50/m_health);

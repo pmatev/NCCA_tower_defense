@@ -123,13 +123,14 @@ void TestEnemy::draw()
   TextureLib *tex = TextureLib::instance();
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-  (*shader)["Constant"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+  (*shader)["Phong"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
 
-  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
+  tex->bindTexture("debug");
+//  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
   shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
 
-  r->draw("enemy", "Constant");
+  r->draw("enemy", "Phong");
 
   // draw healthbar
   (*shader)["TexturedConstant"]->use();

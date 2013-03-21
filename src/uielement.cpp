@@ -2,6 +2,7 @@
 #include "renderer.h"
 #include <boost/lexical_cast.hpp>
 #include <QImage>
+#include "texturelib.h"
 //-------------------------------------------------------------------//
 
 UIElement::UIElement(ngl::Vec2 _pos,
@@ -35,6 +36,7 @@ void UIElement::setPosition(ngl::Vec2 _pos)
 //-------------------------------------------------------------------//
 void UIElement::generateMesh()
 {
+
   // BUILD BILLBOARD
   struct quadVertData
   {

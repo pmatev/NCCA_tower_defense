@@ -2,6 +2,8 @@
 #include "window.h"
 #include "ngl/ShaderLib.h"
 #include "game.h"
+#include "boost/foreach.hpp"
+#include "boost/lexical_cast.hpp"
 
 
 Renderer* Renderer::s_instance = 0;
@@ -12,6 +14,7 @@ Renderer::Renderer()
 //-------------------------------------------------------------------//
 Renderer::~Renderer()
 {
+//    glDeleteTextures(3,&m_textures);
 }
 //-------------------------------------------------------------------//
 
@@ -36,14 +39,18 @@ void Renderer::destroy()
 
 void Renderer::init()
 {
-  m_cam = CameraPtr(new Camera(ngl::Vec4(10,10,10,1),Game::instance()->getBasePos(),ngl::Vec4(0,1,0,0)));
+    std::cout<<"OpenGL Version: "<<glGetString(GL_VERSION)<<std::endl;
 
-    Window *window = Window::instance();
-    ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+    m_cam = CameraPtr(new Camera(ngl::Vec4(10,10,10,1),Game::instance()->getBasePos(),ngl::Vec4(0,1,0,0)));
 
-    float w = window->getScreenWidth();
-    float h = window->getScreenHeight();
+    m_lights.push_back(PointLight::create(ngl::Vec4(0,10,0,1),ngl::Vec4(0,0,0,1),ngl::Vec4(0.3,0.3,0.3,1), ngl::Vec4(1,1,1,1)));
+    m_lights.push_back(PointLight::create(ngl::Vec4(40,10,0,1),ngl::Vec4(0,0,0,1),ngl::Vec4(0.3,0.3,0.3,1), ngl::Vec4(1,1,1,1)));
+    m_lights.push_back(PointLight::create(ngl::Vec4(0,10,40,1),ngl::Vec4(0,0,0,1),ngl::Vec4(0.3,0.3,0.3,1), ngl::Vec4(1,1,1,1)));
+    m_lights.push_back(PointLight::create(ngl::Vec4(40,10,40,1),ngl::Vec4(0,0,0,1),ngl::Vec4(0.3,0.3,0.3,1), ngl::Vec4(1,1,1,1)));
 
+    ngl::ShaderLib *shader = ngl::ShaderLib::instance();    
+
+    glClearColor(1,1,1,1);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -55,6 +62,28 @@ void Renderer::init()
     /* NEED TO REDO create shader to allow for more flexibility */
 //    createShader("Phong",2);
 //    createShader("Colour",2);
+
+    shader->createShaderProgram("Phong");
+
+    shader->attachShader("PhongVertex",ngl::VERTEX);
+    shader->attachShader("PhongFragment",ngl::FRAGMENT);
+    shader->loadShaderSource("PhongVertex", "shaders/Phong.vs");
+    shader->loadShaderSource("PhongFragment","shaders/Phong.fs");
+
+    shader->compileShader("PhongVertex");
+    shader->compileShader("PhongFragment");
+
+    shader->attachShaderToProgram("Phong","PhongVertex");
+    shader->attachShaderToProgram("Phong","PhongFragment");
+
+    shader->bindAttribute("Phong", 0, "inVert");
+    shader->bindAttribute("Phong", 1, "inUV");
+    shader->bindAttribute("Phong", 2, "inNormal");
+    shader->linkProgramObject("Phong");
+
+    glBindFragDataLocation(shader->getProgramID("Phong"),0,"outColour");
+
+    m_shaderNames.push_back("Phong");
 
 
     shader->createShaderProgram("Constant");
@@ -146,24 +175,27 @@ void Renderer::init()
 
     createFramebufferObject("Texture");
 
-    resize(w, h);
+    resize();
 }
 //-------------------------------------------------------------------//
 
-void Renderer::resize(const unsigned int _w, const unsigned int _h)
+void Renderer::resize()
 {
+  Window *window = Window::instance();
+  int w = window->getScreenWidth();
+  int h = window->getScreenHeight();
   // set the viewport for openGL
-  glViewport(0,0,_w,_h);
+  glViewport(0,0,w,h);
   //set camera shape
-  m_cam->setShape(45,(float)_w/_h,0.5,150);
+  m_cam->setShape(45,(float)w/h,0.5,150);
 //  m_orthoCam->setShape(45,(float)_w/_h,0.5,150);
 
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();
 
   (*shader)["UI"]->use();
 
-  GLfloat scaleX=2.0/_w;
-  GLfloat scaleY=-2.0/_h;
+  GLfloat scaleX=2.0/w;
+  GLfloat scaleY=-2.0/h;
 
   shader->setRegisteredUniform1f("scaleX",scaleX);
   shader->setRegisteredUniform1f("scaleY",scaleY);
@@ -467,39 +499,52 @@ void Renderer::fboError(GLenum _error)
 void Renderer::loadMatrixToShader( const ngl::Mat4 &_tx, const std::string &_shader)
 {
     ngl::ShaderLib *shader=ngl::ShaderLib::instance();
-
     (*shader)[_shader]->use();
 
     ngl::Mat4 M = _tx;
     ngl::Mat4 V = m_cam->getViewMatrix();
     ngl::Mat4 P = m_cam->getProjectionMatrix();
+    ngl::Mat4 MV = M*V;
+    ngl::Real d[9];
+    MV.as3x3Array(d);
+    ngl::Mat3 normalMatrix;
+    normalMatrix.m_00 = d[0];
+    normalMatrix.m_01 = d[1];
+    normalMatrix.m_02 = d[2];
+    normalMatrix.m_10 = d[3];
+    normalMatrix.m_11 = d[4];
+    normalMatrix.m_12 = d[5];
+    normalMatrix.m_20 = d[6];
+    normalMatrix.m_21 = d[7];
+    normalMatrix.m_22 = d[8];
 
-    shader->setShaderParamFromMat4("MVP",M*V*P);
+    normalMatrix.inverse();
+    normalMatrix = normalMatrix.transpose();
+
+    shader->setShaderParamFromMat4("MVP",MV*P);
+    if(_shader == "Phong")
+    {
+        shader->setShaderParamFromMat4("V",V);
+        shader->setShaderParamFromMat3("normalMatrix",normalMatrix);
+        shader->setShaderParamFromMat4("MV", MV);
+    }
 }
-
 //-------------------------------------------------------------------//
-void Renderer::set2DPosToShader(ngl::Vec2 _pos,  std::string _shader)
+void Renderer::loadLightsToShader(const std::string &_name) const
 {
-    ngl::ShaderLib *shader=ngl::ShaderLib::instance();
-
-    (*shader)[_shader]->use();
-
-    shader->setRegisteredUniform1f("xpos",_pos.m_x);
-    shader->setRegisteredUniform1f("ypos",_pos.m_y);
-    shader->setRegisteredUniform3f("colour",0.3,0.4,0.6);
-
+    int i=0;
+    BOOST_FOREACH(PointLightPtr light, m_lights)
+    {
+        std::string i_str = boost::lexical_cast<std::string>(i);
+        light->loadToShader("lights["+i_str+"]", _name);
+        i++;
+    }
 }
 
-
-//-------------------------------------------------------------------//
-void Renderer::loadLightToShader(ngl::Light *_light, std::string _shader)
+void Renderer::visualiseLights()
 {
-    ngl::ShaderLib *shader=ngl::ShaderLib::instance();
-    (*shader)[_shader]->use();
-    ngl::Mat4 iv=m_cam->getProjectionMatrix();
-    iv.transpose();
-    _light->setTransform(iv);
-    // load these values to the shader as well
-    _light->loadToShader("light");
+    BOOST_FOREACH(PointLightPtr light, m_lights)
+    {
+        light->draw();
+    }
 }
-//-------------------------------------------------------------------//

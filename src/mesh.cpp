@@ -227,21 +227,6 @@ bool Mesh::isTriangular()
   return true;
 }
 
-// a simple structure to hold our vertex data
-// had to move this outside the method as g++ complains about it
-// clang doesn't have a problem tho
-struct VertData
-{
-  GLfloat u; // tex cords
-  GLfloat v; // tex cords
-  GLfloat nx; // normal from obj mesh
-  GLfloat ny;
-  GLfloat nz;
-  GLfloat x; // position from obj
-  GLfloat y;
-  GLfloat z;
-};
-
 void Mesh::createVAO()
 {
 // else allocate space as build our VAO
@@ -282,8 +267,8 @@ void Mesh::createVAO()
         d.ny=m_norm[m_face[i].m_norm[j]].m_y;
         d.nz=m_norm[m_face[i].m_norm[j]].m_z;
 
-        //d.u=m_tex[m_face[i].m_tex[j]].m_x;
-        //d.v=m_tex[m_face[i].m_tex[j]].m_y;
+        d.u=m_tex[m_face[i].m_tex[j]].m_x;
+        d.v=m_tex[m_face[i].m_tex[j]].m_y;
 
       }
       // now if neither are present (only verts like Zbrush models)
@@ -292,8 +277,8 @@ void Mesh::createVAO()
         d.nx=0;
         d.ny=0;
         d.nz=0;
-        //d.u=0;
-        //d.v=0;
+        d.u=0;
+        d.v=0;
       }
       // here we've got norms but not tex
       else if(m_nNorm >0 && m_nTex==0)
@@ -301,8 +286,8 @@ void Mesh::createVAO()
         d.nx=m_norm[m_face[i].m_norm[j]].m_x;
         d.ny=m_norm[m_face[i].m_norm[j]].m_y;
         d.nz=m_norm[m_face[i].m_norm[j]].m_z;
-        //d.u=0;
-        //d.v=0;
+        d.u=0;
+        d.v=0;
       }
       // here we've got tex but not norm least common
       else if(m_nNorm ==0 && m_nTex>0)
@@ -310,8 +295,8 @@ void Mesh::createVAO()
         d.nx=0;
         d.ny=0;
         d.nz=0;
-        //d.u=m_tex[m_face[i].m_tex[j]].m_x;
-        //d.v=m_tex[m_face[i].m_tex[j]].m_y;
+        d.u=m_tex[m_face[i].m_tex[j]].m_x;
+        d.v=m_tex[m_face[i].m_tex[j]].m_y;
       }
     boxData.push_back(d);
     }
@@ -334,7 +319,7 @@ void Mesh::createVAO()
   // how much (in bytes) data we are copying
   // a pointer to the first element of data (in this case the address of the first element of the
   // std::vector
-  vao->setData(meshSize*sizeof(VertData),boxData[0].x);
+  vao->setData(meshSize*sizeof(Renderer::vertData),boxData[0].x);
   // in this case we have packed our data in interleaved format as follows
   // u,v,nx,ny,nz,x,y,z
   // If you look at the shader we have the following attributes being used
@@ -346,7 +331,9 @@ void Mesh::createVAO()
   // sizeof(vertData) and the offset into the data structure for the first x component is 5 (u,v,nx,ny,nz)..x
   vao->setVertexAttributePointer(0,3,GL_FLOAT,sizeof(d),0);
   // uv same as above but starts at 0 and is attrib 1 and only u,v so 2
-  vao->setVertexAttributePointer(1,3,GL_FLOAT,sizeof(d),3);
+  vao->setVertexAttributePointer(1,2,GL_FLOAT,sizeof(d),3);
+
+  vao->setVertexAttributePointer(2,3,GL_FLOAT,sizeof(d),5);
 
 
   // now we have set the vertex attributes we tell the VAO class how many indices to draw when

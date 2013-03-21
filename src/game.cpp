@@ -467,9 +467,6 @@ void Game::update(const double _dt)
 //-------------------------------------------------------------------//
 void Game::draw()
 {
-
-
-
     m_environment->draw();
     m_waveManager->draw();
     m_projectileManager->draw();
