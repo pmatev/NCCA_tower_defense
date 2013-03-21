@@ -152,7 +152,7 @@
         <type>TestEnemy</type>
         <count>400</count>
         <shield>0.5</shield>
-        <maxSpeed>10</maxSpeed>
+        <maxSpeed>3.0</maxSpeed>
       </enemyType>
       <enemyType>
         <type>TestEnemy</type>

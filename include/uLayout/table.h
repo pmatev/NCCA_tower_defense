@@ -34,6 +34,9 @@ public:
 
     enum AlignType {RIGHT, LEFT, TOP, BOTTOM, CENTREX,CENTREY};
 
+    enum ElementToCornerAlign {TOPRIGHT, TOPLEFT};
+
+
     //-------------------------------------------------------------------//
     /// @brief overloaded constructor
     /// @param [in] position of table
@@ -65,12 +68,12 @@ public:
     void createColumns(const int &_row,const int &_numColumns);
 
     //-------------------------------------------------------------------//
-    /// @brief overloaded constructor
-    /// @param [in] position of table
-    /// @param [in] name of table
-    /// @param [in] string of image path file
+    /// @brief creates a table
+    /// @param [in] _row of the element
+    /// @param [in] _column to be placed in
+    /// @param [in] _element the table to be stored
     //-------------------------------------------------------------------//
-    void createElement(const int &_row,const int &_column, const UIElementPtr &_element);
+    void createTable(const int &_row,const int &_column, const UIElementPtr &_element);
 
     //-------------------------------------------------------------------//
     /// @brief if a create button then it checks if it is affordable if it
@@ -84,15 +87,29 @@ public:
     void draw();
 
     //-------------------------------------------------------------------//
-    /// @brief tells the rows to set their columns positions
+    /// @brief tells the rows to set their columns positions and also tells
+    /// column to set elements rest position
     //-------------------------------------------------------------------//
     void setRowPositions();
+
+    //-------------------------------------------------------------------//
+    /// @brief tells the rows to set their columns positions but doesnt set
+    /// the rest position
+    //-------------------------------------------------------------------//
+    void updateRowPositions();
 
     //-------------------------------------------------------------------//
     /// @brief sets the tables position
     /// @param [in] position value for the table position
     //-------------------------------------------------------------------//
     void setPosition(ngl::Vec2 _pos);
+
+    //-------------------------------------------------------------------//
+    /// @brief sets an elements position relative to the menu
+    /// @param [in] _name the element to set the position
+    /// @param [in] _align alignment type
+    //-------------------------------------------------------------------//
+    void setElementPosition(std::string _name, ElementToCornerAlign _align);
 
     //-------------------------------------------------------------------//
     /// @brief goes through and resizes the table based on the rows sizes
@@ -181,7 +198,7 @@ public:
     //-------------------------------------------------------------------//
     /// @brief function to create a table
     //-------------------------------------------------------------------//
-    void createTable();
+    void createElement(const UIElementPtr &_element);
 
     //-------------------------------------------------------------------//
     /// @brief function to create a standard button
@@ -212,6 +229,8 @@ public:
     //-------------------------------------------------------------------//
     void setFunction(const int &_row, const int &_column, boost::function<void()> _function);
 
+    void setFunction(std::string _name, boost::function<void()> _function);
+
 
     //-------------------------------------------------------------------//
     /// @brief sets a cost buttons cost
@@ -237,19 +256,85 @@ public:
     //-------------------------------------------------------------------//
     void setPressed(const int &_row, const int &_column, bool _isPressed);
 
+    //-------------------------------------------------------------------//
+    /// @brief centres the elements in the table in the y axis
+    //-------------------------------------------------------------------//
+    void centreElementsY();
+
+    //-------------------------------------------------------------------//
+    /// @brief creates a label for a button stored in the table
+    /// @param [in] _row defines the row the button is in
+    /// @param [in] _column defines the column within the row the button is stored in
+    /// @param [in] _pos
+    /// @param [in] _text states the text to be displayed
+    /// @param [in] _fontFile font to be used
+    /// @param [in] _ptsize font size
+    /// @param [in] _name name of element
+    /// @param [in] _position states where the label will be positioned relative
+    /// to the button
+    //-------------------------------------------------------------------//
+    void createLabel
+    (
+        const int &_row,
+        const int &_column,
+        ngl::Vec2 _pos,
+        const char *_text,
+        const char *_fontFile,
+        int _ptsize,
+        std::string _name,
+        LabelPosition _position
+        );
+
+    inline void setSpeed(double _speed) {m_speed = _speed;}
+
+    inline void setStartPos(ngl::Vec2 _startPos) {m_startPos = _startPos;}
+
+    inline void setEndPos(ngl::Vec2 _endPos) {m_endPos = _endPos;}
+
+    inline void setAnimated(bool _animated) {m_isAnimated = _animated;}
+
+    inline void setInterval(ngl::Vec2 _interval) {m_interval = _interval;}
+
+    inline void setStartTime(double _time) {m_startTime = _time;}
+
+    inline double getStartTime() {return m_startTime;}
+
+    inline ngl::Vec2 getInterval() {return m_interval;}
+
+    inline double getSpeed() {return m_speed;}
+
+    inline ngl::Vec2 getStartPos() {return m_startPos;}
+
+    inline ngl::Vec2  getEndPos() {return m_endPos;}
+
+    inline bool getAnimated() {return m_isAnimated;}
+
+    void updateElPosition();
+
+    void update(const double _dt);
+
+    void slideDown(const double _dt);
+
+    void slideLeft(const double _dt);
+
+
+
 protected:
 
     typedef std::vector<RowPtr> RowVector;
 
-    //-------------------------------------------------------------------//
-    /// @brief stores tables position
-    //-------------------------------------------------------------------//
-    ngl::Vec2 m_position;
+    typedef std::vector<UIElementPtr> ElementVector;
 
     //-------------------------------------------------------------------//
     /// @brief vector container containg pointers to the rows
     //-------------------------------------------------------------------//
     RowVector m_rows;
+
+    //-------------------------------------------------------------------//
+    /// @brief stores elements which have absolute values and are not set
+    /// up in the rows system
+    //-------------------------------------------------------------------//
+    ElementVector m_elements;
 
     //-------------------------------------------------------------------//
     /// @brief flag to specify if the background will be drawn
@@ -265,6 +350,28 @@ protected:
     /// @brief flag to say whether the table will be drawn or not
     //-------------------------------------------------------------------//
     bool m_isDrawable;
+
+private:
+
+    //-------------------------------------------------------------------//
+    double m_speed;
+
+    ngl::Vec2 m_startPos;
+
+    ngl::Vec2 m_endPos;
+
+    bool m_isAnimated;
+
+    ngl::Vec2 m_interval;
+
+    double m_startTime;
+
+    std::string m_slideType;
+
+
+
+
+
 
 };
 

@@ -127,6 +127,13 @@ public:
     //-------------------------------------------------------------------//
     virtual inline void setTexture(std::string _texture) {m_imageFile = _texture;}
 
+    inline void setRestPosition(ngl::Vec2 _restPos){m_restPosition = _restPos;}
+
+    inline ngl::Vec2 getRestPosition(){return m_restPosition;}
+
+
+    virtual inline void update(const double _dt){Q_UNUSED(_dt);}
+
 
 protected:
     //-------------------------------------------------------------------//
@@ -169,6 +176,8 @@ protected:
     /// @brief string containing image file location
     //-------------------------------------------------------------------//
     std::string m_imageFile;
+
+    ngl::Vec2 m_restPosition;
 
 };
 

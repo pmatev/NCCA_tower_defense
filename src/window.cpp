@@ -73,7 +73,7 @@ void Window::init()
 
     //initialize openGl Window
 
-    m_window = SDL_SetVideoMode(800,800, 16, SDL_OPENGL | SDL_RESIZABLE);
+    m_window = SDL_SetVideoMode(0,0, 16, SDL_OPENGL | SDL_RESIZABLE | SDL_FULLSCREEN);
 
     const SDL_VideoInfo* videoSize = SDL_GetVideoInfo();
 
@@ -201,7 +201,8 @@ void Window::loop()
                 game->update(frameTime / 1000.0);
             }
 
-            m_UI->updatePlayerInfo();
+            m_UI->update();
+            m_UI->updateAnimation(frameTime);
         }
 
         if(game->getBaseHealth() <=0)
@@ -408,7 +409,7 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 //    std::cout<<pixel<<std::endl;
     if(_event.button == SDL_BUTTON_LEFT)
     {
-          m_UI->mouseLeftUp(id);
+          m_UI->mouseLeftUp(id,ngl::Vec2(_event.x,_event.y));
     }
 
     r->bindFrameBuffer(0);

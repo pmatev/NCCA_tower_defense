@@ -92,16 +92,13 @@ void Text::draw()
     shader->setShaderParam4f("colourSelect", 0,0,0,0);
 
 
-    glDisable(GL_DEPTH_TEST);
+
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
 
     v->bind();
     v->draw();
     v->unbind();
-
-
-    glEnable(GL_DEPTH_TEST);
 }
 
 

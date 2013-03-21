@@ -76,16 +76,28 @@ void CostButton::draw()
     TextureLib *tex = TextureLib::instance();
     if(m_affordable)
     {
-        tex->bindTexture(m_imageFile);
-
+        if(m_isPressed==false)
+        {
+            tex->bindTexture(m_imageFile);
+        }
+        else if (m_type == "create")
+        {
+            tex->bindTexture(m_imageFile+"Creation");
+        }
     }
     else
     {
         tex->bindTexture(m_imageFile+"NoMoney");
     }
+    render->draw(m_IDStr, "UI");
+
+    if(m_label)
+    {
+        m_label->draw();
+    }
 
     //  glBindTexture(GL_TEXTURE_2D, m_texture);
-    render->draw(m_IDStr, "UI");
+
 
     glEnable(GL_DEPTH_TEST);
 

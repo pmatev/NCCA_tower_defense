@@ -284,8 +284,14 @@ protected:
 
     PlayerPtr m_player;
 
+    //-------------------------------------------------------------------//
+    /// @brief flag to say whether the game is paused or not
+    //-------------------------------------------------------------------//
     bool m_pause;
 
+    //-------------------------------------------------------------------//
+    /// @brief flag to say whether the game has been lost or not
+    //-------------------------------------------------------------------//
     bool m_gamelost;
 
 private:

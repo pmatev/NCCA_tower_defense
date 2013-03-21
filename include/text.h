@@ -87,6 +87,8 @@ public:
     inline void setTexture(std::string _texture) {m_imageFile = _texture;
                                                      generateMesh();}
 
+    inline void update(const double _dt){Q_UNUSED(_dt);}
+
 
 private:
 

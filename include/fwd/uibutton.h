@@ -5,4 +5,6 @@
 
 DECLARESMART(UIButton)
 
+enum LabelPosition {LEFT, RIGHT, TOP, BOTTOM};
+
 #endif // UIBUTTON_H

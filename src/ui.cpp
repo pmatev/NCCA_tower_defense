@@ -36,7 +36,91 @@ void UI::unregisterID(const unsigned int _i)
     m_IDMap.erase(_i);
 }
 
+//-------------------------------------------------------------------//
+void UI::draw()
+{
 
+    for(MenuMap::iterator it = m_menus.begin();
+        it != m_menus.end();
+        ++it)
+    {
+        TablePtr drawEl = (*it).second;
+        drawEl->draw();
+
+        //std::cout<<"\n"<<(drawEl)->getName()<< " drawn"<<std::endl;
+    }
+    for(UWindowMap::iterator it = m_windows.begin();
+        it != m_windows.end();
+        ++it)
+    {
+        UWindowPtr drawEl = (*it).second;
+        drawEl->draw();
+
+        //std::cout<<"\n"<<(drawEl)->getName()<< " drawn"<<std::endl;
+    }
+    //drawTmpTower();
+}
+
+//-------------------------------------------------------------------//
+void UI::drawTmpTower()
+{
+    if(m_creationMode)
+    {
+        Renderer *r = Renderer::instance();
+        Game *game = Game::instance();
+        ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+        EntityPtr entity = game->getEntityByID(m_highlightedNode).lock();
+
+        if(entity && entity->getGeneralType() == NODE)
+        {
+            if(m_tmpNodePos != entity->getPos())
+            {
+                m_tmpNodePos = entity->getPos();
+            }
+
+            //Draw the turret base
+            m_transformStack.pushTransform();
+            m_transformStack.setPosition(m_tmpNodePos);
+
+            (*shader)["Constant"]->use();
+            r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+
+            shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
+
+            r->draw(m_tmpTowerMesh, "Constant");
+            m_transformStack.popTransform();
+        }
+    }
+}
+
+//-------------------------------------------------------------------//
+void UI::update()
+{
+    Game* game = Game::instance();
+    std::string score1 = "Score : ";
+    std::string score = boost::lexical_cast<std::string>(game->getPlayerScore());
+    std::string final = score1 + score;
+
+
+    std::string money1 = "Money : ";
+    std::string money = boost::lexical_cast<std::string>(game->getPlayerCurrency());
+    std::string finalMoney = money1 + money;
+
+    std::string health1 = "Base Health : ";
+    std::string health = boost::lexical_cast<std::string>(game->getBaseHealth());
+    std::string finalHealth = health1 + health;
+
+    TablePtr menu = getMenu("scoreMenu");
+
+    menu->setText(2,0,final.c_str());
+    menu->setText(3,0,finalMoney.c_str());
+    menu->setText(4,0,finalHealth.c_str());
+
+    checkButtonAffordable();
+}
+
+//-------------------------------------------------------------------//
+//-------------------------Mouse Events------------------------------//
 //-------------------------------------------------------------------//
 UIElementPtr UI::checkUIClicked(const unsigned int _ID)
 {
@@ -49,11 +133,18 @@ UIElementPtr UI::checkUIClicked(const unsigned int _ID)
 }
 
 //-------------------------------------------------------------------//
-void UI::creationModeClick(const unsigned int _ID)
+void UI::creationModeClick(const unsigned int _ID,ngl::Vec2 _mousePos)
 {
     Game* game = Game::instance();
     EntityPtr entityClick;
     entityClick = game->getEntityByID(_ID).lock();
+
+    //get old creation tower incase it need to be used to turn off its
+    //m_isPressed
+
+    UIElementPtr element = checkUIClicked(m_tmpTowerButtonID);
+    UIButtonPtr oldButton = boost::dynamic_pointer_cast<UIButton>(element);
+
 
     //check that it is a valid entity and it is a node and it can be afforded
 
@@ -99,8 +190,10 @@ void UI::creationModeClick(const unsigned int _ID)
 
     else if(entityClick && entityClick->getGeneralType()==TURRET)
     {
+
         m_creationMode = 0;
-        turretClicked(_ID);
+        oldButton->setPressed(false);
+        turretClicked(_ID, _mousePos);
         game->setNodehighlighted(m_highlightedNode, 0);
     }
 
@@ -128,6 +221,8 @@ void UI::creationModeClick(const unsigned int _ID)
                 button->execute();
                 m_tmpCost = button->getCost();
                 button->setPressed(true);
+                oldButton->setPressed(false);
+                m_tmpTowerButtonID = _ID;
             }
         }
 
@@ -140,6 +235,7 @@ void UI::creationModeClick(const unsigned int _ID)
             {
                 button->execute();
                 m_creationMode = 0;
+                oldButton->setPressed(false);
             }
         }
     }
@@ -147,7 +243,7 @@ void UI::creationModeClick(const unsigned int _ID)
 
 //-------------------------------------------------------------------//
 
-void UI::mouseLeftUp(const unsigned int _ID)
+void UI::mouseLeftUp(const unsigned int _ID, ngl::Vec2 _mousePos)
 {
     Game *game = Game::instance();
     // if we are in creation mode
@@ -166,14 +262,13 @@ void UI::mouseLeftUp(const unsigned int _ID)
 
             if(!entityClick) // if it is not an entity
             {
-              std::cout<<"i am background"<<std::endl;
             }
 
             else // it is a valid entity
             {
                 if(entityClick->getGeneralType() == TURRET)
                 {
-                    turretClicked(_ID);
+                    turretClicked(_ID, _mousePos);
                 }
             }
         }
@@ -197,7 +292,6 @@ void UI::mouseLeftUp(const unsigned int _ID)
                     button->execute();
                     button->setPressed(true);
                     m_creationMode = true;
-                    std::cout<<"i am GUI"<<std::endl;
                     menu->setDrawable(false);
                 }
             }
@@ -218,149 +312,19 @@ void UI::mouseLeftUp(const unsigned int _ID)
 
     else //button has already been pressed and can be afforded
     {
-        creationModeClick(_ID);
+        creationModeClick(_ID, _mousePos);
     }
 }
 
-//-------------------------------------------------------------------//
-void UI::draw()
-{
-
-    for(MenuMap::iterator it = m_menus.begin();
-        it != m_menus.end();
-        ++it)
-    {
-        TablePtr drawEl = (*it).second;
-        drawEl->draw();
-
-        //std::cout<<"\n"<<(drawEl)->getName()<< " drawn"<<std::endl;
-    }
-    for(UWindowMap::iterator it = m_windows.begin();
-        it != m_windows.end();
-        ++it)
-    {
-        UWindowPtr drawEl = (*it).second;
-        drawEl->draw();
-
-        //std::cout<<"\n"<<(drawEl)->getName()<< " drawn"<<std::endl;
-    }
-    //drawTmpTower();
-}
 
 //-------------------------------------------------------------------//
-void UI::checkButtonAffordable()
-{
-
-    for(MenuMap::iterator it = m_menus.begin();
-        it != m_menus.end();
-        ++it)
-    {
-        TablePtr costMenu = (*it).second;
-        costMenu->checkButtonAffordable();
-    }
-}
-
-//-------------------------------------------------------------------//
-
-TablePtr UI::getMenu(std::string _name)
-{
-    for(MenuMap::iterator it = m_menus.begin();
-        it != m_menus.end();
-        ++it)
-    {
-        TablePtr menu = it->second;
-        if(menu->getName() == _name)
-        {
-           return menu;
-        }
-    }
-    return TablePtr();
-}
-
-//-------------------------------------------------------------------//
-
-UWindowPtr UI::getUWindow(std::string _name)
-{
-    for(UWindowMap::iterator it = m_windows.begin();
-        it != m_windows.end();
-        ++it)
-    {
-        UWindowPtr menu = it->second;
-        if(menu->getName() == _name)
-        {
-            return menu;
-        }
-    }
-    return UWindowPtr();
-}
-
-//-------------------------------------------------------------------//
-void UI::createMenu(TablePtr _menu)
-{
-    Window *window= Window::instance();
-    int ID = window->getID();
-    _menu->setID(ID);
-    registerID(_menu, ID);
-    m_menus[_menu->getID()] = _menu;
-    std::cout<<"menu created"<<std::endl;
-}
-
-//-------------------------------------------------------------------//
-void UI::placeDownStaticEntity(const std::string &_type, NodePtr _node)
-{
-    Game* game = Game::instance();
-
-    bool isCreated = game->tryToCreateTower(_type, _node);
-
-    if(isCreated == true)
-    {
-        m_creationMode = false;
-
-        std::cout<<"tower was created properly"<<std::endl;
-    }
-}
-
-//-------------------------------------------------------------------//
-void UI::upgradeButtonCommand()
-{
-    Game* game = Game::instance();
-    TablePtr upgradeMenu = getMenu("upgradeMenu");
-
-    Turret::UpgradeDataWPtr nextUpgradeDataWeak;
-    bool successful = game->getNextUpgrade(nextUpgradeDataWeak,m_tmpUpgradeTowerID);
-    if(successful)
-    {
-        Turret::UpgradeDataPtr nextData = nextUpgradeDataWeak.lock();
-        if(nextData)
-        {
-            int playerCurrency = game->getPlayerCurrency();
-            if(playerCurrency-nextData->m_cost >= 0)
-            {
-                successful = game->upgradeTurret(m_tmpUpgradeTowerID);
-                if(successful)
-                {
-                    turretClicked(m_tmpUpgradeTowerID);
-                    game->addCurrency(-nextData->m_cost);
-                    upgradeMenu->setDrawable(false);
-                }
-            }
-            else
-            {
-                std::cout<<"not enough money"<<std::endl;
-            }
-        }
-    }
-
-
-}
-
-//-------------------------------------------------------------------//
-void UI::turretClicked(const unsigned int _ID)
+void UI::turretClicked(const unsigned int _ID,ngl::Vec2 _mousePos)
 {
     Game* game = Game::instance();
     EntityPtr entityClick = game->getEntityByID(_ID).lock();
 
     TablePtr menu = getMenu("upgradeMenu");
+
 
     if(entityClick)
     {
@@ -423,8 +387,6 @@ void UI::turretClicked(const unsigned int _ID)
                     currentMenu->setText(2,0,currentData->m_title);
                     currentMenu->setText(1,1,cost.c_str());
                     currentMenu->setText(0,0,currentData->m_description);
-                    UIElementPtr button = currentMenu->getElement(1,0).lock();
-
                     menu->setTexture(0,0,currentData->m_texture);
                     currentMenu->setSize();
 
@@ -439,26 +401,41 @@ void UI::turretClicked(const unsigned int _ID)
     }
 
     menu->setSize();
-    menu->setDrawable(true);
+
+
+    //menu->setPosition(ngl::Vec2(_mousePos.m_x+3,_mousePos.m_y-menu->getSize().m_y));
     menu->screenAlignment(Table::CENTREY);
     menu->screenAlignment(Table::RIGHT);
-
+    menu->centreElementsY();
+    menu->setDrawable(true);
 }
 
 //-------------------------------------------------------------------//
 void UI::mouseMoveEvent(const unsigned int _ID)
 {
-    if(m_creationMode == true)
+    EntityPtr entityClick;
+    Game* game = Game::instance();
+
+    entityClick = game->getEntityByID(_ID).lock();
+
+    if(!entityClick)
     {
-        EntityPtr entityClick;
-        Game* game = Game::instance();
-
-        entityClick = game->getEntityByID(_ID).lock();
-
-
-        if(entityClick)
+        uiHover(_ID);
+    }
+    else
+    {
+        UIElementPtr oldel = checkUIClicked(m_tmpHoverButton);
+        if(oldel)
         {
+            UIButtonPtr oldButton = boost::dynamic_pointer_cast<UIButton>(oldel);
+            if(oldButton)
+            {
+                oldButton->setHover(false);
+            }
+        }
 
+        if(m_creationMode == true)
+        {
             if(entityClick->getGeneralType() == NODE &&
                     _ID != m_highlightedNode)
             {
@@ -484,12 +461,159 @@ void UI::mouseMoveEvent(const unsigned int _ID)
                     //set new nodes flag to true
                     game->setNodehighlighted(_ID, 1);
                 }
-
-
                 m_highlightedNode = _ID;
             }
         }
     }
+}
+
+//-------------------------------------------------------------------//
+void UI::placeDownStaticEntity(const std::string &_type, NodePtr _node)
+{
+    Game* game = Game::instance();
+
+    bool isCreated = game->tryToCreateTower(_type, _node);
+
+    if(isCreated == true)
+    {
+        m_creationMode = false;
+
+        std::cout<<"tower was created properly"<<std::endl;
+    }
+}
+
+//-------------------------------------------------------------------//
+void UI::upgradeButtonCommand()
+{
+    Game* game = Game::instance();
+    TablePtr upgradeMenu = getMenu("upgradeMenu");
+
+    Turret::UpgradeDataWPtr nextUpgradeDataWeak;
+    bool successful = game->getNextUpgrade(nextUpgradeDataWeak,m_tmpUpgradeTowerID);
+    if(successful)
+    {
+        Turret::UpgradeDataPtr nextData = nextUpgradeDataWeak.lock();
+        if(nextData)
+        {
+            int playerCurrency = game->getPlayerCurrency();
+            if(playerCurrency-nextData->m_cost >= 0)
+            {
+                successful = game->upgradeTurret(m_tmpUpgradeTowerID);
+                if(successful)
+                {
+                    //turretClicked(m_tmpUpgradeTowerID);
+                    game->addCurrency(-nextData->m_cost);
+                    upgradeMenu->setDrawable(false);
+                }
+            }
+            else
+            {
+                std::cout<<"not enough money"<<std::endl;
+            }
+        }
+    }
+}
+
+
+//-------------------------------------------------------------------//
+void UI::uiHover(const unsigned int &_ID)
+{
+
+    UIElementPtr element = checkUIClicked(_ID);
+    UIElementPtr oldel = checkUIClicked(m_tmpHoverButton);
+
+    if(!element)
+    {
+        if(oldel)
+        {
+            UIButtonPtr oldButton = boost::dynamic_pointer_cast<UIButton>(oldel);
+            if(oldButton)
+            {
+                oldButton->setHover(false);
+                //set orginial hover flag to 0 then set the new one to 1
+            }
+        }
+    }
+
+    else
+    {
+        UIButtonPtr button = boost::dynamic_pointer_cast<UIButton>(element);
+
+        if(button)
+        {
+            if(button->getType() != "create")
+            {
+                button->setHover(true);
+
+                if(button->getID() != m_tmpHoverButton)
+                {
+                    m_tmpHoverButton = _ID;
+                    if(oldel)
+                    {
+                        UIButtonPtr oldButton = boost::dynamic_pointer_cast<UIButton>(oldel);
+                        if(oldButton)
+                        {
+                            oldButton->setHover(false);
+                            //set orginial hover flag to 0 then set the new one to 1
+                        }
+                    }
+                }
+            }
+            else
+            {
+              //
+            }
+        }
+    }
+}
+
+//-------------------------------------------------------------------//
+//--------------------------menu handling----------------------------//
+//-------------------------------------------------------------------//
+void UI::checkButtonAffordable()
+{
+
+    for(MenuMap::iterator it = m_menus.begin();
+        it != m_menus.end();
+        ++it)
+    {
+        TablePtr costMenu = (*it).second;
+        costMenu->checkButtonAffordable();
+    }
+}
+
+//-------------------------------------------------------------------//
+
+TablePtr UI::getMenu(std::string _name)
+{
+    for(MenuMap::iterator it = m_menus.begin();
+        it != m_menus.end();
+        ++it)
+    {
+        TablePtr menu = it->second;
+        if(menu->getName() == _name)
+        {
+           return menu;
+        }
+    }
+    return TablePtr();
+}
+
+//-------------------------------------------------------------------//
+
+UWindowPtr UI::getUWindow(std::string _name)
+{
+    for(UWindowMap::iterator it = m_windows.begin();
+        it != m_windows.end();
+        ++it)
+    {
+        UWindowPtr menu = it->second;
+        if(menu->getName() == _name)
+        {
+            return menu;
+        }
+    }
+    return UWindowPtr();
 }
 
 //-------------------------------------------------------------------//
@@ -501,32 +625,18 @@ void UI::setupUI()
     createUpgradeMenu();
     createTowerMenu();
     createInGameSettingsWindow();
+    setUpAnimation();
 }
 
 //-------------------------------------------------------------------//
-void UI::updatePlayerInfo()
+void UI::createMenu(TablePtr _menu)
 {
-    Game* game = Game::instance();
-    std::string score1 = "Score : ";
-    std::string score = boost::lexical_cast<std::string>(game->getPlayerScore());
-    std::string final = score1 + score;
-
-
-    std::string money1 = "Money : ";
-    std::string money = boost::lexical_cast<std::string>(game->getPlayerCurrency());
-    std::string finalMoney = money1 + money;
-
-    std::string health1 = "Base Health : ";
-    std::string health = boost::lexical_cast<std::string>(game->getBaseHealth());
-    std::string finalHealth = health1 + health;
-
-    TablePtr menu = getMenu("scoreMenu");
-
-    menu->setText(2,0,final.c_str());
-    menu->setText(3,0,finalMoney.c_str());
-    menu->setText(4,0,finalHealth.c_str());
-
-    checkButtonAffordable();
+    Window *window= Window::instance();
+    int ID = window->getID();
+    _menu->setID(ID);
+    registerID(_menu, ID);
+    m_menus[_menu->getID()] = _menu;
+    std::cout<<_menu->getName()<<" created"<<std::endl;
 }
 
 //-------------------------------------------------------------------//
@@ -547,9 +657,10 @@ void UI::createWindow
     menu->setID(ID);
     registerID(menu, ID);
     m_windows[menu->getID()] = menu;
-    std::cout<<"menu created"<<std::endl;
+    std::cout<<menu->getName()<<" create"<<std::endl;
 
 }
+
 //-------------------------------------------------------------------//
 //-------------------------menu setup functions----------------------//
 //-------------------------------------------------------------------//
@@ -605,14 +716,62 @@ void UI::createTowerMenu()
                     100
                     );
         menu->setFunction(0,0, boost::bind(&UI::createWallfunction, this));
+        menu->createLabel
+                (
+                    0,
+                    1,
+                    (0,0),
+                    "cost $100",
+                    "fonts/Roboto-Regular.ttf",
+                    15,
+                    "testTowerCostText",
+                    BOTTOM
+                    );
+        menu->createLabel
+                (
+                    0,
+                    0,
+                    (0,0),
+                    "cost $10",
+                    "fonts/Roboto-Regular.ttf",
+                    15,
+                    "wallcostText",
+                    BOTTOM
+                    );
+        menu->createLabel
+                (
+                    0,
+                    2,
+                    (0,0),
+                    "cost $200",
+                    "fonts/Roboto-Regular.ttf",
+                    15,
+                    "missileCostText",
+                    BOTTOM
+                    );
+
+        menu->createElement
+                (
+                    UIButtonPtr
+                    (
+                        new UIButton
+                        (ngl::Vec2(0,0),
+                         "closeButton",
+                         "closeTowerMenuButton",
+                         40,
+                         20
+                         )
+                        )
+                    );
+        menu->setFunction("closeTowerMenuButton", boost::bind(&UI::closeTowerMenuFunction,this));
 
         menu->setSize();
         std::cout<<"menu size"<<menu->getSize();
         menu->screenAlignment(Table::BOTTOM);
         menu->screenAlignment(Table::CENTREX);
+        menu->setElementPosition("closeTowerMenuButton", Table::TOPLEFT);
         menu->setDrawable(false);
     }
-
 }
 
 
@@ -853,8 +1012,8 @@ void UI::createUpgradeMenu()
         menu->createColumns(0,2);
         menu->createColumns(1,2);
         menu->createColumns(2,1);
-        menu->createElement(1,1,nextMenu);
-        menu->createElement(0,1,currentMenu);
+        menu->createTable(1,1,nextMenu);
+        menu->createTable(0,1,currentMenu);
         menu->createButton
                 (
                     1,
@@ -905,39 +1064,59 @@ void UI::createStartMenu()
     Window* window = Window::instance();
     Game *game = Game::instance();
 
+    float height = window->getScreenHeight();
+    float width = window->getScreenWidth();
+
     createWindow
             (
                 ngl::Vec2(0,0),
                 "startWindow",
                 "background",
                 this,
-                ngl::Vec2(window->getScreenWidth(),window->getScreenHeight())
+                ngl::Vec2(width,height)
                 );
 
     UWindowPtr menu = getUWindow("startWindow");
 
     if(menu)
     {
-        menu->createButton(ngl::Vec2(0,500),"startMenuButton","startButton",700,150);
 
-        menu->alignElement("startButton", UWindow::CENTREX);
+        menu->createTable(ngl::Vec2(0,0),"startmenu","background",this);
 
-        menu->setFunction("startButton", boost::bind(&UI::startGameFunction,this));
+        UIElementPtr element = menu->getElement("startmenu");
+
+        if(element)
+        {
+            TablePtr table =boost::dynamic_pointer_cast<Table>(element);
+            if(table)
+            {
+                table->createRows(2);
+                table->createColumns(0,1);
+                table->createColumns(1,1);
+                table->createButton(1,0, ngl::Vec2(0,0),"startMenuButton","startButton",700,150);
+
+                table->setFunction(1,0, boost::bind(&UI::startGameFunction,this));
+
+                table->createButton(0,1,ngl::Vec2(0,0),"quitGameMenuButton", "quitButton", 700,150);
+                table->setFunction(0,1, boost::bind(&UI::quitFunction,this));
+                table->setSize();
+                table->setPosition(ngl::Vec2(0,(height-table->getSize().m_y)-200));
+                table->setBackground(false);
+            }
+        }
+
 
         menu->createText
                 (
-                    ngl::Vec2 (0,menu->getSize().m_y-100),
+                    ngl::Vec2 (0,menu->getSize().m_y-125),
                     "Welcome To Tower Defence",
                     "fonts/Roboto-Regular.ttf",
-                    45,
+                    60,
                     "welcomeText"
                     );
 
-        menu->alignElement("welcomeText",UWindow::CENTREX);
-
-        menu->createButton(ngl::Vec2(0, 250),"quitGameMenuButton", "quitButton", 700,150);
-        menu->setFunction("quitButton", boost::bind(&UI::quitFunction,this));
-        menu->alignElement("quitButton", UWindow::CENTREX);
+        menu->alignElement("welcomeText",UWindow::CENTREX);       
+        menu->alignElement("startmenu", UWindow::CENTREX);
         game->setPaused(true);
     }
 }
@@ -947,13 +1126,16 @@ void UI::createLoseRestartMenu()
 {
     Window* window = Window::instance();
 
+    float height = window->getScreenHeight();
+    float width = window->getScreenWidth();
+
     createWindow
             (
                 ngl::Vec2(0,0),
                 "loseWindow",
                 "background",
                 this,
-                ngl::Vec2(window->getScreenWidth(),window->getScreenHeight())
+                ngl::Vec2(width,height)
                 );
 
     UWindowPtr uwindow = getUWindow("loseWindow");
@@ -967,25 +1149,40 @@ void UI::createLoseRestartMenu()
                 "loseText"
                 );
 
-    uwindow->alignElement("loseText", UWindow::CENTREX);
+    uwindow->createTable(ngl::Vec2(0,0),"losemenu","background",this);
 
-    uwindow->createButton(ngl::Vec2(0,700),"restartMenuButton","restartButton",700,150);
+    UIElementPtr element = uwindow->getElement("losemenu");
 
-    uwindow->alignElement("restartButton", UWindow::CENTREX);
+    if(element)
+    {
+        TablePtr table =boost::dynamic_pointer_cast<Table>(element);
+        if(table)
+        {
+            table->createRows(3);
+            table->createColumns(0,1);
+            table->createColumns(1,1);
+            table->createColumns(2,1);
 
-    uwindow->setFunction("restartButton", boost::bind(&UI::resetFunction,this));
+            table->createButton(2,0,ngl::Vec2(0,0),"restartMenuButton","restartButton",700,150);
 
-    uwindow->createButton(ngl::Vec2(0,500),"backToStartMenuButton", "backToStartMenuButton",700,150);
+            table->setFunction(2,0, boost::bind(&UI::resetFunction,this));
 
-    uwindow->setFunction("backToStartMenuButton",boost::bind(&UI::backToStartFunction,this));
+            table->createButton(1,0,ngl::Vec2(0,0),"backToStartMenuButton", "backToStartMenuButton",700,150);
 
-    uwindow->alignElement("backToStartMenuButton", UWindow::CENTREX);
+            table->setFunction(1,0,boost::bind(&UI::backToStartFunction,this));
 
-    uwindow->createButton(ngl::Vec2(0, 300),"quitGameMenuButton", "quitButtonLose", 700,150);
+            table->createButton(0,1,ngl::Vec2(0, 0),"quitGameMenuButton", "quitButtonLose", 700,150);
 
-    uwindow->setFunction("quitButtonLose", boost::bind(&UI::quitFunction,this));
+            table->setFunction(0,1, boost::bind(&UI::quitFunction,this));
 
-    uwindow->alignElement("quitButtonLose", UWindow::CENTREX);
+            table->setSize();
+            table->setBackground(false);
+        }
+    }
+    uwindow->alignElement("loseText",UWindow::CENTREX);
+
+    uwindow->alignElement("losemenu", UWindow::CENTREX);
+    uwindow->alignElement("losemenu",UWindow::CENTREY);
 
     uwindow->setDrawable(false);
 
@@ -1040,38 +1237,9 @@ void UI::createInGameSettingsWindow()
 
 }
 
+
 //-------------------------------------------------------------------//
-void UI::drawTmpTower()
-{
-    if(m_creationMode)
-    {
-        Renderer *r = Renderer::instance();
-        Game *game = Game::instance();
-        ngl::ShaderLib *shader = ngl::ShaderLib::instance();
-        EntityPtr entity = game->getEntityByID(m_highlightedNode).lock();
-
-        if(entity && entity->getGeneralType() == NODE)
-        {
-            if(m_tmpNodePos != entity->getPos())
-            {
-                m_tmpNodePos = entity->getPos();
-            }
-
-            //Draw the turret base
-            m_transformStack.pushTransform();
-            m_transformStack.setPosition(m_tmpNodePos);
-
-            (*shader)["Constant"]->use();
-            r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
-
-            shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
-
-            r->draw(m_tmpTowerMesh, "Constant");
-            m_transformStack.popTransform();
-        }
-    }
-}
-
+//--------------------reset and lost functions-----------------------//
 //-------------------------------------------------------------------//
 void UI::gameLost()
 {
@@ -1090,14 +1258,38 @@ void UI::gameLost()
 void UI::resetUI()
 {
     Game *game = Game::instance();
-    updatePlayerInfo();
+    update();
+    resetMenuPositions();
     m_gameStart = false;
     game->setPaused(false);
     TablePtr towerMenu = getMenu("towerbuildMenu");
     TablePtr menu = getMenu("scoreMenu");
     towerMenu->setDrawable(true);
     menu->setDrawable(true);
-    menu->setTexture(0,0,"playButton");
+    menu->setTexture(1,0,"playButton");
+}
+
+//-------------------------------------------------------------------//
+void UI::resetMenuPositions()
+{
+    for(MenuMap::iterator it = m_menus.begin();
+        it != m_menus.end();
+        ++it)
+    {
+        TablePtr table = (*it).second;
+        table->setPosition(table->getRestPosition());
+
+
+        //std::cout<<"\n"<<(drawEl)->getName()<< " drawn"<<std::endl;
+    }
+    for(UWindowMap::iterator it = m_windows.begin();
+        it != m_windows.end();
+        ++it)
+    {
+        UWindowPtr uwindow = (*it).second;
+        uwindow->setPosition(uwindow->getRestPosition());
+        //std::cout<<"\n"<<(drawEl)->getName()<< " drawn"<<std::endl;
+    }
 }
 
 //-------------------------------------------------------------------//
@@ -1121,6 +1313,8 @@ void UI::inGameSettingsFunction()
 {
     Game* game = Game::instance();
     UWindowPtr uwindow = getUWindow("inGameSettingsWindow");
+    TablePtr createMenu = getMenu("towerbuildMenu");
+    createMenu->setDrawable(false);
     uwindow->setDrawable(true);
     game->setPaused(true);
 }
@@ -1130,8 +1324,13 @@ void UI::closeMenuFunction()
 {
     Game* game = Game::instance();
     UWindowPtr uwindow = getUWindow("inGameSettingsWindow");
+    TablePtr menu = getMenu("scoreMenu");
+    TablePtr createMenu = getMenu("towerbuildMenu");
+    createMenu->setDrawable(true);
     uwindow->setDrawable(false);
     game->setPaused(false);
+    menu->setTexture(1,0,"pauseButton");
+
 }
 
 //-------------------------------------------------------------------//
@@ -1205,6 +1404,54 @@ void UI::backToStartFunction()
     resetUI();
 }
 
+
+//-------------------------------------------------------------------//
+//-----------------------Animation Functions-------------------------//
+//-------------------------------------------------------------------//
+void UI::updateAnimation(const double &_dt)
+{
+    TablePtr createMenu = getMenu("towerbuildMenu");
+
+    createMenu->update(_dt);
+
+}
+
+//-------------------------------------------------------------------//
+void UI::setUpAnimation()
+{
+    TablePtr createMenu = getMenu("towerbuildMenu");
+
+    ngl::Vec2 endPos = (0,0);
+    endPos.m_x = createMenu->getPosition().m_x;
+    endPos.m_y = createMenu->getStartPos().m_y-createMenu->getSize().m_y;
+    createMenu->setEndPos(endPos);
+    createMenu->setSpeed(0.2);
+    createMenu->setInterval(ngl::Vec2(0,0));
+}
+
+//-------------------------------------------------------------------//
+void UI::closeTowerMenuFunction()
+{
+    std::cout<<"the button has been clicked"<<std::endl;
+    TablePtr createMenu = getMenu("towerbuildMenu");
+
+    ngl::Vec2 startPos = createMenu->getStartPos();
+    ngl::Vec2 endPos = createMenu->getEndPos();
+
+    if(createMenu->getPosition()== endPos)
+    {
+        createMenu->setStartPos(endPos);
+        createMenu->setEndPos(startPos);
+        startPos = createMenu->getStartPos();
+        endPos = createMenu->getEndPos();
+    }
+
+    ngl::Vec2 interval;
+    interval.m_y= (endPos.m_y-startPos.m_y)/createMenu->getSpeed();
+    interval.m_x = 0;
+    createMenu->setInterval(interval);
+    createMenu->setAnimated(true);
+}
 
 
 

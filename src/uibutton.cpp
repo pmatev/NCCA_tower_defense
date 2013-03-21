@@ -64,7 +64,6 @@ void UIButton::draw()
 
 //IN THIS FUNCTION NEED TO SET UP ISPRESSED RENDER
 
-  glDisable(GL_DEPTH_TEST);
 
   Renderer *render = Renderer::instance();
   Window *window = Window::instance();
@@ -88,15 +87,171 @@ void UIButton::draw()
 
   if(m_isPressed == false)
   {
-      tex->bindTexture(m_imageFile);
-
+      if(m_hover == false)
+      {
+          tex->bindTexture(m_imageFile);
+      }
+      else
+      {
+          tex->bindTexture(m_imageFile +"Hover");
+      }
   }
 
+  if(m_label)
+  {
+      m_label->draw();
+  }
   render->draw(m_IDStr, "UI");
-
-  glEnable(GL_DEPTH_TEST);
 }
 
 
 //-------------------------------------------------------------------//
+void UIButton::createLabel
+(
+    ngl::Vec2 _pos,
+    const char *_text,
+    const char *_fontFile,
+    int _ptsize,
+    std::string _name,
+    LabelPosition _position
+    )
+{
+
+    Window* window = Window::instance();
+    int id = window->getID();
+    m_label = TextPtr(new Text(_pos,_text,_fontFile,_ptsize,_name));
+    m_label->setID(id);
+    m_labelPosition = _position;
+    std::cout<<"text created"<<std::endl;
+
+    if(m_label)
+    {
+        if(_position == LEFT)
+        {
+            m_boundSize.m_x = m_size.m_x+m_label->getSize().m_x;
+            if(m_size.m_y > m_label->getSize().m_y)
+            {
+                m_boundSize.m_y = m_size.m_y;
+            }
+            else
+            {
+                m_boundSize.m_y = m_label->getSize().m_y;
+            }
+
+        }
+        if(_position == RIGHT)
+        {
+
+            m_boundSize.m_x = m_size.m_x+m_label->getSize().m_x;
+
+            if(m_size.m_y > m_label->getSize().m_y)
+            {
+                m_boundSize.m_y = m_size.m_y;
+            }
+            else
+            {
+                m_boundSize.m_y = m_label->getSize().m_y;
+            }
+        }
+        if(_position == TOP)
+        {
+
+            m_boundSize.m_y = m_size.m_y+m_label->getSize().m_y;
+            if(m_size.m_x > m_label->getSize().m_x)
+            {
+                m_boundSize.m_x = m_size.m_x;
+            }
+            else
+            {
+                m_boundSize.m_x = m_label->getSize().m_x;
+            }
+        }
+        if(_position == BOTTOM)
+        {
+            m_boundSize.m_y = m_size.m_y+m_label->getSize().m_y;
+            if(m_size.m_x > m_label->getSize().m_x)
+            {
+                m_boundSize.m_x = m_size.m_x;
+            }
+            else
+            {
+                m_boundSize.m_x = m_label->getSize().m_x;
+            }
+        }
+        setLabelPosition();
+    }
+}
+
+//-------------------------------------------------------------------//
+void UIButton::setPosition(ngl::Vec2 _pos)
+{
+    if(m_label)
+    {
+        if(m_labelPosition == LEFT)
+        {
+            m_pos.m_x = (m_label->getSize().m_x+5)+_pos.m_x;
+            m_pos.m_y = _pos.m_y;
+        }
+        else if(m_labelPosition == RIGHT)
+        {
+            m_pos = _pos;
+        }
+        else if(m_labelPosition == TOP)
+        {
+            m_pos = _pos;
+
+        }
+        else if(m_labelPosition == BOTTOM)
+        {
+            m_pos.m_y = (m_label->getSize().m_y+5)+_pos.m_y;
+            m_pos.m_x = _pos.m_x;
+        }
+
+        setLabelPosition();
+    }
+    else
+    {
+        m_pos = _pos;
+    }
+}
+
+//-------------------------------------------------------------------//
+void UIButton::setLabelPosition()
+{
+    ngl::Vec2  tmpPos;
+
+    if(m_label)
+    {
+        if(m_labelPosition == LEFT)
+        {
+            tmpPos.m_x = (m_pos.m_x)-m_label->getSize().m_x;
+            tmpPos.m_y = m_pos.m_y+((m_size.m_y-m_label->getSize().m_y)/2);
+
+        }
+        else if(m_labelPosition == RIGHT)
+        {
+            tmpPos.m_x = (m_pos.m_x+m_size.m_x);
+            tmpPos.m_y = m_pos.m_y+((m_size.m_y-m_label->getSize().m_y)/2);
+
+        }
+        else if(m_labelPosition == TOP)
+        {
+            tmpPos.m_y = (m_pos.m_y+m_size.m_y);
+            tmpPos.m_x = m_pos.m_x+((m_size.m_x-m_label->getSize().m_x)/2);
+
+        }
+        else if(m_labelPosition == BOTTOM)
+        {
+            tmpPos.m_y = (m_pos.m_y)-m_label->getSize().m_y;
+            tmpPos.m_x = m_pos.m_x+((m_size.m_x-m_label->getSize().m_x)/2);
+        }
+
+        m_label->setPosition(tmpPos);
+    }
+}
+
+
+
+
+
 

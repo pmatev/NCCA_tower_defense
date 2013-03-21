@@ -242,4 +242,14 @@ OTHER_FILES += \
     textures/sellBulletImage.png \
     textures/closeMenuButton.png \
     textures/closeMenuButton .png \
-    textures/closeMenuButton.png
+    textures/closeMenuButton.png \
+    textures/startMenuButton_700x150Hover.png \
+    textures/settingsMenuButtonHover.png \
+    textures/restartMenuButtonHover.png \
+    textures/quitGameMenuButtonHover.png \
+    textures/closeMenuButtonHover.png \
+    textures/backToStartMenuButtonHover.png \
+    textures/wallButtonCreation.png \
+    textures/machineGunCreation.png \
+    textures/grenadeButtonCreation.png \
+    textures/settingsButtonHover.png

@@ -120,14 +120,6 @@ public:
     inline void quit() {m_quit = true;}
 
 
-
-
-
-
-
-
-
-
 protected:
     //-------------------------------------------------------------------//
     /// @brief hidden ctor
@@ -232,6 +224,7 @@ protected:
     int m_viewmode;
 
     bool m_quit;
+
 
 
     BillboardPtr m_screenBillboard;

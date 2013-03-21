@@ -25,9 +25,13 @@
 class UIButton : public UIElement
 
 {
+
 public:
 
+
     typedef  boost::function<void()> functionPtr;
+
+
 
     //-------------------------------------------------------------------//
     /// @brief a parameterised constructor
@@ -107,6 +111,26 @@ public:
     //-------------------------------------------------------------------//
     inline void execute() {m_execute();}
 
+    void createLabel
+    (
+        ngl::Vec2 _pos,
+        const char *_text,
+        const char *_fontFile,
+        int _ptsize,
+        std::string _name,
+        LabelPosition _position
+        );
+
+    void setLabelPosition();
+
+    inline ngl::Vec2 getBoundSize() {return m_boundSize;}
+
+    void setPosition(ngl::Vec2 _pos);
+
+    inline void setHover(bool _hover){m_hover = _hover;}
+
+    inline void update(const double _dt) {Q_UNUSED(_dt);}
+
 
 
 protected:
@@ -125,6 +149,18 @@ protected:
     /// @brief stores the function to be executed by the button
     //-------------------------------------------------------------------//
     functionPtr m_execute;
+
+    TextPtr m_label;
+
+    ngl::Vec2 m_boundSize;
+
+    LabelPosition m_labelPosition;
+
+    bool m_gotLabel;
+
+    bool m_hover;
+
+    bool m_willHover;
 
 
 };

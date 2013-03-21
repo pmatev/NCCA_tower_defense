@@ -63,8 +63,14 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief sets the elements position based on the columns position
+    /// and also sets the elements rest position
     //-------------------------------------------------------------------//
     void setElementPosition();
+
+    //-------------------------------------------------------------------//
+    /// @brief sets the elements position only, based on the columns position
+    //-------------------------------------------------------------------//
+    void updateElementPosition();
 
     //-------------------------------------------------------------------//
     /// @brief returns its elements
@@ -76,6 +82,11 @@ public:
     /// @brief sets the columns size
     //-------------------------------------------------------------------//
     void setSize();
+
+    void centreElement(float &_ySize);
+
+
+
 
 
 

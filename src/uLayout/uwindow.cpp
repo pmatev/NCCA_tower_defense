@@ -177,11 +177,13 @@ void UWindow::createTable(const ngl::Vec2 &_pos,
 
     Window* window = Window::instance();
     UIElementPtr menu = TablePtr(new Table(_pos,_name,_imageFile,_parent));
-
-    int ID = window->getID();
-    m_parent->registerID(menu, ID);
-    menu->setID(ID);
-    m_elements.push_back(menu);
+    if(menu)
+    {
+        int ID = window->getID();
+        m_parent->registerID(menu, ID);
+        menu->setID(ID);
+        m_elements.push_back(menu);
+    }
 }
 
 //-------------------------------------------------------------------//
@@ -256,5 +258,19 @@ void UWindow::setFunction(const std::string &_name, UIButton::functionPtr _funct
     }
 }
 
+//-------------------------------------------------------------------//
+UIElementPtr UWindow::getElement(std::string _name)
+{
+    for(ElementVector::iterator it = m_elements.begin();
+        it != m_elements.end();
+        ++it)
+    {
+        if((*it)->getName() == _name)
+        {
+            return (*it);
+        }
+    }
+    return UIElementPtr();
 
+}
 

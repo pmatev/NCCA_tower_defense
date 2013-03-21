@@ -61,7 +61,7 @@ public:
     /// @brief sets the rows position
     /// @param [in] vec 2 containg the position value to set the row to
     //-------------------------------------------------------------------//
-    void setPosition(ngl::Vec2 _position);
+    void setPosition(ngl::Vec2 _position, bool _isUpdate);
 
     //-------------------------------------------------------------------//
     /// @brief returns the rows position
@@ -86,6 +86,11 @@ public:
     void setColumnPositions();
 
     //-------------------------------------------------------------------//
+    /// @brief goes through and sets the columns positions
+    //-------------------------------------------------------------------//
+    void updateColumnPositions();
+
+    //-------------------------------------------------------------------//
     /// @brief returns a column
     /// @param [in] column to return
     /// @param [out] returns a smart pointer to the column
@@ -108,6 +113,10 @@ public:
     /// @brief sets the rows size
     //-------------------------------------------------------------------//
     void setSize();
+
+    void centreElementsY();
+
+
 
 
 

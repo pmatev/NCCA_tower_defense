@@ -12,6 +12,7 @@
 
 
 
+
 //-------------------------------------------------------------------//
 /// @file ui.h
 /// @brief the ui class manages the creation of all the ui aspects
@@ -71,7 +72,7 @@ public:
     /// clicked down
     /// @param [in] _ID, the colourID given by clickEvent from game.h
     //-------------------------------------------------------------------//
-    void mouseLeftUp(const unsigned int _ID);
+    void mouseLeftUp(const unsigned int _ID,ngl::Vec2 _mousePos);
 
     //-------------------------------------------------------------------//
     /// @brief the function which is run when the mouse is moved
@@ -153,7 +154,7 @@ public:
     /// @brief update function which runs the ui's every frame updates e.g.
     /// score
     //-------------------------------------------------------------------//
-    void updatePlayerInfo();
+    void update();
 
     //-------------------------------------------------------------------//
     /// @brief function used by the button in the upgrade menu to close it
@@ -164,7 +165,7 @@ public:
     /// @brief this is ran when a turret is clicked. it initialises the the
     /// upgrade value with its details
     //-------------------------------------------------------------------//
-    void turretClicked(const unsigned int _ID);
+    void turretClicked(const unsigned int _ID,ngl::Vec2 _mousePos);
 
     //-------------------------------------------------------------------//
     /// @brief sets the upgrade id
@@ -188,7 +189,7 @@ public:
     /// @brief function to run on click event when in creation mode
     /// @param [in] takes in the _ID
     //-------------------------------------------------------------------//
-    void creationModeClick(const unsigned int _ID);
+    void creationModeClick(const unsigned int _ID, ngl::Vec2 _mousePos);
 
     //-------------------------------------------------------------------//
     /// @brief function to initialise the start menu
@@ -273,8 +274,41 @@ public:
     //-------------------------------------------------------------------//
     void inGameSettingsFunction();
 
+    //-------------------------------------------------------------------//
+    /// @brief resets all menus and windows back to their rest states
+    //-------------------------------------------------------------------//
+    void resetMenuPositions();
 
+
+    //-------------------------------------------------------------------//
+    /// @brief quits the game
+    //-------------------------------------------------------------------//
     void quitFunction();
+
+    //-------------------------------------------------------------------//
+    /// @brief used on mouse move event to check if the ui is being hovered
+    /// over
+    /// @param [in] _ID id of the selected ui
+    //-------------------------------------------------------------------//
+    void uiHover(const unsigned int &_ID);
+
+    //-------------------------------------------------------------------//
+    /// @brief update loop used for handling the animation of the menus
+    /// and elements
+    /// @param [in] _dt time that has changed since last update
+    //-------------------------------------------------------------------//
+    void updateAnimation(const double &_dt);
+
+    //-------------------------------------------------------------------//
+    /// @brief initializes all the neccessary variables for the animation
+    //-------------------------------------------------------------------//
+    void setUpAnimation();
+
+    //-------------------------------------------------------------------//
+    /// @brief function called when you click the arrow in the top left corner
+    /// of the towerbuild menu. slides the menu down
+    //-------------------------------------------------------------------//
+    void closeTowerMenuFunction();
 
 
 private:
@@ -301,11 +335,6 @@ private:
     elementsMap m_IDMap;
 
     //-------------------------------------------------------------------//
-    /// @brief temp storage for tower while it is being placed down
-    //-------------------------------------------------------------------//
-    std::string m_tmptowerType;
-
-    //-------------------------------------------------------------------//
     /// @brief value to say whether we are in creation mode or not
     //-------------------------------------------------------------------//
     bool m_creationMode;
@@ -316,6 +345,16 @@ private:
     unsigned int m_highlightedNode;
 
     //-------------------------------------------------------------------//
+    /// @brief transform stack used in creation mode for tmp mesh
+    //-------------------------------------------------------------------//
+    ngl::TransformStack m_transformStack;
+
+    //-------------------------------------------------------------------//
+    /// @brief temp storage for tower while it is being placed down
+    //-------------------------------------------------------------------//
+    std::string m_tmptowerType;
+
+    //-------------------------------------------------------------------//
     /// @brief stores cost of tower that will be created
     //-------------------------------------------------------------------//
     int m_tmpCost;
@@ -324,12 +363,7 @@ private:
     /// @brief stores the id value of the tower button pressed. used for
     /// creation mode checking
     //-------------------------------------------------------------------//
-    int m_tmpTowerButtonID;
-
-    //-------------------------------------------------------------------//
-    /// @brief transform stack used in creation mode for tmp mesh
-    //-------------------------------------------------------------------//
-    ngl::TransformStack m_transformStack;
+    unsigned int m_tmpTowerButtonID;
 
     //-------------------------------------------------------------------//
     /// @brief position of node when in creation mode for mesh movement
@@ -346,11 +380,13 @@ private:
     //-------------------------------------------------------------------//
     unsigned int m_tmpUpgradeTowerID;
 
+
+    unsigned int m_tmpHoverButton;
+
     //-------------------------------------------------------------------//
     /// @brief bool stating whether or not the first wave has been initialized
     //-------------------------------------------------------------------//
     bool m_gameStart;
-
 };
 
 

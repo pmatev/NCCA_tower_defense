@@ -130,8 +130,7 @@ public:
     /// @brief sets whether the entire table is drawn including its rows
     /// @param [in] true false value specifying whether it is drawable
     //-------------------------------------------------------------------//
-    void setDrawable(bool _drawable) {m_isDrawable = _drawable;
-                                     std::cout<<"draw set to "<<m_isDrawable<<" in "<<getName()<<std::endl;}
+    void setDrawable(bool _drawable) {m_isDrawable = _drawable;}
 
     //-------------------------------------------------------------------//
     /// @brief searches through elements for the name specified and
@@ -139,6 +138,10 @@ public:
     /// @param [in] function to set in the button
     //-------------------------------------------------------------------//
     void setFunction(const std::string &_name, UIButton::functionPtr _function);
+
+    UIElementPtr getElement(std::string _name);
+
+    inline void update(const double _dt) {;}
 
 
     private:

@@ -1,19 +1,26 @@
 #include "uLayout/row.h"
+#include "uLayout/table.h"
+
+//-------------------------------------------------------------------//
 Row::Row()
 {
 
 }
+
+//-------------------------------------------------------------------//
 Row::Row(const int &_numColumns)
 
 {
    createColumns(_numColumns);
 }
 
+//-------------------------------------------------------------------//
 Row::~Row()
 {
 
 }
 
+//-------------------------------------------------------------------//
 void Row::setElement(const int &_column, UIElementPtr _element)
 {
     ColumnPtr column = m_columns[_column];
@@ -25,6 +32,7 @@ void Row::setElement(const int &_column, UIElementPtr _element)
     }
 }
 
+//-------------------------------------------------------------------//
 void Row::setSize()
 {
     m_boundSize = ngl::Vec2(0,0);
@@ -42,6 +50,7 @@ void Row::setSize()
 
 }
 
+//-------------------------------------------------------------------//
 void Row::createColumns(const int &_numColumns)
 {
     for(int i= 0; i <= _numColumns; i++)
@@ -55,6 +64,7 @@ void Row::createColumns(const int &_numColumns)
     }
 }
 
+//-------------------------------------------------------------------//
 void Row::setColumnPositions()
 {
     ngl::Vec2 position = m_position;
@@ -68,6 +78,20 @@ void Row::setColumnPositions()
     }
 }
 
+void Row::updateColumnPositions()
+{
+    ngl::Vec2 position = m_position;
+
+    for(ColumnVector::iterator it=m_columns.begin(); it!=m_columns.end(); ++it)
+    {
+        (*it)->setPosition(position);
+        (*it)->updateElementPosition();
+        position.m_x += (*it)->getSize().m_x;
+        position.m_y = m_position.m_y;
+    }
+}
+
+//-------------------------------------------------------------------//
 void Row::checkAffordable()
 {
     for(ColumnVector::iterator it=m_columns.begin(); it!=m_columns.end(); ++it)
@@ -76,6 +100,7 @@ void Row::checkAffordable()
     }
 }
 
+//-------------------------------------------------------------------//
 void Row::draw()
 {
     for(ColumnVector::iterator it=m_columns.begin(); it!=m_columns.end(); ++it)
@@ -85,10 +110,29 @@ void Row::draw()
 
 }
 
-void Row::setPosition(ngl::Vec2 _position)
+//-------------------------------------------------------------------//
+void Row::setPosition(ngl::Vec2 _position, bool _isUpdate)
 {
-    m_position = _position;
-    setColumnPositions();
+    if(_isUpdate)
+    {
+        m_position = _position;
+        updateColumnPositions();
+    }
+    else
+    {
+        m_position = _position;
+        setColumnPositions();
+    }
+
+}
+
+//-------------------------------------------------------------------//
+void Row::centreElementsY()
+{
+    for(ColumnVector::iterator it=m_columns.begin(); it!=m_columns.end(); ++it)
+    {
+        (*it)->centreElement(m_boundSize.m_y);
+    }
 }
 
 

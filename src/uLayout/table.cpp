@@ -14,7 +14,9 @@ Table::Table(ngl::Vec2 _pos,
 
     m_backgroundVisible(true),
     m_parent(_parent),
-    m_isDrawable(true)
+    m_isDrawable(true),
+    m_startPos(_pos),
+  m_isAnimated(false)
 {
 
 }
@@ -43,7 +45,7 @@ void Table::createColumns(const int &_row,const int &_numColumns)
 }
 
 //-------------------------------------------------------------------//
-void Table::createElement(const int &_row,const int &_column,const UIElementPtr &_element)
+void Table::createTable(const int &_row,const int &_column,const UIElementPtr &_element)
 {
     Window* window = Window::instance();
 
@@ -57,17 +59,40 @@ void Table::createElement(const int &_row,const int &_column,const UIElementPtr 
 }
 
 //-------------------------------------------------------------------//
+void Table::createElement(const UIElementPtr &_element)
+{
+    Window* window = Window::instance();
+
+     int ID = window->getID();
+     m_parent->registerID(_element, ID);
+     _element->setID(ID);
+     m_elements.push_back(_element);
+
+}
+
+//-------------------------------------------------------------------//
 void Table::setRowPositions()
 {
     ngl::Vec2 position = m_pos;
     for(RowVector::iterator it=m_rows.begin(); it!=m_rows.end(); ++it)
     {
-        (*it)->setPosition(position);
+        (*it)->setPosition(position,false);
         position.m_y += (*it)->getSize().m_y;
         position.m_x = m_pos.m_x;
     }
 }
 
+//-------------------------------------------------------------------//
+void Table::updateRowPositions()
+{
+    ngl::Vec2 position = m_pos;
+    for(RowVector::iterator it=m_rows.begin(); it!=m_rows.end(); ++it)
+    {
+        (*it)->setPosition(position,true);
+        position.m_y += (*it)->getSize().m_y;
+        position.m_x = m_pos.m_x;
+    }
+}
 //-------------------------------------------------------------------//
 void Table::checkButtonAffordable()
 {
@@ -118,9 +143,12 @@ void Table::draw()
         {
           (*it)->draw();
         }
+        for(ElementVector::iterator it=m_elements.begin(); it!=m_elements.end(); it++)
+        {
+          (*it)->draw();
+        }
 
         glEnable(GL_DEPTH_TEST);
-
     }
 }
 
@@ -131,6 +159,7 @@ void Table::setPosition(ngl::Vec2 _pos)
 {
     m_pos = _pos;
     setRowPositions();
+    updateElPosition();
 }
 
 
@@ -191,7 +220,9 @@ void Table::screenAlignment(const AlignType &_alignment)
         m_pos.m_y = (height/2)-(m_size.m_y/2);
     }
 
-    setPosition(m_pos);
+    setRowPositions();
+    m_startPos = m_pos;
+    m_restPosition = m_pos;
 }
 
 
@@ -387,6 +418,219 @@ void Table::setPressed(const int &_row, const int &_column, bool _isPressed)
         if(button)
         {
             button->setPressed(_isPressed);
+        }
+    }
+}
+
+//-------------------------------------------------------------------//
+void Table::centreElementsY()
+{
+    for(RowVector::iterator it=m_rows.begin(); it!=m_rows.end(); ++it)
+    {
+        (*it)->centreElementsY();
+    }
+}
+
+//-------------------------------------------------------------------//
+void Table::createLabel
+(
+    const int &_row,
+    const int &_column,
+    ngl::Vec2 _pos,
+    const char *_text,
+    const char *_fontFile,
+    int _ptsize,
+    std::string _name,
+    LabelPosition _position)
+{
+    UIElementPtr element = getElement(_row, _column).lock();
+
+    if(element)
+    {
+        UIButtonPtr button = boost::dynamic_pointer_cast<UIButton>(element);
+        if(button)
+        {
+            button->createLabel(_pos,_text,_fontFile,_ptsize,_name,_position);
+        }
+    }
+}
+
+//-------------------------------------------------------------------//
+void Table::setFunction(std::string _name, boost::function<void ()> _function)
+{
+    for(ElementVector::iterator it=m_elements.begin(); it!=m_elements.end(); ++it)
+    {
+        UIElementPtr element = (*it);
+        if(element && element->getName() == _name)
+        {
+            UIButtonPtr button = boost::dynamic_pointer_cast<UIButton>(element);
+            if(button)
+            {
+                button->setFunction(_function);
+            }
+        }
+    }
+}
+
+//-------------------------------------------------------------------//
+void Table::setElementPosition(std::string _name, ElementToCornerAlign _align)
+{
+    for(ElementVector::iterator it=m_elements.begin(); it!=m_elements.end(); ++it)
+    {
+        UIElementPtr element = (*it);
+        if(element && element->getName() == _name)
+        {
+            ngl::Vec2 tmpPos;
+            if(_align == TOPLEFT)
+            {
+                tmpPos.m_x = m_pos.m_x;
+                tmpPos.m_y = m_pos.m_y+m_size.m_y;
+            }
+            else if(_align == TOPRIGHT)
+            {
+                tmpPos.m_x = (m_pos.m_x+m_size.m_x)-element->getSize().m_x;
+                tmpPos.m_y = m_pos.m_y+m_size.m_y;
+            }
+            element->setPosition(tmpPos);
+            element->setRestPosition(tmpPos);
+        }
+    }
+}
+
+//-------------------------------------------------------------------//
+void Table::updateElPosition()
+{
+    for(ElementVector::iterator it=m_elements.begin(); it!=m_elements.end(); ++it)
+    {
+        ngl::Vec2 elPos;
+        ngl::Vec2 elPosDif;
+        elPosDif.m_x = (*it)->getRestPosition().m_x-m_restPosition.m_x;
+        elPosDif.m_y = (*it)->getRestPosition().m_y-m_restPosition.m_y;
+
+        if(elPosDif.m_x == 0)
+        {
+            elPos.m_y = elPosDif.m_y+m_pos.m_y;
+            elPos.m_x = m_restPosition.m_x;
+        }
+        else if(elPosDif.m_y == 0)
+        {
+            elPos.m_x = elPosDif.m_x+m_pos.m_x;
+            elPos.m_y = m_restPosition.m_y;
+        }
+        else if(elPosDif == 0)
+        {
+            elPos.m_x = m_restPosition.m_x;
+            elPos.m_y = m_restPosition.m_y;
+        }
+        else
+        {
+            elPos.m_x = elPosDif.m_x+m_pos.m_x;
+            elPos.m_y = elPosDif.m_y+m_pos.m_y;
+        }
+
+        (*it)->setPosition(elPos);
+        std::cout<<"element at "<<elPos<<std::endl;
+    }
+}
+
+void Table::update(const double _dt)
+{
+    slideDown(_dt);
+
+}
+
+//-------------------------------------------------------------------//
+void Table::slideDown(const double _dt)
+{
+    if(m_interval.m_y < 0)
+    {
+        if(m_isAnimated == true
+                && m_pos.m_y > m_endPos.m_y)
+        {
+            float yPos =m_pos.m_y+(m_interval.m_y*(_dt*0.001));
+            m_pos.m_y = yPos;
+            setRowPositions();
+            updateElPosition();
+        }
+
+        else if(m_pos.m_y <= m_endPos.m_y)
+        {
+            setAnimated(false);
+            if(m_pos != m_endPos)
+            {
+                setPosition(m_endPos);
+                //std::cout<<"setting position to "<<m_endPos<<std::endl;
+            }
+        }
+    }
+
+    else if(m_interval.m_y > 0)
+    {
+        if(m_isAnimated == true
+                && m_pos.m_y <m_endPos.m_y)
+        {
+            float yPos = m_pos.m_y+(m_interval.m_y*(_dt*0.001));
+            m_pos.m_y = yPos;
+            setRowPositions();
+            updateElPosition();
+        }
+
+        else if(m_pos.m_y >= m_endPos.m_y)
+        {
+            setAnimated(false);
+            if(m_pos != m_endPos)
+            {
+                std::cout<<"setting position to "<<m_endPos<<std::endl;
+                setPosition(m_endPos);
+            }
+        }
+    }
+}
+
+//-------------------------------------------------------------------//
+void Table::slideLeft(const double _dt)
+{
+    if(m_interval.m_y < 0)
+    {
+        if(m_isAnimated == true
+                && m_pos.m_y > m_endPos.m_y)
+        {
+            float yPos =m_pos.m_y+(m_interval.m_y*(_dt*0.001));
+            m_pos.m_y = yPos;
+            setRowPositions();
+            updateElPosition();
+        }
+
+        else if(m_pos.m_y <= m_endPos.m_y)
+        {
+            setAnimated(false);
+            if(m_pos != m_endPos)
+            {
+                setPosition(m_endPos);
+                //std::cout<<"setting position to "<<m_endPos<<std::endl;
+            }
+        }
+    }
+
+    else if(m_interval.m_y > 0)
+    {
+        if(m_isAnimated == true
+                && m_pos.m_y <m_endPos.m_y)
+        {
+            float yPos = m_pos.m_y+(m_interval.m_y*(_dt*0.001));
+            m_pos.m_y = yPos;
+            setRowPositions();
+            updateElPosition();
+        }
+
+        else if(m_pos.m_y >= m_endPos.m_y)
+        {
+            setAnimated(false);
+            if(m_pos != m_endPos)
+            {
+                std::cout<<"setting position to "<<m_endPos<<std::endl;
+                setPosition(m_endPos);
+            }
         }
     }
 }
