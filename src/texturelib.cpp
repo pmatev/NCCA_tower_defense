@@ -56,6 +56,7 @@ void TextureLib::init()
         createTexture("wallButtonCreation", "textures/wallButtonCreation.png");
         createTexture("wallButtonNoMoney", "textures/wallButtonNoMoney");
         createTexture("playButton", "textures/playButton.png");
+        createTexture("playButtonHover", "textures/playButton.png");
         createTexture("pauseButton", "textures/pauseButton.png");
         createTexture("sellButton", "textures/sellButton.png");
         createTexture("settingButton", "textures/settingsButton.png");

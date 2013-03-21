@@ -150,9 +150,9 @@
     <enemyTypes>
       <enemyType>
         <type>TestEnemy</type>
-        <count>400</count>
+        <count>40</count>
         <shield>0.5</shield>
-        <maxSpeed>3.0</maxSpeed>
+        <maxSpeed>1.0</maxSpeed>
       </enemyType>
       <enemyType>
         <type>TestEnemy</type>
@@ -169,7 +169,7 @@
           <type>TestEnemy</type>
           <count>400</count>
           <shield>5</shield>
-          <maxSpeed>3.0</maxSpeed>
+          <maxSpeed>1.0</maxSpeed>
         </enemyType>
       </enemyTypes>
       <spawnRate>0.1</spawnRate>

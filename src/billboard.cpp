@@ -24,6 +24,12 @@ BillboardPtr Billboard::create(const Type &_type, const ngl::Vec4 &_pos, const f
     return a;
 }
 
+Billboard::~Billboard()
+{
+    Renderer *r = Renderer::instance();
+    r->deleteVAO(m_IDStr);
+}
+
 void Billboard::init()
 {
     vertData d[6];

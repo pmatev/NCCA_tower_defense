@@ -28,6 +28,8 @@ public:
     static BillboardPtr create(const Type &_type, const ngl::Vec4 &_pos, const float &_width, const float &_height);
     void init();
 
+    ~Billboard();
+
     void draw(const std::string &_shader);
 
 
