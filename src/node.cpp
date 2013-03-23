@@ -6,6 +6,7 @@
 #include "renderer.h"
 #include "game.h"
 #include "window.h"
+#include "texturelib.h"
 
 #define PI 3.14159265
 
@@ -162,31 +163,33 @@ void Node::draw()
 
         ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-        (*shader)["Phong"]->use();
-        r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+        (*shader)["TexturedConst"]->use();
+        r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "TexturedConst");
         ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
         c = c/255.0f;
 
         shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
 
-        if(m_highlighted == 1)
-        {
-            shader->setShaderParam4f("colour", 0, 0, 0, 1);
-        }
-        else if(m_highlighted == 2)
-        {
-            shader->setShaderParam4f("colour", 1, 0, 1, 1);
-        }
-        else if(m_isInSpawnPath)
-        {
-            shader->setShaderParam4f("colour", 0, 0, 1, 1);
-        }
-        else
-        {
-            shader->setShaderParam4f("colour", 0.8, 0.8, 0.8, 1);
-        }
+//        if(m_highlighted == 1)
+//        {
+//            shader->setShaderParam4f("colour", 0, 0, 0, 1);
+//        }
+//        else if(m_highlighted == 2)
+//        {
+//            shader->setShaderParam4f("colour", 1, 0, 1, 1);
+//        }
+//        else if(m_isInSpawnPath)
+//        {
+//            shader->setShaderParam4f("colour", 0, 0, 1, 1);
+//        }
+//        else
+//        {
+//            shader->setShaderParam4f("colour", 0.8, 0.8, 0.8, 1);
+//        }
 
-        r->draw("hexagon", "Phong");
+        TextureLib *tex = TextureLib::instance();
+        tex->bindTexture("hexagon_AO");
+        r->draw("hexagon", "TexturedConst");
 
     }
 

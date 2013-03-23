@@ -32,45 +32,78 @@ Billboard::~Billboard()
 
 void Billboard::init()
 {
-    vertData d[6];
-    d[0].x=-m_width/2.0;
-    d[0].y=-m_height/2.0;
-    d[0].u=0.0f;
-    d[0].v=0.0f;
+    if(m_type == b3D) // 3D has Pivot in center (e.g. healthbars)
+    {
+        m_data[0].x=-m_width/2.0;
+        m_data[0].y=-m_height/2.0;
+        m_data[0].u=0.0f;
+        m_data[0].v=0.0f;
 
-    d[1].x=m_width/2.0;
-    d[1].y=-m_height/2.0;
-    d[1].u=1.0f;
-    d[1].v=0.0f;
+        m_data[1].x=m_width/2.0;
+        m_data[1].y=-m_height/2.0;
+        m_data[1].u=1.0f;
+        m_data[1].v=0.0f;
 
-    d[2].x=-m_width/2.0;
-    d[2].y=m_height/2.0;
-    d[2].u=0.0f;
-    d[2].v=1.0f;
+        m_data[2].x=-m_width/2.0;
+        m_data[2].y=m_height/2.0;
+        m_data[2].u=0.0f;
+        m_data[2].v=1.0f;
 
-    d[3].x=-m_width/2.0;
-    d[3].y=m_height/2.0;
-    d[3].u=0.0f;
-    d[3].v=1.0f;
+        m_data[3].x=-m_width/2.0;
+        m_data[3].y=m_height/2.0;
+        m_data[3].u=0.0f;
+        m_data[3].v=1.0f;
 
-    d[4].x=m_width/2.0;
-    d[4].y=-m_height/2.0;
-    d[4].u=1.0f;
-    d[4].v=0.0f;
+        m_data[4].x=m_width/2.0;
+        m_data[4].y=-m_height/2.0;
+        m_data[4].u=1.0f;
+        m_data[4].v=0.0f;
 
-    d[5].x=m_width/2.0;
-    d[5].y=m_height/2.0;
-    d[5].u=1.0f;
-    d[5].v=1.0f;
+        m_data[5].x=m_width/2.0;
+        m_data[5].y=m_height/2.0;
+        m_data[5].u=1.0f;
+        m_data[5].v=1.0f;
+    }
+    else if(m_type == b2D) // 2D has Pivot bottom left e.g. UI
+    {
+        m_data[0].x=m_pos.m_x;
+        m_data[0].y=m_pos.m_y;
+        m_data[0].u=0.0f;
+        m_data[0].v=0.0f;
 
+        m_data[1].x=m_pos.m_x+m_width;
+        m_data[1].y=m_pos.m_y;
+        m_data[1].u=1.0f;
+        m_data[1].v=0.0f;
+
+        m_data[2].x=m_pos.m_x;
+        m_data[2].y=m_pos.m_y+m_height;
+        m_data[2].u=0.0f;
+        m_data[2].v=1.0f;
+
+        m_data[3].x=m_pos.m_x;
+        m_data[3].y=m_pos.m_y+m_height;
+        m_data[3].u=0.0f;
+        m_data[3].v=1.0f;
+
+        m_data[4].x=m_pos.m_x+m_width;
+        m_data[4].y=m_pos.m_y;
+        m_data[4].u=1.0f;
+        m_data[4].v=0.0f;
+
+        m_data[5].x=m_pos.m_x+m_width;
+        m_data[5].y=m_pos.m_y+m_height;
+        m_data[5].u=1.0f;
+        m_data[5].v=1.0f;
+    }
     Renderer *render = Renderer::instance();
 
     render->createVAO(m_IDStr, GL_TRIANGLES);
 
     VAOPtr v = render->getVAObyID(m_IDStr);
     v->bind();
-    int size = sizeof(vertData);
-    v->setData(6*size,d[0].x);
+    int size = sizeof(VertData);
+    v->setData(6*size,m_data[0].x);
     v->setVertexAttributePointer(0,2,GL_FLOAT,size,0);
     v->setVertexAttributePointer(1,2,GL_FLOAT,size,2);
     v->setNumIndices(6);
@@ -99,45 +132,38 @@ void Billboard::draw(const std::string &_shader)
     r->draw(m_IDStr, _shader);
 }
 
-void Billboard::setUVScale(const float _s)
+void Billboard::setUVScale(const float _scaleU, const float _scaleV)
 {
-    vertData d[6];
-    d[0].x=-m_width/2.0;
-    d[0].y=-m_height/2.0;
-    d[0].u=0.0f;
-    d[0].v=0.0f;
+    if(m_data)
+    {
+        m_data[0].u=0.0f;
+        m_data[0].v=0.0f;
 
-    d[1].x=m_width/2.0;
-    d[1].y=-m_height/2.0;
-    d[1].u=_s;
-    d[1].v=0.0f;
+        m_data[1].u=_scaleU;
+        m_data[1].v=0.0f;
 
-    d[2].x=-m_width/2.0;
-    d[2].y=m_height/2.0;
-    d[2].u=0.0f;
-    d[2].v=_s;
+        m_data[2].u=0.0f;
+        m_data[2].v=_scaleV;
 
-    d[3].x=-m_width/2.0;
-    d[3].y=m_height/2.0;
-    d[3].u=0.0f;
-    d[3].v=_s;
+        m_data[3].u=0.0f;
+        m_data[3].v=_scaleV;
 
-    d[4].x=m_width/2.0;
-    d[4].y=-m_height/2.0;
-    d[4].u=_s;
-    d[4].v=0.0f;
+        m_data[4].u=_scaleU;
+        m_data[4].v=0.0f;
 
-    d[5].x=m_width/2.0;
-    d[5].y=m_height/2.0;
-    d[5].u=_s;
-    d[5].v=_s;
-
+        m_data[5].u=_scaleU;
+        m_data[5].v=_scaleV;
+    }
+    else
+    {
+        std::cerr<<"data not initialized before setting UV Scale"<<std::endl;
+    }
     Renderer *render = Renderer::instance();
 
     VAOPtr v = render->getVAObyID(m_IDStr);
     v->bind();
-    int size = sizeof(vertData);
-    v->setData(6*size,d[0].x);
+    int size = sizeof(VertData);
+    v->setData(6*size,m_data[0].x);
     v->setVertexAttributePointer(0,2,GL_FLOAT,size,0);
     v->setVertexAttributePointer(1,2,GL_FLOAT,size,2);
     v->setNumIndices(6);

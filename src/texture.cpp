@@ -1,12 +1,12 @@
 #include "include/texture.h"
 #include <iostream>
 
-
 TexturePtr Texture::create(const std::string &_name)
 {
-  TexturePtr a(new Texture(_name));
-  return a;
+    TexturePtr a(new Texture(_name));
+    return a;
 }
+
 //-------------------------------------------------------------------//
 TexturePtr Texture::create( const std::string &_name,
                             const std::string &_file)
@@ -21,10 +21,12 @@ Texture::Texture(const std::string &_name):
 {
     generateGLTex();
 }
+
 //-------------------------------------------------------------------//
 Texture::Texture(const std::string &_name, const std::string &_file):
     m_name(_name),
-    m_filepath(_file)
+    m_filepath(_file),
+    m_wrap(GL_REPEAT)
 {
     generateGLTex();
     load(_file);
@@ -88,6 +90,16 @@ bool Texture::load(const std::string &_file)
     else return false;
 }
 //-------------------------------------------------------------------//
+void Texture::setWrap(GLenum _wrap)
+{
+    m_wrap = _wrap;
+    glBindTexture(GL_TEXTURE_2D, m_id);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_wrap);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_wrap);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+//-------------------------------------------------------------------//
 void Texture::generateGLTex()
 {
     glGenTextures(1, &m_id);
@@ -95,9 +107,9 @@ void Texture::generateGLTex()
     glBindTexture(GL_TEXTURE_2D, m_id);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_wrap);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_wrap);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -122,7 +134,7 @@ void Texture::loadData(const int _width, const int _height, const int _bpp, cons
         }
     }
     glTexImage2D(GL_TEXTURE_2D,0,m_format,_width,_height,0,m_format,GL_UNSIGNED_BYTE,_data);
-    glGenerateMipmapEXT(GL_TEXTURE_2D); //  Allocate the mipmaps
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 }

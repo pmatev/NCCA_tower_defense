@@ -63,13 +63,17 @@ void Camera::track(int _oldX, int _oldY, int _newX, int _newY)
     dx*=-1;
 
     ngl::Vec4 v(dx, dy, 0);
-    v.normalize();
+    v = v.normalize();
     v = getViewMatrix()*v;
 
-    v *= 0.3;
+    ngl::Vec4 len = m_eye-m_look;
+    v *= 0.01*len.length();
 
-    m_eye += v;
-    m_look += v;
+    // track only parallel to the playing field.
+    m_eye.m_x += v.m_x;
+    m_eye.m_z += v.m_z;
+    m_look.m_x += v.m_x;
+    m_look.m_z += v.m_z;
 
     update();
 

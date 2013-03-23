@@ -245,6 +245,7 @@ OTHER_FILES += \
     textures/grenadeButtonCreation.png \
     textures/settingsButtonHover.png \
     textures/closeMenuButton.png \
+    textures/bg_tile.png \
     \
     fonts/Abyssinica_SIL.ttf \
     fonts/Roboto-Regular.ttf \

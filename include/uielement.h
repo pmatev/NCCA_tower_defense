@@ -6,6 +6,7 @@
 #include"smartpointers.h"
 #include <QString>
 #include "texture.h"
+#include "billboard.h"
 
 
 DECLARESMART(UIElement)
@@ -174,6 +175,8 @@ protected:
     std::string m_imageFile;
 
     ngl::Vec2 m_restPosition;
+
+    BillboardPtr m_billboard;
 
 };
 

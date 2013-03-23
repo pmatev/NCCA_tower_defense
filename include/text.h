@@ -79,7 +79,7 @@ public:
     //-------------------------------------------------------------------//
     /// @brief generates VAO object to be used for drawing the text
     //-------------------------------------------------------------------//
-    void generateMesh();
+    virtual void generateMesh();
 
     inline void setText(const char *_text) {m_text =_text;
                                            generateMesh();}

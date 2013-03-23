@@ -30,8 +30,6 @@ class Renderer
 {
 
 public:
-    const static int TEXTURE_WIDTH=2048;
-    const static int TEXTURE_HEIGHT=2048;
     struct vertData
     {
       GLfloat x; // position
@@ -191,6 +189,8 @@ public:
 
     void visualiseLights();
 
+    inline int getResolutionX() const {return m_resolution_x;}
+    inline int getResolutionY() const {return m_resolution_y;}
 
 
 protected:
@@ -242,6 +242,8 @@ protected:
     GLuint m_boundTexture;
     GLuint m_boundFBO;
 
+    int m_resolution_x;
+    int m_resolution_y;
 
 };
 

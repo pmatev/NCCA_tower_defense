@@ -198,6 +198,11 @@ protected:
     //-------------------------------------------------------------------//
     bool m_dolly;
     //-------------------------------------------------------------------//
+    /// @brief flag to indicate if camera has moved
+    //-------------------------------------------------------------------//
+    bool m_camMoved;
+
+    //-------------------------------------------------------------------//
     /// @brief ID Counter for distributing unique IDs to entities.
     //-------------------------------------------------------------------//
     unsigned int m_currentID;
@@ -225,7 +230,7 @@ protected:
 
     bool m_quit;
 
-
+    int m_idUnderMouse;
 
     BillboardPtr m_screenBillboard;
 

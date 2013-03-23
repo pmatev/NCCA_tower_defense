@@ -30,8 +30,9 @@ public:
     void bindTexture(const GLuint &_id);
 
     void load(const std::string &_name, const std::string &_file);
+
     void createTexture(const std::string &_name);
-    void createTexture(const std::string &_name, const std::string &_file);
+    void loadTexture(const std::string &_name, const std::string &_file);
 
     inline TextureWPtr getTexture(const std::string &_name){return m_mapTextures[_name];}
 

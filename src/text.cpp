@@ -19,6 +19,7 @@ Text::Text(ngl::Vec2 _pos,
 {
     setColour(255,255,255,1);
     setFont(_fontFile, _ptsize);
+//    generateMesh();
 }
 
 //------------------------------------------------------------------//
@@ -99,6 +100,7 @@ void Text::draw()
     TextureLib *tex = TextureLib::instance();
     tex->bindTexture(m_name);
 
+//    m_billboard->draw("UI");
     v->bind();
     v->draw();
     v->unbind();
@@ -152,6 +154,10 @@ void Text::generateMesh()
 
     if(m_size.m_x != textSurface->w)
     {
+//        m_size.m_x = textSurface->w;
+//        m_size.m_y = textSurface->h;
+
+//        m_billboard = Billboard::create(Billboard::b2D, ngl::Vec4(m_pos.m_x, m_pos.m_y,0,1),m_size.m_x, m_size.m_y);
         struct textVertData
         {
         ngl::Real x;
@@ -212,6 +218,7 @@ void Text::generateMesh()
         m_size.m_x = textSurface->w;
         m_size.m_y = textSurface->h;
     }
+
 
     SDL_UnlockSurface( textSurface );
 

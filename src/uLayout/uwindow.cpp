@@ -17,6 +17,7 @@ UWindow::UWindow
 
 {
     m_size = _size;
+
 }
 
 //-------------------------------------------------------------------//
@@ -121,6 +122,8 @@ void UWindow::createButton
     m_elements.push_back(element);
 }
 
+
+
 //-------------------------------------------------------------------//
 void UWindow::draw()
 
@@ -152,8 +155,12 @@ void UWindow::draw()
 
             TextureLib *tex = TextureLib::instance();
             tex->bindTexture(m_imageFile);
-
-            render->draw(m_IDStr, "UI");
+            TexturePtr texture = tex->getTexture(m_imageFile).lock();
+            float scaleUVX = m_size.m_x/texture->getWidth();
+            float scaleUVY = m_size.m_y/texture->getHeight();
+            m_billboard->setUVScale(scaleUVX/5, scaleUVY/5);
+            m_billboard->draw("UI");
+//            render->draw(m_IDStr, "UI");
 
         }
 

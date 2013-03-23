@@ -111,7 +111,7 @@ void Window::init()
     m_UI->setupUI();
 
 
-    m_screenBillboard = Billboard::create(Billboard::b2D, ngl::Vec4(0,0,0,1),2,2);
+    m_screenBillboard = Billboard::create(Billboard::b2D, ngl::Vec4(-1,-1,0,1),2,2);
 
     m_viewmode=0;
 
@@ -218,22 +218,25 @@ void Window::loop()
         r->bindFrameBuffer("Texture");
         GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
         glDrawBuffers(2, buffers);
-        glViewport(0,0,Renderer::TEXTURE_WIDTH,Renderer::TEXTURE_HEIGHT);
+        glViewport(0,0,r->getResolutionX(),r->getResolutionY());
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
         game->draw();
         r->visualiseLights();
 
         m_UI->draw();
-
+        ngl::Vec4 pixel = r->readPixels(m_mouseX, m_mouseY);
+        m_idUnderMouse = colourToID(pixel.toVec3());
 
         r->bindFrameBuffer(0);
+
         glViewport(0,0,m_width, m_height);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glBindTexture(GL_TEXTURE_2D, r->getTexture(m_viewmode));
-        glGenerateMipmapEXT(GL_TEXTURE_2D);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
         m_screenBillboard->draw("Texture");
+
 
         SDL_GL_SwapBuffers();
         frameCount++;
@@ -331,10 +334,10 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
     Renderer *render = Renderer::instance();
     CameraPtr cam = render->getCam().lock();
 
-    render->bindFrameBuffer("Texture");
+//    render->bindFrameBuffer("Texture");
 
-    ngl::Vec4 pixel = render->readPixels(_event.x, _event.y);
-    int id = colourToID(pixel.toVec3());
+//    ngl::Vec4 pixel = render->readPixels(_event.x, _event.y);
+//    int id = colourToID(pixel.toVec3());
     //std::cout<<pixel<<std::endl;
 
     m_motionEvent = _event;
@@ -343,25 +346,28 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
     if(m_rotate)
     {
       cam->tumble(m_oldMouseX, m_oldMouseY, m_mouseX, m_mouseY);
+      m_camMoved = true;
     }
 
     // Middle Mouse Track
     else if(m_track)
     {
         cam->track(m_oldMouseX, m_oldMouseY, m_mouseX, m_mouseY);
+        m_camMoved = true;
     }
 
     // Right Mouse Dolly
     else if(m_dolly)
     {
         cam->dolly(m_oldMouseX, m_mouseX);
+        m_camMoved = true;
     }
+
 
     m_oldMouseX = m_mouseX;
     m_oldMouseY = m_mouseY;
 
-
-    m_UI->mouseMoveEvent(id);
+    m_UI->mouseMoveEvent(m_idUnderMouse);
 
 }
 //-------------------------------------------------------------------//
@@ -394,27 +400,18 @@ void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
 
 void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 {
+
+    if(_event.button == SDL_BUTTON_LEFT && !m_camMoved)
+    {
+          m_UI->mouseLeftUp(m_idUnderMouse,ngl::Vec2(_event.x,_event.y));
+    }
+
     m_rotate=false;
     m_track = false;
     m_dolly=false;
+    m_camMoved=false;
     m_oldMouseX = m_mouseX;
     m_oldMouseY = m_mouseY;
-
-    /* -------- Testing Code -------------*/
-
-    Renderer *r = Renderer::instance();
-    r->bindFrameBuffer("Texture");
-
-    ngl::Vec4 pixel = r->readPixels(_event.x, _event.y);
-    int id = colourToID(pixel.toVec3());
-//    std::cout<<pixel<<std::endl;
-    if(_event.button == SDL_BUTTON_LEFT)
-    {
-          m_UI->mouseLeftUp(id,ngl::Vec2(_event.x,_event.y));
-    }
-
-    r->bindFrameBuffer(0);
-    /* -------- End Testing Code -------------*/
 
 }
 

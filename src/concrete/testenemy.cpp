@@ -123,19 +123,19 @@ void TestEnemy::draw()
   TextureLib *tex = TextureLib::instance();
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-  (*shader)["Phong"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  (*shader)["TexturedConst"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "TexturedConst");
 
-  tex->bindTexture("debug");
+  tex->bindTexture("enemy_AO");
 //  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
   shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
 
-  r->draw("enemy", "Phong");
+  r->draw("enemy", "TexturedConst");
 
   // draw healthbar
-  (*shader)["TexturedConstant"]->use();
-  m_healthBar->setUVScale(50/m_health);
+  (*shader)["TexturedConst"]->use();
+  m_healthBar->setUVScale(50/m_health,1);
   tex->bindTexture("healthbar");
-  m_healthBar->draw("TexturedConstant");
+  m_healthBar->draw("TexturedConst");
 }
 

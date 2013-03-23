@@ -13,9 +13,8 @@ class Texture
 public:
 
     static TexturePtr create(const std::string &_name);
+    static TexturePtr create(const std::string &_name, const std::string &_file);
 
-    static TexturePtr create(const std::string &_name,
-                             const std::string &_file);
     ~Texture();
 
     bool load(const std::string &_file);
@@ -25,6 +24,9 @@ public:
     GLuint getHeight() const {return m_height;}
     std::string getFilePath() const {return m_filepath;}
     void loadData(const int _width, const int _height, const int _bpp, const void *_data);
+
+    void setWrap(GLenum _wrap);
+    inline GLenum getWrap(){return m_wrap;}
 
 protected:
     Texture(const std::string &_name);
@@ -36,6 +38,8 @@ protected:
     std::string m_name;
 
     std::string m_filepath;
+
+    GLenum m_wrap;
 
     std::vector<unsigned char> m_data;
 

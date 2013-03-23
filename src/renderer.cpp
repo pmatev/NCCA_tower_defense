@@ -7,6 +7,7 @@
 
 
 Renderer* Renderer::s_instance = 0;
+
 //-------------------------------------------------------------------//
 Renderer::Renderer()
 {
@@ -39,9 +40,14 @@ void Renderer::destroy()
 
 void Renderer::init()
 {
+    Window *w = Window::instance();
+
+    m_resolution_x = w->getScreenWidth()*2; //double resolution for some easy anti-aliasing
+    m_resolution_y = w->getScreenHeight()*2;
+
     std::cout<<"OpenGL Version: "<<glGetString(GL_VERSION)<<std::endl;
 
-    m_cam = CameraPtr(new Camera(ngl::Vec4(10,10,10,1),Game::instance()->getBasePos(),ngl::Vec4(0,1,0,0)));
+    m_cam = CameraPtr(new Camera(ngl::Vec4(10,10,10,1),ngl::Vec4(15,0,15,1),ngl::Vec4(0,1,0,0)));
 
     m_lights.push_back(PointLight::create(ngl::Vec4(0,10,0,1),ngl::Vec4(0,0,0,1),ngl::Vec4(0.3,0.3,0.3,1), ngl::Vec4(1,1,1,1)));
     m_lights.push_back(PointLight::create(ngl::Vec4(40,10,0,1),ngl::Vec4(0,0,0,1),ngl::Vec4(0.3,0.3,0.3,1), ngl::Vec4(1,1,1,1)));
@@ -50,7 +56,7 @@ void Renderer::init()
 
     ngl::ShaderLib *shader = ngl::ShaderLib::instance();    
 
-    glClearColor(1,1,1,1);
+    glClearColor(0,0,0,1);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -109,7 +115,7 @@ void Renderer::init()
     m_shaderNames.push_back("Constant");
 
 
-    shader->createShaderProgram("TexturedConstant");
+    shader->createShaderProgram("TexturedConst");
 
     shader->attachShader("TexturedConstVertex",ngl::VERTEX);
     shader->attachShader("TexturedConstFragment",ngl::FRAGMENT);
@@ -119,17 +125,17 @@ void Renderer::init()
     shader->compileShader("TexturedConstVertex");
     shader->compileShader("TexturedConstFragment");
 
-    shader->attachShaderToProgram("TexturedConstant","TexturedConstVertex");
-    shader->attachShaderToProgram("TexturedConstant","TexturedConstFragment");
+    shader->attachShaderToProgram("TexturedConst","TexturedConstVertex");
+    shader->attachShaderToProgram("TexturedConst","TexturedConstFragment");
 
-    shader->bindAttribute("TexturedConstant", 0, "inVert");
-    shader->bindAttribute("TexturedConstant", 1, "inUV");
-    shader->bindAttribute("TexturedConstant", 2, "inNormal");
-    shader->linkProgramObject("TexturedConstant");
+    shader->bindAttribute("TexturedConst", 0, "inVert");
+    shader->bindAttribute("TexturedConst", 1, "inUV");
+    shader->bindAttribute("TexturedConst", 2, "inNormal");
+    shader->linkProgramObject("TexturedConst");
 
-    glBindFragDataLocation(shader->getProgramID("TexturedConstant"),0,"outColour");
+    glBindFragDataLocation(shader->getProgramID("TexturedConst"),0,"outColour");
 
-    m_shaderNames.push_back("TexturedConstant");
+    m_shaderNames.push_back("TexturedConst");
 
 
     shader->createShaderProgram("UI");
@@ -396,8 +402,9 @@ void Renderer::createFramebufferObject(const std::string &_name)
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 //  glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); // automatic mipmap
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0,
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_resolution_x, m_resolution_y, 0,
                GL_RGBA, GL_UNSIGNED_BYTE, 0);
+  glGenerateMipmap(GL_TEXTURE_2D);
 
 
   glBindTexture(GL_TEXTURE_2D, m_textures[1]);
@@ -406,8 +413,9 @@ void Renderer::createFramebufferObject(const std::string &_name)
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); // automatic mipmap
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0,
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_resolution_x, m_resolution_y, 0,
                GL_RGBA, GL_UNSIGNED_BYTE, 0);
+  glGenerateMipmap(GL_TEXTURE_2D);
 
   glBindTexture(GL_TEXTURE_2D, m_textures[2]);
   glTexParameteri( GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_LUMINANCE );
@@ -416,10 +424,10 @@ void Renderer::createFramebufferObject(const std::string &_name)
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 //  glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); // automatic mipmap
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0,
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, m_resolution_x, m_resolution_y, 0,
                GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
   glBindTexture(GL_TEXTURE_2D, 0);
-
+  glGenerateMipmap(GL_TEXTURE_2D);
 
 //  GLuint rboID;
 //  glGenRenderbuffers(1, &rboID);
@@ -436,7 +444,6 @@ void Renderer::createFramebufferObject(const std::string &_name)
 //  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboID);
 
   fboError(glCheckFramebufferStatus(GL_FRAMEBUFFER));
-
 
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -471,8 +478,8 @@ ngl::Vec4 Renderer::readPixels(const int _x, const int _y)
   unsigned char pixel[3];
   glReadBuffer(GL_COLOR_ATTACHMENT1);
 
-  int read_x = _x * (float(TEXTURE_WIDTH)/float(w->getScreenWidth()));
-  int read_y = TEXTURE_HEIGHT - _y * (float(TEXTURE_HEIGHT)/float(w->getScreenHeight()));
+  int read_x = _x * (float(m_resolution_x)/float(w->getScreenWidth()));
+  int read_y = m_resolution_y - _y * (float(m_resolution_y)/float(w->getScreenHeight()));
 
   glReadPixels(read_x, read_y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
   ngl::Vec4 p(pixel[0], pixel[1], pixel[2], pixel[3]);

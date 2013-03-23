@@ -297,9 +297,9 @@ void Enemy::draw()
     r->draw(m_IDStr, "Phong");
 
     // draw healthbar
-    m_healthBar->setUVScale(50/m_health);
+    m_healthBar->setUVScale(50/m_health, 1);
     tex->bindTexture("healthbar");
-    m_healthBar->draw("TexturedConstant");
+    m_healthBar->draw("TexturedConst");
 }
 
 //-------------------------------------------------------------------//

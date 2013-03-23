@@ -89,7 +89,9 @@ void CostButton::draw()
     {
         tex->bindTexture(m_imageFile+"NoMoney");
     }
-    render->draw(m_IDStr, "UI");
+
+    m_billboard->draw("UI");
+//    render->draw(m_IDStr, "UI");
 
     if(m_label)
     {

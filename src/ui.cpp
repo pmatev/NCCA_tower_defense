@@ -674,7 +674,7 @@ void UI::createTowerMenu()
 {
     createMenu(TablePtr(new Table(ngl::Vec2 (0,0),
                                     "towerbuildMenu",
-                                    "createBackground",
+                                    "bg_tile",
                                     this)));
 
     TablePtr menu = getMenu("towerbuildMenu");
@@ -874,7 +874,7 @@ void UI::createUpgradeMenu()
 {
     createMenu(TablePtr(new Table(ngl::Vec2 (0,0),
                                     "upgradeMenu",
-                                    "background",
+                                    "bg_tile",
                                     this)));
 
 
@@ -1077,7 +1077,7 @@ void UI::createStartMenu()
             (
                 ngl::Vec2(0,0),
                 "startWindow",
-                "background",
+                "bg_tile",
                 this,
                 ngl::Vec2(width,height)
                 );

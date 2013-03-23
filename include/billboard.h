@@ -16,7 +16,7 @@ public:
         b3D // 3D billboard
     };
 
-    struct vertData
+    struct VertData
     {
     float x;
     float y;
@@ -33,7 +33,7 @@ public:
     void draw(const std::string &_shader);
 
 
-    void setUVScale(const float _s);
+    void setUVScale(const float _scaleU, const float _scaleV);
     inline void setPos(const ngl::Vec4 _v){m_pos = _v;}
     inline void setMatrix(const ngl::Mat4 _m){m_transform = _m;}
     inline ngl::Vec4 getPos() const {return m_pos;}
@@ -56,6 +56,8 @@ protected:
     unsigned int m_ID;
 
     std::string m_IDStr;
+
+    VertData m_data[6];
 
 private:
     Billboard(const Type &_type, const ngl::Vec4 &_pos, const float &_width, const float &_height);

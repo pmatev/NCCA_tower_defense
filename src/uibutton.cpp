@@ -101,7 +101,8 @@ void UIButton::draw()
   {
       m_label->draw();
   }
-  render->draw(m_IDStr, "UI");
+      m_billboard->draw("UI");
+//  render->draw(m_IDStr, "UI");
 }
 
 
