@@ -402,6 +402,17 @@ bool DynamicEntity::isIntersecting(
     float ratio = (_planeExtents.m_minX - _point1.m_x)/
         (_point2.m_x-_point1.m_x);
 
+    //limit the ratio between 0 and 1
+
+    if (ratio > 1)
+    {
+      ratio = 1;
+    }
+    else if (ratio < 0)
+    {
+      ratio = 0;
+    }
+
     //calculate yi and zi
 
     float yi = _point1.m_y + (_point2.m_y - _point1.m_y)*ratio;
