@@ -28,7 +28,7 @@ public: //methods
   //-------------------------------------------------------------------//
   /// @brief method called when the current state is entered, empty
   /// method, implemented to satisfy pure virtual
-  /// @param [in] _turret, the turret which is moving into the state,
+  /// @param [in] _turret the turret which is moving into the state,
   /// unused
   //-------------------------------------------------------------------//
 
@@ -37,7 +37,7 @@ public: //methods
   //-------------------------------------------------------------------//
   /// @brief called every frame that the state is active, searches for a
   /// target
-  /// @param [in] _turret, the turret which is in the current state
+  /// @param [in] _turret the turret which is in the current state
   //-------------------------------------------------------------------//
 
   void execute(EntityWPtr _turret);
@@ -45,7 +45,7 @@ public: //methods
   //-------------------------------------------------------------------//
   /// @brief called as the turret moves into a new state, empty
   /// method, implemented to satisfy pure virtual
-  /// @param [in] _turret, the turret which is in the leaving the state,
+  /// @param [in] _turret the turret which is in the leaving the state,
   /// unused
   //-------------------------------------------------------------------//
 
@@ -82,7 +82,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief method called when the current state is entered, empty
   /// method, implemented to satisfy pure virtual
-  /// @param [in] _turret, the turret which is moving into the state,
+  /// @param [in] _turret the turret which is moving into the state,
   /// unused
   //-------------------------------------------------------------------//
 
@@ -91,7 +91,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief called every frame that the state is active, aims towards the
   /// target and shoots
-  /// @param [in] _turret, the turret which is in the current state
+  /// @param [in] _turret the turret which is in the current state
   //-------------------------------------------------------------------//
 
   void execute(EntityWPtr _turret);
@@ -99,7 +99,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief called as the turret moves into a new state, empty
   /// method, implemented to satisfy pure virtual
-  /// @param [in] _turret, the turret which is in the leaving the state,
+  /// @param [in] _turret the turret which is in the leaving the state,
   /// unused
   //-------------------------------------------------------------------//
 
@@ -136,7 +136,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief method called when the current state is entered, empty
   /// method, implemented to satisfy pure virtual
-  /// @param [in] _turret, the turret which is moving into the state,
+  /// @param [in] _turret the turret which is moving into the state,
   /// unused
   //-------------------------------------------------------------------//
 
@@ -145,7 +145,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief called every frame that the state is active, sets the
   /// upgrade level and relevant variables
-  /// @param [in] _turret, the turret which is in the current state
+  /// @param [in] _turret the turret which is in the current state
   //-------------------------------------------------------------------//
 
   void execute(EntityWPtr _turret);
@@ -153,7 +153,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief called as the turret moves into a new state, empty
   /// method, implemented to satisfy pure virtual
-  /// @param [in] _turret, the turret which is in the leaving the state,
+  /// @param [in] _turret the turret which is in the leaving the state,
   /// unused
   //-------------------------------------------------------------------//
 
@@ -190,7 +190,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief method called when the current state is entered, empty
   /// method, implemented to satisfy pure virtual
-  /// @param [in] _turret, the turret which is moving into the state,
+  /// @param [in] _turret the turret which is moving into the state,
   /// unused
   //-------------------------------------------------------------------//
 
@@ -199,7 +199,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief called every frame that the state is active, sets the
   /// upgrade level and relevant variables
-  /// @param [in] _turret, the turret which is in the current state
+  /// @param [in] _turret the turret which is in the current state
   //-------------------------------------------------------------------//
 
   void execute(EntityWPtr _turret);
@@ -207,7 +207,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief called as the turret moves into a new state, empty
   /// method, implemented to satisfy pure virtual
-  /// @param [in] _turret, the turret which is in the leaving the state,
+  /// @param [in] _turret the turret which is in the leaving the state,
   /// unused
   //-------------------------------------------------------------------//
 

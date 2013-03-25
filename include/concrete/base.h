@@ -64,7 +64,7 @@ protected: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
-  /// @param [in] _linkedNode, the node to place the base on
+  /// @param [in] _linkedNode the node to place the base on
   //-------------------------------------------------------------------//
 
   Base(NodePtr _linkedNode, unsigned int _id);

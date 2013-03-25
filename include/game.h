@@ -33,7 +33,7 @@
 
 class Game
 {
-public:
+public: //methods
     //-------------------------------------------------------------------//
     /// @brief returns instance of singleton
     /// @return the static instance of the game
@@ -127,7 +127,8 @@ public:
     //-------------------------------------------------------------------//
     /// @brief a method to set the hilighted value of the node
     /// @param [in] _id the id of the node
-    /// @param [in] _highlighted the highlight
+    /// @param [in] _highlighted the highlight value of the node
+    //-------------------------------------------------------------------//
 
     void setNodeHighlighted(int _id, int _highlighted);
 
@@ -138,11 +139,10 @@ public:
 
     EnvironmentWPtr getEnvironmentWeakPtr();
 
-
     //-------------------------------------------------------------------//
     /// @brief a method to return a smart weak pointer to the projectile
     /// manager
-    /// @param [out] pointer to the projectile manager
+    /// @return pointer to the projectile manager
     //-------------------------------------------------------------------//
 
     ProjectileManagerWPtr getProjectileManagerWeakPtr();
@@ -152,21 +152,23 @@ public:
     /// currency
     /// @param [in] _value, the value to add to the currency
     //-------------------------------------------------------------------//
-    inline void addCurrency(int _value) {m_player->addCurrency(_value);}
 
+    inline void addCurrency(int _value) {m_player->addCurrency(_value);}
 
     //-------------------------------------------------------------------//
     /// @brief returns players score
+    /// @return the score that the player achieved
     //-------------------------------------------------------------------//
+
     inline int getPlayerScore() {return m_player->getScore();}
 
 
     //-------------------------------------------------------------------//
     /// @brief method to get the players currency
-    /// @param [out] returns players currency
+    /// @return players currency
     //-------------------------------------------------------------------//
-    inline int getPlayerCurrency() {return m_player->getCurrency();}
 
+    inline int getPlayerCurrency() {return m_player->getCurrency();}
 
     //-------------------------------------------------------------------//
     /// @brief a method to add the inputted score
@@ -183,8 +185,9 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief returns the bases health
-    /// @param [out] returns the bases health
+    /// @return the base's health
     //-------------------------------------------------------------------//
+
     float getBaseHealth() const;
 
     //-------------------------------------------------------------------//
@@ -219,12 +222,14 @@ public:
     /// @param [in] _paused is a bool which specifies whether the game is
     /// paused or not
     //-------------------------------------------------------------------//
+
     inline void setPaused(int _paused){m_pause = _paused;}
 
     //-------------------------------------------------------------------//
     /// @brief returns m_paused variable
-    /// @param [out] m_paused specifies the pause condition
+    /// @return paused state
     //-------------------------------------------------------------------//
+
     inline int getPaused() {return m_pause;}
 
     //-------------------------------------------------------------------//
@@ -232,39 +237,43 @@ public:
     /// @param [in] _lost is a bool which specifies whether the game is
     /// lost or not
     //-------------------------------------------------------------------//
+
     inline void setLost(bool _lost) {m_gamelost =_lost;}
 
     //-------------------------------------------------------------------//
     /// @brief returns m_gameLost bool
-    /// @param [out] m_lost is a bool which specifies whether the game is
+    /// @return m_lost is a bool which specifies whether the game is
     /// lost or not
     //-------------------------------------------------------------------//
+
     inline bool getLost() {return m_gamelost;}
 
-
-
-protected:
+protected: //methods
     //-------------------------------------------------------------------//
     /// @brief hidden ctor for singleton
     //-------------------------------------------------------------------//
+
     Game();
 
     //-------------------------------------------------------------------//
     /// @brief hidden destructor
     //-------------------------------------------------------------------//
+
     ~Game();
 
     //-------------------------------------------------------------------//
     /// @brief apply collision damage
-    /// @param[in] _collisionList, is of all the entities that have been
+    /// @param[in] _collisionList, is of all the entities that have
     /// collided and the damage to be dealt.
     //-------------------------------------------------------------------//
+
     void dealDamage(const std::list<Damage> &_collisionList);
 
     //-------------------------------------------------------------------//
     /// @brief apply impulses
     /// @param[in] _impulses list of impulses to be applied to enemies
     //-------------------------------------------------------------------//
+
     void dealImpulses(const std::list<Impulse> &_impulses);
 
 
@@ -272,6 +281,7 @@ protected:
     /// @brief setup the whole scene. This is where any scene information
     /// should be read from file, interpreted and initialisd.
     //-------------------------------------------------------------------//
+
     void setupScene();
 
     //-------------------------------------------------------------------//
@@ -279,13 +289,15 @@ protected:
     /// @param[in] _environment the data corresponding to the environment
     /// @param[in] _waveInfors data corresponding to each wave
     //-------------------------------------------------------------------//
+
     std::vector<ngl::Vec2> getCoordsFromXML(QDomElement _docElem, std::string _nodeName);
 
-protected:
+protected: //attributes
 
     //-------------------------------------------------------------------//
     /// @brief A map of IDs to Entity Pointers for game object management.
     //-------------------------------------------------------------------//
+
     std::map<unsigned int, EntityWPtr> m_IDMap;
 
     //-------------------------------------------------------------------//
@@ -315,19 +327,26 @@ protected:
     //-------------------------------------------------------------------//
     /// @brief flag to say whether the game is paused or not
     //-------------------------------------------------------------------//
+
     int m_pause;
 
     //-------------------------------------------------------------------//
     /// @brief flag to say whether the game has been lost or not
     //-------------------------------------------------------------------//
+
     bool m_gamelost;
 
-private:
+private: //attributes
+
     //-------------------------------------------------------------------//
     /// @brief instance pointer for singleton
     //-------------------------------------------------------------------//
 
     static Game* s_instance;
+
+    //-------------------------------------------------------------------//
+    /// @brief a pointer to the light
+    //-------------------------------------------------------------------//
 
     ngl::Light *m_light;
 };
@@ -345,6 +364,7 @@ public:
   /// @brief create function
   /// @param[in] _environment the data corresponding to the environment
   /// @param[in] _waveInfors data corresponding to each wave
+  /// @return a pointer to the level info object
   //-------------------------------------------------------------------//
 
   inline static LevelInfoPtr create(

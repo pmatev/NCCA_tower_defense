@@ -153,7 +153,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the doShot boolean
-  /// @param [out] whether or not to shoot
+  /// @return whether or not to shoot
   //-------------------------------------------------------------------//
 
   inline bool getDoShot() const {return m_doShot;}
@@ -183,21 +183,21 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the time since the last shot
-  /// @param [out] the time since the last shot
+  /// @return the time since the last shot
   //-------------------------------------------------------------------//
 
   inline double getDtSinceShot() const {return m_dtSinceLastShot;}
 
   //-------------------------------------------------------------------//
   /// @brief a method to get the min time between shots
-  /// @param [out] the time to wait between shots
+  /// @return the time to wait between shots
   //-------------------------------------------------------------------//
 
   inline double getShotWaitTime() const {return m_shotWaitTime;}
 
   //-------------------------------------------------------------------//
   /// @brief set the shooting speed
-  /// @param[in] _shotWaitTime seconds between shots
+  /// @return _shotWaitTime seconds between shots
   //-------------------------------------------------------------------//
 
   inline void setShotWaitTime(float _shotWaitTime)
@@ -210,7 +210,7 @@ public: //methods
   /// position
   /// @param [in] _pos the position to aim at
   /// @param [in] _velocity the velocity of the target
-  /// @param [out] the required vector to aim at the position
+  /// @return the required vector to aim at the position
   //-------------------------------------------------------------------//
 
   ngl::Vec3 calculateAimVec(const ngl::Vec3 &_pos,
@@ -225,7 +225,7 @@ public: //methods
   //-------------------------------------------------------------------//
   /// @brief a method to get a record from the local entities
   /// list by it's ID
-  /// @param [in][out] o_record reference to the target entity record
+  /// @param [out] o_record reference to the target entity record
   //-------------------------------------------------------------------//
 
   void getTargetRecord(EntityRecordWCPtr &o_record);
@@ -233,7 +233,7 @@ public: //methods
   //-------------------------------------------------------------------//
   /// @brief a method to get a record from the local entities
   /// list based on the one that is nearest to the current aim
-  /// @param [in][out] o_record a reference to the nearest entity record
+  /// @param [out] o_record a reference to the nearest entity record
   //-------------------------------------------------------------------//
 
   void getNearestLocalRecord(EntityRecordWCPtr & o_record);
@@ -254,21 +254,21 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief method to return the cosine of the max rotation speed
-  /// @param [out] the cos of the rotation speed
+  /// @return the cos of the rotation speed
   //-------------------------------------------------------------------//
 
   inline float getCosRotationSpeed() const {return m_cosRotationSpeed;}
 
   //-------------------------------------------------------------------//
   /// @brief method to return the m_aim Vector
-  /// @param [out] the aim vector
+  /// @return the aim vector
   //-------------------------------------------------------------------//
 
   inline ngl::Vec3 getAim() const{return m_aim;}
 
   //-------------------------------------------------------------------//
   /// @brief method to set the target id
-  /// @param [in] _ID the input id
+  /// @return _ID the input id
   //-------------------------------------------------------------------//
 
   inline void setTarget(unsigned int _ID) {m_targetID = _ID;}
@@ -298,7 +298,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief get the upgrade data about the current upgrade level
-  /// @param[in][out] o_upgradeData this is a weak pointer to the current
+  /// @param[out] o_upgradeData this is a weak pointer to the current
   /// upgradeData.
   /// @return whether the turret has a current upgrade.
   //-------------------------------------------------------------------//

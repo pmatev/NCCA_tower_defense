@@ -29,19 +29,19 @@ public: //methods
   //-------------------------------------------------------------------//
   /// @brief static create method, returns a pointer to a
   /// new instance of the object created from the inputs.
-  /// @param [in] _environMaxX, the maximum x value of the playable
-  /// environment.
-  /// @param [in] _environMaxY, the maximum y value of the playable
-  /// environment.
-  /// @param [in] _environMinX, the minimum x value of the playable
-  /// environment.
-  /// @param [in] _environMinY, the minimum y value of the playable
-  /// environment.
-  /// @param [in] _numCellsX, the desired number of cells in the x
+  /// @param [in] _numCellsX the desired number of cells in the x
   /// direction
-  /// @param [in] _numCellsY, the desired number of cells in the y
+  /// @param [in] _numCellsY the desired number of cells in the y
   /// direction
-  /// @param [out] s_instance, a pointer to the database instance
+  /// @param [in] _environMaxX the maximum x value of the playable
+  /// environment.
+  /// @param [in] _environMaxY the maximum y value of the playable
+  /// environment.
+  /// @param [in] _environMinX the minimum x value of the playable
+  /// environment.
+  /// @param [in] _environMinY the minimum y value of the playable
+  /// environment.
+  /// @return s_instance a pointer to the database instance
   //-------------------------------------------------------------------//
 
   static Database * init(
@@ -55,7 +55,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief static instance method
-  /// @param [out] s_instance a pointer to the static instance
+  /// @return s_instance a pointer to the static instance
   //-------------------------------------------------------------------//
 
   static Database *instance();
@@ -78,7 +78,7 @@ public: //methods
   /// influences for the object requesting the list based on how a
   /// bounding box of the area visible to the entity intersects with
   /// the grid boundaries
-  /// @param [in][out] o_newList, a boost shared pointer to a list of
+  /// @param [out] o_newList, a boost shared pointer to a list of
   /// influences as defined
   /// @param [in] _minX the minimum x value of the bounding box provided
   /// @param [in] _maxX the maximum x value of the bounding box provided
@@ -99,7 +99,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief gets the base record
-  /// @param [in][out] o_baseRecord a reference to the const weak pointer
+  /// @param [out] o_baseRecord a reference to the const weak pointer
   /// that will be set to point to the base record
   //-------------------------------------------------------------------//
 
@@ -124,7 +124,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the minimum extents of the grid
-  /// @param [out] the minimum extents of the grid
+  /// @return the minimum extents of the grid
   //-------------------------------------------------------------------//
 
   inline ngl::Vec2 getMinGridExtents() {
@@ -135,7 +135,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the maximum extents of the grid
-  /// @param [out] the maximum extents of the grid
+  /// @return the maximum extents of the grid
   //-------------------------------------------------------------------//
 
   inline ngl::Vec2 getMaxGridExtents() {

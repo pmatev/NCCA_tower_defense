@@ -40,7 +40,7 @@ public: //methods
   /// environment.
   /// @param [in] _environMinZ the minimum Z value of the playable
   /// environment.
-  /// @param [out] instance a smart pointer to the database grid
+  /// @return instance a smart pointer to the database grid
   /// instance
   //-------------------------------------------------------------------//
 
@@ -71,7 +71,7 @@ public: //methods
   /// influences for the object requesting the list based on how a
   /// bounding box of the area visible to the entity intersects with
   /// the grid boundaries
-  /// @param [in][out] o_newList a boost shared pointer to a list of
+  /// @param [out] o_newList a boost shared pointer to a list of
   /// influences as defined
   /// @param [in] _minX the minimum x value of the bounding box provided
   /// @param [in] _maxX the maximum x value of the bounding box provided

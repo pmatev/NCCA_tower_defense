@@ -35,7 +35,7 @@ public://methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to get the number of projectiles currently active
-  /// @param [out] the number of projectiles stored
+  /// @return the number of projectiles stored
   //-------------------------------------------------------------------//
 
   unsigned int getNumProjectiles() const {return m_projectiles.size();}
@@ -43,8 +43,8 @@ public://methods
   //-------------------------------------------------------------------//
   /// @brief a method to do collision detection for each projectile.
   /// @param [in] _dt the change in time
-  /// @param [in][out] o_damages a list of damages to deal
-  /// @param [in][out] o_impulses a list of impulses to give to entities
+  /// @param [out] o_damages a list of damages to deal
+  /// @param [out] o_impulses a list of impulses to give to entities
   //-------------------------------------------------------------------//
 
   void checkCollisions(

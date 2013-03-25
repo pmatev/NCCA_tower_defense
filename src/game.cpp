@@ -339,10 +339,9 @@ void Game::setupScene()
                 );
   }
 
-  m_waveManager = WaveManager::create(m_environment->getSpawnNodes(), waveInfos);
-
-
-
+  m_waveManager = WaveManager::create(m_environment->getSpawnNodes(),
+                                      waveInfos
+                                      );
 
   m_projectileManager = ProjectileManager::create();
 
@@ -381,7 +380,7 @@ void Game::setupScene()
     }
   }
 
-  m_player = Player::create(playerCurrency); //Hard coded now, should probably be set from a file
+  m_player = Player::create(playerCurrency);
 }
 
 //-------------------------------------------------------------------//

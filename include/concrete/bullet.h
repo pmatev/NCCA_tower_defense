@@ -26,6 +26,7 @@ public: //methods
   /// @param [in] _pos initital position of bullet
   /// @param [in] _aim the initial direction of travel of the bullet
   /// @param [in] _id the unique identifier for the bullet
+  /// @return a pointer to the entity class
   //-------------------------------------------------------------------//
 
   static EntityPtr create(
@@ -54,7 +55,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief empty method, implemented to satisfy pure virtual
-  /// @param [in][out] o_localEntities, unused
+  /// @param [out] o_localEntities unused
   //-------------------------------------------------------------------//
 
   void filterViewVolume(EntityRecordWCList &o_localEntities);
@@ -75,7 +76,7 @@ protected: //methods
 
   //-------------------------------------------------------------------//
   /// @brief works out which direction the bullet should go in next
-  /// @param[out] new vector for bullet to travel in
+  /// @return new vector for bullet to travel in
   //-------------------------------------------------------------------//
 
   ngl::Vec3 brain();

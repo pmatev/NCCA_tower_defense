@@ -45,7 +45,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the currency
-  /// @param [out] the current currency value
+  /// @return the current currency value
   //-------------------------------------------------------------------//
 
   inline int getCurrency() const {return m_currency;}
@@ -61,7 +61,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the score
-  /// @param [out] the current score value
+  /// @return the current score value
   //-------------------------------------------------------------------//
 
   inline int getScore() const {return m_score;}
@@ -70,7 +70,7 @@ protected: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
-  /// @param [in] _startCurrency, the initial amount of money that the
+  /// @return _startCurrency, the initial amount of money that the
   /// player has
   //-------------------------------------------------------------------//
 

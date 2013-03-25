@@ -39,7 +39,7 @@ public://methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to get the emmiter Id
-  /// @param [out] the emitter id
+  /// @return the emitter id
   //-------------------------------------------------------------------//
 
   inline int getEmitterID() const {return m_emitterID;}
