@@ -25,12 +25,10 @@ class Projectile : public DynamicEntity
 public://methods
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
-  /// @param [in] _damage, a float to initialise the damage value
-  /// @param [in] _maxVelocity, a float value describing the maximum
-  /// velocity of the dynamic entity
-  /// @param [in] _pos, a vector containing the initial position in 3D
+  /// @param [in] _pos a vector containing the initial position in 3D
   /// space of the entity, passed to the entity constructor
-  /// @param[in] _initialVelocity, the starting velocity of the enemy
+  /// @param [in] _aim a vector containing the initial aim of the projectile
+  /// @param [in] _id the unique identifier for the enitiy
   //-------------------------------------------------------------------//
 
   Projectile(
@@ -40,19 +38,15 @@ public://methods
         );
 
   //-------------------------------------------------------------------//
-  /// @brief a method to enforce the grid boundaries
-  //-------------------------------------------------------------------//
-
-//  void enforceGridBoundaries();
-
-  //-------------------------------------------------------------------//
   /// @brief a method to get the emmiter Id
+  /// @param [out] the emitter id
   //-------------------------------------------------------------------//
 
   inline int getEmitterID() const {return m_emitterID;}
 
   //-------------------------------------------------------------------//
   /// @brief a method to set the emitter id
+  /// @param [in] _ID the emitter id
   //-------------------------------------------------------------------//
 
   inline void setEmitterID(int _ID) {m_emitterID = _ID;}
@@ -60,6 +54,7 @@ public://methods
   //-------------------------------------------------------------------//
   /// @brief a method to set the velocity of the projectile, virtual
   /// so that concrete types can over-ride it with other specific behaviour
+  /// @param [in] _velocity the input velocity
   //-------------------------------------------------------------------//
 
   virtual void setVelocity(const ngl::Vec3 _velocity){m_velocity = _velocity;}
@@ -67,6 +62,8 @@ public://methods
   //-------------------------------------------------------------------//
   /// @brief set the projectiles parent. This should be called in the
   /// addProjectile method in ProjectileManager.
+  /// @param _parent the projectile manager which is in charge of the
+  /// projectile
   //-------------------------------------------------------------------//
 
   inline void setParent(ProjectileManager *_parent) {m_parent = _parent;}

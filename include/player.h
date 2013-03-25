@@ -60,8 +60,8 @@ public: //methods
   inline void addScore (int _offset) {m_score+= _offset;}
 
   //-------------------------------------------------------------------//
-  /// @brief a method to return the currency
-  /// @param [out] the current currency value
+  /// @brief a method to return the score
+  /// @param [out] the current score value
   //-------------------------------------------------------------------//
 
   inline int getScore() const {return m_score;}

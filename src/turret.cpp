@@ -305,67 +305,6 @@ void Turret::getNearestLocalRecord(EntityRecordWCPtr &o_record)
       }
     }
 
-//  //set up variables
-
-//  float highestCosRotation;
-//  float tempCosRotation;
-
-//  //ensure normalised values in aim vector
-
-//  float len = m_aim.length();
-//  if(len)
-//  {
-//      m_aim /= len;
-//  }
-
-//  if (m_localEntities->size()!=0)
-//  {
-//    EntityRecordWCList::iterator listIt = m_localEntities->begin();
-
-
-//    //generate the aim vector and initialise it to be the aim
-//    //from the turret to the first point
-
-//    ngl::Vec3 aim ((listIt->m_x - m_pos.m_x),
-//                   (listIt->m_y - m_pos.m_y),
-//                   (listIt->m_z - m_pos.m_z));
-
-//    //normalise the aim
-
-//    float len = aim.length();
-//    if(len)
-//    {
-//        aim /= len;
-//    }
-
-//    //set the highest to the first distance and set the record
-
-//    highestCosRotation = aim.dot(m_aim);
-
-//    o_record = (*listIt);
-
-//    listIt++;
-
-//    //cycle through the rest
-
-//    for (;listIt != m_localEntities->end();listIt++)
-//    {
-//      //set a the temporary cos of the angle
-
-//      tempCosRotation = aim.dot(m_aim);
-
-//      //if the calculated value is less than the current one
-
-//      if (highestCosRotation < tempCosRotation)
-//      {
-//        //swap it in and set the output object
-
-//        highestCosRotation = tempCosRotation;
-
-//        o_record =(*listIt);
-//      }
-//    }
-//  }
 }
 
 //-------------------------------------------------------------------//

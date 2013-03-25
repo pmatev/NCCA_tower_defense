@@ -129,7 +129,7 @@ void Database::destroy()
   delete s_instance;
 }
 
-//-------------------------------------file:///usr/share/doc/HTML/index.html------------------------------//
+//-------------------------------------------------------------------//
 
 void Database::addRecord(EntityRecordPtr _record)
 {
@@ -170,10 +170,6 @@ void Database::getLocalEntities(
     std::list<GeneralType> &_typeList
     ) const
 {
-//  if(!o_newList)
-//  {
-//    o_newList = std::list<EntityRecord>();
-//  }
 
   //initialise an iterator to the beginning of the list of entity
   //records
@@ -251,6 +247,8 @@ void Database::getLocalEntities(
   }
 }
 
+//-------------------------------------------------------------------//
+
 void Database::getBaseRecord(EntityRecordWCPtr &o_baseRecord)
 {
   o_baseRecord = EntityRecordWCPtr(m_base);
@@ -293,9 +291,6 @@ void Database::unPublish(GeneralType _generalType, unsigned int _id)
   case BASE:
     m_base->m_generalType = BASE;
     m_base->m_id = 0;
-//    m_base->m_x = 0;
-//    m_base->m_y = 0;
-//    m_base->m_z = 0;
     m_isBaseSet = false;
     break;
   }

@@ -23,11 +23,9 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief creator
-  /// @param[in] _damage, damage that bullet can do
-  /// @param[in] _maxVelocity, maximum velocity an bullet can travel at
-  /// @param[in] _pos, initital position of bullet
-  /// @param[in] _initialVelocity, the starting velocity of the bullet
-  /// @param[in] _aim, the initial direction of travel of the bullet
+  /// @param [in] _pos initital position of bullet
+  /// @param [in] _aim the initial direction of travel of the bullet
+  /// @param [in] _id the unique identifier for the bullet
   //-------------------------------------------------------------------//
 
   static EntityPtr create(
@@ -37,36 +35,36 @@ public: //methods
         );
 
   //-------------------------------------------------------------------//
+  /// @brief dtor
+  //-------------------------------------------------------------------//
+
+  ~Bullet();
+
+  //-------------------------------------------------------------------//
   /// @brief draw the object
   //-------------------------------------------------------------------//
 
   void draw() ;
 
-//  //-------------------------------------------------------------------//
-//  /// @brief draw the object based on id
-//  //-------------------------------------------------------------------//
-
-//  void drawSelection() ;
+  //-------------------------------------------------------------------//
+  /// @brief the method to initialiser the state machine for the bullet
+  //-------------------------------------------------------------------//
 
   void stateInit();
 
-  void filterViewVolume(EntityRecordWCList &o_localEntities);
+  //-------------------------------------------------------------------//
+  /// @brief empty method, implemented to satisfy pure virtual
+  /// @param [in][out] o_localEntities, unused
+  //-------------------------------------------------------------------//
 
-  // TEST !!! THIS SOULD BE PUT INTO A MISSILE CLASS AND SHOULD BE MANAGED BETTER-----------------------------------
-  //-------------------------------------------------------------------//
-  /// @brief this is implemented so that we can create an explosion when the
-  /// bullet is deleted
-  //-------------------------------------------------------------------//
-  ~Bullet();
+  void filterViewVolume(EntityRecordWCList &o_localEntities);
 
 protected: //methods
   //-------------------------------------------------------------------//
-  /// @brief creator
-  /// @param[in] _damage, damage that bullet can do
-  /// @param[in] _maxVelocity, maximum velocity an bullet can travel at
-  /// @param[in] _pos, initital position of bullet
-  /// @param[in] _initialVelocity, the starting velocity of the bullet
-  /// @param[in] _aim, the initial direction of travel of the bullet
+  /// @brief constructor
+  /// @param [in] _pos initital position of bullet
+  /// @param [in] _aim the initial direction of travel of the bullet
+  /// @param [in] _id the unique identifier for the bullet
   //-------------------------------------------------------------------//
 
   Bullet(

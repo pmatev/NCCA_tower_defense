@@ -24,6 +24,7 @@ public://methods
   //-------------------------------------------------------------------//
   /// @brief creator
   //-------------------------------------------------------------------//
+
   static ProjectileManagerPtr create();
 
   //-------------------------------------------------------------------//
@@ -34,13 +35,16 @@ public://methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to get the number of projectiles currently active
+  /// @param [out] the number of projectiles stored
   //-------------------------------------------------------------------//
 
   unsigned int getNumProjectiles() const {return m_projectiles.size();}
 
   //-------------------------------------------------------------------//
   /// @brief a method to do collision detection for each projectile.
-  /// @param [out] returns a list of collisions
+  /// @param [in] _dt the change in time
+  /// @param [in][out] o_damages a list of damages to deal
+  /// @param [in][out] o_impulses a list of impulses to give to entities
   //-------------------------------------------------------------------//
 
   void checkCollisions(
@@ -64,11 +68,13 @@ public://methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to add a new projectile to the set
-  /// @param[in] _type, type of projectile to create
-  /// @param[in] _pos, initital position of enemy
-  /// @param [in] _aim the aim vector of the projectile
-  /// @return returns a weak pointer to the projectile that was just created
-  /// this can be very useful for initialising further attributes after creation
+  /// @param[in] _type type of projectile to create
+  /// @param[in] _pos initital position of enemy
+  /// @param [in] _velocity the velocity for the projectile
+  /// @param [in] _emitterID the id for the emitting turret
+  /// @return returns a weak pointer to the projectile that was just
+  /// created this can be very useful for initialising further attributes
+  /// after creation
   //-------------------------------------------------------------------//
 
   ProjectileWPtr addProjectile(
@@ -81,8 +87,10 @@ public://methods
   //-------------------------------------------------------------------//
   /// @brief add new explosion
   /// @param[in] _power power of the explosion
+  /// @param[in] _damage the damage of the explosion
   /// @param[in] _radius how far the explosion effects
   /// @param[in] _pos center of explosion
+  /// @param[in] _lifetime defaults to 0
   //-------------------------------------------------------------------//
 
   void addExplosion(
@@ -94,7 +102,9 @@ public://methods
         );
 
   //-------------------------------------------------------------------//
-  /// @brief remove enemy method
+  /// @brief remove projectile method
+  /// @param [in] _listIt the iterator which points to the projectile
+  /// to remove
   //-------------------------------------------------------------------//
 
   ProjectileList::iterator removeProjectile (
@@ -121,6 +131,7 @@ protected: //methods
   //-------------------------------------------------------------------//
 
   ProjectileManager();
+
 protected://attributes
   //-------------------------------------------------------------------//
   /// @brief a list of pointers to the projectiles currently active in

@@ -55,7 +55,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief static instance method
-  /// @param [out] s_instance, a pointer to the static instance
+  /// @param [out] s_instance a pointer to the static instance
   //-------------------------------------------------------------------//
 
   static Database *instance();
@@ -68,8 +68,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to add an entity record to the grid
-  /// @param [in] _type, the type of entity that it is
-  /// @param [in] _pos, an ngl vec3 defining the position of the entity
+  /// @param [in] _record a pointer to the record to be added
   //-------------------------------------------------------------------//
 
   void addRecord (EntityRecordPtr _record);
@@ -79,12 +78,14 @@ public: //methods
   /// influences for the object requesting the list based on how a
   /// bounding box of the area visible to the entity intersects with
   /// the grid boundaries
-  /// @param [in] _minX, the minimum x value of the bounding box provided
-  /// @param [in] _maxX, the maximum x value of the bounding box provided
-  /// @param [in] _minY, the minimum y value of the bounding box provided
-  /// @param [in] _maxY, the maximum y value of the bounding box provided
-  /// @param [out] o_influenceList, a boost shared pointer to a list of
+  /// @param [in][out] o_newList, a boost shared pointer to a list of
   /// influences as defined
+  /// @param [in] _minX the minimum x value of the bounding box provided
+  /// @param [in] _maxX the maximum x value of the bounding box provided
+  /// @param [in] _minY the minimum y value of the bounding box provided
+  /// @param [in] _maxY the maximum y value of the bounding box provided
+  /// @param [in] _typlist a reference to a list of GeneralTypes,
+  /// defines which records to return
   //-------------------------------------------------------------------//
 
   void getLocalEntities (
@@ -96,6 +97,12 @@ public: //methods
         std::list<GeneralType> &_typeList
         )const;
 
+  //-------------------------------------------------------------------//
+  /// @brief gets the base record
+  /// @param [in][out] o_baseRecord a reference to the const weak pointer
+  /// that will be set to point to the base record
+  //-------------------------------------------------------------------//
+
   void getBaseRecord(EntityRecordWCPtr &o_baseRecord);
 
   //-------------------------------------------------------------------//
@@ -106,10 +113,10 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to remove an entity record from the appropriate grid
-  /// based on the type ID passed in and the id og the individual entity
+  /// based on the type passed in and the id of the individual entity
   /// @param [in] _generalType, the type of the entity used to establish
-  /// grid to remove the entity from
-  /// @param [in] _id, the id of the entity ehose corresponding record is
+  /// which grid to remove the entity from
+  /// @param [in] _id, the id of the entity whose corresponding record is
   /// being removed
   //-------------------------------------------------------------------//
 
@@ -117,6 +124,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the minimum extents of the grid
+  /// @param [out] the minimum extents of the grid
   //-------------------------------------------------------------------//
 
   inline ngl::Vec2 getMinGridExtents() {
@@ -127,6 +135,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the maximum extents of the grid
+  /// @param [out] the maximum extents of the grid
   //-------------------------------------------------------------------//
 
   inline ngl::Vec2 getMaxGridExtents() {
@@ -138,18 +147,18 @@ public: //methods
 protected: //methods
   //-------------------------------------------------------------------//
   /// @brief constructor
+  /// @param [in] _numCellsX, the desired number of cells in the x
+  /// direction
+  /// @param [in] _numCellsZ, the desired number of cells in the z
+  /// direction
   /// @param [in] _environMaxX, the maximum x value of the playable
   /// environment.
-  /// @param [in] _environMaxY, the maximum y value of the playable
+  /// @param [in] _environMaxZ, the maximum z value of the playable
   /// environment.
   /// @param [in] _environMinX, the minimum x value of the playable
   /// environment.
-  /// @param [in] _environMinY, the minimum y value of the playable
+  /// @param [in] _environMinZ, the minimum z value of the playable
   /// environment.
-  /// @param [in] _numCellsX, the desired number of cells in the x
-  /// direction
-  /// @param [in] _numCellsY, the desired number of cells in the y
-  /// direction
   //-------------------------------------------------------------------//
 
   Database(
@@ -169,10 +178,7 @@ protected: //methods
 
 protected: //attributes
   //-------------------------------------------------------------------//
-  /// @brief a vector of pointers to lists of entity records, the entity
-  /// records are oredered by their position in 3D space based on a grid
-  /// system to reduce positional checks carried out in each update cycle
-  /// this database grid stores the enemies that are uploaded
+  /// @brief this database grid stores the enemies that are uploaded
   //-------------------------------------------------------------------//
 
   DatabaseGridPtr m_enemyGrid;

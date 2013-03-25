@@ -21,8 +21,6 @@ void Seek::enter(EntityWPtr _turret)
 
 void Seek::execute(EntityWPtr _turret)
 {
-  //execute
-
   //get a strong pointer from the weak pointer passed in
 
   EntityPtr strongEntity = _turret.lock();
@@ -92,8 +90,6 @@ void LockedOn::enter(EntityWPtr _turret)
 
 void LockedOn::execute(EntityWPtr _turret)
 {
-  //execute
-
   //get a strong pointer from the weak pointer passed in
 
   EntityPtr strongEntity = _turret.lock();

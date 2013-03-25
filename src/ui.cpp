@@ -176,7 +176,7 @@ void UI::creationModeClick(const unsigned int _ID)
                     // if there is no money left come out of creation mode
                 {
                     setCreationMode(false);
-                    game->setNodehighlighted(m_highlightedNode, 0);
+                    game->setNodeHighlighted(m_highlightedNode, 0);
                 }
             }
             else
@@ -187,7 +187,7 @@ void UI::creationModeClick(const unsigned int _ID)
         else //you dont have enough money come out of creation mode
         {
             setCreationMode(false);
-            game->setNodehighlighted(m_highlightedNode, 0);
+            game->setNodeHighlighted(m_highlightedNode, 0);
         }
     }
 
@@ -197,7 +197,7 @@ void UI::creationModeClick(const unsigned int _ID)
     {
         setCreationMode(false);
         turretClicked(_ID);
-        game->setNodehighlighted(m_highlightedNode, 0);
+        game->setNodeHighlighted(m_highlightedNode, 0);
     }
 
     //else check the ui to see if other buttons have been pressed
@@ -215,7 +215,7 @@ void UI::creationModeClick(const unsigned int _ID)
                 //if the button is the same as what has already been pressed
             {
                 setCreationMode(false);
-                game->setNodehighlighted(m_highlightedNode, 0);
+                game->setNodeHighlighted(m_highlightedNode, 0);
             }
             else if(button && button->getAffordable() == true)
 
@@ -505,10 +505,10 @@ void UI::mouseMoveEvent(const unsigned int _ID)
             {
 
                 //set existing nodes flag to false
-                game->setNodehighlighted(m_highlightedNode, false);
+                game->setNodeHighlighted(m_highlightedNode, false);
 
                 //set new nodes flag to true
-                game->setNodehighlighted(_ID, true);
+                game->setNodeHighlighted(_ID, true);
 
                 m_highlightedNode = _ID;
             }

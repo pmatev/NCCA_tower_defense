@@ -21,17 +21,23 @@ DECLARESMART(Turret)
 
 class Turret : public StaticEntity
 {
-public:
+public: //structs and typedefs
 
   //-------------------------------------------------------------------//
-  /// @brief class to hold data for each update
+  /// @brief struct to hold data for each upgrade
   //-------------------------------------------------------------------//
+
   DECLARESMARTVEC(UpgradeData)
   struct UpgradeData
   {
     //-------------------------------------------------------------------//
     /// @brief ctor
+    /// @param [in] _title the title of the update
+    /// @param [in] _description description text for the upgrade
+    /// @param [in] _texture a path to the texture
+    /// @param [in] _cost the cost of the upgrade
     //-------------------------------------------------------------------//
+
     UpgradeData(
           const char *_title,
           const char *_description,
@@ -46,6 +52,10 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief creator
+    /// @param [in] _title the title of the update
+    /// @param [in] _description description text for the upgrade
+    /// @param [in] _texture a path to the texture
+    /// @param [in] _cost the cost of the upgrade
     //-------------------------------------------------------------------//
 
     inline static UpgradeDataPtr create(
@@ -82,6 +92,7 @@ public:
     /// @brief This can be used to store a path to a custom texture related
     /// to the upgrade
     //-------------------------------------------------------------------//
+
     std::string m_texture;
 
     //-------------------------------------------------------------------//
@@ -91,20 +102,17 @@ public:
     int m_cost;
   };
 
+public: //methods
+
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
-  /// @param [in] _fov, a float value defining the field of view of the
-  /// turret
-  /// @param [in] _viewDistance, a float value defining how far the turret
+  /// @param [in] _linkedNode a pointer to the linked node
+  /// @param [in] _id the unique identifier for the entity
+  /// @param [in] _projectileType the type of projectile to emit
+  /// @param [in] _viewDistance a float value defining how far the turret
   /// can see
-  /// @param [in] _maxRotationSpeed, float value defining how fast a
-  /// turret can rotate
-  /// @param [in] _aim, a reference to an ngl vector which defines the
-  /// initial aim vector of the turret
-  /// @param [in] _linkedNodes, a reference to an stl vector of boost
-  /// shared pointers to the nodes that are covered by the static entity
-  /// @param [in] _pos, a vector containing the initial position in 3D
-  /// space of the entity
+  /// @param [in] _projectileSpeed float value defining how fast a
+  /// projectile travels
   //-------------------------------------------------------------------//
 
   Turret(
@@ -124,7 +132,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief updates the turret, taking the value returned by brain() into
   /// account.
-  /// @param [in] _dt, the timestep
+  /// @param [in] _dt the timestep
   //-------------------------------------------------------------------//
 
   void update(const double _dt);
@@ -145,12 +153,15 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the doShot boolean
+  /// @param [out] whether or not to shoot
   //-------------------------------------------------------------------//
 
   inline bool getDoShot() const {return m_doShot;}
 
   //-------------------------------------------------------------------//
   /// @brief a method to set the doShot boolean
+  /// @param [in] _newVal the new boolean value to set the doShot variable
+  /// to
   //-------------------------------------------------------------------//
 
   inline void setDoShot(bool _newVal) {m_doShot = _newVal;}
@@ -158,24 +169,28 @@ public:
   //-------------------------------------------------------------------//
   /// @brief addDtSinceShot method, adds a double value to the dt since
   /// shot variable
+  /// @param [in] _dt the timestep
   //-------------------------------------------------------------------//
 
   inline void addDtSinceShot(double _dt) {m_dtSinceLastShot += _dt;}
 
   //-------------------------------------------------------------------//
   /// @brief a method to set the time since the last shot
+  /// @param [in] _dt the timestep
   //-------------------------------------------------------------------//
 
   inline void setDtSinceShot(double _dt) {m_dtSinceLastShot = _dt;}
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the time since the last shot
+  /// @param [out] the time since the last shot
   //-------------------------------------------------------------------//
 
   inline double getDtSinceShot() const {return m_dtSinceLastShot;}
 
   //-------------------------------------------------------------------//
   /// @brief a method to get the min time between shots
+  /// @param [out] the time to wait between shots
   //-------------------------------------------------------------------//
 
   inline double getShotWaitTime() const {return m_shotWaitTime;}
@@ -184,6 +199,7 @@ public:
   /// @brief set the shooting speed
   /// @param[in] _shotWaitTime seconds between shots
   //-------------------------------------------------------------------//
+
   inline void setShotWaitTime(float _shotWaitTime)
   {
     m_shotWaitTime = _shotWaitTime;
@@ -193,6 +209,7 @@ public:
   /// @brief a method to return the vector required to aim at an inputted
   /// position
   /// @param [in] _pos the position to aim at
+  /// @param [in] _velocity the velocity of the target
   /// @param [out] the required vector to aim at the position
   //-------------------------------------------------------------------//
 
@@ -200,7 +217,7 @@ public:
                             const ngl::Vec3 &_velocity) const;
 
   //-------------------------------------------------------------------//
-  /// @brief a method to update the shot position
+  /// @brief a method to update the shot position, pure virtual
   //-------------------------------------------------------------------//
 
   virtual void updateShotPos() = 0;
@@ -208,8 +225,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief a method to get a record from the local entities
   /// list by it's ID
-  /// @param [in] _ID the id to search by
-  /// @param [out] reference to the entity record
+  /// @param [in][out] o_record reference to the target entity record
   //-------------------------------------------------------------------//
 
   void getTargetRecord(EntityRecordWCPtr &o_record);
@@ -217,7 +233,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief a method to get a record from the local entities
   /// list based on the one that is nearest to the current aim
-  /// @param [out] a reference to the entity record
+  /// @param [in][out] o_record a reference to the nearest entity record
   //-------------------------------------------------------------------//
 
   void getNearestLocalRecord(EntityRecordWCPtr & o_record);
@@ -238,18 +254,21 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief method to return the cosine of the max rotation speed
+  /// @param [out] the cos of the rotation speed
   //-------------------------------------------------------------------//
 
   inline float getCosRotationSpeed() const {return m_cosRotationSpeed;}
 
   //-------------------------------------------------------------------//
   /// @brief method to return the m_aim Vector
+  /// @param [out] the aim vector
   //-------------------------------------------------------------------//
 
   inline ngl::Vec3 getAim() const{return m_aim;}
 
   //-------------------------------------------------------------------//
   /// @brief method to set the target id
+  /// @param [in] _ID the input id
   //-------------------------------------------------------------------//
 
   inline void setTarget(unsigned int _ID) {m_targetID = _ID;}
@@ -263,6 +282,7 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief set the projectile type
+  /// @param [in] _projectileType the type of projectile to emit
   //-------------------------------------------------------------------//
 
   inline void setProjectileType(const std::string &_projectileType)
@@ -278,7 +298,7 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief get the upgrade data about the current upgrade level
-  /// @param[out] o_upgradeData this is a weak pointer to the current
+  /// @param[in][out] o_upgradeData this is a weak pointer to the current
   /// upgradeData.
   /// @return whether the turret has a current upgrade.
   //-------------------------------------------------------------------//
@@ -294,7 +314,17 @@ public:
 
   bool getNextUpgrade(UpgradeDataWPtr &o_upgradeData);
 
-protected:
+protected: //methods
+  //-------------------------------------------------------------------//
+  /// @brief register upgrade with the turret. This enables all the update
+  /// transitions
+  /// @param[in] _upgradeState the state that should manage the upgrading
+  /// @param[in] _data the upgrade data
+  //-------------------------------------------------------------------//
+
+  void registerUpgrade(State *_upgradeState, UpgradeDataPtr _data);
+
+protected: //attributes
 
   //-------------------------------------------------------------------//
   /// @brief value to define the field of view of the turret
@@ -395,15 +425,6 @@ protected:
   //-------------------------------------------------------------------//
 
   unsigned int m_upgradeIndex;
-
-protected:
-  //-------------------------------------------------------------------//
-  /// @brief register upgrade with the turret. This enables all the update
-  /// transitions
-  /// @param[in] _upgradeState the state that should manage the upgrading
-  //-------------------------------------------------------------------//
-
-  void registerUpgrade(State *_upgradeState, UpgradeDataPtr _data);
 
 };
 

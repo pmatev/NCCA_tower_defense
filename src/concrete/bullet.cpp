@@ -22,6 +22,13 @@ Bullet::Bullet(
 
 //-------------------------------------------------------------------//
 
+Bullet::~Bullet()
+{
+  //currently using default destructor
+}
+
+//-------------------------------------------------------------------//
+
 EntityPtr Bullet::create(
     const ngl::Vec3 &_pos,
     const ngl::Vec3 &_aim,
@@ -55,7 +62,9 @@ void Bullet::draw()
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
   (*shader)["Constant"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(),
+                        "Constant"
+                        );
 
   shader->setShaderParam4f("colour", 1,0,0,1);
 
@@ -66,11 +75,9 @@ void Bullet::draw()
 
 ngl::Vec3 Bullet::brain()
 {
-  // for the moment just have the bullet follow it's aim
+  // return empty vector
 
   return ngl::Vec3();
-
-  //return m_aimVector;
 }
 
 //-------------------------------------------------------------------//
@@ -82,8 +89,4 @@ void Bullet::filterViewVolume(EntityRecordWCList &o_localEntities)
 
 //-------------------------------------------------------------------//
 
-Bullet::~Bullet()
-{
-}
 
-//-------------------------------------------------------------------//

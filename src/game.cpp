@@ -42,7 +42,6 @@ Game* Game::instance()
 
 void Game::init()
 {
-    //m_light = new ngl::Light(ngl::Vec3(1,2,0),ngl::Colour(1,1,1),ngl::POINTLIGHT);
     setupScene();
 }
 
@@ -411,18 +410,21 @@ unsigned int Game::getID()
 }
 
 //-------------------------------------------------------------------//
+
 void Game::registerID(EntityPtr _e, unsigned int _id)
 {
     m_IDMap[_id] = _e;
 }
 
 //-------------------------------------------------------------------//
+
 void Game::unregisterID(const unsigned int _i)
 {
     m_IDMap.erase(_i);
 }
 
 //-------------------------------------------------------------------//
+
 EntityWPtr Game::getEntityByID(const unsigned int _i) const
 {
   std::map<unsigned int, EntityWPtr>::const_iterator it = m_IDMap.find(_i);
@@ -434,6 +436,7 @@ EntityWPtr Game::getEntityByID(const unsigned int _i) const
 }
 
 //-------------------------------------------------------------------//
+
 void Game::update(const double _dt)
 {
     // update code by timestep _dt
@@ -467,22 +470,15 @@ void Game::update(const double _dt)
     // 7 //
     m_environment->update(_dt);
 }
+
 //-------------------------------------------------------------------//
+
 void Game::draw()
 {
     m_environment->draw();
     m_waveManager->draw();
     m_projectileManager->draw();
 }
-//-------------------------------------------------------------------//
-
-//void Game::drawSelection()
-//{
-//  glClearColor(0.0,0.0,0.0,1.0);
-//  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//  m_environment->drawSelection();
-//  m_waveManager->drawSelection();
-//}
 
 //-------------------------------------------------------------------//
 
@@ -603,7 +599,7 @@ ProjectileManagerWPtr Game::getProjectileManagerWeakPtr()
 
 //-------------------------------------------------------------------//
 
-void Game::setNodehighlighted(int _id, int _highlighted)
+void Game::setNodeHighlighted(int _id, int _highlighted)
 {
     EntityPtr entityClick = getEntityByID(_id).lock();
 
@@ -673,9 +669,12 @@ bool Game::getNextUpgrade(Turret::UpgradeDataWPtr &o_upgradeData, int _id)
   return false;
 }
 
+//-------------------------------------------------------------------//
 
 float Game::getBaseHealth() const
 {
     return m_environment->getBaseHealth();
 }
+
+//-------------------------------------------------------------------//
 

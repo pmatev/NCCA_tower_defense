@@ -125,10 +125,6 @@ void DatabaseGrid::getLocalEntities(
     float _maxZ
     ) const
 {
-//  if(!o_newList)
-//  {
-//    o_newList = EntityRecordListPtr(new std::list<EntityRecord>());
-//  }
   //checks that the min values are smaller than the max values,
   //and if not it swaps them
 
@@ -200,10 +196,6 @@ void DatabaseGrid::getLocalEntities(
               (*m_grid[j+(i*(m_numCellsX))]).begin(),
               (*m_grid[j+(i*(m_numCellsX))]).end()
               );
-//        BOOST_FOREACH(EntityRecordPtr record, *m_grid[id])
-//        {
-//          o_newList.push_back(EntityRecordWCPtr(record));
-//        }
       }
     }
   }

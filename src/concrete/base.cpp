@@ -5,9 +5,6 @@
 #include "renderer.h"
 #include "meshlib.h"
 
-//---TEST CODE (replace when generateMesh properly implemented)---//
-#define PI 3.14159265
-
 //-------------------------------------------------------------------//
 
 Base::Base(
@@ -19,6 +16,8 @@ Base::Base(
   initialiseMesh("base");
   publish();
 }
+
+//-------------------------------------------------------------------//
 
 void Base::stateInit()
 {
@@ -35,17 +34,6 @@ BasePtr Base::create(NodePtr _linkedNode, unsigned int _id)
 
 //-------------------------------------------------------------------//
 
-void Base::update(const double _dt)
-{
-  //Q unused to remove warnings, will be replaced if used
-
-  Q_UNUSED(_dt);
-  // do something
-}
-
-//-------------------------------------------------------------------//
-
-
 void Base::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
@@ -56,6 +44,7 @@ void Base::filterViewVolume(EntityRecordWCList &o_localEntities)
 void Base::generateViewBBox()
 {
   // initialise world space view box
+
   m_wsViewBBox = BBox(
         m_lsMeshBBox.m_minX*1 + m_pos.m_x,
         m_lsMeshBBox.m_minY*1 + m_pos.m_y,
@@ -66,13 +55,17 @@ void Base::generateViewBBox()
         );
 }
 
+//-------------------------------------------------------------------//
+
 void Base::draw()
 {
   Renderer *r = Renderer::instance();
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
   (*shader)["Phong"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(),
+                        "Phong"
+                        );
 
   shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
 

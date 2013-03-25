@@ -18,16 +18,34 @@ DECLARESMART(Base)
 
 class Base : public StaticEntity
 {
-public:
+public: //methods
   //-------------------------------------------------------------------//
   /// @brief a parameterised creator
-  /// @param [in] _linkedNode, the node to place the base on
+  /// @param [in] _linkedNode the node to place the base on
+  /// @param [in] _id the unique identifier for the base
   //-------------------------------------------------------------------//
 
   static BasePtr create(NodePtr _linkedNode, unsigned int _id);
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to initialise the statemachine for the base
+  //-------------------------------------------------------------------//
+
   void stateInit();
-  void update(const double _dt);
+
+  //-------------------------------------------------------------------//
+  /// @brief the update loop for the base, empty but implemented to satisfy
+  /// pure virtual requirements
+  /// @param [in] _dt unused, chasnge in time
+  //-------------------------------------------------------------------//
+
+  inline void update(const double _dt) {Q_UNUSED(_dt);}
+
+  //-------------------------------------------------------------------//
+  /// @brief empty method, implemented to satisfy pure virtual requirements
+  /// @param [in] o_localEntities unused input
+  //-------------------------------------------------------------------//
+
   void filterViewVolume(EntityRecordWCList &o_localEntities);
 
   //-------------------------------------------------------------------//
@@ -36,9 +54,13 @@ public:
 
   void generateViewBBox();
 
+  //-------------------------------------------------------------------//
+  /// @brief a method to draw the base's mesh
+  //-------------------------------------------------------------------//
+
   void draw();
 
-protected:
+protected: //methods
 
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor

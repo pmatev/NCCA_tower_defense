@@ -36,55 +36,75 @@ class Game
 public:
     //-------------------------------------------------------------------//
     /// @brief returns instance of singleton
+    /// @return the static instance of the game
     //-------------------------------------------------------------------//
+
     static Game* instance();
+
+    //-------------------------------------------------------------------//
+    /// @brief method to initialise game
+    //-------------------------------------------------------------------//
 
     void init();
 
     //-------------------------------------------------------------------//
     /// @brief clear everything and run sceneSetup()
     //-------------------------------------------------------------------//
+
     void reset();
 
     //-------------------------------------------------------------------//
-    /// @brief returns instance of singleton
+    /// @brief clear the game
     //-------------------------------------------------------------------//
+
     void destroy();
 
     //-------------------------------------------------------------------//
     /// @brief updates the game state
+    /// @param [in] _dt change in time
     //-------------------------------------------------------------------//
+
     void update(const double _dt);
 
     //-------------------------------------------------------------------//
     /// @brief draws the current game state
     //-------------------------------------------------------------------//
+
     void draw();
 
     //-------------------------------------------------------------------//
     /// @brief draws the selection buffer for current game state
     //-------------------------------------------------------------------//
+
     void drawSelection();
 
     //-------------------------------------------------------------------//
     /// @brief returns an ID for an entity
+    /// @return a unique identifier
     //-------------------------------------------------------------------//
+
     unsigned int getID();
 
     //-------------------------------------------------------------------//
     /// @brief register the id of given Entity and return its ID
+    /// @param [in] _e the entity being registered
+    /// @param [in] _id the id of the entity
     //-------------------------------------------------------------------//
 
     void registerID(EntityPtr _e, unsigned int _id);
 
     //-------------------------------------------------------------------//
     /// @brief unregister Entity via ID
+    /// @param [in] _i the id of the entity to unregister
     //-------------------------------------------------------------------//
+
     void unregisterID(const unsigned int _i);
 
     //-------------------------------------------------------------------//
     /// @brief return Smart Pointer to Entity via ID.
+    /// @param [in] _i the id of the entity
     //-------------------------------------------------------------------//
+
     EntityWPtr getEntityByID(const unsigned int _i) const;
 
     //-------------------------------------------------------------------//
@@ -92,21 +112,29 @@ public:
     /// type.
     /// @param[in] _type, the type of tower to create
     /// @param[in] _node, which node to create the tower on
-    /// @param[out] whether the creation was successful or not
+    /// @return whether the creation was successful or not
     //-------------------------------------------------------------------//
+
     bool tryToCreateTower(const std::string &_type, NodePtr _node);
 
     //-------------------------------------------------------------------//
     /// @brief return base position
-    /// @param[out] an ngl::Vec3
+    /// @return the bases position
     //-------------------------------------------------------------------//
+
     ngl::Vec3 getBasePos() const;
 
     //-------------------------------------------------------------------//
-    /// @brief return weak smart pointer to the environment
-    //-------------------------------------------------------------------//
-    void setNodehighlighted(int _id, bool _highlighted);
+    /// @brief a method to set the hilighted value of the node
+    /// @param [in] _id the id of the node
+    /// @param [in] _highlighted the highlight
 
+    void setNodeHighlighted(int _id, int _highlighted);
+
+    //-------------------------------------------------------------------//
+    /// @brief return weak smart pointer to the environment
+    /// @return a weak pointer to the environment
+    //-------------------------------------------------------------------//
 
     EnvironmentWPtr getEnvironmentWeakPtr();
 
@@ -307,7 +335,9 @@ private:
 //-------------------------------------------------------------------//
 /// @class This class collects all the data to do with a level.
 //-------------------------------------------------------------------//
+
 DECLARESMART(LevelInfo)
+
 class LevelInfo
 {
 public:
@@ -344,6 +374,7 @@ protected:
   //-------------------------------------------------------------------//
   /// @brief pointer to envrionment data
   //-------------------------------------------------------------------//
+
   EnvironmentInfoPtr m_environment;
 
   //-------------------------------------------------------------------//

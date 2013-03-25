@@ -21,28 +21,34 @@ class Move : public State
 {
 public: //methods
   //-------------------------------------------------------------------//
-  /// @brief returns the static instance of the state machine
+  /// @brief returns the static instance of the state
   //-------------------------------------------------------------------//
 
   static Move * instance();
 
   //-------------------------------------------------------------------//
-  /// @brief method called when the current state is entered
-  /// @param [in] _turret, the turret which is moving into the state
+  /// @brief method called when the current state is entered, currently empty,
+  /// implemented to satisfy pure virtual
+  /// @param [in] _projectile the projectile which is moving into the state,
+  /// unused
   //-------------------------------------------------------------------//
 
   void enter (EntityWPtr _projectile);
 
   //-------------------------------------------------------------------//
-  /// @brief called every frame that the state is active
-  /// @param [in] _turret, the turret which is in the current state
+  /// @brief called every frame that the state is active, currently empty,
+  /// implemented to satisfy pure virtual
+  /// @param [in] _projectile the projectile which is in the current state,
+  /// unused
   //-------------------------------------------------------------------//
 
   void execute(EntityWPtr _projectile);
 
   //-------------------------------------------------------------------//
-  /// @brief called as the turret moves into a new state
-  /// @param [in] _turret, the turret which is in the leaving the state
+  /// @brief called as the projectile moves into a new state, currently empty,
+  /// implemented to satisfy pure virtual
+  /// @param [in] _projectile the projectile which is in the leaving the state,
+  /// unused
   //-------------------------------------------------------------------//
 
   void exit(EntityWPtr _projectile);
@@ -53,7 +59,7 @@ private: //methods
   /// @brief private constructor
   //-------------------------------------------------------------------//
 
-  Move(){}
+  inline Move(){} //currently using default
 };
 
 #endif // PROJECTILESTATES_H
