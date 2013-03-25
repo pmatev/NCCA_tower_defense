@@ -39,10 +39,9 @@ public:
     /// @param [in] _pos, a Vec2 value for the starting position of the
     /// button
     /// @param [in] _imageFile, a string containing the image file path name
-    /// @param [in] inputs a string for the name of the element
-    /// @param [in] string saying what type of element it is
-    /// @param [in] maxX used for size of button
-    /// @param [in] maxY used for size of button
+    /// @param [in] _name inputs a string for the name of the element
+    /// @param [in] _maxX maxX used for size of button
+    /// @param [in] _maxY maxY used for size of button
     //-------------------------------------------------------------------//
     UIButton
     (
@@ -59,10 +58,10 @@ public:
     /// @param [in] _pos, a Vec2 value for the starting position of the
     /// button
     /// @param [in] _imageFile, a string containing the image file path name
-    /// @param [in] inputs a string for the name of the element
-    /// @param [in] string saying what type of element it is
-    /// @param [in] maxX used for size of button
-    /// @param [in] maxY used for size of button
+    /// @param [in] _name inputs a string for the name of the element
+    /// @param [in] _type string saying what type of element it is
+    /// @param [in] _maxX used for x size of button
+    /// @param [in] _maxY used for y size of button
     //-------------------------------------------------------------------//
     UIButton
     (
@@ -96,7 +95,7 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief defines the function to be run by the button
-    /// @param [in] boost function pointer to the function to be executed by
+    /// @param [in] _func boost function pointer to the function to be executed by
     /// the button
     //-------------------------------------------------------------------//
     inline void setFunction(functionPtr _func)  {m_execute = _func;}
@@ -108,10 +107,10 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief function to create a text label
-    /// @param [in] initial position of element
-    /// @param [in] text to be drawn
-    /// @param [in] path to font file
-    /// @param [in] size of font
+    /// @param [in] _pos initial position of element
+    /// @param [in] _text text to be drawn
+    /// @param [in] _fontFile path to font file
+    /// @param [in] _ptsize size of font
     /// @param [in] _name of text element
     /// @param [in] _position in relation to table
     //-------------------------------------------------------------------//
@@ -132,7 +131,6 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief get function to return the m_boundSize
-    /// @param [out] returns vec2 of the m_boundSize variable
     //-------------------------------------------------------------------//
     inline ngl::Vec2 getBoundSize() {return m_boundSize;}
 

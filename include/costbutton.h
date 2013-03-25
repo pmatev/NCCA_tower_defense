@@ -29,13 +29,12 @@ public:
     /// @param [in] _pos, a Vec2 value for the starting position of the
     /// button
     /// @param [in] _imageFile, a string containing the image file path name
-    /// @param [in] inputs a string for the name of the element
-    /// @param [in] inputs the cost of the tower being created
-    /// @param [in] the user money value at the time used to check if it is
+    /// @param [in] _name inputs a string for the name of the element
+    /// @param [in] _type type of element being created
+    /// @param [in] _cost the user money value at the time used to check if it is
     /// affordable or not
-    /// @param [in] string for towerType to build
-    /// @param [in] max x size of button
-    /// @param [in] max y size of button
+    /// @param [in] _maxX max x size of button
+    /// @param [in] _maxY max y size of button
     //-------------------------------------------------------------------//
     CostButton
             (
@@ -61,20 +60,18 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief gets the affordable flag
-    /// @param [out] returns m_affordable bool
     //-------------------------------------------------------------------//
     inline bool getAffordable() {
         return m_affordable;}
 
     //-------------------------------------------------------------------//
     /// @brief gets the cost of turret
-    /// @param [out] returns m_m_cost int
     //-------------------------------------------------------------------//
     inline int getCost() {return m_cost;}
 
     //-------------------------------------------------------------------//
     /// @brief sets m_cost
-    /// @param [in] integer containg the cost
+    /// @param [in] _cost integer containg the cost
     //-------------------------------------------------------------------//
     inline void setCost(int _cost) {m_cost = _cost;}
 

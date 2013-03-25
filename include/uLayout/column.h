@@ -34,19 +34,18 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief returns size of column
-    /// @param [out] returns a vec 2 of the columns size
     //-------------------------------------------------------------------//
     inline ngl::Vec2 getSize() {return m_size;}
 
     //-------------------------------------------------------------------//
     /// @brief set the element in the column
-    /// @param [in] smart point to the element
+    /// @param [in] _element smart pointer to the element
     //-------------------------------------------------------------------//
     void setElement(const UIElementPtr &_element);
 
     //-------------------------------------------------------------------//
     /// @brief set method for the position
-    /// @param [in] position where you want the column to be
+    /// @param [in] _position where you want the column to be
     //-------------------------------------------------------------------//
     inline void setPosition(ngl::Vec2 _position) {m_position = _position;}
 
@@ -74,7 +73,6 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief returns its elements
-    /// @param [out] returns a weak pointer to element the column stores
     //-------------------------------------------------------------------//
     inline UIElementWPtr getElement() {return m_element;}
 
@@ -88,10 +86,6 @@ public:
     /// @param [in] _ysize is the size in y of the largest element in the row
     //-------------------------------------------------------------------//
     void centreElement(float &_ySize);
-
-
-
-
 
 
 

@@ -31,6 +31,11 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief constructor
+    /// @param [in] _pos intial position of text
+    /// @param [in] _text text to be displayed
+    /// @param [in] _fontFile string with path to fontFile
+    /// @param [in] _ptsize size of font
+    /// @param [in] _name name of text element
     //-------------------------------------------------------------------//
     Text
             (
@@ -48,17 +53,17 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief loads the font to the text
-    /// @param[in] file of text
-    /// @param[in] size of font
+    /// @param[in] _fontFile file of text
+    /// @param[in] _ptsize size of font
     //-------------------------------------------------------------------//
     void setFont(const char *_fontFile, int _ptsize);
 
     //-------------------------------------------------------------------//
     /// @brief set colour
-    /// @param[in] red component of the colour
-    /// @param[in] green component of the colour
-    /// @param[in] blue component of the colour
-    /// @param[in] alpha component of the colour
+    /// @param[in] _rvalue red component of the colour
+    /// @param[in] _gvalue green component of the colour
+    /// @param[in] _bvalue blue component of the colour
+    /// @param[in] _avalue alpha component of the colour
     //-------------------------------------------------------------------//
     void setColour(char _rvalue, char _gvalue, char _bvalue, char _avalue);
 

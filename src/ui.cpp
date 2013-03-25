@@ -19,7 +19,7 @@ UI::UI():
 //-------------------------------------------------------------------//
 UI::~UI()
 {
-    std::cout<<"dtor called"<<std::endl;
+
 }
 
 //-------------------------------------------------------------------//
@@ -31,9 +31,9 @@ void UI::registerID(UIElementPtr _e, unsigned int _ID)
 
 //-------------------------------------------------------------------//
 
-void UI::unregisterID(const unsigned int _i)
+void UI::unregisterID(const unsigned int _ID)
 {
-    m_IDMap.erase(_i);
+    m_IDMap.erase(_ID);
 }
 
 //-------------------------------------------------------------------//
@@ -405,6 +405,7 @@ void UI::turretClicked(const unsigned int _ID)
                 }
             }
         }
+
         else
         {
             // if there is no more upgrades set the uprgrade menu to state that
@@ -424,7 +425,7 @@ void UI::turretClicked(const unsigned int _ID)
 
 
         Turret::UpgradeDataWPtr currentUpgradeDataWeak;
-        // no get the turrets current status
+        // now get the turrets current status
 
         successful = game->getCurrentUpgrade(currentUpgradeDataWeak,_ID);
         if(successful)
@@ -462,6 +463,7 @@ void UI::turretClicked(const unsigned int _ID)
     menu->setSize();
 
     //run the tables animation command to make it slide
+
     menu->runAnimation();
     menu->setDrawable(true);
 
@@ -476,6 +478,7 @@ void UI::mouseMoveEvent(const unsigned int _ID)
     entityClick = game->getEntityByID(_ID).lock();
 
     // if it isnt an entity the it may be a ui so run ui hover command
+
     if(!entityClick)
     {
         uiHover(_ID);
@@ -483,6 +486,7 @@ void UI::mouseMoveEvent(const unsigned int _ID)
     else // it is a entity
     {
         //if a button was previously being hovered over set its flag to false
+
         if(m_tmpHoverButton == m_tmpTowerButtonID && m_creationMode)
         {
             setButtonState(m_tmpHoverButton, CREATEON);
@@ -533,6 +537,8 @@ void UI::uiHover(const unsigned int &_ID)
 
     bool inCreateState = false;
 
+    //if the button is in create state and we are in reation mode
+
     if(m_tmpHoverButton == m_tmpTowerButtonID && m_creationMode)
     {
         inCreateState = true;
@@ -544,6 +550,9 @@ void UI::uiHover(const unsigned int &_ID)
         {
             if(inCreateState)
             {
+                // the button is in creation mode so make sure its
+                // state doesn't change
+
                 setButtonState(m_tmpHoverButton, CREATEON);
             }
             else
@@ -560,9 +569,12 @@ void UI::uiHover(const unsigned int &_ID)
 
         if(button)
         {
+            // it isn't the same button and we are not in creation mode
+
             if(_ID != m_tmpTowerButtonID || !m_creationMode)
             {
                 button->setState(HOVER);
+
                 if(_ID != m_tmpHoverButton)
                 {
                     if(!inCreateState)
@@ -576,6 +588,7 @@ void UI::uiHover(const unsigned int &_ID)
                     m_tmpHoverButton = _ID;
                 }
             }
+
             else if(m_creationMode)
             {
 
@@ -793,7 +806,6 @@ void UI::createTowerMenu()
         menu->setFunction("closeTowerMenuButton", boost::bind(&UI::closeTowerMenuFunction,this));
 
         menu->setSize();
-        std::cout<<"menu size"<<menu->getSize();
         menu->screenAlignment(Table::BOTTOM);
         menu->screenAlignment(Table::CENTREX);
         menu->setElementPosition("closeTowerMenuButton", Table::TOPLEFT);
@@ -1356,6 +1368,9 @@ void UI::upgradeButtonCommand()
 
 
     Turret::UpgradeDataWPtr nextUpgradeDataWeak;
+
+    //get the upgrade data for the tower
+
     bool successful = game->getNextUpgrade(nextUpgradeDataWeak,m_tmpUpgradeTowerID);
     if(successful)
     {
@@ -1363,8 +1378,11 @@ void UI::upgradeButtonCommand()
         if(nextData)
         {
             int playerCurrency = game->getPlayerCurrency();
+
+            //check to see if the player has enough money
             if(playerCurrency-nextData->m_cost >= 0)
             {
+                //try to upgrade the tower
                 successful = game->upgradeTurret(m_tmpUpgradeTowerID);
                 if(successful)
                 {
@@ -1375,10 +1393,6 @@ void UI::upgradeButtonCommand()
                         upgradeMenu->runCloseAnimation();
                     }
                 }
-            }
-            else
-            {
-                std::cout<<"not enough money"<<std::endl;
             }
         }
     }
@@ -1447,8 +1461,10 @@ void UI::backToGameFunction()
 //-------------------------------------------------------------------//
 void UI::startGameFunction()
 {
+    Game* game = Game::instance();
     UWindowPtr uwindow = getUWindow("startWindow");
     uwindow->setDrawable(false);
+    game->setPaused(false);
     resetUI();
 }
 

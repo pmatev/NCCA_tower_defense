@@ -37,10 +37,11 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief overloaded constructor
-    /// @param [in] position of table
-    /// @param [in] name of table
-    /// @param [in] string of image path file
-    /// @param [in] stores a pointer to its parent
+    /// @param [in] _pos position of table
+    /// @param [in] _name name of table
+    /// @param [in] _imageFile string of image path file
+    /// @param [in] _parent stores a pointer to its parent
+    /// @param [in] _size vec 2 stating the size of the window
     //-------------------------------------------------------------------//
     UWindow(
         ngl::Vec2 _pos,
@@ -57,12 +58,12 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief function to create a cost button
-    /// @param [in] initial position of element
-    /// @param [in] image file name
-    /// @param [in] name of element
-    /// @param [in] cost of the tower
-    /// @param [in] x size of button
-    /// @param [in] y size of button
+    /// @param [in] _pos initial position of element
+    /// @param [in] _imageFile image file name
+    /// @param [in] _name name of element
+    /// @param [in] _cost cost of the tower
+    /// @param [in] _maxX x size of button
+    /// @param [in] _maxY y size of button
     //-------------------------------------------------------------------//
     void createCostButton
             (
@@ -77,11 +78,11 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief function to create a text ui
-    /// @param [in] initial position of element
-    /// @param [in] text to be drawn
-    /// @param [in] path to font file
-    /// @param [in] size of font
-    /// @param [in] name of text element
+    /// @param [in] _pos initial position of element
+    /// @param [in] _text text to be drawn
+    /// @param [in] _fontFile path to font file
+    /// @param [in] _ptsize size of font
+    /// @param [in] _name name of text element
     //-------------------------------------------------------------------//
     void createText
             (
@@ -94,6 +95,11 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief function to create a table
+    /// @param [in] _pos intial position of table
+    /// @param [in] _name name of table
+    /// @param [in] _imageFile texture name for the table
+    /// @param [in] _slideType specifies the type of animation the table has
+    /// @param [in] _parent stores a pointer to its parent
     //-------------------------------------------------------------------//
     void createTable(const ngl::Vec2 &_pos,
                      const std::string &_name,
@@ -103,10 +109,11 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief function to create a standard button
-    /// @param [in] initial position of element
-    /// @param [in] name of element
-    /// @param [in] x size of button
-    /// @param [in] y size of button
+    /// @param [in] _pos initial position of element
+    /// @param [in] _imageFile name of texture applied to button
+    /// @param [in] _name name of element
+    /// @param [in] _maxX x size of button
+    /// @param [in] _maxY y size of button
     //-------------------------------------------------------------------//
     void createButton
             (
@@ -125,21 +132,22 @@ public:
     //-------------------------------------------------------------------//
     /// @brief aligns a specific element to a specific location based on
     /// window location
-    /// @param [in] string of the name of the element you want align
-    /// @param [in] enum specifying the type of alignment wanted
+    /// @param [in] _name string of the name of the element you want align
+    /// @param [in] _alignment enum specifying the type of alignment wanted
     //-------------------------------------------------------------------//
     void alignElement(const std::string &_name,const AlignType &_alignment);
 
     //-------------------------------------------------------------------//
     /// @brief sets whether the entire table is drawn including its rows
-    /// @param [in] true false value specifying whether it is drawable
+    /// @param [in] _drawable true false value specifying whether it is drawable
     //-------------------------------------------------------------------//
     void setDrawable(bool _drawable) {m_isDrawable = _drawable;}
 
     //-------------------------------------------------------------------//
     /// @brief searches through elements for the name specified and
     /// sets its function if it is a button
-    /// @param [in] function to set in the button
+    /// @param [in] _name name of button
+    /// @param [in] _function function to set in the button
     //-------------------------------------------------------------------//
     void setFunction(const std::string &_name, UIButton::functionPtr _function);
 
@@ -147,7 +155,6 @@ public:
     /// @brief searches through elements for the name specified and
     /// returns the element if found
     /// @param [in] _name states the element you want to get
-    /// @param [out] smart point to the element with the name _name
     //-------------------------------------------------------------------//
     UIElementPtr getElement(std::string _name);
 

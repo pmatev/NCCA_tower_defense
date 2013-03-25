@@ -614,8 +614,6 @@ void Game::setNodehighlighted(int _id, int _highlighted)
     if(node) // check that it is a valid node
     {
         node->setHighlighted(_highlighted); //change highlighted flag
-        std::cout<<node->getHighlighted()<<std::endl;
-
     }
 
 }

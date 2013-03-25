@@ -24,7 +24,7 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief overloaded constructor
-    /// @param [in] number of columns to create
+    /// @param [in] _numColumns number of columns to create
     //-------------------------------------------------------------------//
     Row(const int &_numColumns);
 
@@ -40,32 +40,30 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief returns the rows size
-    /// @param [out] returns a vec 2 of the rows size
     //-------------------------------------------------------------------//
     inline ngl::Vec2 getSize() {return m_boundSize;}
 
     //-------------------------------------------------------------------//
     /// @brief creates columns in the row
-    /// @param [in] specifies number of columns to create
+    /// @param [in] _numColumns specifies number of columns to create
     //-------------------------------------------------------------------//
     void createColumns(const int &_numColumns);
 
     //-------------------------------------------------------------------//
     /// @brief sets the element in the column
-    /// @param [in] column to set the element to
-    /// @param [in] element to set
+    /// @param [in] _column to set the element to
+    /// @param [in] _element to set
     //-------------------------------------------------------------------//
     void setElement(const int &_column,UIElementPtr _element);
 
     //-------------------------------------------------------------------//
     /// @brief sets the rows position
-    /// @param [in] vec 2 containg the position value to set the row to
+    /// @param [in] _position vec 2 containg the position value to set the row to
     //-------------------------------------------------------------------//
     void setPosition(ngl::Vec2 _position, bool _isUpdate);
 
     //-------------------------------------------------------------------//
     /// @brief returns the rows position
-    /// @param [out] returns a vec 2 containg the rows position
     //-------------------------------------------------------------------//
     inline ngl::Vec2 getPosition() {return m_position;}
 
@@ -92,16 +90,14 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief returns a column
-    /// @param [in] column to return
-    /// @param [out] returns a smart pointer to the column
+    /// @param [in] _column to return
     //-------------------------------------------------------------------//
     inline ColumnPtr getColumn(const int &_column) {return m_columns[_column];}
 
 
     //-------------------------------------------------------------------//
     /// @brief returns an element based on the specified column
-    /// @param [in] column to return
-    /// @param [out] returns a smart pointer to the element within the column
+    /// @param [in] _column to return
     //-------------------------------------------------------------------//
     inline UIElementWPtr getElement(const int &_column)
     {

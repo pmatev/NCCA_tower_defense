@@ -44,11 +44,11 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief overloaded constructor
-    /// @param [in] position of table
-    /// @param [in] name of table
-    /// @param [in] string of image path file
+    /// @param [in] _pos position of table
+    /// @param [in] _name name of table
+    /// @param [in] _imageFile string of image path file
     /// @param [in] _slideType states the tables slide type
-    /// @param [in] stores a pointer to its parent
+    /// @param [in] _parent stores a pointer to its parent
     //-------------------------------------------------------------------//
     Table(ngl::Vec2 _pos,
           std::string _name,
@@ -64,14 +64,14 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief creates rows in the table
-    /// @param [in] int value specifying the number of rows to create
+    /// @param [in] _numRows int value specifying the number of rows to create
     //-------------------------------------------------------------------//
     void createRows(const int &_numRows);
 
     //-------------------------------------------------------------------//
     /// @brief creates columns in rows
-    /// @param [in] value of the row you want to add columns too
-    /// @param [in] number of columns to add
+    /// @param [in] _row value of the row you want to add columns too
+    /// @param [in] _numColumns number of columns to add
     //-------------------------------------------------------------------//
     void createColumns(const int &_row,const int &_numColumns);
 
@@ -108,7 +108,7 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief sets the tables position
-    /// @param [in] position value for the table position
+    /// @param [in] _pos position value for the table position
     //-------------------------------------------------------------------//
     void setPosition(ngl::Vec2 _pos);
 
@@ -126,20 +126,20 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief aligns the menu to screen edges
-    /// @param [in] enum which will specify where to align the table to
+    /// @param [in] _alignment enum which will specify where to align the table to
     //-------------------------------------------------------------------//
     void screenAlignment(const AlignType &_alignment);
 
     //-------------------------------------------------------------------//
     /// @brief sets whether the table will be drawn as will as its rows
-    /// @param [in] true ro false value specifying whether it is viewable
+    /// @param [in] _visible true or false value specifying whether it is viewable
     //-------------------------------------------------------------------//
     inline void setBackground(bool _visible) {m_backgroundVisible = _visible;}
 
     //-------------------------------------------------------------------//
     /// @brief gets the specified element
-    /// @param [in] row where element is stored
-    /// @param [in] column where the element is store
+    /// @param [in] _row where element is stored
+    /// @param [in] _column where the element is store
     //-------------------------------------------------------------------//
     UIElementWPtr getElement(const int &_row,const int &_column);
 
@@ -151,29 +151,29 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief sets the elements text if it is a text element
-    /// @param [in] row the text is in
-    /// @param [in] column the text is in
-    /// @param [in] the text to store in it
+    /// @param [in] _row the text is in
+    /// @param [in] _column the text is in
+    /// @param [in] _text the text to store in it
     //-------------------------------------------------------------------//
     void setText(const int &_row, const int &_column, const char *_text);
 
     //-------------------------------------------------------------------//
     /// @brief sets whether the entire table is drawn including its rows
-    /// @param [in] true false value specifying whether it is drawable
+    /// @param [in] _drawable true false value specifying whether it is drawable
     //-------------------------------------------------------------------//
     void setDrawable(bool _drawable) {m_isDrawable = _drawable;}
 
     //-------------------------------------------------------------------//
     /// @brief function to create a cost button
-    /// @param [in] row where to create the button
-    /// @param [in] column within the row to create it in
-    /// @param [in] initial position of element
-    /// @param [in] image file name
-    /// @param [in] name of element
-    /// @param [in] pointer to this table
-    /// @param [in] cost of the tower
-    /// @param [in] x size of button
-    /// @param [in] y size of button
+    /// @param [in] _row where to create the button
+    /// @param [in] _column within the row to create it in
+    /// @param [in] _pos initial position of element
+    /// @param [in] _imageFile image file name
+    /// @param [in] _name name of element
+    /// @param [in] _type pointer to this table
+    /// @param [in] _cost cost of the tower
+    /// @param [in] _maxX x size of button
+    /// @param [in] _maxY y size of button
     //-------------------------------------------------------------------//
     void createCostButton
     (
@@ -190,13 +190,13 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief function to create a text ui
-    /// @param [in] row where to create the button
-    /// @param [in] column within the row to create it in
-    /// @param [in] initial position of element
-    /// @param [in] text to be drawn
-    /// @param [in] path to font file
-    /// @param [in] size of font
-    /// @param [in] name of text element
+    /// @param [in] _row where to create the button
+    /// @param [in] _column within the row to create it in
+    /// @param [in] _pos initial position of element
+    /// @param [in] _text text to be drawn
+    /// @param [in] _fontFile path to font file
+    /// @param [in] _ptsize size of font
+    /// @param [in] _name name of text element
     //-------------------------------------------------------------------//
     void createText
     (
@@ -217,14 +217,14 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief function to create a standard button
-    /// @param [in] row where to create the button
-    /// @param [in] column within the row to create it in
-    /// @param [in] initial position of element
-    /// @param [in] name of element
-    /// @param [in] type specifies the type of element
-    /// @param [in] texture name to draw
-    /// @param [in] x size of element
-    /// @param [in] y size of element
+    /// @param [in] _row where to create the button
+    /// @param [in] _column within the row to create it in
+    /// @param [in] _pos initial position of element
+    /// @param [in] _name name of element
+    /// @param [in] _type type specifies the type of element
+    /// @param [in] _imageFile texture name to draw
+    /// @param [in] _maxX x size of element
+    /// @param [in] _maxY y size of element
     //-------------------------------------------------------------------//
     void createImageElement
     (
@@ -240,14 +240,13 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief function to create a standard button
-    /// @param [in] row where to create the button
-    /// @param [in] column within the row to create it in
-    /// @param [in] initial position of element
-    /// @param [in] texture name to draw
-    /// @param [in] name of element
-    /// @param [in] stores a pointer to the table
-    /// @param [in] x size of button
-    /// @param [in] y size of button
+    /// @param [in] _row where to create the button
+    /// @param [in] _column within the row to create it in
+    /// @param [in] _pos initial position of element
+    /// @param [in] _imageFile texture name to draw
+    /// @param [in] _name name of element
+    /// @param [in] _maxX x size of button
+    /// @param [in] _maxY y size of button
     //-------------------------------------------------------------------//
     void createButton
     (
@@ -264,7 +263,7 @@ public:
     /// @brief sets a buttons function
     /// @param [in] _row defines the row the button is in
     /// @param [in] _column defines the column within the row the button is stored in
-    /// @param [in] function to set in the button
+    /// @param [in] _function function to set in the button
     //-------------------------------------------------------------------//
     void setFunction(const int &_row, const int &_column, boost::function<void()> _function);
 
@@ -272,7 +271,7 @@ public:
     /// @brief overloaded set function used to set functions that are absolute
     /// and not stored in the table
     /// @param [in] _name the button you want to set the function to
-    /// @param [in] function to set in the button
+    /// @param [in] _function function to set in the button
     //-------------------------------------------------------------------//
     void setFunction(std::string _name, boost::function<void()> _function);
 
@@ -280,7 +279,7 @@ public:
     /// @brief sets a cost buttons cost
     /// @param [in] _row defines the row the button is in
     /// @param [in] _column defines the column within the row the button is stored in
-    /// @param [in] cost to add into the button
+    /// @param [in] _cost cost to add into the button
     //-------------------------------------------------------------------//
     void setCost(const int &_row, const int &_column, int _cost);
 
@@ -288,14 +287,14 @@ public:
     /// @brief sets the texture of the element
     /// @param [in] _row defines the row the button is in
     /// @param [in] _column defines the column within the row the button is stored in
-    /// @param [in] string with the texture you want to set
+    /// @param [in] _textures string with the texture you want to set
     //-------------------------------------------------------------------//
     void setTexture(const int &_row, const int &_column, std::string _texture);
 
     //-------------------------------------------------------------------//
     /// @brief sets the texture of an element not in a table
     /// @param [in] _name defines the element you want to set
-    /// @param [in] string with the texture you want to set
+    /// @param [in] _texture string with the texture you want to set
     //-------------------------------------------------------------------//
     void setTexture(std::string _name, std::string _texture);
 

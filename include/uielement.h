@@ -31,8 +31,9 @@ public:
     /// @brief a parameterised constructor
     /// @param [in] _pos, a Vec2 value for the starting position of the
     /// button
+    /// @param [in] _name name of element
+    /// @param [in] _type type of element being created
     /// @param [in] _imageFile, a string containing the image file path name
-    /// @param [in] inputs a string for the name of the element
     //-------------------------------------------------------------------//
 
     /* ADD ID TO CONSTRUCTOR + SETUP RELEVANT SYSTEMS */
@@ -63,68 +64,50 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief sets the position of the element
-    /// @param [in] takes in an vector for position
+    /// @param [in] _pos takes in an vector for position
     //-------------------------------------------------------------------//
     virtual void setPosition(ngl::Vec2 _pos);
 
     //-------------------------------------------------------------------//
     /// @brief sets the size of the element
-    /// @param [in] takes in an vector for size
+    /// @param [in] _size takes in an vector for size
     //-------------------------------------------------------------------//
     virtual void setSize(ngl::Vec2 _size) {m_size =_size;}
 
     //-------------------------------------------------------------------//
     /// @brief gets the name of the element
-    /// @param [out] returns the name of the element
     //-------------------------------------------------------------------//
     inline const std::string getName() {return m_name;}
 
     //-------------------------------------------------------------------//
-    /// @brief converts the percentage values for screen space into absolute
-    /// values
-    /// @param [in] takes in a boost::function
-    //-------------------------------------------------------------------//
-    void percentageToPixels(int _maxX);
-
-    //-------------------------------------------------------------------//
     /// @brief returns the m_type variable
-    /// @param [out] returns a string value refering to the type
     //-------------------------------------------------------------------//
     inline ElementType getType() {return m_type;}
 
     //-------------------------------------------------------------------//
     /// @brief sets the elements id value
-    /// @param [in] takes in an id value
+    /// @param [in] _ID takes in an id value given by window
     //-------------------------------------------------------------------//
     void setID(unsigned int _ID) ;
 
     //-------------------------------------------------------------------//
     /// @brief returns the elements id
-    /// @param [out] returns the m_id attribute
     //-------------------------------------------------------------------//
     inline unsigned int getID() {return m_ID;}
 
     //-------------------------------------------------------------------//
     /// @brief get function for max x
-    /// @param [out] returns the m_maxX variable
     //-------------------------------------------------------------------//
     inline ngl::Vec2 getSize() {return m_size;}
 
     //-------------------------------------------------------------------//
-    /// @brief get function for image file
-    /// @param [out] returns the m_imagefile variable
-    //-------------------------------------------------------------------//
-    std::string getImagefile();
-
-    //-------------------------------------------------------------------//
     /// @brief get function for position
-    /// @param [out] returns the m_pos variable
     //-------------------------------------------------------------------//
     inline ngl::Vec2 getPosition() {return m_pos;}
 
     //-------------------------------------------------------------------//
     /// @brief setter function for texture
-    /// @param [in] string containing path to texure file
+    /// @param [in] _texture string containing texure name
     //-------------------------------------------------------------------//
     virtual inline void setTexture(std::string _texture) {m_imageFile = _texture;}
 
@@ -136,13 +119,11 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief gets the m_restPosition variable
-    /// @param [out] returns m_restPosition
     //-------------------------------------------------------------------//
     inline ngl::Vec2 getRestPosition(){return m_restPosition;}
 
     //-------------------------------------------------------------------//
     /// @brief gets the m_imageFile variable
-    /// @param [out] returns m_imageFile
     //-------------------------------------------------------------------//
     inline std::string getTexture() {return m_imageFile;}
 
@@ -203,6 +184,9 @@ protected:
     //-------------------------------------------------------------------//
     BillboardPtr m_billboard;
 
+    //-------------------------------------------------------------------//
+    /// @brief states whether the elments texture is tileable
+    //-------------------------------------------------------------------//
     bool m_tileable;
 
 };

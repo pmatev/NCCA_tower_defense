@@ -54,55 +54,50 @@ public:
     void drawSelection();
 
     //-------------------------------------------------------------------//
-    /// @brief see if a element has been clicked in the m_IDMap
-    /// @param [out] returns an element pointer which will either contain
-    /// the clicked button or an empty one if none were clicked
+    /// @brief see if a element has been clicked in the m_IDMap and return it
     //-------------------------------------------------------------------//
     UIElementPtr checkUIClicked(const unsigned int _ID);
 
     //-------------------------------------------------------------------//
-    /// @brief checks to see if an entity has been clicked
-    /// @param [in] _ID, the colourID given by clickEvent from game.h
-    /// @param [out] returns a pointer to the entity that has been clicked
-    /// and will return 0 if nothing is selected
-    //-------------------------------------------------------------------//
-    EntityWPtr checkEntityClicked();
-
-    //-------------------------------------------------------------------//
     /// @brief the function which is run when the left mouse button is
     /// clicked down
-    /// @param [in] _ID, the colourID given by clickEvent from game.h
+    /// @param [in] _ID, the colourID given by clickEvent from window.h
     //-------------------------------------------------------------------//
     void mouseLeftUp(const unsigned int _ID);
 
     //-------------------------------------------------------------------//
     /// @brief the function which is run when the mouse is moved
+    /// @param [in] _ID, the colourID given by clickEvent from window.h
     //-------------------------------------------------------------------//
     void mouseMoveEvent(const unsigned int _ID);
 
     //-------------------------------------------------------------------//
     /// @brief register UIElement into IDMap
-    /// @param [in] takes in a new uielement
-    /// @param [out] returns the id for the element
+    /// @param [in] _element takes in a new uielement
+    /// @param [in] _ID id of the element
     //-------------------------------------------------------------------//
-    void registerID(UIElementPtr _e, unsigned int _ID);
+    void registerID(UIElementPtr _element, unsigned int _ID);
 
     //-------------------------------------------------------------------//
     /// @brief unregister UIElement via ID
-    /// @param [in] takes in the id of the element you want to unregister
+    /// @param [in] _ID takes in the id of the element you want to unregister
     //-------------------------------------------------------------------//
-    void unregisterID(const unsigned int _i);
+    void unregisterID(const unsigned int _ID);
 
     //-------------------------------------------------------------------//
     /// @brief creates a new menu
-    /// @param [in] takes in a tableptr to create a new object and store
+    /// @param [in] _menu takes in a tableptr to create a new object and store
     /// in m_menus
     //-------------------------------------------------------------------//
     void createMenu(TablePtr _menu);
 
     //-------------------------------------------------------------------//
     /// @brief creates a new window
-    /// @param [in] takes a uiwindow in and stores it within m_menus
+    /// @param [in] _pos takes a uiwindow in and stores it within m_windows
+    /// @param [in] _name name of the element
+    /// @param [in] _imageFile name of texture to be applied to element
+    /// @param [in] _parent point to its parent
+    /// @param [in] size of window
     //-------------------------------------------------------------------//
     void createWindow
     (
@@ -116,18 +111,16 @@ public:
     //-------------------------------------------------------------------//
     /// @brief searches the m_menus map and returns the object with the name
     /// specified in the parameters
-    /// @param [in] takes in a string to the name of the menu you are trying
+    /// @param [in] _name takes in a string to the name of the menu you are trying
     /// to access
-    /// @param [out] returns a TablePtr with the name specified
     //-------------------------------------------------------------------//
     TablePtr getMenu(std::string _name);
 
     //-------------------------------------------------------------------//
     /// @brief searches the m_uwindows map and returns the object with the name
     /// specified in the parameters
-    /// @param [in] takes in a string to the name of the window you are trying
+    /// @param [in] _name takes in a string to the name of the window you are trying
     /// to access
-    /// @param [out] returns a WindowPtr with the name specified
     //-------------------------------------------------------------------//
     UWindowPtr getUWindow(std::string _name);
 
@@ -161,6 +154,7 @@ public:
     //-------------------------------------------------------------------//
     /// @brief update function which runs the ui's every frame updates e.g.
     /// score
+    /// @param [in] _dt time in millieseconds since last update call
     //-------------------------------------------------------------------//
     void update(const double _dt);
 
@@ -172,11 +166,13 @@ public:
     //-------------------------------------------------------------------//
     /// @brief this is ran when a turret is clicked. it initialises the the
     /// upgrade value with its details
+    /// @param [in] _ID the id of the element pressed
     //-------------------------------------------------------------------//
     void turretClicked(const unsigned int _ID);
 
     //-------------------------------------------------------------------//
-    /// @brief sets the upgrade id
+    /// @brief sets the upgrade tower button id
+    /// @param [in] _ID id of element
     //-------------------------------------------------------------------//
     inline void setUpgradeTowerId(int _ID) {m_tmpUpgradeTowerID = _ID;}
 
@@ -189,13 +185,14 @@ public:
     /// @brief when in creation mode this checks if the staticEntity can be
     /// placed on node if it can add to the list of towers else wait for
     /// do nothing until next click
-    /// @param [in] takes in the _ID
+    /// @param [in] _type type of tower to create
+    /// @param [in] _node node to place the tower on
     //-------------------------------------------------------------------//
     void placeDownStaticEntity(const std::string &_type, NodePtr _node);
 
     //-------------------------------------------------------------------//
     /// @brief function to run on click event when in creation mode
-    /// @param [in] takes in the _ID
+    /// @param [in] _ID id of thing that is clicked
     //-------------------------------------------------------------------//
     void creationModeClick(const unsigned int _ID);
 
@@ -317,14 +314,12 @@ public:
     /// @brief sets the buttons state
     /// @param [in] _ID id of the element clicked
     /// @param [in] _state the state to set the button to
-    /// @ param [out] returns whether it has successfully set the state
-    /// of the button which has ID _ID
     //-------------------------------------------------------------------//
     bool setButtonState(const unsigned int _ID, ButtonState _state);
 
     //-------------------------------------------------------------------//
     /// @brief mouse left down event function
-    /// @param [in] id of element
+    /// @param [in] _ID id of element
     //-------------------------------------------------------------------//
     void mouseLeftDown(const unsigned int _ID);
 
