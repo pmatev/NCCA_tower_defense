@@ -505,10 +505,10 @@ void UI::mouseMoveEvent(const unsigned int _ID)
             {
 
                 //set existing nodes flag to false
-                game->setNodehighlighted(m_highlightedNode, 0);
+                game->setNodehighlighted(m_highlightedNode, false);
 
                 //set new nodes flag to true
-                game->setNodehighlighted(_ID, 1);
+                game->setNodehighlighted(_ID, true);
 
                 m_highlightedNode = _ID;
             }

@@ -105,7 +105,7 @@ public:
     //-------------------------------------------------------------------//
     /// @brief return weak smart pointer to the environment
     //-------------------------------------------------------------------//
-    void setNodehighlighted(int _id, int _highlighted);
+    void setNodehighlighted(int _id, bool _highlighted);
 
 
     EnvironmentWPtr getEnvironmentWeakPtr();
