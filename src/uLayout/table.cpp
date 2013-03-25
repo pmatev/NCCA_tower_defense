@@ -7,19 +7,27 @@
 Table::Table(ngl::Vec2 _pos,
              std::string _name,
              std::string _imageFile,
+             std::string _slideType,
              UI *_parent):
 
-    UIElement( _pos, _name, "table",_imageFile),
+    UIElement( _pos, _name, TABLE,_imageFile),
+
 
 
     m_backgroundVisible(true),
     m_parent(_parent),
     m_isDrawable(true),
+    m_centreY(false),
     m_startPos(_pos),
-  m_isAnimated(false)
+    m_isAnimated(false),
+    m_slideType(_slideType),
+    m_slideState(STOPPED),
+    m_sizeChanged(false)
 {
 
+
 }
+
 //-------------------------------------------------------------------//
 Table::~Table()
 {
@@ -59,7 +67,7 @@ void Table::createTable(const int &_row,const int &_column,const UIElementPtr &_
 }
 
 //-------------------------------------------------------------------//
-void Table::createElement(const UIElementPtr &_element)
+void Table::createAbsoluteElement(const UIElementPtr &_element)
 {
     Window* window = Window::instance();
 
@@ -68,6 +76,41 @@ void Table::createElement(const UIElementPtr &_element)
      _element->setID(ID);
      m_elements.push_back(_element);
 
+}
+
+//-------------------------------------------------------------------//
+void Table::createImageElement
+(
+        const int _row,
+        const int _column,
+        ngl::Vec2 _pos,
+        std::string _name,
+        ElementType _type,
+        std::string _imageFile,
+        const int _maxX,
+        const int _maxY
+        )
+{
+    Window* window = Window::instance();
+
+    RowPtr row = m_rows[_row];
+
+    UIElementPtr element = UIElementPtr
+            (
+                new UIElement
+                (
+                    _pos,
+                    _name,
+                    _type,
+                    _imageFile
+                    )
+                );
+
+    int ID = window->getID();
+    m_parent->registerID(element, ID);
+    element->setSize(ngl::Vec2(_maxX, _maxY));
+    element->setID(ID);
+    row->setElement(_column, element);
 }
 
 //-------------------------------------------------------------------//
@@ -112,8 +155,6 @@ void Table::draw()
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
 
-
-        Renderer *render = Renderer::instance();
         Window *window = Window::instance();
         ngl::ShaderLib *shader=ngl::ShaderLib::instance();
 
@@ -132,13 +173,15 @@ void Table::draw()
 
             TextureLib *tex = TextureLib::instance();
             tex->bindTexture(m_imageFile);
-            TexturePtr texture = tex->getTexture(m_imageFile).lock();
-            float scaleUVX = m_size.m_x/texture->getWidth();
-            float scaleUVY = m_size.m_y/texture->getHeight();
-            m_billboard->setUVScale(scaleUVX, scaleUVY);
-            m_billboard->draw("UI");
-//            render->draw(m_IDStr, "UI");
+            if(m_tileable)
+            {
+                TexturePtr texture = tex->getTexture(m_imageFile).lock();
+                float scaleUVX = m_size.m_x/texture->getWidth();
+                float scaleUVY = m_size.m_y/texture->getHeight();
+                m_billboard->setUVScale(scaleUVX, scaleUVY);
+            }
 
+            m_billboard->draw("UI");
         }
 
         //now draw all its elements
@@ -288,7 +331,7 @@ void Table::createCostButton
         const ngl::Vec2 &_pos,
         const std::string &_imageFile,
         const std::string &_name,
-        const std::string &_type,
+        const ElementType &_type,
         const int &_cost,
         const float &_maxX,
         const float &_maxY
@@ -361,6 +404,22 @@ UIElementWPtr Table::getElement(const int &_row, const int &_column)
 }
 
 //-------------------------------------------------------------------//
+std::string Table::getElTexture(std::string _name)
+{
+    for(ElementVector::iterator it = m_elements.begin();
+        it != m_elements.end();
+        ++it)
+    {
+        UIElementPtr element = (*it);
+        if(element->getName() == _name)
+        {
+           return element->getTexture();
+        }
+    }
+    return "";
+}
+
+//-------------------------------------------------------------------//
 void Table::setFunction
 (
     const int &_row,
@@ -404,25 +463,21 @@ void Table::setTexture(const int &_row, const int &_column, std::string _texture
 
     if(element)
     {
-        UIButtonPtr button = boost::dynamic_pointer_cast<UIButton>(element);
-        if(button)
-        {
-            button->setTexture(_texture);
-        }
+        element->setTexture(_texture);
     }
 }
 
 //-------------------------------------------------------------------//
-void Table::setPressed(const int &_row, const int &_column, bool _isPressed)
+void Table::setTexture(std::string _name, std::string _texture)
 {
-    UIElementPtr element = getElement(_row, _column).lock();
-
-    if(element)
+    for(ElementVector::iterator it = m_elements.begin();
+        it != m_elements.end();
+        ++it)
     {
-        UIButtonPtr button = boost::dynamic_pointer_cast<UIButton>(element);
-        if(button)
+        UIElementPtr element = (*it);
+        if(element->getName() == _name)
         {
-            button->setPressed(_isPressed);
+           element->setTexture(_texture);
         }
     }
 }
@@ -430,10 +485,12 @@ void Table::setPressed(const int &_row, const int &_column, bool _isPressed)
 //-------------------------------------------------------------------//
 void Table::centreElementsY()
 {
+
     for(RowVector::iterator it=m_rows.begin(); it!=m_rows.end(); ++it)
     {
         (*it)->centreElementsY();
     }
+
 }
 
 //-------------------------------------------------------------------//
@@ -534,108 +591,255 @@ void Table::updateElPosition()
         }
 
         (*it)->setPosition(elPos);
-        std::cout<<"element at "<<elPos<<std::endl;
     }
 }
 
+//-------------------------------------------------------------------//
 void Table::update(const double _dt)
 {
-    slideDown(_dt);
-
-}
-
-//-------------------------------------------------------------------//
-void Table::slideDown(const double _dt)
-{
-    if(m_interval.m_y < 0)
+    if(m_isAnimated == true)
     {
-        if(m_isAnimated == true
-                && m_pos.m_y > m_endPos.m_y)
+        if(m_slideType == "up")
         {
-            float yPos =m_pos.m_y+(m_interval.m_y*(_dt*0.001));
-            m_pos.m_y = yPos;
-            setRowPositions();
-            updateElPosition();
+            slideVerticle(_dt);
         }
-
-        else if(m_pos.m_y <= m_endPos.m_y)
+        else if(m_slideType == "left")
         {
-            setAnimated(false);
-            if(m_pos != m_endPos)
-            {
-                setPosition(m_endPos);
-                //std::cout<<"setting position to "<<m_endPos<<std::endl;
-            }
-        }
-    }
-
-    else if(m_interval.m_y > 0)
-    {
-        if(m_isAnimated == true
-                && m_pos.m_y <m_endPos.m_y)
-        {
-            float yPos = m_pos.m_y+(m_interval.m_y*(_dt*0.001));
-            m_pos.m_y = yPos;
-            setRowPositions();
-            updateElPosition();
-        }
-
-        else if(m_pos.m_y >= m_endPos.m_y)
-        {
-            setAnimated(false);
-            if(m_pos != m_endPos)
-            {
-                std::cout<<"setting position to "<<m_endPos<<std::endl;
-                setPosition(m_endPos);
-            }
+            slideHorizontal(_dt);
         }
     }
 }
 
 //-------------------------------------------------------------------//
-void Table::slideLeft(const double _dt)
+void Table::slideHorizontal(const double _dt)
 {
-    if(m_interval.m_y < 0)
+    Window* window = Window::instance();
+    if(m_slideState == GO)
     {
-        if(m_isAnimated == true
-                && m_pos.m_y > m_endPos.m_y)
+        if(m_pos == m_endPos && !m_sizeChanged)
         {
-            float yPos =m_pos.m_y+(m_interval.m_y*(_dt*0.001));
-            m_pos.m_y = yPos;
-            setRowPositions();
-            updateElPosition();
+            ngl::Vec2 tmpStartPos = m_startPos;
+            m_startPos = m_endPos;
+            m_endPos = tmpStartPos;
+        }
+        if(m_sizeChanged)
+        {
+            m_startPos = m_endPos;
+            m_endPos = m_restPosition;
+            m_sizeChanged = false;
         }
 
-        else if(m_pos.m_y <= m_endPos.m_y)
+        goStateSetup();
+        if(m_pos.m_x <= window->getScreenWidth()-m_size.m_x)
         {
-            setAnimated(false);
-            if(m_pos != m_endPos)
+
+           m_slideState = STOPPED;
+        }
+        else
+        {
+             m_slideState = MOVING;
+        }
+
+    }
+
+    else if(m_slideState == MOVING)
+    {
+        float xPos = m_pos.m_x+(m_interval.m_x*(_dt*0.001));
+        m_pos.m_x = xPos;
+        setRowPositions();
+        updateElPosition();
+        centreElementsY();
+        if(m_interval.m_x < 0)
+        {
+            if(m_pos.m_x <= m_endPos.m_x)
+            {
+
+                setPosition(m_endPos);
+                centreElementsY();
+                m_slideState = STOPPED;
+
+            }
+        }
+        else if(m_interval.m_x > 0)
+        {
+            if(m_pos.m_x >= m_endPos.m_x)
             {
                 setPosition(m_endPos);
-                //std::cout<<"setting position to "<<m_endPos<<std::endl;
+                centreElementsY();
+                m_slideState = STOPPED;
             }
         }
     }
 
-    else if(m_interval.m_y > 0)
+    else if(m_slideState == CLOSED)
     {
-        if(m_isAnimated == true
-                && m_pos.m_y <m_endPos.m_y)
+        if(m_pos == m_endPos && !m_sizeChanged)
         {
-            float yPos = m_pos.m_y+(m_interval.m_y*(_dt*0.001));
-            m_pos.m_y = yPos;
-            setRowPositions();
-            updateElPosition();
+            ngl::Vec2 tmpStartPos = m_startPos;
+            m_startPos = m_endPos;
+            m_endPos = tmpStartPos;
+        }
+        if(m_sizeChanged)
+        {
+            m_startPos = m_endPos;
+            m_endPos = m_restPosition;
+            m_sizeChanged = false;
         }
 
-        else if(m_pos.m_y >= m_endPos.m_y)
+        goStateSetup();
+
+        m_slideState = MOVING;
+    }
+}
+
+
+//-------------------------------------------------------------------//
+void Table::slideVerticle(const double _dt)
+{
+    if(m_slideState == GO)
+    {
+        if(m_pos == m_endPos && !m_sizeChanged)
         {
-            setAnimated(false);
-            if(m_pos != m_endPos)
+            ngl::Vec2 tmpStartPos = m_startPos;
+            m_startPos = m_endPos;
+            m_endPos = tmpStartPos;
+        }
+        if(m_sizeChanged)
+        {
+            m_startPos = m_endPos;
+            m_endPos = m_restPosition;
+            m_sizeChanged = false;
+        }
+        goStateSetup();
+        m_slideState = MOVING;
+    }
+
+    else if(m_slideState == MOVING)
+    {
+
+        float yPos = m_pos.m_y+(m_interval.m_y*(_dt*0.001));
+        m_pos.m_y = yPos;
+        setRowPositions();
+        updateElPosition();
+
+        if(m_interval.m_y < 0)
+        {
+            if(m_pos.m_y <= m_endPos.m_y)
             {
-                std::cout<<"setting position to "<<m_endPos<<std::endl;
+
                 setPosition(m_endPos);
+                m_slideState = STOPPED;
             }
+        }
+
+        else if(m_interval.m_y > 0)
+        {
+            if(m_pos.m_y >= m_endPos.m_y)
+            {
+                setPosition(m_endPos);
+
+                m_slideState = STOPPED;
+            }
+        }
+    }
+}
+
+//-------------------------------------------------------------------//
+void Table::goStateSetup()
+{
+    Window* window = Window::instance();
+
+    if(m_slideType == "down" || m_slideType == "up")
+    {
+        if(m_pos == m_restPosition)
+        {
+        m_endPos.m_x = m_pos.m_x;
+        m_endPos.m_y = m_startPos.m_y-m_size.m_y;
+        m_speed = 0.2;
+        m_interval.m_y= (m_endPos.m_y-m_startPos.m_y)/m_speed;
+        m_interval.m_x = 0;
+        }
+        else
+        {
+            m_interval.m_y= (m_endPos.m_y-m_startPos.m_y)/m_speed;
+            m_interval.m_x = 0;
+        }
+    }
+
+    else
+    {
+        if(m_pos.m_x ==
+                window->getScreenWidth())
+        {
+            m_speed = 0.2;
+            m_endPos.m_x = m_restPosition.m_x-m_size.m_x;
+            m_endPos.m_y = m_pos.m_y;
+            m_interval.m_x= (m_endPos.m_x-m_startPos.m_x)/m_speed;
+            m_interval.m_y = 0;
+        }
+
+        else if
+                (
+                 m_pos.m_x !=
+                 window->getScreenWidth()-m_size.m_x
+                 )
+        {
+            float xDif =(window->getScreenWidth()-m_size.m_x)-m_pos.m_x;
+            m_endPos.m_x = m_pos.m_x + xDif;
+            m_endPos.m_y = m_pos.m_y;
+            m_interval.m_x= (m_endPos.m_x-m_startPos.m_x)/0.01;
+            m_interval.m_y = 0;
+            m_sizeChanged = true;
+        }
+        else
+        {
+            m_interval.m_x= (m_endPos.m_x-m_startPos.m_x)/m_speed;
+            m_interval.m_y = 0;
+        }
+
+    }
+}
+
+//-------------------------------------------------------------------//
+void Table::runAnimation()
+{
+
+    checkState();
+    m_isAnimated = true;
+
+}
+
+//-------------------------------------------------------------------//
+void Table::runCloseAnimation()
+{
+
+    m_slideState = CLOSED;
+    m_isAnimated = true;
+
+}
+
+//-------------------------------------------------------------------//
+void Table::checkState()
+{
+    Window* window = Window::instance();
+    if(m_slideType == "left")
+    {
+        if(m_slideState == STOPPED && m_pos.m_x !=
+                window->getScreenWidth()-m_size.m_x)
+        {
+            m_slideState = CLOSED;
+        }
+
+        else if(m_slideState == STOPPED)
+        {
+            m_slideState = GO;
+        }
+    }
+    else
+    {
+        if(m_slideState == STOPPED)
+        {
+            m_slideState = GO;
         }
     }
 }

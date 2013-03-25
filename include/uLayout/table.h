@@ -17,7 +17,10 @@
 
 //-------------------------------------------------------------------//
 /// @file table.h
-/// @brief menu for the ui layout. it inherits from uielement
+/// @brief menu for the ui layout. it inherits from uielement. Table
+/// is the container which holds rows which in turn hold columns. It is
+/// a grid like structure and means the table can store other tables and
+/// its size is determined by the elements in it
 /// @author Luke Gravett
 /// @version 1
 /// @date 25/02/13
@@ -36,18 +39,23 @@ public:
 
     enum ElementToCornerAlign {TOPRIGHT, TOPLEFT};
 
+    enum AnimState{STOPPED, MOVING, GO, RESIZE, CLOSED};
+
 
     //-------------------------------------------------------------------//
     /// @brief overloaded constructor
     /// @param [in] position of table
     /// @param [in] name of table
     /// @param [in] string of image path file
+    /// @param [in] _slideType states the tables slide type
     /// @param [in] stores a pointer to its parent
     //-------------------------------------------------------------------//
     Table(ngl::Vec2 _pos,
           std::string _name,
           std::string _imageFile,
-          UI *_parent);
+          std::string _slideType,
+          UI *_parent
+          );
 
     //-------------------------------------------------------------------//
     /// @brief default destructor
@@ -136,6 +144,12 @@ public:
     UIElementWPtr getElement(const int &_row,const int &_column);
 
     //-------------------------------------------------------------------//
+    /// @brief gets an element not in the grid setup
+    /// @param [in] _name name of element you want to return
+    //-------------------------------------------------------------------//
+    std::string getElTexture(std::string _name);
+
+    //-------------------------------------------------------------------//
     /// @brief sets the elements text if it is a text element
     /// @param [in] row the text is in
     /// @param [in] column the text is in
@@ -168,7 +182,7 @@ public:
             const ngl::Vec2 &_pos,
             const std::string &_imageFile,
             const std::string &_name,
-            const std::string &_type,
+            const ElementType &_type,
             const int &_cost,
             const float &_maxX,
             const float &_maxY
@@ -196,15 +210,40 @@ public:
             );
 
     //-------------------------------------------------------------------//
-    /// @brief function to create a table
+    /// @brief create any element with absolute positions
+    /// @param [in] _element takes in a smart pointer to an element
     //-------------------------------------------------------------------//
-    void createElement(const UIElementPtr &_element);
+    void createAbsoluteElement(const UIElementPtr &_element);
 
     //-------------------------------------------------------------------//
     /// @brief function to create a standard button
     /// @param [in] row where to create the button
     /// @param [in] column within the row to create it in
     /// @param [in] initial position of element
+    /// @param [in] name of element
+    /// @param [in] type specifies the type of element
+    /// @param [in] texture name to draw
+    /// @param [in] x size of element
+    /// @param [in] y size of element
+    //-------------------------------------------------------------------//
+    void createImageElement
+    (
+            const int _row,
+            const int _column,
+            ngl::Vec2 _pos,
+            std::string _name,
+            ElementType _type,
+            std::string _imageFile,
+            const int _maxX,
+            const int _maxY
+            );
+
+    //-------------------------------------------------------------------//
+    /// @brief function to create a standard button
+    /// @param [in] row where to create the button
+    /// @param [in] column within the row to create it in
+    /// @param [in] initial position of element
+    /// @param [in] texture name to draw
     /// @param [in] name of element
     /// @param [in] stores a pointer to the table
     /// @param [in] x size of button
@@ -229,8 +268,13 @@ public:
     //-------------------------------------------------------------------//
     void setFunction(const int &_row, const int &_column, boost::function<void()> _function);
 
+    //-------------------------------------------------------------------//
+    /// @brief overloaded set function used to set functions that are absolute
+    /// and not stored in the table
+    /// @param [in] _name the button you want to set the function to
+    /// @param [in] function to set in the button
+    //-------------------------------------------------------------------//
     void setFunction(std::string _name, boost::function<void()> _function);
-
 
     //-------------------------------------------------------------------//
     /// @brief sets a cost buttons cost
@@ -249,12 +293,11 @@ public:
     void setTexture(const int &_row, const int &_column, std::string _texture);
 
     //-------------------------------------------------------------------//
-    /// @brief sets whether a button has been pressed or not
-    /// @param [in] _row defines the row the button is in
-    /// @param [in] _column defines the column within the row the button is stored in
-    /// @param [in] bool to say whether the button has been pressed or not
+    /// @brief sets the texture of an element not in a table
+    /// @param [in] _name defines the element you want to set
+    /// @param [in] string with the texture you want to set
     //-------------------------------------------------------------------//
-    void setPressed(const int &_row, const int &_column, bool _isPressed);
+    void setTexture(std::string _name, std::string _texture);
 
     //-------------------------------------------------------------------//
     /// @brief centres the elements in the table in the y axis
@@ -285,37 +328,66 @@ public:
         LabelPosition _position
         );
 
-    inline void setSpeed(double _speed) {m_speed = _speed;}
-
-    inline void setStartPos(ngl::Vec2 _startPos) {m_startPos = _startPos;}
-
-    inline void setEndPos(ngl::Vec2 _endPos) {m_endPos = _endPos;}
-
-    inline void setAnimated(bool _animated) {m_isAnimated = _animated;}
-
-    inline void setInterval(ngl::Vec2 _interval) {m_interval = _interval;}
-
-    inline void setStartTime(double _time) {m_startTime = _time;}
-
-    inline double getStartTime() {return m_startTime;}
-
-    inline ngl::Vec2 getInterval() {return m_interval;}
-
-    inline double getSpeed() {return m_speed;}
-
-    inline ngl::Vec2 getStartPos() {return m_startPos;}
-
-    inline ngl::Vec2  getEndPos() {return m_endPos;}
-
-    inline bool getAnimated() {return m_isAnimated;}
-
+    //-------------------------------------------------------------------//
+    /// @brief updates all the elements that are absolute positions
+    /// based on how the difference between its position and the menus
+    //-------------------------------------------------------------------//
     void updateElPosition();
 
+    //-------------------------------------------------------------------//
+    /// @brief sets the tables start position
+    /// @param [in] _pos put into m_startPos
+    //-------------------------------------------------------------------//
+    inline void setStartPos(ngl::Vec2 _pos) {m_startPos = _pos;}
+
+    //-------------------------------------------------------------------//
+    /// @brief the tables update function used for animation
+    /// @param [in] _dt defines the amount of time in millieseconds since the
+    /// last update
+    //-------------------------------------------------------------------//
     void update(const double _dt);
 
-    void slideDown(const double _dt);
+    //-------------------------------------------------------------------//
+    /// @brief the animation function if the tables slide type is verticle
+    /// @param [in] _dt defines the amount of time in millieseconds since the
+    /// last update
+    //-------------------------------------------------------------------//
+    void slideVerticle(const double _dt);
 
-    void slideLeft(const double _dt);
+    //-------------------------------------------------------------------//
+    /// @brief the animation function if the tables slide type is horizontal
+    /// @param [in] _dt defines the amount of time in millieseconds since the
+    /// last update
+    //-------------------------------------------------------------------//
+    void slideHorizontal(const double _dt);
+
+    //-------------------------------------------------------------------//
+    /// @brief setter function for m_centreY flag
+    /// @param [in] _centre bool used to set m_centreY
+    //-------------------------------------------------------------------//
+    inline void setCentreYFlag(bool _centre) {m_centreY = _centre;}
+
+    //-------------------------------------------------------------------//
+    /// @brief sets up the correct intervals used in the animation which is
+    /// while table is in GO state
+    //-------------------------------------------------------------------//
+    void goStateSetup();
+
+    //-------------------------------------------------------------------//
+    /// @brief checks what state the table is in and sets it correctly the starts
+    /// the animation
+    //-------------------------------------------------------------------//
+    void runAnimation();
+
+    //-------------------------------------------------------------------//
+    /// @brief used to put the table into the CLOSED state directly
+    //-------------------------------------------------------------------//
+    void runCloseAnimation();
+
+    //-------------------------------------------------------------------//
+    /// @brief checks the current state of the table and sets the correct state
+    //-------------------------------------------------------------------//
+    void checkState();
 
 
 
@@ -351,22 +423,54 @@ protected:
     //-------------------------------------------------------------------//
     bool m_isDrawable;
 
+    //-------------------------------------------------------------------//
+    /// @brief states whether the button elements will be centred
+    //-------------------------------------------------------------------//
+    bool m_centreY;
+
 private:
 
     //-------------------------------------------------------------------//
+    /// @brief speed in seconds you want the table to slide in
+    //-------------------------------------------------------------------//
     double m_speed;
 
+    //-------------------------------------------------------------------//
+    /// @brief the tables start position at time of animation
+    //-------------------------------------------------------------------//
     ngl::Vec2 m_startPos;
 
+    //-------------------------------------------------------------------//
+    /// @brief the tables end position or goal position at start of animation
+    //-------------------------------------------------------------------//
     ngl::Vec2 m_endPos;
 
+    //-------------------------------------------------------------------//
+    /// @brief states whether the table is needing to be animated
+    //-------------------------------------------------------------------//
     bool m_isAnimated;
 
+    //-------------------------------------------------------------------//
+    /// @brief the interval to move the table in (speed vector)
+    //-------------------------------------------------------------------//
     ngl::Vec2 m_interval;
 
-    double m_startTime;
-
+    //-------------------------------------------------------------------//
+    /// @brief whther it slide horizontal or vertically
+    //-------------------------------------------------------------------//
     std::string m_slideType;
+
+    //-------------------------------------------------------------------//
+    /// @brief the state of the table for the animation
+    //-------------------------------------------------------------------//
+    AnimState m_slideState;
+
+    //-------------------------------------------------------------------//
+    /// @brief states whether the tables size has been changed since the
+    /// animation
+    //-------------------------------------------------------------------//
+    bool m_sizeChanged;
+
 
 
 

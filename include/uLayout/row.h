@@ -114,10 +114,11 @@ public:
     //-------------------------------------------------------------------//
     void setSize();
 
+    //-------------------------------------------------------------------//
+    /// @brief goes through of the columns stored within the row and tells
+    /// it to call its centre command to centre the elements in the y axis
+    //-------------------------------------------------------------------//
     void centreElementsY();
-
-
-
 
 
 private:

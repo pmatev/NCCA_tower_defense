@@ -55,7 +55,7 @@ void Column::checkAffordable()
 {
     if(m_element)
     {
-        if(m_element->getType() == "create" || m_element->getType() == "upgrade")
+        if(m_element->getType() == CREATEBUTTON || m_element->getType() == UPGRADEBUTTON)
         {
             CostButtonPtr createButton = boost::dynamic_pointer_cast<CostButton>(m_element);
 
@@ -64,7 +64,7 @@ void Column::checkAffordable()
                 createButton->checkAffordable();
             }
         }
-        else if(m_element->getType() == "table")
+        else if(m_element->getType() == TABLE)
         {
             TablePtr table = boost::dynamic_pointer_cast<Table>(m_element);
 
@@ -90,8 +90,8 @@ void Column::setSize()
 {
     if(m_element)
     {
-        std::string type = m_element->getType();
-        if(type == "button" || type =="create" || type == "uprgade")
+        ElementType type = m_element->getType();
+        if(type == BUTTON || type == CREATEBUTTON || type == UPGRADEBUTTON)
         {
             UIButtonPtr button = boost::dynamic_pointer_cast<UIButton>(m_element);
 
@@ -131,7 +131,7 @@ void Column::centreElement(float &_ySize)
         elPos.m_y = elPos.m_y+tmpPosY;
         m_element->setPosition(elPos);
 
-        if(m_element->getType() == "table")
+        if(m_element->getType() == TABLE)
         {
             TablePtr table = boost::dynamic_pointer_cast<Table>(m_element);
 

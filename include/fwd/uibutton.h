@@ -7,4 +7,6 @@ DECLARESMART(UIButton)
 
 enum LabelPosition {LEFT, RIGHT, TOP, BOTTOM};
 
+enum ButtonState {DEFAULT, PRESSED, HOVER, DISABLE, CREATEON};
+
 #endif // UIBUTTON_H

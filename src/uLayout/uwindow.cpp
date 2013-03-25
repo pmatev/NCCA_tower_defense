@@ -10,7 +10,7 @@ UWindow::UWindow
     ngl::Vec2 _size
     ):
 
-    UIElement( _pos, _name, "window",_imageFile),
+    UIElement( _pos, _name, WINDOW,_imageFile),
     m_backgroundVisible(true),
     m_parent(_parent),
     m_isDrawable(true)
@@ -64,7 +64,7 @@ void UWindow::createCostButton
         const ngl::Vec2 &_pos,
         const std::string &_imageFile,
         const std::string &_name,
-        const std::string &_type,
+        const ElementType &_type,
         const int &_cost,
         const float &_maxX,
         const float &_maxY
@@ -134,8 +134,6 @@ void UWindow::draw()
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
 
-
-        Renderer *render = Renderer::instance();
         Window *window = Window::instance();
         ngl::ShaderLib *shader=ngl::ShaderLib::instance();
 
@@ -155,10 +153,10 @@ void UWindow::draw()
 
             TextureLib *tex = TextureLib::instance();
             tex->bindTexture(m_imageFile);
-            TexturePtr texture = tex->getTexture(m_imageFile).lock();
-            float scaleUVX = m_size.m_x/texture->getWidth();
-            float scaleUVY = m_size.m_y/texture->getHeight();
-            m_billboard->setUVScale(scaleUVX/5, scaleUVY/5);
+            //TexturePtr texture = tex->getTexture(m_imageFile).lock();
+//            float scaleUVX = m_size.m_x/texture->getWidth();
+//            float scaleUVY = m_size.m_y/texture->getHeight();
+//            m_billboard->setUVScale(scaleUVX/5, scaleUVY/5);
             m_billboard->draw("UI");
 //            render->draw(m_IDStr, "UI");
 
@@ -179,11 +177,12 @@ void UWindow::draw()
 void UWindow::createTable(const ngl::Vec2 &_pos,
                           const std::string &_name,
                           const std::string &_imageFile,
+                          const std::string &_slideType,
                           UI *_parent)
 {
 
     Window* window = Window::instance();
-    UIElementPtr menu = TablePtr(new Table(_pos,_name,_imageFile,_parent));
+    UIElementPtr menu = TablePtr(new Table(_pos,_name,_imageFile,_slideType,_parent));
     if(menu)
     {
         int ID = window->getID();
@@ -259,7 +258,6 @@ void UWindow::setFunction(const std::string &_name, UIButton::functionPtr _funct
             if(button)
             {
                 button->setFunction(_function);
-                std::cout<<"function set to "<<element->getName()<<std::endl;
             }
         }
     }

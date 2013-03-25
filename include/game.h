@@ -191,13 +191,13 @@ public:
     /// @param [in] _paused is a bool which specifies whether the game is
     /// paused or not
     //-------------------------------------------------------------------//
-    inline void setPaused(bool _paused){m_pause = _paused;}
+    inline void setPaused(int _paused){m_pause = _paused;}
 
     //-------------------------------------------------------------------//
     /// @brief returns m_paused variable
     /// @param [out] m_paused specifies the pause condition
     //-------------------------------------------------------------------//
-    inline bool getPaused() {return m_pause;}
+    inline int getPaused() {return m_pause;}
 
     //-------------------------------------------------------------------//
     /// @brief set whether the game is lost or not
@@ -287,7 +287,7 @@ protected:
     //-------------------------------------------------------------------//
     /// @brief flag to say whether the game is paused or not
     //-------------------------------------------------------------------//
-    bool m_pause;
+    int m_pause;
 
     //-------------------------------------------------------------------//
     /// @brief flag to say whether the game has been lost or not

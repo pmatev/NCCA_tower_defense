@@ -3,17 +3,20 @@
 #include <boost/lexical_cast.hpp>
 #include <QImage>
 #include "texturelib.h"
+#include <ngl/ShaderLib.h>
+#include "window.h"
 
 //-------------------------------------------------------------------//
 
 UIElement::UIElement(ngl::Vec2 _pos,
                      std::string _name,
-                     std::string _type,
+                     ElementType _type,
                      std::string _imageFile):
-  m_name(_name),
-  m_pos(_pos),
-  m_type(_type),
-  m_imageFile(_imageFile)
+    m_name(_name),
+    m_pos(_pos),
+    m_type(_type),
+    m_imageFile(_imageFile),
+    m_tileable(false)
 {
 }
 
@@ -26,73 +29,43 @@ void UIElement::setID(unsigned int _ID)
 }
 
 //-------------------------------------------------------------------//
-
 void UIElement::setPosition(ngl::Vec2 _pos)
 {
     m_pos = _pos;
 }
 
+//-------------------------------------------------------------------//
+void UIElement::draw()
+{
 
+    Window *window = Window::instance();
+    ngl::ShaderLib *shader=ngl::ShaderLib::instance();
+
+    GLfloat scaleX = 2.0/window->getScreenWidth();
+    GLfloat scaleY = 2.0/window->getScreenHeight();
+
+
+    (*shader)["UI"]->use();
+
+    shader->setRegisteredUniform1f("xpos",m_pos.m_x);
+    shader->setRegisteredUniform1f("ypos",m_pos.m_y);
+    shader->setRegisteredUniform1f("scaleX",scaleX);
+    shader->setRegisteredUniform1f("scaleY",scaleY);
+
+    TextureLib *tex = TextureLib::instance();
+
+    tex->bindTexture(m_imageFile);
+
+    m_billboard->draw("UI");
+
+}
 
 //-------------------------------------------------------------------//
 void UIElement::generateMesh()
 {
 
-  // BUILD BILLBOARD
-//  struct quadVertData
-//  {
-//  float x;
-//  float y;
-//  float u;
-//  float v;
-//  };
-
-//  quadVertData d[6];
-
-//  d[0].x=0.0f;
-//  d[0].y=0.0f;
-//  d[0].u=0.0f;
-//  d[0].v=0.0f;
-
-//  d[1].x=m_size.m_x;
-//  d[1].y=0.0f;
-//  d[1].u=1.0f;
-//  d[1].v=0.0f;
-
-//  d[2].x=0.0f;
-//  d[2].y=m_size.m_y;
-//  d[2].u=0.0f;
-//  d[2].v=1.0f;
-
-//  d[3].x=0.0f;
-//  d[3].y=m_size.m_y;
-//  d[3].u=0.0f;
-//  d[3].v=1.0f;
-
-//  d[4].x=m_size.m_x;
-//  d[4].y=0.0f;
-//  d[4].u=1.0f;
-//  d[4].v=0.0f;
-
-//  d[5].x=m_size.m_x;
-//  d[5].y=m_size.m_y;
-//  d[5].u=1.0f;
-//  d[5].v=1.0f;
 
   m_billboard = Billboard::create(Billboard::b2D, ngl::Vec4(0,0,0,1),m_size.m_x, m_size.m_y);
-
-//  Renderer *render = Renderer::instance();
-
-//  render->createVAO(m_IDStr, GL_TRIANGLES);
-
-//  VAOPtr v = render->getVAObyID(m_IDStr);
-//  v->bind();
-//  int size = sizeof(quadVertData);
-//  v->setData(6*size,d[0].x);
-//  v->setVertexAttributePointer(0,2,GL_FLOAT,size,0);
-//  v->setVertexAttributePointer(1,2,GL_FLOAT,size,2);
-//  v->setNumIndices(6);
-//  v->unbind();
 
 }
 

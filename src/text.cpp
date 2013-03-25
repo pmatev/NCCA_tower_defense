@@ -14,7 +14,7 @@ Text::Text(ngl::Vec2 _pos,
            std::string _name
            ):
 
-    UIElement(_pos, _name, "text",""),
+    UIElement(_pos, _name, TEXT,""),
     m_text(_text)
 {
     setColour(255,255,255,1);
@@ -47,21 +47,6 @@ void Text::setColour(char _rvalue, char _gvalue, char _bvalue, char _avalue)
 
     m_colour = tmpColour;
 }
-
-
-//------------------------------------------------------------------//
-
-void Text::setBackgroundColour(char _rvalue,
-                               char _gvalue,
-                               char _bvalue,
-                               char _avalue)
-{
-    SDL_Color tmpColour = {_rvalue, _gvalue, _bvalue, _avalue};
-
-    m_colour = tmpColour;
-}
-
-
 
 //------------------code taken and adapted from---------------------//
 
@@ -203,10 +188,14 @@ void Text::generateMesh()
         d[5].v=0.0f;
 
         Renderer *render = Renderer::instance();
+        VAOPtr v =render->getVAObyID(m_IDStr);
 
-        render->createVAO(m_IDStr, GL_TRIANGLES);
+        if(!v)
+        {
+            render->createVAO(m_IDStr, GL_TRIANGLES);
+            v =render->getVAObyID(m_IDStr);
+        }
 
-        VAOPtr v = render->getVAObyID(m_IDStr);
         v->bind();
         int size = sizeof(textVertData);
         v->setData(6*size,d[0].x);

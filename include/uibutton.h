@@ -33,6 +33,7 @@ public:
 
 
 
+
     //-------------------------------------------------------------------//
     /// @brief a parameterised constructor
     /// @param [in] _pos, a Vec2 value for the starting position of the
@@ -68,7 +69,7 @@ public:
             ngl::Vec2 _pos,
             std::string _imageFile,
             std::string _name,
-            std::string _type,
+            ElementType _type,
             float _maxX,
             float _maxY
             );
@@ -94,12 +95,6 @@ public:
     void blankFunction();
 
     //-------------------------------------------------------------------//
-    /// @brief sets the isPressed parameter
-    /// @param[in] bool value to set the ispressed variable
-    //-------------------------------------------------------------------//
-    inline void setPressed(bool _pressed) {m_isPressed = _pressed;}
-
-    //-------------------------------------------------------------------//
     /// @brief defines the function to be run by the button
     /// @param [in] boost function pointer to the function to be executed by
     /// the button
@@ -111,6 +106,15 @@ public:
     //-------------------------------------------------------------------//
     inline void execute() {m_execute();}
 
+    //-------------------------------------------------------------------//
+    /// @brief function to create a text label
+    /// @param [in] initial position of element
+    /// @param [in] text to be drawn
+    /// @param [in] path to font file
+    /// @param [in] size of font
+    /// @param [in] _name of text element
+    /// @param [in] _position in relation to table
+    //-------------------------------------------------------------------//
     void createLabel
     (
         ngl::Vec2 _pos,
@@ -121,24 +125,34 @@ public:
         LabelPosition _position
         );
 
+    //-------------------------------------------------------------------//
+    /// @brief sets the buttons label position based on the m_label enum
+    //-------------------------------------------------------------------//
     void setLabelPosition();
 
+    //-------------------------------------------------------------------//
+    /// @brief get function to return the m_boundSize
+    /// @param [out] returns vec2 of the m_boundSize variable
+    //-------------------------------------------------------------------//
     inline ngl::Vec2 getBoundSize() {return m_boundSize;}
 
+    //-------------------------------------------------------------------//
+    /// @brief sets the position of the button and the buttons label
+    /// if it has one
+    /// @param [in] _pos the position you want to set
+    //-------------------------------------------------------------------//
     void setPosition(ngl::Vec2 _pos);
 
-    inline void setHover(bool _hover){m_hover = _hover;}
+    //-------------------------------------------------------------------//
+    /// @brief sets the state of the button
+    /// @param [in] _state which is an enum and sets m_buttonState
+    //-------------------------------------------------------------------//
 
-    inline void update(const double _dt) {Q_UNUSED(_dt);}
-
+    inline void setState(ButtonState _state) {m_buttonState = _state;}
 
 
 protected:
 
-    //-------------------------------------------------------------------//
-    /// @brief states whether the button is currently clicked
-    //-------------------------------------------------------------------//
-    bool m_isPressed;
 
     //-------------------------------------------------------------------//
     /// @brief states whether the button is in relative or absolute position
@@ -150,18 +164,30 @@ protected:
     //-------------------------------------------------------------------//
     functionPtr m_execute;
 
+    //-------------------------------------------------------------------//
+    /// @brief stores a shared pointer to the buttons label text
+    //-------------------------------------------------------------------//
     TextPtr m_label;
 
+    //-------------------------------------------------------------------//
+    /// @brief the boundsize is the size of the button including its label
+    //-------------------------------------------------------------------//
     ngl::Vec2 m_boundSize;
 
+    //-------------------------------------------------------------------//
+    /// @brief enum stating where the label is positioned
+    //-------------------------------------------------------------------//
     LabelPosition m_labelPosition;
 
+    //-------------------------------------------------------------------//
+    /// @brief states whether the button has a label or not
+    //-------------------------------------------------------------------//
     bool m_gotLabel;
 
-    bool m_hover;
-
-    bool m_willHover;
-
+    //-------------------------------------------------------------------//
+    /// @brief stores the state of the button
+    //-------------------------------------------------------------------//
+    ButtonState m_buttonState;
 
 };
 

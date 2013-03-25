@@ -335,12 +335,15 @@ void Game::setupScene()
     waveInfos.push_back(
           WaveInfo::create(
             creationEnemies,
-            spawnRate
-            )
-          );
+                    spawnRate
+                    )
+                );
   }
 
   m_waveManager = WaveManager::create(m_environment->getSpawnNodes(), waveInfos);
+
+
+
 
   m_projectileManager = ProjectileManager::create();
 

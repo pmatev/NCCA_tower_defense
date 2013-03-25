@@ -42,7 +42,7 @@ public:
                 ngl::Vec2 _pos,
                 std::string _imageFile,
                 std::string _name,
-                std::string _type,
+                ElementType _type,
                 int _cost,
                 float _maxX,
                 float _maxY
@@ -76,17 +76,7 @@ public:
     /// @brief sets m_cost
     /// @param [in] integer containg the cost
     //-------------------------------------------------------------------//
-    void setCost(int _cost) {m_cost = _cost;}
-
-    //-------------------------------------------------------------------//
-    /// @brief draw function
-    //-------------------------------------------------------------------//
-    void draw();
-
-    void update();
-
-
-
+    inline void setCost(int _cost) {m_cost = _cost;}
 
 protected:
     //-------------------------------------------------------------------//
@@ -98,7 +88,6 @@ protected:
     /// @brief flag for drawing to say whether it can be bought or not
     //-------------------------------------------------------------------//
     bool m_affordable;
-
 };
 
 

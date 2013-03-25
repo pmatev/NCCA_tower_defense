@@ -9,6 +9,7 @@
 #include "fwd/ui.h"
 #include "fwd/table.h"
 #include "fwd/uwindow.h"
+#include "fwd/uibutton.h"
 
 
 
@@ -72,7 +73,7 @@ public:
     /// clicked down
     /// @param [in] _ID, the colourID given by clickEvent from game.h
     //-------------------------------------------------------------------//
-    void mouseLeftUp(const unsigned int _ID,ngl::Vec2 _mousePos);
+    void mouseLeftUp(const unsigned int _ID);
 
     //-------------------------------------------------------------------//
     /// @brief the function which is run when the mouse is moved
@@ -121,6 +122,13 @@ public:
     //-------------------------------------------------------------------//
     TablePtr getMenu(std::string _name);
 
+    //-------------------------------------------------------------------//
+    /// @brief searches the m_uwindows map and returns the object with the name
+    /// specified in the parameters
+    /// @param [in] takes in a string to the name of the window you are trying
+    /// to access
+    /// @param [out] returns a WindowPtr with the name specified
+    //-------------------------------------------------------------------//
     UWindowPtr getUWindow(std::string _name);
 
     //-------------------------------------------------------------------//
@@ -154,7 +162,7 @@ public:
     /// @brief update function which runs the ui's every frame updates e.g.
     /// score
     //-------------------------------------------------------------------//
-    void update();
+    void update(const double _dt);
 
     //-------------------------------------------------------------------//
     /// @brief function used by the button in the upgrade menu to close it
@@ -165,7 +173,7 @@ public:
     /// @brief this is ran when a turret is clicked. it initialises the the
     /// upgrade value with its details
     //-------------------------------------------------------------------//
-    void turretClicked(const unsigned int _ID,ngl::Vec2 _mousePos);
+    void turretClicked(const unsigned int _ID);
 
     //-------------------------------------------------------------------//
     /// @brief sets the upgrade id
@@ -189,7 +197,7 @@ public:
     /// @brief function to run on click event when in creation mode
     /// @param [in] takes in the _ID
     //-------------------------------------------------------------------//
-    void creationModeClick(const unsigned int _ID, ngl::Vec2 _mousePos);
+    void creationModeClick(const unsigned int _ID);
 
     //-------------------------------------------------------------------//
     /// @brief function to initialise the start menu
@@ -224,12 +232,6 @@ public:
     /// @brief creates the lose window
     //-------------------------------------------------------------------//
     void createLoseRestartMenu();
-
-    //-------------------------------------------------------------------//
-    /// @brief when in creation mode this functions draws the temporary
-    /// tower on the grid where the mouse is
-    //-------------------------------------------------------------------//
-    void drawTmpTower();
 
     //-------------------------------------------------------------------//
     /// @brief used by the restart button to reset the game and ui
@@ -267,7 +269,7 @@ public:
     /// @brief function called when you hit the close menu button in settings
     /// window
     //-------------------------------------------------------------------//
-    void closeMenuFunction();
+    void backToGameFunction();
 
     //-------------------------------------------------------------------//
     /// @brief function called when the in games settings button is pressed
@@ -278,7 +280,6 @@ public:
     /// @brief resets all menus and windows back to their rest states
     //-------------------------------------------------------------------//
     void resetMenuPositions();
-
 
     //-------------------------------------------------------------------//
     /// @brief quits the game
@@ -300,15 +301,38 @@ public:
     void updateAnimation(const double &_dt);
 
     //-------------------------------------------------------------------//
-    /// @brief initializes all the neccessary variables for the animation
-    //-------------------------------------------------------------------//
-    void setUpAnimation();
-
-    //-------------------------------------------------------------------//
     /// @brief function called when you click the arrow in the top left corner
     /// of the towerbuild menu. slides the menu down
     //-------------------------------------------------------------------//
     void closeTowerMenuFunction();
+
+    //-------------------------------------------------------------------//
+    /// @brief sets the m_creation mode variable and also turns off create
+    /// tower button
+    /// @param [in] _creation tells what to turn m_creationMode for
+    //-------------------------------------------------------------------//
+    void setCreationMode(bool _creation);
+
+    //-------------------------------------------------------------------//
+    /// @brief sets the buttons state
+    /// @param [in] _ID id of the element clicked
+    /// @param [in] _state the state to set the button to
+    /// @ param [out] returns whether it has successfully set the state
+    /// of the button which has ID _ID
+    //-------------------------------------------------------------------//
+    bool setButtonState(const unsigned int _ID, ButtonState _state);
+
+    //-------------------------------------------------------------------//
+    /// @brief mouse left down event function
+    /// @param [in] id of element
+    //-------------------------------------------------------------------//
+    void mouseLeftDown(const unsigned int _ID);
+
+    //-------------------------------------------------------------------//
+    /// @brief sets the button which is pressed back to its default state
+    /// @param [in] id of element
+    //-------------------------------------------------------------------//
+    void mouseDisablePressedState();
 
 
 private:
@@ -322,7 +346,6 @@ private:
     /// @brief stores all the menus for the game
     //-------------------------------------------------------------------//
     MenuMap m_menus;
-
 
     //-------------------------------------------------------------------//
     /// @brief stores all the windows for the game
@@ -380,8 +403,15 @@ private:
     //-------------------------------------------------------------------//
     unsigned int m_tmpUpgradeTowerID;
 
-
+    //-------------------------------------------------------------------//
+    /// @brief stores the id value of the button currently hovered over
+    //-------------------------------------------------------------------//
     unsigned int m_tmpHoverButton;
+
+    //-------------------------------------------------------------------//
+    /// @brief stores the id value of the button currently pressed down
+    //-------------------------------------------------------------------//
+    unsigned int m_tmpButtonPressed;
 
     //-------------------------------------------------------------------//
     /// @brief bool stating whether or not the first wave has been initialized

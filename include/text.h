@@ -55,21 +55,12 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief set colour
-    /// @param[in] array of char values for RGBA
+    /// @param[in] red component of the colour
+    /// @param[in] green component of the colour
+    /// @param[in] blue component of the colour
+    /// @param[in] alpha component of the colour
     //-------------------------------------------------------------------//
     void setColour(char _rvalue, char _gvalue, char _bvalue, char _avalue);
-
-    //-------------------------------------------------------------------//
-    /// @brief set background colour
-    /// @param[in] array of char values for RGBA
-    //-------------------------------------------------------------------//
-    void setBackgroundColour
-            (
-                char _rvalue,
-                char _gvalue,
-                char _bvalue,
-                char _avalue
-                );
 
     //-------------------------------------------------------------------//
     /// @brief draw function for text
@@ -81,13 +72,13 @@ public:
     //-------------------------------------------------------------------//
     virtual void generateMesh();
 
+    //-------------------------------------------------------------------//
+    /// @brief sets the texts text and generates its mesh
+    /// @param [in] _text the text too be displayed
+    //-------------------------------------------------------------------//
     inline void setText(const char *_text) {m_text =_text;
                                            generateMesh();}
 
-    inline void setTexture(std::string _texture) {m_imageFile = _texture;
-                                                     generateMesh();}
-
-    inline void update(const double _dt){Q_UNUSED(_dt);}
 
 
 private:
@@ -108,7 +99,7 @@ private:
     SDL_Color m_bgColour;
 
     //-------------------------------------------------------------------//
-    /// @brief string version of ID used for openGL
+    /// @brief sdl surface which is used to generate the text
     //-------------------------------------------------------------------//
     SDL_Surface *m_textSurface;
 
@@ -118,7 +109,7 @@ private:
     const char *m_text;
 
     //-------------------------------------------------------------------//
-    /// @brief
+    /// @brief stores the textures id
     //-------------------------------------------------------------------//
     GLuint m_textureID;
 

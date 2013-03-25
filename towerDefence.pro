@@ -145,7 +145,8 @@ HEADERS += \
     include/fsm/states/missilesilostate.h \
     include/uLayout/uwindow.h \
     include/fwd/uwindow.h \
-    include/costbutton.h
+    include/costbutton.h \
+    include/fwd/uielement.h
 
 
 
@@ -206,29 +207,20 @@ OTHER_FILES += \
     textures/HealthBar.png \
     textures/HealthBar_flat.png \
     textures/noMoney.png \
-    textures/playButton.png \
     textures/playButtonNo.png \
     textures/missileButtonNo.png \
     textures/missileButton.png \
     textures/wallButtonNoMoney.png \
-    textures/wallButton.png \
-    textures/upgradeButton.png \
     textures/upgrade2GrenadeImage.png \
     textures/upgrade2BulletImage.png \
     textures/startMenuButton_700x150.png \
     textures/settingsMenuButton.png \
     textures/settingsButton.png \
-    textures/sellButton.png \
     textures/restartMenuButton.png \
     textures/quitGameMenuButton.png \
-    textures/pauseButton.png \
     textures/machineGunNoMoney.png \
     textures/machineGun.png \
-    textures/grenadeButtonNoMoney.png \
-    textures/grenadeButton.png \
-    textures/closeButton.png \
     textures/backToStartMenuButton.png \
-    textures/backgroundTexture.png \
     textures/upgradeButtonNoMoney.png \
     textures/createBackground.png \
     textures/sellGrenadeImage.png \
@@ -256,4 +248,58 @@ OTHER_FILES += \
     models/enemy.obj \
     models/hexagon.obj \
     models/wall.obj \
-
+    textures/wallButtonPressed.png \
+    textures/wallButtonHover.png \
+    textures/wallButtonCreate.png \
+    textures/wallButton.png \
+    textures/upgradeButtonPressed.png \
+    textures/upgradeButtonHover.png \
+    textures/upgradeButton.png \
+    textures/towerPanel.png \
+    textures/startScreen.png \
+    textures/startGamePressed.png \
+    textures/startGameHover.png \
+    textures/startGame.png \
+    textures/settingsPressed.png \
+    textures/settingsHover.png \
+    textures/settingsButtonPressed.png \
+    textures/settingsBackground.png \
+    textures/settings.png \
+    textures/sellButtonPressed.png \
+    textures/sellButtonHover.png \
+    textures/sellButton.png \
+    textures/restartPressed.png \
+    textures/restartHover.png \
+    textures/restart.png \
+    textures/quitPressed.png \
+    textures/quitHover.png \
+    textures/quit.png \
+    textures/playButtonPressed.png \
+    textures/playButtonHover.png \
+    textures/playButton.png \
+    textures/pauseButtonPressed.png \
+    textures/pauseButtonHover.png \
+    textures/pauseButton.png \
+    textures/grenadeButtonPressed.png \
+    textures/grenadeButtonNoMoney.png \
+    textures/grenadeButtonHover.png \
+    textures/grenadeButtonCreate.png \
+    textures/grenadeButton.png \
+    textures/gameOverScreen.png \
+    textures/closeButton.png \
+    textures/bulletButtonPressed.png \
+    textures/bulletButtonNoMoney.png \
+    textures/bulletButtonHover.png \
+    textures/bulletButtonCreate.png \
+    textures/bulletButton.png \
+    textures/backToStartPressed.png \
+    textures/backToStartHover.png \
+    textures/backToStart.png \
+    textures/backToGamePressed.png \
+    textures/backToGameHover.png \
+    textures/backToGame.png \
+    textures/arrowUpButtonPressed.png \
+    textures/arrowUpButton.png \
+    textures/arrowDownButtonPressed.png \
+    textures/arrowDownButton.png \
+    textures/bg_tile.png

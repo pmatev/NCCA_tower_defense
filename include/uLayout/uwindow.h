@@ -18,7 +18,7 @@
 /// @brief The UWindow inherits from uielements. It is similar to tables
 /// class but is only used when the game is not running and contains only
 /// absolute elements so that its size is not deteremined by the elements
-/// and the element spositions are not defined by its porisition
+/// and the elements positions are not defined by its porisition
 /// @author Luke Gravett
 /// @version 1
 /// @date 28/11/12
@@ -50,6 +50,9 @@ public:
         ngl::Vec2 _size
         );
 
+    //-------------------------------------------------------------------//
+    /// @brief default destructor
+    //-------------------------------------------------------------------//
     ~UWindow();
 
     //-------------------------------------------------------------------//
@@ -66,7 +69,7 @@ public:
                 const ngl::Vec2 &_pos,
                 const std::string &_imageFile,
                 const std::string &_name,
-                const std::string &_type,
+                const ElementType &_type,
                 const int &_cost,
                 const float &_maxX,
                 const float &_maxY
@@ -95,6 +98,7 @@ public:
     void createTable(const ngl::Vec2 &_pos,
                      const std::string &_name,
                      const std::string &_imageFile,
+                     const std::string &_slideType,
                      UI *_parent);
 
     //-------------------------------------------------------------------//
@@ -139,10 +143,13 @@ public:
     //-------------------------------------------------------------------//
     void setFunction(const std::string &_name, UIButton::functionPtr _function);
 
+    //-------------------------------------------------------------------//
+    /// @brief searches through elements for the name specified and
+    /// returns the element if found
+    /// @param [in] _name states the element you want to get
+    /// @param [out] smart point to the element with the name _name
+    //-------------------------------------------------------------------//
     UIElementPtr getElement(std::string _name);
-
-    inline void update(const double _dt) {;}
-
 
     private:
 

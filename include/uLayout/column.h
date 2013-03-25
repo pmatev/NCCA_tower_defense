@@ -83,6 +83,10 @@ public:
     //-------------------------------------------------------------------//
     void setSize();
 
+    //-------------------------------------------------------------------//
+    /// @brief centres the element in the y axis within row
+    /// @param [in] _ysize is the size in y of the largest element in the row
+    //-------------------------------------------------------------------//
     void centreElement(float &_ySize);
 
 

@@ -15,8 +15,8 @@ UIButton::UIButton
     float _maxY
     ):
 
-    UIElement( _pos, _name, "button", _imageFile),
-    m_isPressed(false)
+    UIElement( _pos, _name, BUTTON, _imageFile),
+    m_buttonState(DEFAULT)
 
 {
     m_size.m_x = _maxX;
@@ -31,18 +31,19 @@ UIButton::UIButton
         ngl::Vec2 _pos,
         std::string _imageFile,
         std::string _name,
-        std::string _type,
+        ElementType _type,
         float _maxX,
         float _maxY
         ):
 
-UIElement( _pos, _name, _type, _imageFile)
+    UIElement( _pos, _name, _type, _imageFile),
+    m_buttonState(DEFAULT)
 
 {
-m_size.m_x = _maxX;
-m_size.m_y = _maxY;
-m_execute = boost::bind(&UIButton::blankFunction
-            , this);
+    m_size.m_x = _maxX;
+    m_size.m_y = _maxY;
+    m_execute = boost::bind(&UIButton::blankFunction
+                            , this);
 }
 
 //-------------------------------------------------------------------//
@@ -54,7 +55,6 @@ void UIButton::blankFunction()
 //-------------------------------------------------------------------//
 UIButton::~UIButton()
 {
-//    std::cout<<"button dtor called"<<std::endl;
 
 }
 
@@ -65,7 +65,6 @@ void UIButton::draw()
 //IN THIS FUNCTION NEED TO SET UP ISPRESSED RENDER
 
 
-  Renderer *render = Renderer::instance();
   Window *window = Window::instance();
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();
 
@@ -85,24 +84,25 @@ void UIButton::draw()
 
   TextureLib *tex = TextureLib::instance();
 
-  if(m_isPressed == false)
+
+  switch(m_buttonState)
   {
-      if(m_hover == false)
-      {
-          tex->bindTexture(m_imageFile);
-      }
-      else
-      {
-          tex->bindTexture(m_imageFile +"Hover");
-      }
+  case DEFAULT: tex->bindTexture(m_imageFile); break;
+  case PRESSED: tex->bindTexture(m_imageFile+"Pressed"); break;
+  case HOVER: tex->bindTexture(m_imageFile +"Hover"); break;
+  case DISABLE: tex->bindTexture(m_imageFile+"NoMoney"); break;
+  case CREATEON: tex->bindTexture(m_imageFile+"Create"); break;
   }
+
+  m_billboard->draw("UI");
 
   if(m_label)
   {
       m_label->draw();
   }
-      m_billboard->draw("UI");
-//  render->draw(m_IDStr, "UI");
+
+
+
 }
 
 
@@ -123,7 +123,6 @@ void UIButton::createLabel
     m_label = TextPtr(new Text(_pos,_text,_fontFile,_ptsize,_name));
     m_label->setID(id);
     m_labelPosition = _position;
-    std::cout<<"text created"<<std::endl;
 
     if(m_label)
     {

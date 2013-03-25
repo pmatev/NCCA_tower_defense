@@ -7,9 +7,8 @@
 #include <QString>
 #include "texture.h"
 #include "billboard.h"
+#include "fwd/uielement.h"
 
-
-DECLARESMART(UIElement)
 
 //-------------------------------------------------------------------//
 /// @file uielement.h
@@ -39,7 +38,7 @@ public:
     /* ADD ID TO CONSTRUCTOR + SETUP RELEVANT SYSTEMS */
     UIElement( ngl::Vec2 _pos,
                std::string _name,
-               std::string _type,
+               ElementType _type,
                std::string _imageFile
               );
 
@@ -49,12 +48,10 @@ public:
     //-------------------------------------------------------------------//
     ~UIElement();
 
-
     //-------------------------------------------------------------------//
     /// @brief virtual draw function passed through to other elements
     //-------------------------------------------------------------------//
-    virtual void draw() = 0;
-
+    virtual void draw();
 
     //-------------------------------------------------------------------//
     /// @brief virtual draw selection function passed through to other
@@ -64,14 +61,17 @@ public:
     //-------------------------------------------------------------------//
     virtual void generateMesh();
 
-//    virtual void drawSelection() = 0;
-
     //-------------------------------------------------------------------//
-    /// @brief sets the position of the button
+    /// @brief sets the position of the element
     /// @param [in] takes in an vector for position
     //-------------------------------------------------------------------//
     virtual void setPosition(ngl::Vec2 _pos);
 
+    //-------------------------------------------------------------------//
+    /// @brief sets the size of the element
+    /// @param [in] takes in an vector for size
+    //-------------------------------------------------------------------//
+    virtual void setSize(ngl::Vec2 _size) {m_size =_size;}
 
     //-------------------------------------------------------------------//
     /// @brief gets the name of the element
@@ -90,7 +90,7 @@ public:
     /// @brief returns the m_type variable
     /// @param [out] returns a string value refering to the type
     //-------------------------------------------------------------------//
-    inline std::string getType() {return m_type;}
+    inline ElementType getType() {return m_type;}
 
     //-------------------------------------------------------------------//
     /// @brief sets the elements id value
@@ -110,7 +110,6 @@ public:
     //-------------------------------------------------------------------//
     inline ngl::Vec2 getSize() {return m_size;}
 
-
     //-------------------------------------------------------------------//
     /// @brief get function for image file
     /// @param [out] returns the m_imagefile variable
@@ -129,12 +128,31 @@ public:
     //-------------------------------------------------------------------//
     virtual inline void setTexture(std::string _texture) {m_imageFile = _texture;}
 
+    //-------------------------------------------------------------------//
+    /// @brief set function to set the elements rest Position
+    /// @param [in] _restPos used to set m_restPosition
+    //-------------------------------------------------------------------//
     inline void setRestPosition(ngl::Vec2 _restPos){m_restPosition = _restPos;}
 
+    //-------------------------------------------------------------------//
+    /// @brief gets the m_restPosition variable
+    /// @param [out] returns m_restPosition
+    //-------------------------------------------------------------------//
     inline ngl::Vec2 getRestPosition(){return m_restPosition;}
 
+    //-------------------------------------------------------------------//
+    /// @brief gets the m_imageFile variable
+    /// @param [out] returns m_imageFile
+    //-------------------------------------------------------------------//
+    inline std::string getTexture() {return m_imageFile;}
 
-    virtual inline void update(const double _dt){Q_UNUSED(_dt);}
+    //-------------------------------------------------------------------//
+    /// @brief sets the m_tileable flag
+    /// @param [in] _tile bool to state whether the elements texture is
+    /// to be tiled or not
+    //-------------------------------------------------------------------//
+    inline void setTileable(bool _tile) {m_tileable = _tile;}
+
 
 
 protected:
@@ -159,9 +177,9 @@ protected:
     std::string m_IDStr;
 
     //-------------------------------------------------------------------//
-    /// @brief stores a string value to type of element
+    /// @brief enum representing the type of element it is
     //-------------------------------------------------------------------//
-    std::string m_type;
+    ElementType m_type;
 
     //-------------------------------------------------------------------//
     /// @brief stores the maximum size in x direction can either be percentage
@@ -174,9 +192,18 @@ protected:
     //-------------------------------------------------------------------//
     std::string m_imageFile;
 
+    //-------------------------------------------------------------------//
+    /// @brief the position which is classed as the elements rest or
+    /// default position
+    //-------------------------------------------------------------------//
     ngl::Vec2 m_restPosition;
 
+    //-------------------------------------------------------------------//
+    /// @brief shared pointer to the elements billboard
+    //-------------------------------------------------------------------//
     BillboardPtr m_billboard;
+
+    bool m_tileable;
 
 };
 

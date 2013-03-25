@@ -73,7 +73,7 @@ void Window::init()
 
     //initialize openGl Window
 
-    m_window = SDL_SetVideoMode(800,800, 16, SDL_OPENGL | SDL_RESIZABLE);
+    m_window = SDL_SetVideoMode(0,0, 16, SDL_OPENGL | SDL_RESIZABLE| SDL_FULLSCREEN);
 
     const SDL_VideoInfo* videoSize = SDL_GetVideoInfo();
 
@@ -186,7 +186,7 @@ void Window::loop()
 
         float maxDt = 70;
 
-        if(game->getPaused() == false)
+        if(game->getPaused() == 0)
         {
             if(frameTime > maxDt)
             {
@@ -195,10 +195,7 @@ void Window::loop()
             else
             {
                 game->update(frameTime / 1000.0);
-            }
-
-            m_UI->update();
-            m_UI->updateAnimation(frameTime);
+            }     
         }
 
         if(game->getBaseHealth() <=0)
@@ -223,6 +220,7 @@ void Window::loop()
 
         game->draw();
         r->visualiseLights();
+        m_UI->update(frameTime);
 
         m_UI->draw();
         ngl::Vec4 pixel = r->readPixels(m_mouseX, m_mouseY);
@@ -373,8 +371,14 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
 //-------------------------------------------------------------------//
 void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
 {
+    Renderer *render = Renderer::instance();
     m_oldMouseX = _event.x;
     m_oldMouseY = _event.y;
+
+    render->bindFrameBuffer("Texture");
+
+    ngl::Vec4 pixel = render->readPixels(_event.x, _event.y);
+    int id = colourToID(pixel.toVec3());
 
     if(_event.button == SDL_BUTTON_LEFT)
     {
@@ -390,8 +394,7 @@ void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
     {
         m_dolly=true;
     }
-
-
+    m_UI->mouseLeftDown(id);
 }
 
 
@@ -401,10 +404,19 @@ void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
 void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 {
 
-    if(_event.button == SDL_BUTTON_LEFT && !m_camMoved)
+    if(_event.button == SDL_BUTTON_LEFT )
     {
-          m_UI->mouseLeftUp(m_idUnderMouse,ngl::Vec2(_event.x,_event.y));
+        m_UI->mouseDisablePressedState();
+
+        if(!m_camMoved)
+        {
+
+            m_UI->mouseLeftUp(m_idUnderMouse);
+        }
     }
+
+
+
 
     m_rotate=false;
     m_track = false;
