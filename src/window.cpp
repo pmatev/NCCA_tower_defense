@@ -114,6 +114,7 @@ void Window::init()
     m_screenBillboard = Billboard::create(Billboard::b2D, ngl::Vec4(-1,-1,0,1),2,2);
 
     m_viewmode=0;
+    m_clickedID = 0;
 
 }
 
@@ -344,21 +345,21 @@ void Window::mouseMotionEvent(const SDL_MouseMotionEvent &_event)
     if(m_rotate)
     {
       cam->tumble(m_oldMouseX, m_oldMouseY, m_mouseX, m_mouseY);
-      m_camMoved = true;
+
     }
 
     // Middle Mouse Track
     else if(m_track)
     {
         cam->track(m_oldMouseX, m_oldMouseY, m_mouseX, m_mouseY);
-        m_camMoved = true;
+
     }
 
     // Right Mouse Dolly
     else if(m_dolly)
     {
         cam->dolly(m_oldMouseX, m_mouseX);
-        m_camMoved = true;
+
     }
 
 
@@ -375,11 +376,7 @@ void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
     m_oldMouseX = _event.x;
     m_oldMouseY = _event.y;
 
-    render->bindFrameBuffer("Texture");
-
-    ngl::Vec4 pixel = render->readPixels(_event.x, _event.y);
-    int id = colourToID(pixel.toVec3());
-
+    m_clickedID = m_idUnderMouse;
     if(_event.button == SDL_BUTTON_LEFT)
     {
         m_rotate =true;
@@ -394,7 +391,7 @@ void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
     {
         m_dolly=true;
     }
-    m_UI->mouseLeftDown(id);
+    m_UI->mouseLeftDown(m_idUnderMouse);
 }
 
 
@@ -404,15 +401,10 @@ void Window::mouseButtonDownEvent(const SDL_MouseButtonEvent &_event)
 void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
 {
 
-    if(_event.button == SDL_BUTTON_LEFT )
+    if(_event.button == SDL_BUTTON_LEFT && m_idUnderMouse == m_clickedID)
     {
         m_UI->mouseDisablePressedState();
-
-        if(!m_camMoved)
-        {
-
-            m_UI->mouseLeftUp(m_idUnderMouse);
-        }
+        m_UI->mouseLeftUp(m_idUnderMouse);
     }
 
 
@@ -421,7 +413,6 @@ void Window::mouseButtonUpEvent(const SDL_MouseButtonEvent &_event)
     m_rotate=false;
     m_track = false;
     m_dolly=false;
-    m_camMoved=false;
     m_oldMouseX = m_mouseX;
     m_oldMouseY = m_mouseY;
 

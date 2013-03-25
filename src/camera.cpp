@@ -50,6 +50,8 @@ void Camera::dolly(int _oldX, int _newX)
 
     m_eye += N*(dx*0.1);
 
+    if (m_eye.m_y < 0) m_eye.m_y *= -1;
+
     update();
 
     //std::cout<<"dolly"<<std::endl;

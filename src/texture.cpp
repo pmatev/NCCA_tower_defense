@@ -64,7 +64,7 @@ bool Texture::load(const std::string &_file)
       QRgb colour;
       m_data.resize(m_width*m_height*m_bpp);
       unsigned int index =0;
-      for(unsigned int y=m_height-1; y>0; y--)
+      for(int y=m_height-1; y>-1; y--)
       {
         for(unsigned int x=0; x<m_width; ++x)
         {

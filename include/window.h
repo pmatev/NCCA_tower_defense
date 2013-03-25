@@ -197,10 +197,8 @@ protected:
     /// @brief flag for camera dolly
     //-------------------------------------------------------------------//
     bool m_dolly;
-    //-------------------------------------------------------------------//
-    /// @brief flag to indicate if camera has moved
-    //-------------------------------------------------------------------//
-    bool m_camMoved;
+
+    int m_clickedID;
 
     //-------------------------------------------------------------------//
     /// @brief ID Counter for distributing unique IDs to entities.

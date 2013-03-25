@@ -1,5 +1,7 @@
 #version 330
 
+/* Based on the OGL Superbible v5 */
+
 struct PointLight
 {
     vec4 pos;
