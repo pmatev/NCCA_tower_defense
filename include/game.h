@@ -123,7 +123,7 @@ public: //methods
     /// @param[in] _id id of tower
     /// @return the money you receive from the sale
     //-------------------------------------------------------------------//
-    int sellTower(const unsigned int _id);
+    void sellTower(const unsigned int _id);
 
     //-------------------------------------------------------------------//
     /// @brief return base position

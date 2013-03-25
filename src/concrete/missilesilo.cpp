@@ -29,6 +29,7 @@ MissileSilo::MissileSilo(
                         m_pos.m_z);
   initialiseMesh("turret_base");
   publish();
+  m_sellValue = 100;
 }
 
 //-------------------------------------------------------------------//
@@ -61,7 +62,8 @@ void MissileSilo::stateInit()
           "Basic Upgrade",
           "descriptiony thing",
           std::string("sellGrenadeImage"),
-          0
+          0,  // cost
+          m_sellValue // sell value
           )
         );
   registerUpgrade(
@@ -70,7 +72,8 @@ void MissileSilo::stateInit()
           "Advanced Upgrade",
           "does something awesome",
           std::string("upgrade2GrenadeImage"),
-          100
+          100, // cost
+          150 // sell value
           )
         );
 }

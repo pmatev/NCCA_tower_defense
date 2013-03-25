@@ -259,24 +259,6 @@ void Environment::draw() const
 
 //-------------------------------------------------------------------//
 
-//void Environment::drawSelection() const
-//{
-//  // Go through all the towers and draw
-//  for(
-//      StaticEntityList::const_iterator it = m_towers.begin();
-//      it != m_towers.end();
-//      ++it
-//      )
-//  {
-//    (*it)->drawSelection();
-//  }
-//  // draw base
-//  m_base->drawSelection();
-//  m_nodeMap->drawSelection();
-//}
-
-//-------------------------------------------------------------------//
-
 void Environment::createTower(
     const std::string &_type,
     NodePtr _centerNode
@@ -295,6 +277,38 @@ void Environment::createTower(
   recalculateSearchTree();
   // Highlight paths between spawn nodes and base
   resetSpawnPathHighlighting();
+}
+
+//-------------------------------------------------------------------//
+
+int Environment::sellTower(const unsigned int _id)
+{
+  int sellValue = 0;
+  // Find the iterator to the tower
+  for(
+      StaticEntityList::iterator tower = m_towers.begin();
+      tower != m_towers.end();
+      ++tower
+      )
+  {
+    if((*tower)->getID() == _id)
+    {
+      // get cost and return
+      //  check if wall or turret
+      if((*tower)->getGeneralType() == TURRET)
+      {
+        TurretPtr turret = boost::dynamic_pointer_cast<Turret>(*tower);
+        if(turret)
+        {
+          sellValue = turret->getSellValue();
+        }
+      }
+      removeTower(tower);
+      break;
+    }
+  }
+  // couldn't find it so return 0
+  return sellValue;
 }
 
 //-------------------------------------------------------------------//

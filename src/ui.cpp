@@ -442,7 +442,8 @@ void UI::turretClicked(const unsigned int _ID)
 
                     TablePtr currentMenu = boost::dynamic_pointer_cast<Table>(element);
 
-                    std::string cost = boost::lexical_cast<std::string>(currentData->m_cost);
+                    std::string cost = boost::lexical_cast<std::string>(currentData->m_sellValue);
+                    cost ="Value : " + cost;
 
                     currentMenu->setText(2,0,currentData->m_title);
                     currentMenu->setText(1,1,cost.c_str());
@@ -1050,6 +1051,7 @@ void UI::createUpgradeMenu()
                         "currentDescription"
                         );
             currentMenu->setSize();
+            currentMenu->setFunction(1,0,boost::bind(&UI::sellTowerFunction, this));
             currentMenu->setCentreYFlag(true);
             currentMenu->setBackground(false);
 
@@ -1396,6 +1398,14 @@ void UI::upgradeButtonCommand()
             }
         }
     }
+}
+
+//-------------------------------------------------------------------//
+
+void UI::sellTowerFunction()
+{
+ Game* game = Game::instance();
+ game->sellTower(m_tmpUpgradeTowerID);
 }
 
 //-------------------------------------------------------------------//

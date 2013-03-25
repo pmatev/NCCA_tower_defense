@@ -527,9 +527,9 @@ bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
 
 //-------------------------------------------------------------------//
 
-int Game::sellTower(const unsigned int _id)
+void Game::sellTower(const unsigned int _id)
 {
-
+  addCurrency(m_environment->sellTower(_id));
 }
 
 //-------------------------------------------------------------------//

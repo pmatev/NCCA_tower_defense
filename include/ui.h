@@ -284,6 +284,11 @@ public:
     void quitFunction();
 
     //-------------------------------------------------------------------//
+    /// @brief sell a tower
+    //-------------------------------------------------------------------//
+    void sellTowerFunction();
+
+    //-------------------------------------------------------------------//
     /// @brief used on mouse move event to check if the ui is being hovered
     /// over
     /// @param [in] _ID id of the selected ui

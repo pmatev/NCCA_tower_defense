@@ -68,6 +68,13 @@ public:
         );
 
   //-------------------------------------------------------------------//
+  /// @brief sell tower identified by _id
+  /// @param[in] _id id of tower
+  /// @return the money you receive from the sale
+  //-------------------------------------------------------------------//
+  int sellTower(const unsigned int _id);
+
+  //-------------------------------------------------------------------//
   /// @brief remove a tower
   /// @param[in] _tower iterator to the tower
   //-------------------------------------------------------------------//

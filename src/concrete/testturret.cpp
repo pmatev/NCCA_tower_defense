@@ -32,6 +32,7 @@ TestTurret::TestTurret(
 
   initialiseMesh("turret_base");
   publish();
+  m_sellValue = 50;
 }
 
 //-------------------------------------------------------------------//
@@ -67,7 +68,8 @@ void TestTurret::stateInit()
           "Initial Upgrade",
           "descriptiony thing",
           std::string("sellBulletImage"),
-          0
+          0,
+          m_sellValue
           )
         );
   registerUpgrade(
@@ -76,6 +78,7 @@ void TestTurret::stateInit()
           "Super Advanced Upgrade",
           "makes bullets shoot faster",
           std::string("upgrade2BulletImage"),
+          100,
           100
           )
         );

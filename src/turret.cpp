@@ -373,6 +373,7 @@ bool Turret::upgrade()
       // game is paused.
       update(0.001);
       m_stateMachine->changeState(m_upgrades[m_upgradeIndex]);
+      m_sellValue = m_upgradeData[m_upgradeIndex]->m_sellValue;
       return true;
     }
   }

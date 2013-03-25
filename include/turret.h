@@ -36,18 +36,21 @@ public: //structs and typedefs
     /// @param [in] _description description text for the upgrade
     /// @param [in] _texture a path to the texture
     /// @param [in] _cost the cost of the upgrade
+    /// @param [in] _sellValue money that the user gets back from selling
     //-------------------------------------------------------------------//
 
     UpgradeData(
           const char *_title,
           const char *_description,
           std::string _texture,
-          int _cost
+          int _cost,
+          int _sellValue
           ):
       m_title(_title),
       m_description(_description),
       m_texture(_texture),
-      m_cost(_cost)
+      m_cost(_cost),
+      m_sellValue(_sellValue)
     {;}
 
     //-------------------------------------------------------------------//
@@ -56,13 +59,15 @@ public: //structs and typedefs
     /// @param [in] _description description text for the upgrade
     /// @param [in] _texture a path to the texture
     /// @param [in] _cost the cost of the upgrade
+    /// @param [in] _sellValue money that the user gets back from selling
     //-------------------------------------------------------------------//
 
     inline static UpgradeDataPtr create(
           const char *_title,
           const char *_description,
           std::string _texture,
-          int _cost
+          int _cost,
+          int _saleValue
           )
     {
       UpgradeDataPtr a(
@@ -70,7 +75,8 @@ public: //structs and typedefs
               _title,
               _description,
               _texture,
-              _cost
+              _cost,
+              _saleValue
               )
             );
       return a;
@@ -100,6 +106,11 @@ public: //structs and typedefs
     //-------------------------------------------------------------------//
 
     int m_cost;
+    //-------------------------------------------------------------------//
+    /// @brief Money that the user gets back when they sell
+    //-------------------------------------------------------------------//
+
+    int m_sellValue;
   };
 
 public: //methods
@@ -297,6 +308,12 @@ public: //methods
   bool upgrade();
 
   //-------------------------------------------------------------------//
+  /// @brief get the current sell value of the turret
+  //-------------------------------------------------------------------//
+
+  int getSellValue() const {return m_sellValue;}
+
+  //-------------------------------------------------------------------//
   /// @brief get the upgrade data about the current upgrade level
   /// @param[out] o_upgradeData this is a weak pointer to the current
   /// upgradeData.
@@ -425,6 +442,11 @@ protected: //attributes
   //-------------------------------------------------------------------//
 
   unsigned int m_upgradeIndex;
+
+  //-------------------------------------------------------------------//
+  /// @brief money that player receives when they sell the turret
+  //-------------------------------------------------------------------//
+  int m_sellValue;
 
 };
 
