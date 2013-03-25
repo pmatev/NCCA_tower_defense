@@ -25,16 +25,6 @@ Grenade::Grenade(
 
 //-------------------------------------------------------------------//
 
-//void Grenade::setVelocity(const ngl::Vec3 _velocity)
-//{
-//  Q_UNUSED(_velocity);
-////  calculateTarget();
-//////  m_targetPos = ngl::Vec3();
-////  aim();
-//}
-
-//-------------------------------------------------------------------//
-
 EntityPtr Grenade::create(
     const ngl::Vec3 &_pos,
     const ngl::Vec3 &_aim,

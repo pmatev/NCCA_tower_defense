@@ -95,6 +95,7 @@ ngl::Vec3 TestTurret::brain()
 
 void TestTurret::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
+  // filter by square distance
   if(o_localEntities.size()!= 0)
   {
     //generate an iterator to cycle through the list
@@ -136,7 +137,6 @@ void TestTurret::filterViewVolume(EntityRecordWCList &o_localEntities)
 void TestTurret::updateShotPos()
 {
   // currently just seting the position to the position of the turret
-
   m_shotPos = m_pos;
 }
 

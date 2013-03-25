@@ -26,6 +26,12 @@ class Explosion
 public:
   //-------------------------------------------------------------------//
   /// @brief creator
+  /// @param[in] _power the force of the explosion
+  /// @param[in] _damage the maximum damage that is applied to enemies within
+  /// the blast radius
+  /// @param[in] _radius how far the explosion effects
+  /// @param[in] _pos center position
+  /// @param[in] _lifetime how long the explosion will render for
   //-------------------------------------------------------------------//
   static ExplosionPtr create(
         float _power,
@@ -52,8 +58,6 @@ public:
   /// @brief draw the explosion
   //-------------------------------------------------------------------//
   void draw();
-
-  ~Explosion();
 
 protected:
   //-------------------------------------------------------------------//
@@ -105,6 +109,12 @@ protected:
 protected:
   //-------------------------------------------------------------------//
   /// @brief ctor
+  /// @param[in] _power the force of the explosion
+  /// @param[in] _damage the maximum damage that is applied to enemies within
+  /// the blast radius
+  /// @param[in] _radius how far the explosion effects
+  /// @param[in] _pos center position
+  /// @param[in] _lifetime how long the explosion will render for
   //-------------------------------------------------------------------//
   Explosion(
         float _power,
@@ -115,6 +125,8 @@ protected:
       );
   //-------------------------------------------------------------------//
   /// @brief apply damage and impulses
+  /// @param[out] o_damages list of damage values
+  /// @param[out] o_impulses list of impulse values
   //-------------------------------------------------------------------//
   void preformExplosion(
         std::list<Damage> &o_damages,

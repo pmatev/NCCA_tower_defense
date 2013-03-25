@@ -25,14 +25,11 @@ class DynamicEntity : public Entity
 public:
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
-  /// @param [in] _damage, a float to initialise the damage value
-  /// @param [in] __maxVelocity, a float value describing the maximum
-  /// velocity of the dynamic entity
-  /// @param [in] _pos, a vector containing the initial position in 3D
+  /// @param [in] _pos a vector containing the initial position in 3D
   /// space of the entity, passed to the entity constructor
-  /// @param [in] _initialVelocity, the starting velocity of the enemy
-  /// @param [in] _aimVector, its initial aim
-  /// @param [in] _type, the general type of the entity
+  /// @param [in] _aim initial aim of the entity
+  /// @param [in] _id ID of entity
+  /// @param [in] _type the general type of the entity
   //-------------------------------------------------------------------//
 
   DynamicEntity(
@@ -50,7 +47,7 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief update the objects position based on the brain output
-  /// @param [in] _dt, the timestep
+  /// @param [in] _dt the timestep in seconds
   //-------------------------------------------------------------------//
 
   virtual void update(const double _dt);
@@ -59,6 +56,7 @@ public:
   /// @brief bring together all the forces and apply constraints to work out
   /// what the dynamic entity should be doing. This should be called in the
   /// update.
+  /// @param [in] _dt the timestep in seconds
   //-------------------------------------------------------------------//
 
   void move(const double _dt);
@@ -101,7 +99,7 @@ public:
   /// anything else that needs doing outside the update loop.
   //-------------------------------------------------------------------//
 
-  virtual void prepareForUpdate();
+  inline virtual void prepareForUpdate() {;}
 
   //-------------------------------------------------------------------//
   /// @brief a method to generate the view box, must be implemented in
@@ -126,7 +124,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief a method to check collisions of this entity against a list
   /// of entities retrieved from the database based on the list of types
-  /// @param [in] _types, a list of types of enemies to test collisions
+  /// @param [in] _types a list of types of enemies to test collisions
   /// against
   //-------------------------------------------------------------------//
 
@@ -149,8 +147,6 @@ protected:
   /// a bounding box
   /// @param [in] _wsBBox the world space bounding box to test collisions
   /// against
-  /// @param [out] a boolean value describing whether or not a collision
-  /// has occured
   //-------------------------------------------------------------------//
 
   bool intersectTest (BBox _wsBBox) const;
@@ -160,7 +156,6 @@ protected:
   /// its location in space compared to the bounding box
   /// @param [in] _point, the point to generate the code for
   /// @param [in] _wsBBox, the world space bounding box to check against
-  /// @param [out]
   //-------------------------------------------------------------------//
 
   char genClippingCode(const ngl::Vec3& _point, BBox _wsBBox) const;
@@ -172,7 +167,7 @@ protected:
   /// @param [in] _point1 the first point of the line
   /// @param [in] _point2 the second point of the line
   /// @param [in] _planeExtents the extents of the plane in world space
-  /// @param [out] bool value stating whether or not the line intersects
+  /// @return [out] bool value stating whether or not the line intersects
   /// the plane
   //-------------------------------------------------------------------//
 
@@ -185,7 +180,7 @@ protected:
 
   //-------------------------------------------------------------------//
   /// @brief a virtual brain method, to be implemented in children
-  /// @param [out] a vector which will be used to define the behaviour
+  /// @return a vector which will be used to define the behaviour
   /// of the dynamic entity
   //-------------------------------------------------------------------//
 

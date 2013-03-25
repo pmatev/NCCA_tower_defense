@@ -7,7 +7,13 @@
 
 //-------------------------------------------------------------------//
 
-Explosion::Explosion(float _power, float _damage, float _radius, const ngl::Vec3 &_pos, float _lifetime):
+Explosion::Explosion(
+    float _power,
+    float _damage,
+    float _radius,
+    const ngl::Vec3 &_pos,
+    float _lifetime
+    ):
   m_power(_power),
   m_damage(_damage),
   m_radius(_radius),
@@ -20,7 +26,13 @@ Explosion::Explosion(float _power, float _damage, float _radius, const ngl::Vec3
 
 //-------------------------------------------------------------------//
 
-ExplosionPtr Explosion::create(float _power, float _damage, float _radius, const ngl::Vec3 &_pos, float _lifetime)
+ExplosionPtr Explosion::create(
+    float _power,
+    float _damage,
+    float _radius,
+    const ngl::Vec3 &_pos,
+    float _lifetime
+    )
 {
   ExplosionPtr a(new Explosion(_power, _damage, _radius, _pos, _lifetime));
   return a;
@@ -150,9 +162,3 @@ void Explosion::draw()
 
 }
 
-//-------------------------------------------------------------------//
-
-Explosion::~Explosion()
-{
-  //std::cout<<"Explosion killed"<<std::endl;
-}

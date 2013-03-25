@@ -30,16 +30,43 @@ public:
   /// @brief typedefs for list of nodes
   //-------------------------------------------------------------------//
 
+  //-------------------------------------------------------------------//
+  /// @brief typedef for list of weak pointers to nodes
+  //-------------------------------------------------------------------//
   typedef std::list<NodeWPtr> NodeWList;
+
+  //-------------------------------------------------------------------//
+  /// @brief typedef for vector of weak pointers to nodes
+  //-------------------------------------------------------------------//
   typedef std::vector<NodeWPtr> NodeWVec;
+
+  //-------------------------------------------------------------------//
+  /// @brief typedef for vector of smart pointers to nodes
+  //-------------------------------------------------------------------//
   typedef std::vector<NodePtr> NodeVec;
 
+  //-------------------------------------------------------------------//
+  /// @brief typedef for smart pointer to list of weak pointers to nodes
+  //-------------------------------------------------------------------//
   typedef boost::shared_ptr<NodeWList> NodeWListPtr;
+
+  //-------------------------------------------------------------------//
+  /// @brief typedef for smart pointer to vector of weak pointers to nodes
+  //-------------------------------------------------------------------//
   typedef boost::shared_ptr<NodeWVec> NodeWVecPtr;
+
+  //-------------------------------------------------------------------//
+  /// @brief typedef for weak pointer to list of weak pointers to nodes
+  //-------------------------------------------------------------------//
   typedef boost::weak_ptr<NodeWVec> NodeWVecWPtr;
 
 public:
 
+  //-------------------------------------------------------------------//
+    /// @brief creator
+    /// @param[in] _pos position of node
+    /// @param[in] _hexagonSize size of hexagon to render
+    //-------------------------------------------------------------------//
   static NodePtr create(const ngl::Vec3 &_pos, float _hexagonSize);
 
   //-------------------------------------------------------------------//
@@ -56,23 +83,13 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief virtual update method
-  /// @param [in] _dt, the timestep
+  /// @param [in] _dt the timestep in seconds
   //-------------------------------------------------------------------//
   void update(const double _dt);
 
   //-------------------------------------------------------------------//
-//  /// @brief virtual draw method
-//  //-------------------------------------------------------------------//
-//  void draw() ;
-
-//  //-------------------------------------------------------------------//
-//  /// @brief virtual draw selection method
-//  //-------------------------------------------------------------------//
-//  void drawSelection() ;
-
-  //-------------------------------------------------------------------//
   /// @brief get method for the m_isOccupied variable
-  /// @param [out]m_isOccupied, returns a boolean stating whether the
+  /// @return m_isOccupied returns a boolean stating whether the
   /// node is occupied or not
   //-------------------------------------------------------------------//
 
@@ -80,7 +97,7 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief set method for the m_isOccupied variable
-  /// @param [in] _isOccupied, a boolean value to set the occupied flag
+  /// @param [in] _isOccupied a boolean value to set the occupied flag
   /// to
   //-------------------------------------------------------------------//
 
@@ -88,7 +105,7 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief set method for the m_isHighlighted variable
-  /// @param [in] _isHighlighted, a boolean value to set the occupied flag
+  /// @param [in] _isHighlighted a boolean value to set the occupied flag
   /// to
   //-------------------------------------------------------------------//
   inline void setHighlighted(int _isHighlighted){
@@ -96,7 +113,7 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief get the list of children that a node is linked to
-  /// @param [out] m_children, list of child nodes
+  /// @return m_children list of child nodes
   //-------------------------------------------------------------------//
 
   inline NodeWListPtr getChildList() {return m_children;}
@@ -122,6 +139,7 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief tell the node that it has been found
+  /// @param[in] _found whether the node has been found or not
   //-------------------------------------------------------------------//
 
   inline void setFound(bool _found) {m_isFound = _found;}
@@ -134,6 +152,7 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief set the new search depth for the node
+  /// @param[in] _searchDepth new search depth
   //-------------------------------------------------------------------//
 
   inline void setSearchDepth(int _searchDepth) {m_searchDepth = _searchDepth;}
@@ -146,6 +165,8 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief set whether the node is in one of the spawn paths
+  /// @param[in] _isInSpawnPath whether the node is in the spawn path or not.
+  /// This can be useful for displaying spawn paths
   //-------------------------------------------------------------------//
 
   inline void setInSpawnPath(bool _isInSpawnPath)
@@ -172,6 +193,9 @@ public:
 
   void draw();
 
+  //-------------------------------------------------------------------//
+  /// @brief geneerate view box
+  //-------------------------------------------------------------------//
   void generateViewBBox();
 
   //-------------------------------------------------------------------//
@@ -179,6 +203,10 @@ public:
   //-------------------------------------------------------------------//
 
   void setVisibility(bool _visibility);
+
+  //-------------------------------------------------------------------//
+  /// @brief get wether the node is highlighted or not
+  //-------------------------------------------------------------------//
 
   inline int getHighlighted() {return m_highlighted;}
 
@@ -190,8 +218,9 @@ protected:
 
   //-------------------------------------------------------------------//
   /// @brief parameterised constructor
-  /// @param [in] _pos, a const reference to an ngl vector containing the
-  /// position with which to create the node
+  /// @param[in] _pos position of node
+  /// @param[in] _hexagonSize size of hexagon to render
+  /// @param[in] _id ID of entity
   //-------------------------------------------------------------------//
 
   Node(const ngl::Vec3 & _pos, float _hexagonSize, unsigned int _id);
@@ -249,8 +278,6 @@ protected:
   //-------------------------------------------------------------------//
 
   bool m_isInSpawnPath;
-
-
 
 };
 

@@ -9,7 +9,7 @@ InvisibleWall::InvisibleWall(
     NodePtr _linkedNode,
     unsigned int _id
     ) :
-  Wall(_linkedNode, _id)
+  StaticEntity(_linkedNode, WALL, _id)
 {
   initialiseMesh("wall");
   publish();

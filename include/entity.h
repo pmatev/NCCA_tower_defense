@@ -25,6 +25,9 @@
 
 class StateMachine;
 
+//-------------------------------------------------------------------//
+/// @class parent class for all entities in the game
+//-------------------------------------------------------------------//
 class Entity : public boost::enable_shared_from_this<Entity>
 {
 public: //typedefs and structs
@@ -117,9 +120,10 @@ public: //typedefs and structs
 public: //methods
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
-  /// @param [in] _pos, a vector containing the initial position in 3D
+  /// @param [in] _pos a vector containing the initial position in 3D
   /// space of the entity
-  /// @param [in] _health, the initial health value of the entity
+  /// @param [in] _type general type of the entity
+  /// @param[in] _id ID of entity
   //-------------------------------------------------------------------//
 
   Entity(const ngl::Vec3 & _pos, GeneralType _type, unsigned int _id);
@@ -134,11 +138,13 @@ public: //methods
   //-------------------------------------------------------------------//
   /// @brief called after the constructor
   //-------------------------------------------------------------------//
-  virtual void stateInit();
+  inline virtual void stateInit(){;}
 
   //-------------------------------------------------------------------//
   /// @brief a virtual method which will update the entity when
   /// implemented in child classes
+  /// @param[in] _dt difference in time since the last update. This is measured
+  /// in seconds
   //-------------------------------------------------------------------//
 
   virtual void update(const double _dt) = 0;
@@ -151,13 +157,6 @@ public: //methods
   virtual void draw();
 
   //-------------------------------------------------------------------//
-  /// @brief a virtual method that draws the selection frame (where each
-  /// object is rendered with a colour based on it's id)
-  //-------------------------------------------------------------------//
-
-//  virtual void drawSelection()  = 0;
-
-  //-------------------------------------------------------------------//
   /// @brief a method which will publish the entity's position to the
   /// central database
   //-------------------------------------------------------------------//
@@ -166,6 +165,7 @@ public: //methods
 
   //-------------------------------------------------------------------//
   /// @brief initialises the mesh
+  /// @param[in] _name name of mesh to initialise with
   //-------------------------------------------------------------------//
   void initialiseMesh(std::string _name);
 
@@ -249,6 +249,8 @@ public: //methods
 protected:
   //-------------------------------------------------------------------//
   /// @brief a method to update the list of localEntities
+  /// @param[out] o_newList list of record entities to be populated
+  /// @param[in] _typeList list of types to filter by
   //-------------------------------------------------------------------//
 
   void calculateLocalEntities(
@@ -291,6 +293,7 @@ protected:
   /// @brief draw the entity with colour. This is separated from draw so
   /// that we can easily change the colour of objects in virtualized draw
   /// methods.
+  /// @param[in] _colour colour to draw with
   //-------------------------------------------------------------------//
 
   void drawWithColour(const ngl::Vec3 &_colour);
@@ -302,6 +305,10 @@ protected: //attributes
   //-------------------------------------------------------------------//
 
   unsigned int m_ID;
+
+  //-------------------------------------------------------------------//
+  /// @brief identifier as string
+  //-------------------------------------------------------------------//
 
   std::string m_IDStr;
 
@@ -358,6 +365,10 @@ protected: //attributes
   //-------------------------------------------------------------------//
 
   BBox m_lsMeshBBox;
+
+  //-------------------------------------------------------------------//
+  /// @brief transform stack used for drawing
+  //-------------------------------------------------------------------//
 
   ngl::TransformStack m_transformStack;
 

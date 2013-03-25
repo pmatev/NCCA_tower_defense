@@ -47,7 +47,7 @@ SOURCES += src/main.cpp \
     src/enemy.cpp \
     src/projectile.cpp \
     src/projectilemanager.cpp \
-    src/wall.cpp \
+    #src/wall.cpp \
     src/databasegrid.cpp \
     src/concrete/bullet.cpp \
     src/concrete/base.cpp \
@@ -104,7 +104,7 @@ HEADERS += \
     include/ui.h \
     include/projectile.h \
     include/projectilemanager.h \
-    include/wall.h \
+    #include/wall.h \
     include/databasegrid.h \
     include/concrete/bullet.h \
     include/concrete/base.h \

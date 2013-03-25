@@ -43,25 +43,11 @@ NodeManager::NodeManager(
 
   Database::init(_dbGridSizeX,_dbGridSizeZ, maxX,maxZ,minX,minZ);
 
-//  //get a pointer to the game
-//  Game* game = Game::instance();
-
-  // create all the necessary node
+  // create all the necessary nodes
   for(int j = 0; j < _gridHeight; j++)
   {
     for(int i = 0; i < _gridWidth; i++)
     {
-//      unsigned int ID = game->getID();
-//      NodePtr node(
-//            new Node(
-//              ngl::Vec3(i * _hexagonSize * 0.75, 0,
-//                        j * (_hexagonSize * s_hexFactor) + (_hexagonSize * s_hexFactor)/2 * ((i%2 != 0))
-//                        ) + m_origin,
-//              m_hexagonSize,
-//              ID
-      //              )
-      //            );
-//      game->registerID(node,ID);
       m_nodes.push_back(
             Node::create(
               ngl::Vec3(i * _hexagonSize * 0.75, 0,
@@ -70,7 +56,6 @@ NodeManager::NodeManager(
               m_hexagonSize
               )
             );
-      //std::cout<<"#"<<(_gridWidth*j) + i<<": Node "<<"("<<i<<","<<j<<")" << " has coords: ["<<node->getPos().m_x<<","<<node->getPos().m_z<<std::endl;
     }
   }
 
@@ -439,17 +424,6 @@ void NodeManager::draw()
   }
 }
 
-////-------------------------------------------------------------------//
-
-//void NodeManager::drawSelection()
-//{
-//  for(unsigned int i = 0; i < m_nodes.size(); i++)
-//  {
-//    m_nodes[i]->drawSelection();
-//  }
-//}
-
-
 void NodeManager::resetPathNodes()
 {
   BOOST_FOREACH(PathNodeMap::value_type pathNode, m_pathNodeMap)
@@ -513,13 +487,6 @@ void NodeManager::recalculateSearchTree(NodeWPtr _goal)
       nextList = Node::NodeWListPtr(new Node::NodeWList);
       ++depth;
     }
-//    goal->setSearchDepth(0);
-//    goal->setFound(true);
-//    Node::NodeWListPtr children = goal->getChildList();
-//    BOOST_FOREACH(NodeWPtr childWeak, *children)
-//    {
-//      recalculateChildren(childWeak, 0);
-//    }
   }
 }
 
@@ -626,19 +593,6 @@ bool NodeManager::traverseChildren(
 bool NodeManager::getAStar(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr _goal)
 {
   // From http://en.wikipedia.org/wiki/A*_search_algorithm
-  // THIS FUNCTION COULD PROBABLY BE SIMPLIFIED
-
-  // this keeps track of which nodes relate to which paths, this way we can
-  // access PathNode data via the Node. This is useful as children are stored
-  // as Nodes rather than path nodes
-  //std::map<NodeWPtr, PathNodePtr> m_pathNodeMap;
-
-//  PathNodePtr start = PathNode::create(
-//                      _start,
-//                      0,
-//                      heuristicPath(_start, _goal)
-//                      );
-  //m_pathNodeMap[_start] = start;
   PathNodePtr start = m_pathNodeMap[_start];
   PathNodePtr goal = m_pathNodeMap[_goal];
   if(start && goal)
@@ -660,22 +614,6 @@ bool NodeManager::getAStar(Node::NodeWList &o_newPath, NodeWPtr _start, NodeWPtr
         reconstructPath(o_newPath, current, _start);
         return true;
       }
-
-//      // If there's a successful path from the current point use the rest of it
-//      // and return
-//      if(current->m_hasSuccessfulPath)
-//      {
-//        // clear open set and continue, this should shortcut to the end
-//        openSet.clear();
-//        PathNodePtr child = current->m_child.lock();
-
-//        if(child)
-//        {
-//          child->m_parent = PathNodePtr(current);
-//          openSet.push_back(child);
-//        }
-//        continue;
-//      }
 
       // Take current from openSet and move it into closedSet
       openSet.remove(current);
@@ -752,6 +690,8 @@ float NodeManager::heuristicPath(PathNodeWPtr _start, PathNodeWPtr _goal) const
   }
   return 0;
 }
+
+//-------------------------------------------------------------------//
 
 void NodeManager::reconstructPath(
     Node::NodeWList &io_newPath,
@@ -872,6 +812,7 @@ NodeWPtr NodeManager::getNodeFromPos(ngl::Vec3 _pos) const
   return NodeWPtr(m_nodes[index]);
 }
 
+//-------------------------------------------------------------------//
 NodeWPtr NodeManager::getNodeFromCoords(int _x, int _z) const
 {
   //clamp between values within the grid

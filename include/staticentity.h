@@ -27,6 +27,7 @@ public:
   /// @brief a parameterised constructor
   /// @param [in] _linkedNode, a smart pointer to the linked node
   /// @param [in] _type, the general type of the entity
+  /// @param[in] _id ID of entity
   //-------------------------------------------------------------------//
 
   StaticEntity(

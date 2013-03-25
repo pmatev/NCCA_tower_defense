@@ -2,9 +2,8 @@
 #define STANDARDWALL_H
 
 #include "staticentity.h"
-#include "wall.h"
 
-class StandardWall : public Wall
+class StandardWall : public StaticEntity
 {
 public:
   static EntityPtr create(NodePtr _linkedNode, unsigned int _id);

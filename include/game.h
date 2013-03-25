@@ -117,6 +117,14 @@ public: //methods
 
     bool tryToCreateTower(const std::string &_type, NodePtr _node);
 
+
+    //-------------------------------------------------------------------//
+    /// @brief sell tower identified by _id
+    /// @param[in] _id id of tower
+    /// @return the money you receive from the sale
+    //-------------------------------------------------------------------//
+    int sellTower(const unsigned int _id);
+
     //-------------------------------------------------------------------//
     /// @brief return base position
     /// @return the bases position

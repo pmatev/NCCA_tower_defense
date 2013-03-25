@@ -17,16 +17,18 @@
 
 DECLARESMART(TestEnemy)
 
+//-------------------------------------------------------------------//
+/// @class TestEnemy this class implements the basic enemy type
+//-------------------------------------------------------------------//
 class TestEnemy : public Enemy
 {
 public:
 
   //-------------------------------------------------------------------//
   /// @brief creator
-  /// @param[in] _damage, damage that TestEnemy can do
-  /// @param[in] _maxVelocity, maximum velocity an TestEnemy can travel at
-  /// @param[in] _pos, initital position of TestEnemy
-  /// @param[in] _initialVelocity, the starting velocity of the TestEnemy
+  /// @param[in] _pos initital position of TestEnemy
+  /// @param[in] _aim where the enemy is aiming
+  /// @param[in] _id ID of entity
   //-------------------------------------------------------------------//
   static EntityPtr create(
         const ngl::Vec3 &_pos,
@@ -40,31 +42,29 @@ public:
 
   ~TestEnemy();
 
+  //-------------------------------------------------------------------//
+  /// @brief initialise all the state values
+  //-------------------------------------------------------------------//
   void stateInit();
 
-
-//  //-------------------------------------------------------------------//
-//  /// @brief draw the object
-//  //-------------------------------------------------------------------//
+  //-------------------------------------------------------------------//
+  /// @brief draw the object
+  //-------------------------------------------------------------------//
 
   void draw();
 
-//  //-------------------------------------------------------------------//
-//  /// @brief draw the object based on id
-//  //-------------------------------------------------------------------//
-
-//  void drawSelection() ;
-
 protected:
 
+  //-------------------------------------------------------------------//
+  /// @brief filter the visible entities
+  //-------------------------------------------------------------------//
   void filterViewVolume(EntityRecordWCList &o_localEntities);
 
   //-------------------------------------------------------------------//
   /// @brief ctor
-  /// @param[in] _damage, damage that TestEnemy can do
-  /// @param[in] _maxVelocity, maximum velocity an TestEnemy can travel at
-  /// @param[in] _pos, initital position of TestEnemy
-  /// @param[in] _initialVelocity, the starting velocity of the TestEnemy
+  /// @param[in] _pos initital position of TestEnemy
+  /// @param[in] _aim where the enemy is aiming
+  /// @param[in] _id ID of entity
   //-------------------------------------------------------------------//
 
   TestEnemy(
@@ -77,10 +77,7 @@ protected:
   /// @brief works out which direction the TestEnemy should go in next
   /// @param[out] new vector for TestEnemy to travel in
   //-------------------------------------------------------------------//
-
   ngl::Vec3 brain();
-
-//  bool m_active;
 };
 
 #endif // TESTENEMY_H

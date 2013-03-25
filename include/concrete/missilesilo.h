@@ -16,18 +16,25 @@
 #include "turret.h"
 #include "smartpointers.h"
 DECLARESMART(MissileSilo)
-
+//-------------------------------------------------------------------//
+/// @class MissileSilo turret that shoots grenades
+//-------------------------------------------------------------------//
 class MissileSilo : public Turret
 {
 public:
   //-------------------------------------------------------------------//
   /// @brief creator
+  /// @param[in] _linkedNode node that the turret sits on
+  /// @param[in] _id ID of entity
   //-------------------------------------------------------------------//
   static EntityPtr create(
         NodePtr _linkedNode,
         unsigned int _id
         );
 
+  //-------------------------------------------------------------------//
+  /// @brief initial state machine values
+  //-------------------------------------------------------------------//
   void stateInit();
 
   //-------------------------------------------------------------------//
@@ -36,19 +43,27 @@ public:
 
   void generateViewBBox();
 
+  //-------------------------------------------------------------------//
+  /// @brief draw function
+  //-------------------------------------------------------------------//
   void draw();
 
   //-------------------------------------------------------------------//
   /// @brief set the position to shoot at. This can be used if you wanted
   /// the user to specify where to shoot.
+  /// @param[in] _pos new position of target
   //-------------------------------------------------------------------//
   inline void setTargetPos(const ngl::Vec3 &_pos) {m_targetPos = _pos;}
 
   //-------------------------------------------------------------------//
   /// @brief set the base position
+  /// @param[in] _pos new base pos
   //-------------------------------------------------------------------//
   inline void setBasePos(const ngl::Vec3 &_pos) {m_basePos = _pos;}
 
+  //-------------------------------------------------------------------//
+  /// @brief check if the missilesilo has a target
+  //-------------------------------------------------------------------//
   inline bool getHasTarget() const {return m_hasTarget;}
 
   //-------------------------------------------------------------------//
@@ -56,10 +71,11 @@ public:
   //-------------------------------------------------------------------//
   void calculateTarget();
 
-
 protected:
   //-------------------------------------------------------------------//
   /// @brief ctor
+  /// @param[in] _linkedNode node that the turret is sitting on
+  /// @param[in] _id ID of the entity
   //-------------------------------------------------------------------//
   MissileSilo(
         NodePtr _linkedNode,
@@ -67,6 +83,10 @@ protected:
         );
 
 
+  //-------------------------------------------------------------------//
+  /// @brief filter the view volume of local enetities
+  /// @param[out] o_localEntities list of entities to filter.
+  //-------------------------------------------------------------------//
   void filterViewVolume(EntityRecordWCList &o_localEntities);
 
   //-------------------------------------------------------------------//
@@ -83,6 +103,7 @@ protected:
 
   //-------------------------------------------------------------------//
   /// @brief adjust the aim vector to hit the target
+  /// @param[in] _target target position to aim at
   //-------------------------------------------------------------------//
   ngl::Vec3 aim(const ngl::Vec3 &_target);
 
@@ -99,8 +120,14 @@ protected:
   //-------------------------------------------------------------------//
   float m_gravity;
 
+  //-------------------------------------------------------------------//
+  /// @brief position of target
+  //-------------------------------------------------------------------//
   ngl::Vec3 m_targetPos;
 
+  //-------------------------------------------------------------------//
+  /// @brief whether the silo has a target or not
+  //-------------------------------------------------------------------//
   bool m_hasTarget;
 
   //-------------------------------------------------------------------//

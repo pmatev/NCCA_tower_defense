@@ -22,12 +22,8 @@ TestEnemy::TestEnemy(
     )
 
 {
-  // ctor just passes everything to parent class
-  // HACKY TESTING HERE
   initialiseMesh("enemy");
   publish();
-  //  m_active = false;
-
   m_damage = 5;
   m_velocity = 0;
   m_maxSpeed = 2.0;
@@ -73,8 +69,6 @@ EntityPtr TestEnemy::create(
 ngl::Vec3 TestEnemy::brain()
 {
   ngl::Vec3 steeringDirection = m_steering->calculate();
-  // TEST value (tells it to just go forward)
-  //return getPathVec() * 0.01;
   return steeringDirection;
 }
 
@@ -84,35 +78,6 @@ ngl::Vec3 TestEnemy::brain()
 void TestEnemy::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
   Q_UNUSED(o_localEntities);
-//  float maxSqrDist = 2;
-
-//  for(
-//      EntityRecordWCList::iterator it = o_localEntities.begin();
-//      it != o_localEntities.end();
-//      )
-//  {
-//    bool remove = false;
-//    EntityRecordCPtr recordStrong = it->lock();
-//    if(recordStrong)
-//    {
-//      if(recordStrong->m_generalType == ENEMY)
-//      {
-
-//      }
-//      else
-//      {
-//        remove = true;
-//      }
-//    }
-//    if(remove)
-//    {
-//      it = o_localEntities.erase(it);
-//    }
-//    else
-//    {
-//      ++it;
-//    }
-//  }
 }
 
 //-------------------------------------------------------------------//
@@ -127,7 +92,6 @@ void TestEnemy::draw()
   r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "TexturedConst");
 
   tex->bindTexture("enemy_AO");
-//  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
   shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
 
   r->draw("enemy", "TexturedConst");

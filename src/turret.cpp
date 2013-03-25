@@ -369,6 +369,9 @@ bool Turret::upgrade()
     // Check that its not null
     if(m_upgrades[m_upgradeIndex])
     {
+      // make sure its on the right state, otherwise you can get errors when
+      // game is paused.
+      update(0.001);
       m_stateMachine->changeState(m_upgrades[m_upgradeIndex]);
       return true;
     }

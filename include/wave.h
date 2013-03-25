@@ -63,6 +63,10 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief default creator
+    /// @param[in] _count number of enemies of this type
+    /// @param[in] _type type string for the enemies
+    /// @param[in] _shield value of the enemies
+    /// @param[in] _maxSpeed maximum speed of the enemies
     //-------------------------------------------------------------------//
 
     inline static EnemyInfoPtr create(
@@ -100,6 +104,10 @@ public:
 
     //-------------------------------------------------------------------//
     /// @brief paramatized ctor
+    /// @param[in] _count number of enemies of this type
+    /// @param[in] _type type string for the enemies
+    /// @param[in] _shield value of the enemies
+    /// @param[in] _maxSpeed maximum speed of the enemies
     //-------------------------------------------------------------------//
 
     EnemyInfo(
@@ -127,8 +135,9 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief creator
-  /// @param[in] _enemiesForCreation, list of possible enemies the wave
+  /// @param[in] _enemiesForCreation list of possible enemies the wave
   /// can create
+  /// @param[in] _spawnNodes list of weak pointer to spawn nodes
   //-------------------------------------------------------------------//
 
   static WavePtr create(
@@ -145,7 +154,7 @@ public:
   //-------------------------------------------------------------------//
   /// @brief update all the enemies currently in play and work out
   /// which new enemies need creating
-  /// @param [in] _dt, the timestep
+  /// @param [in] _dt the timestep in seconds
   //-------------------------------------------------------------------//
 
   void update(const double _dt);
@@ -171,14 +180,14 @@ public:
   /// @brief create new temporary paths for all enemies that are affected
   /// by inserting this tower
   /// @param[in] _node, the node in question
-  /// @param[out] whether all the paths were successful or not
+  /// @return whether all the paths were successful or not
   //-------------------------------------------------------------------//
 
   bool generatePaths(NodeWPtr _node);
 
   //-------------------------------------------------------------------//
   /// @brief check for collisions with static objects
-  /// @param[out] list of Collisions with objects
+  /// @return list of Collisions with objects
   //-------------------------------------------------------------------//
 
   std::list<Damage> checkCollisions();
@@ -196,14 +205,12 @@ public:
   void reset();
 
 protected:
-  //typedef std::list<DynamicEntityPtr> EnemyVec;
-  //typedef boost::shared_ptr<EnemyVec> EnemyVecPtr;
-protected:
 
   //-------------------------------------------------------------------//
   /// @brief ctor
-  /// @param[in] _enemiesForCreation, list of possible enemies the wave
+  /// @param[in] _enemiesForCreation list of possible enemies the wave
   /// can creation
+  /// @param[in] _spawnNodes list of weak pointer to spawn nodes
   //-------------------------------------------------------------------//
 
   Wave(
@@ -213,15 +220,14 @@ protected:
 
   //-------------------------------------------------------------------//
   /// @brief creates necessarry new enemies, should be called after update
+  /// @param [in] _dt the timestep in seconds
   //-------------------------------------------------------------------//
 
   void brain(const double _dt);
 
   //-------------------------------------------------------------------//
   /// @brief add enemy of specific type
-  /// @param[in] _type, type of Enemy to create
-  /// @param[in] _damage, damage that enemy can do
-  /// @param[in] _maxVelocity, maximum velocity an enemy can travel at
+  /// @param[in] _enemyInfo info for enemy type
   /// @param[in] _pos, initital position of enemy
   //-------------------------------------------------------------------//
 
@@ -233,8 +239,8 @@ protected:
   //-------------------------------------------------------------------//
   /// @brief remove enemy based on its iterator and return iterator to
   /// next available element
-  /// @param[in]  _it, iterator to element to be removed
-  /// @param[out] the iterator to the next element in the list after the
+  /// @param[in]  _it iterator to element to be removed
+  /// @return the iterator to the next element in the list after the
   /// element has been removed
   //-------------------------------------------------------------------//
 
@@ -307,8 +313,6 @@ protected:
   //-------------------------------------------------------------------//
   unsigned int m_maxActiveEnemies;
 
-
-
 };
 
 
@@ -318,11 +322,17 @@ protected:
 
 class WaveInfo
 {
-  public:
+public:
+  //-------------------------------------------------------------------//
+  /// @brief creator
+  /// @param[in] _enemiesForCreation list of enemies that can be created
+  /// @param[in] _birthRate how fast the enemies are created
+  //-------------------------------------------------------------------//
   static WaveInfoPtr create(
-        const Wave::EnemyInfoList &_enemiesForCreation,
-        float _birthRate
-        );
+      const Wave::EnemyInfoList &_enemiesForCreation,
+      float _birthRate
+      );
+
   //-------------------------------------------------------------------//
   /// @brief List of enemy types and corresponding enemy counts
   //-------------------------------------------------------------------//
@@ -333,11 +343,16 @@ class WaveInfo
   //-------------------------------------------------------------------//
   float m_birthRate;
 
-  protected:
+protected:
+  //-------------------------------------------------------------------//
+  /// @brief constructor
+  /// @param[in] _enemiesForCreation list of enemies that can be created
+  /// @param[in] _birthRate how fast the enemies are created
+  //-------------------------------------------------------------------//
   inline WaveInfo(
-        const Wave::EnemyInfoList &_enemiesForCreation,
-        float _birthRate
-        ):
+      const Wave::EnemyInfoList &_enemiesForCreation,
+      float _birthRate
+      ):
     m_enemiesForCreation(_enemiesForCreation),
     m_birthRate(_birthRate)
   {;}

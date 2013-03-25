@@ -525,6 +525,12 @@ bool Game::tryToCreateTower(const std::string &_type, NodePtr _node)
 
 }
 
+//-------------------------------------------------------------------//
+
+int Game::sellTower(const unsigned int _id)
+{
+
+}
 
 //-------------------------------------------------------------------//
 

@@ -25,7 +25,7 @@ class EntityFactory
 {
 public:
   //-------------------------------------------------------------------//
-  /// @brief typedef to manage callbacks
+  /// @brief typedef to manage callbacks for DynamicEntity creation
   //-------------------------------------------------------------------//
 
   typedef EntityPtr (*dynamicEntityCallBack)(
@@ -34,20 +34,26 @@ public:
         unsigned int _id
         );
 
+  //-------------------------------------------------------------------//
+  /// @brief typedef to manage callbacks for DynamicEntity creation
+  //-------------------------------------------------------------------//
   typedef EntityPtr (*staticEntityCallBack)(
         NodePtr _node,
         unsigned int _id
         );
 
-  typedef void (*initCallBack)();
+  //typedef void (*initCallBack)();
 
   //-------------------------------------------------------------------//
-  /// @brief typedefs to hold the map of all the possible types
+  /// @brief typedef to hold the map of all the possible types
   //-------------------------------------------------------------------//
 
   typedef std::map<std::string, EntityFactory::dynamicEntityCallBack>
       DynamicEntityTypeMap;
 
+  //-------------------------------------------------------------------//
+  /// @brief typedef to hold the map of all the possible types
+  //-------------------------------------------------------------------//
   typedef std::map<std::string, EntityFactory::staticEntityCallBack>
       StaticEntityTypeMap;
 
@@ -56,13 +62,13 @@ public:
   /// @brief constructor
   //-------------------------------------------------------------------//
 
-  EntityFactory();
+  inline EntityFactory(){;}
 
   //-------------------------------------------------------------------//
   /// @brief destructor
   //-------------------------------------------------------------------//
 
-  ~EntityFactory();
+  inline ~EntityFactory(){;}
 
   //-------------------------------------------------------------------//
   /// @brief this method registers all the possible Entity types. This
@@ -75,8 +81,8 @@ public:
   //-------------------------------------------------------------------//
   /// @brief add the specified type and constuct method to the list of
   /// possible types
-  /// @param[in] _type, a string referring to the type's name
-  /// @param[in] _cb, the callback method (the create method of the class)
+  /// @param[in] _type a string referring to the type's name
+  /// @param[in] _cb the callback method (the create method of the class)
   //-------------------------------------------------------------------//
 
   static void registerDynamicEntity(
@@ -87,9 +93,8 @@ public:
   //-------------------------------------------------------------------//
   /// @brief add the specified type and constuct method to the list of
   /// possible types
-  /// @param[in] _type, a string referring to the type's name
-  /// @param[in] _cb, the callback method (the create method of the class)
-  /// @param[in] _init callback for the initialisation of class
+  /// @param[in] _type a string referring to the type's name
+  /// @param[in] _cb the callback method (the create method of the class)
   //-------------------------------------------------------------------//
 
   static void registerStaticEntity(
@@ -99,7 +104,7 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief remove the specified type from the list of possible types
-  /// @param[in] _type, a string referring to the type that should be
+  /// @param[in] _type a string referring to the type that should be
   /// removed
   //-------------------------------------------------------------------//
 
@@ -107,7 +112,7 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief remove the specified type from the list of possible types
-  /// @param[in] _type, a string referring to the type that should be
+  /// @param[in] _type a string referring to the type that should be
   /// removed
   //-------------------------------------------------------------------//
 
@@ -115,8 +120,9 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief create DynamicEntity and return pointer to it
-  /// @param[in] _type, type of DynamicEntity to create
-  /// @param[in] _pos, initital position of enemy
+  /// @param[in] _type type of DynamicEntity to create
+  /// @param[in] _pos initital position of enemy
+  /// @param[in] _aim intitial aim of enemy
   //-------------------------------------------------------------------//
   static DynamicEntityPtr createDynamicEntity(
         const std::string &_type,
@@ -126,8 +132,8 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief create StaticEntity and return pointer to it
-  /// @param[in] _type, type of StaticEntity to create
-  /// @param[in] _node, which node to create the StaticEntity on
+  /// @param[in] _type type of StaticEntity to create
+  /// @param[in] _node which node to create the StaticEntity on
   //-------------------------------------------------------------------//
 
   static StaticEntityPtr createStaticEntity(
@@ -136,10 +142,17 @@ public:
         );
 
 protected:
+  //-------------------------------------------------------------------//
+  /// @brief map of all possible DynamicEntity type names to their corresponding
+  /// create method
+  //-------------------------------------------------------------------//
   static DynamicEntityTypeMap s_dynamicEntityTypes;
+
+  //-------------------------------------------------------------------//
+  /// @brief map of all possible StaticEntity type names to their corresponding
+  /// create method
+  //-------------------------------------------------------------------//
   static StaticEntityTypeMap s_staticEntityTypes;
 };
-
-
 
 #endif // ENTITYFACTORY_H

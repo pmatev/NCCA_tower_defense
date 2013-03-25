@@ -32,12 +32,6 @@ WaveManagerPtr WaveManager::create(
   return a;
 }
 
-//-------------------------------------------------------------------//
-
-WaveManager::~WaveManager()
-{
-  // dtor
-}
 
 //-------------------------------------------------------------------//
 void WaveManager::update(const double _dt)
@@ -67,6 +61,7 @@ void WaveManager::publish()
 }
 
 //-------------------------------------------------------------------//
+
 void WaveManager::draw()
 {
   if(m_currentWaveIt != m_waves.end())

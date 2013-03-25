@@ -119,6 +119,7 @@ void Wave::update(const double _dt)
     enemy->prepareForUpdate();
   }
 
+  // parallelise enemy update for multi-threading
 #pragma omp parallel
   {
 #pragma omp for
@@ -163,41 +164,11 @@ void Wave::draw()
     (*it)->draw();
   }
 }
-//-------------------------------------------------------------------//
-
-//void Wave::drawSelection()
-//{
-//  // Go through all the enemies and call their publish
-//  for(
-//      EnemyVec::iterator it = m_enemies.begin();
-//      it != m_enemies.end();
-//      ++it
-//      )
-//  {
-//    (*it)->drawSelection();
-//  }
-//}
-
 
 //-------------------------------------------------------------------//
 
 bool Wave::generatePaths(NodeWPtr _node)
 {
-//  // Reset path nodes (for path optimisation)
-//  EnvironmentPtr env = Game::instance()->getEnvironmentWeakPtr().lock();
-//  if(env)
-//  {
-//    env->recalculateSearchTree();
-//  }
-
-  // 1. Find all Enemies affected by _node
-  // 2. Go through each Enemy and tell it to generate a new temporary path
-  // 3. If all the paths were created successfully tell all enemies to update
-  // their paths and return true, else return false
-  // 4. Update the map with the new node values
-
-
-  // 1.
   Q_UNUSED(_node)
   BOOST_FOREACH(EnemyPtr enemy, m_enemies)
   {
@@ -211,50 +182,6 @@ bool Wave::generatePaths(NodeWPtr _node)
   {
     enemy->finalisePath();
   }
-
-//  EnemyWVecPtr enemyList = m_pathNodes[_node];
-//  // if there are no enemies using this node
-//  if(!enemyList)
-//  {
-//    return true;
-//  }
-//  // 2.
-//  bool invalidPath = false;
-
-//  for(unsigned long int i = 0; i < enemyList->size(); ++i)
-//  {
-//    // This is set to skip computation so that we can shortcut to the end
-//    // without breaking (breaking doesn't work with "omp for")
-//    if(invalidPath)
-//    {
-//      continue;
-//    }
-//    EnemyPtr enemy = (*enemyList)[i].lock();
-//    if(enemy)
-//    {
-//      if(!enemy->generateTempPath())
-//      {
-//        invalidPath = true;
-//      }
-//    }
-//  }
-
-//  if(invalidPath)
-//  {
-//    return false;
-//  }
-//  // 3.
-//  BOOST_FOREACH(EnemyWPtr enemyWeak, *enemyList)
-//  {
-//    EnemyPtr enemy = enemyWeak.lock();
-//    if(enemy)
-//    {
-//      enemy->finalisePath();
-//    }
-//  }
-//  // 4.
-//  // clear list and rebuild
-//  rebuildPathNodes();
   return true;
 }
 

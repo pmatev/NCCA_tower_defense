@@ -23,18 +23,9 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief a parameterised constructor
-  /// @param [in] _fov, a float value defining the field of view of the
-  /// turret
-  /// @param [in] _viewDistance, a float value defining how far the turret
-  /// can see
-  /// @param [in] _maxRotationSpeed, float value defining how fast a
-  /// turret can rotate
-  /// @param [in] _aim, a reference to an ngl vector which defines the
-  /// initial aim vector of the turret
-  /// @param [in] _linkedNodes, a reference to an stl vector of boost
+  /// @param [in] _linkedNodes a reference to an stl vector of boost
   /// shared pointers to the nodes that are covered by the static entity
-  /// @param [in] _pos, a vector containing the initial position in 3D
-  /// space of the entity
+  /// @param[in] _id ID of entity
   //-------------------------------------------------------------------//
 
   static EntityPtr create(
@@ -42,6 +33,9 @@ public:
         unsigned int _id
         );
 
+  //-------------------------------------------------------------------//
+  /// @brief initialise state values
+  //-------------------------------------------------------------------//
   void stateInit();
 
   //-------------------------------------------------------------------//
@@ -50,26 +44,24 @@ public:
 
   void generateViewBBox();
 
+  //-------------------------------------------------------------------//
+  /// @brief draw function
+  //-------------------------------------------------------------------//
   void draw();
 
 protected:
 
+  //-------------------------------------------------------------------//
+  /// @brief filter the view volume
+  /// @param[out] o_localEntities the list of local entities to be edited
+  //-------------------------------------------------------------------//
   void filterViewVolume(EntityRecordWCList &o_localEntities);
 
   //-------------------------------------------------------------------//
   /// @brief a parameterised ctor
-  /// @param [in] _fov, a float value defining the field of view of the
-  /// turret
-  /// @param [in] _viewDistance, a float value defining how far the turret
-  /// can see
-  /// @param [in] _maxRotationSpeed, float value defining how fast a
-  /// turret can rotate
-  /// @param [in] _aim, a reference to an ngl vector which defines the
-  /// initial aim vector of the turret
-  /// @param [in] _linkedNodes, a reference to an stl vector of boost
+  /// @param [in] _linkedNodes a reference to an stl vector of boost
   /// shared pointers to the nodes that are covered by the static entity
-  /// @param [in] _pos, a vector containing the initial position in 3D
-  /// space of the entity
+  /// @param[in] _id ID of entity
   //-------------------------------------------------------------------//
 
   TestTurret(

@@ -39,7 +39,7 @@
   typedef boost::shared_ptr< X ## List > X ## ListPtr;\
 
 //-------------------------------------------------------------------//
-/// @brief preprocessor macro to aid in the creation of lists of shared pointer
+/// @brief preprocessor macro to aid in the creation of vectors of shared pointer
 //-------------------------------------------------------------------//
 
 #define DECLARESMARTVEC(X) \

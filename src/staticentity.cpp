@@ -14,8 +14,6 @@ StaticEntity::StaticEntity(
 {
   // tag node as occupied
   _linkedNode->setOccupied(true);
-  //publish to the Database
-  //publish();
 }
 
 //-------------------------------------------------------------------//
@@ -51,8 +49,6 @@ void StaticEntity::prepareForUpdate()
   calculateLocalEntities(*m_localEntities, types);
   // Filter the entities
   filterViewVolume(*m_localEntities);
-
-
 }
 
 //-------------------------------------------------------------------//

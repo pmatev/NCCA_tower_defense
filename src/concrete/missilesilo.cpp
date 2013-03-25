@@ -17,8 +17,8 @@ MissileSilo::MissileSilo(
     _linkedNode,
     _id,
     std::string("Grenade"),
-    20,
-    15
+    20, // view distance
+    15 // projectile speed
     ),
   m_gravity(-9.81),
   m_hasTarget(false),
@@ -49,10 +49,12 @@ EntityPtr MissileSilo::create(NodePtr _linkedNode, unsigned int _id)
 
 void MissileSilo::stateInit()
 {
+  // create state machine
   m_stateMachine = new StateMachine(EntityWPtr(shared_from_this()));
   m_stateMachine->setCurrentState(MissileSiloBasicUpgrade::instance());
   m_stateMachine->setPreviousState(MissileSiloSeek::instance());
 
+  // register all the upgrades
   registerUpgrade(
         MissileSiloBasicUpgrade::instance(),
         UpgradeData::create(
@@ -77,8 +79,6 @@ void MissileSilo::stateInit()
 
 ngl::Vec3 MissileSilo::brain()
 {
-  // do something
-  // return test aim
   m_stateMachine->update();
   return m_desiredAim;
 }
@@ -87,6 +87,7 @@ ngl::Vec3 MissileSilo::brain()
 
 void MissileSilo::filterViewVolume(EntityRecordWCList &o_localEntities)
 {
+  // filter by square distance
   if(o_localEntities.size()!= 0)
   {
     //generate an iterator to cycle through the list
@@ -210,6 +211,7 @@ void MissileSilo::calculateTarget()
           );
     float timeToHit = relVec.length() / m_horizontalSpeed;
     m_hasTarget = true;
+    // compensate of enemy speed
     m_targetPos = ngl::Vec3(
           bestRecord->m_x + (bestRecord->m_velX * timeToHit),
           bestRecord->m_y + (bestRecord->m_velY * timeToHit),

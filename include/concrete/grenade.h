@@ -4,8 +4,9 @@
 
 //-------------------------------------------------------------------//
 /// @file grenade.h
-/// @brief CONCRETE TYPE class for grenade
-/// @author Peter May
+/// @brief CONCRETE TYPE class for grenade. Basically just acts under free-fall
+/// motion.
+/// @author Peter May, Jared Auty
 /// @version 1
 /// @date 4/12/12
 /// Revision History :
@@ -22,6 +23,9 @@ class Grenade : public Projectile
 public:
   //-------------------------------------------------------------------//
   /// @brief creator
+  /// @param[in] _pos initial position
+  /// @param[in] _aim initial velocity
+  /// @param[in] _id ID of entity
   //-------------------------------------------------------------------//
   static EntityPtr create(
         const ngl::Vec3 &_pos,
@@ -35,17 +39,26 @@ public:
 
   void draw();
 
+  //-------------------------------------------------------------------//
+  /// @brief initialise state values
+  //-------------------------------------------------------------------//
+
   void stateInit();
+
+  //-------------------------------------------------------------------//
+  /// @brief filter the local enemies
+  //-------------------------------------------------------------------//
 
   void filterViewVolume(EntityRecordWCList &o_localEntities);
 
-//  //-------------------------------------------------------------------//
-//  /// @brief overload this so we can compute the intial velocity
-//  //-------------------------------------------------------------------//
-//  void setVelocity(const ngl::Vec3 _velocity);
-
+  //-------------------------------------------------------------------//
+  /// @brief destructor, used for creating explosions
+  //-------------------------------------------------------------------//
   ~Grenade();
 
+  //-------------------------------------------------------------------//
+  /// @brief set the gravity value. This is always in the y direction
+  //-------------------------------------------------------------------//
   inline void setGravity(float _gravity) {m_gravity = _gravity;}
 
 public:
@@ -54,9 +67,10 @@ public:
   //-------------------------------------------------------------------//
   Grenade(const ngl::Vec3 &_pos, const ngl::Vec3 &_aim, unsigned int _id);
 
+  //-------------------------------------------------------------------//
+  /// @brief work out what to do
+  //-------------------------------------------------------------------//
   ngl::Vec3 brain();
-
-protected:
 
 protected:
   //-------------------------------------------------------------------//

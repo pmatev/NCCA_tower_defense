@@ -15,20 +15,6 @@ EntityFactory::StaticEntityTypeMap EntityFactory::s_staticEntityTypes;
 
 //-------------------------------------------------------------------//
 
-EntityFactory::EntityFactory()
-{
-  //currently using default constructor
-}
-
-//-------------------------------------------------------------------//
-
-EntityFactory::~EntityFactory()
-{
-  //currently using default destructor
-}
-
-//-------------------------------------------------------------------//
-
 void EntityFactory::initialiseFactory()
 {
   // This is where all different types are registered
@@ -41,6 +27,8 @@ void EntityFactory::initialiseFactory()
   registerStaticEntity("MissileSilo", MissileSilo::create);
 }
 
+//-------------------------------------------------------------------//
+
 void EntityFactory::registerDynamicEntity(
     const std::string _type,
     dynamicEntityCallBack _cb
@@ -48,6 +36,8 @@ void EntityFactory::registerDynamicEntity(
 {
   s_dynamicEntityTypes[_type] = _cb;
 }
+
+//-------------------------------------------------------------------//
 
 void EntityFactory::registerStaticEntity(
     const std::string _type,
@@ -57,18 +47,19 @@ void EntityFactory::registerStaticEntity(
   s_staticEntityTypes[_type] = _cb;
 }
 
+//-------------------------------------------------------------------//
 
 void EntityFactory::unregisterDynamicEntity(const std::string &_type)
 {
   s_dynamicEntityTypes.erase(_type);
 }
 
+//-------------------------------------------------------------------//
+
 void EntityFactory::unregisterStaticEntity(const std::string &_type)
 {
   s_staticEntityTypes.erase(_type);
 }
-
-
 
 //-------------------------------------------------------------------//
 
@@ -111,7 +102,6 @@ DynamicEntityPtr EntityFactory::createDynamicEntity(
 
 //-------------------------------------------------------------------//
 
-
 StaticEntityPtr EntityFactory::createStaticEntity(
     const std::string &_type,
     NodePtr _node
@@ -140,10 +130,7 @@ StaticEntityPtr EntityFactory::createStaticEntity(
 
     game->registerID(se,id);
     //then return the pointer
-
     return se;
-
-
   }
   return StaticEntityPtr();
 }

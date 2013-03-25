@@ -25,6 +25,8 @@ public:
 
   //-------------------------------------------------------------------//
   /// @brief the creator
+  /// @param[in] _spawnNodes list of spawn nodes
+  /// @param[in] _waveInfo list of wave information
   //-------------------------------------------------------------------//
 
   static WaveManagerPtr create(
@@ -33,14 +35,8 @@ public:
         );
 
   //-------------------------------------------------------------------//
-  /// @brief the destructor
-  //-------------------------------------------------------------------//
-
-  ~WaveManager();
-
-  //-------------------------------------------------------------------//
   /// @brief update everything
-  /// @param [in] _dt, the timestep
+  /// @param [in] _dt the timestep
   //-------------------------------------------------------------------//
 
   void update(const double _dt);
@@ -58,23 +54,17 @@ public:
   void draw();
 
   //-------------------------------------------------------------------//
-  /// @brief call draw selection on everything
-  //-------------------------------------------------------------------//
-
-  //void drawSelection();
-
-  //-------------------------------------------------------------------//
   /// @brief create new temporary paths for all enemies that are affected
   /// by inserting this tower
   /// @param[in] _node, the node in question
-  /// @param[out] whether all the paths were successful or not
+  /// @return whether all the paths were successful or not
   //-------------------------------------------------------------------//
 
   bool generatePaths(NodeWPtr _node);
 
   //-------------------------------------------------------------------//
   /// @brief check for collisions with static objects
-  /// @param[out] list of Collisions with objects
+  /// @return list of Collisions with objects
   //-------------------------------------------------------------------//
 
   std::list<Damage> checkCollisions() const;
@@ -87,6 +77,8 @@ public:
 protected:
   //-------------------------------------------------------------------//
   /// @brief ctor
+  /// @param[in] _spawnNodes list of spawn nodes
+  /// @param[in] _waveInfo list of wave information
   //-------------------------------------------------------------------//
 
   WaveManager(Node::NodeWVecWPtr _spawnNodes, const WaveInfoList &_waveInfo);

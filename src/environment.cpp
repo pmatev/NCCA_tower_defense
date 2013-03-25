@@ -75,17 +75,6 @@ Environment::Environment(
     }
   }
 
-//  // Make a hexagon
-//  int greatestDimention;
-//  _info.m_gridWidth > _info.m_gridHeight ? greatestDimention = _info.m_gridWidth : greatestDimention = _info.m_gridHeight;
-//  createHexagonShape(
-//        _info.m_gridWidth,
-//        _info.m_gridHeight,
-//        ngl::Vec2(0, 0),
-//        greatestDimention,
-//        invisibleCoords
-//        );
-
   invisibleCoords.insert(
         invisibleCoords.end(),
         _info.m_invisibleCoords.begin(),
@@ -153,7 +142,6 @@ void Environment::createHexagonShape(
      sideLength = _size / 2.0 + 1;
   }
   start = ngl::Vec2(_start.m_x, _start.m_y + std::ceil((_size - sideLength) / 2));
- // ngl::Vec2 start(_start.m_x, _start.m_y + std::floor((_size - sideLength) / 2) + 1);
   if(_size % 2 != 0 && _size % 3 != 0) // every second odd number
   {
     start.m_y +=1;
@@ -230,13 +218,6 @@ EnvironmentPtr Environment::create(
 {
   EnvironmentPtr a(new Environment(_info));
   return a;
-}
-
-//-------------------------------------------------------------------//
-
-Environment::~Environment()
-{
-  //default dtor
 }
 
 //-------------------------------------------------------------------//

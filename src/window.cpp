@@ -73,7 +73,7 @@ void Window::init()
 
     //initialize openGl Window
 
-    m_window = SDL_SetVideoMode(0,0, 16, SDL_OPENGL | SDL_RESIZABLE| SDL_FULLSCREEN);
+    m_window = SDL_SetVideoMode(800,800, 16, SDL_OPENGL | SDL_RESIZABLE);
 
     const SDL_VideoInfo* videoSize = SDL_GetVideoInfo();
 
