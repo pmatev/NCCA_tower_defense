@@ -89,7 +89,7 @@ void TextureLib::init()
         loadTexture("startScreen", "textures/startScreen.png");
         loadTexture("gameOverBackground", "textures/gameOverScreen");
         loadTexture("settingsBackground", "textures/settingsBackground.png");
-        loadTexture("towerPanel", "textures/towerPanel.png");
+        loadTexture("towerPanel", "textures/towerPanel_withAlpha.png");
         loadTexture("upgrade2BulletImage", "textures/upgrade2BulletImage.png");
         loadTexture("upgrade2GrenadeImage", "textures/upgrade2GrenadeImage.png");
         loadTexture("upgradeButton", "textures/upgradeButton.png");
@@ -104,7 +104,9 @@ void TextureLib::init()
         loadTexture("hexagon_AO", "textures/hexagon_AO.png");
         loadTexture("enemy_AO", "textures/enemy_AO.png");
         loadTexture("bg_tile", "textures/bg_tile.png");
-
+        loadTexture("turret_base", "textures/tower_base_AO.png");
+        loadTexture("turret_cannon", "textures/tower_top_AO.png");
+        loadTexture("wall_AO", "textures/wall_AO.png");
 }
 
 void TextureLib::createTexture(const std::string &_name)

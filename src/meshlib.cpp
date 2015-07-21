@@ -28,9 +28,9 @@ MeshLib::~MeshLib()
 
 void MeshLib::init()
 {
-  createMeshFromObj("models/turret_base.obj",
+  createMeshFromObj("models/turret_base2.obj",
                     "turret_base");
-  createMeshFromObj("models/turret_cannon.obj",
+  createMeshFromObj("models/turret_cannon2.obj",
                     "turret_cannon");
   createMeshFromObj("models/enemy2.obj",
                     "enemy");
@@ -38,7 +38,7 @@ void MeshLib::init()
                     "hexagon");
   createMeshFromObj("models/base.obj",
                     "base");
-  createMeshFromObj("models/wall.obj",
+  createMeshFromObj("models/wall2.obj",
                     "wall");
   createMeshFromObj("models/bullet.obj",
                     "bullet");

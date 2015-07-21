@@ -66,7 +66,8 @@ void Bullet::draw()
                         "Constant"
                         );
 
-  shader->setShaderParam4f("colour", 1,0,0,1);
+  shader->setShaderParam4f("colour", 1,0.1,0,1);
+  shader->setShaderParam1f("textured",0);
 
   r->draw("bullet", "Constant");
 }

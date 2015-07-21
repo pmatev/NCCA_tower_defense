@@ -35,7 +35,6 @@ public: //typedefs and structs
   /// @struct a struct to contain the bounding box of the entity's visible
   /// area
   //-------------------------------------------------------------------//
-
   struct BBox
   {
     //-------------------------------------------------------------------//
@@ -99,7 +98,6 @@ public: //typedefs and structs
     /// @param [in] _maxY the maximum y value
     /// @param [in] _maxZ the maximum z value
     //-------------------------------------------------------------------//
-
     BBox(
         float _minX,
         float _minY,
@@ -125,14 +123,12 @@ public: //methods
   /// @param [in] _type general type of the entity
   /// @param[in] _id ID of entity
   //-------------------------------------------------------------------//
-
   Entity(const ngl::Vec3 & _pos, GeneralType _type, unsigned int _id);
 
 
   //-------------------------------------------------------------------//
   /// @brief the destructor
   //-------------------------------------------------------------------//
-
   ~Entity();
 
   //-------------------------------------------------------------------//
@@ -146,21 +142,18 @@ public: //methods
   /// @param[in] _dt difference in time since the last update. This is measured
   /// in seconds
   //-------------------------------------------------------------------//
-
   virtual void update(const double _dt) = 0;
 
   //-------------------------------------------------------------------//
   /// @brief a virtual method which will draw the entity when
   /// implemented in child classes
   //-------------------------------------------------------------------//
-
   virtual void draw();
 
   //-------------------------------------------------------------------//
   /// @brief a method which will publish the entity's position to the
   /// central database
   //-------------------------------------------------------------------//
-
   void publish();
 
   //-------------------------------------------------------------------//
@@ -173,7 +166,6 @@ public: //methods
   /// @brief method to return the health value
   /// @param [out] m_health, the health value of the entity
   //-------------------------------------------------------------------//
-
   inline float getHealth() const {return m_health;}
 
   //-------------------------------------------------------------------//
@@ -182,7 +174,6 @@ public: //methods
   /// This value should start at 1 and increase with increased shielding.
   /// For example a value of 2 should mean that the amount of damage is halved.
   //-------------------------------------------------------------------//
-
   inline void setShield(float _shield)
   {
     _shield = std::max(1.0f, _shield);
@@ -193,7 +184,6 @@ public: //methods
   /// @brief Deal a certain amount of damage to the entity.
   /// @param[in] _damage, the amount of damage to deal
   //-------------------------------------------------------------------//
-
   inline void dealDamage(float _damage)
   {
     m_health-= m_shieldPercentage * _damage;
@@ -203,13 +193,11 @@ public: //methods
   /// @brief method to get the ID of the entity
   /// @param [out] m_ID, the ID of the entity
   //-------------------------------------------------------------------//
-
   inline unsigned int getID() const {return m_ID;}
 
   //-------------------------------------------------------------------//
   /// @brief gets localEntities
   //-------------------------------------------------------------------//
-
   inline EntityRecordWCListWPtr getLocalEntities() const {
     return EntityRecordWCListWPtr(m_localEntities);
   }
@@ -217,19 +205,16 @@ public: //methods
   //-------------------------------------------------------------------//
   /// @brief a method to return the type string
   //-------------------------------------------------------------------//
-
   inline GeneralType getGeneralType() const {return m_generalType;}
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the position of the entity
   //-------------------------------------------------------------------//
-
   inline ngl::Vec3 getPos() const {return m_pos;}
 
   //-------------------------------------------------------------------//
   /// @brief a method to return the bounding box of the entity's mesh
   //-------------------------------------------------------------------//
-
   inline BBox getMeshBBox() const {return m_lsMeshBBox;}
 
   //-------------------------------------------------------------------//
@@ -238,7 +223,6 @@ public: //methods
   /// @param [in] _meshData, a list of vertData structs from which to
   /// calculate the bounding box
   //-------------------------------------------------------------------//
-
   void generateLsBBox(const std::vector<Renderer::vertData> & _meshData);
 
   //-------------------------------------------------------------------//
@@ -246,13 +230,25 @@ public: //methods
   //-------------------------------------------------------------------//
   inline StateMachine* getStateMachine() const {return m_stateMachine;}
 
+  //-------------------------------------------------------------------//
+  /// @brief set method for the m_isHighlighted variable
+  /// @param [in] _isHighlighted, a boolean value to set the highlighted
+  /// flag to
+  //-------------------------------------------------------------------//
+  inline void setHighlighted(int _isHighlighted){
+                                    m_highlighted = _isHighlighted;}
+
+  //-------------------------------------------------------------------//
+  /// @brief get the highlighted value
+  //-------------------------------------------------------------------//
+  inline int getHighlighted() {return m_highlighted;}
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief a method to update the list of localEntities
   /// @param[out] o_newList list of record entities to be populated
   /// @param[in] _typeList list of types to filter by
   //-------------------------------------------------------------------//
-
   void calculateLocalEntities(
       EntityRecordWCList &o_newList,
       std::list<GeneralType> &_typeList
@@ -261,7 +257,6 @@ protected:
   //-------------------------------------------------------------------//
   /// @brief a method to clear the list of local entities
   //-------------------------------------------------------------------//
-
   void clearLocalEntities();
 
   //-------------------------------------------------------------------//
@@ -269,7 +264,6 @@ protected:
   /// on view volume. This should be implemented in the concrete type.
   /// @param[out] o_localEntities pointer to the local entities
   //-------------------------------------------------------------------//
-
   virtual void filterViewVolume(EntityRecordWCList &o_localEntities) = 0;
 
   //-------------------------------------------------------------------//
@@ -279,14 +273,12 @@ protected:
   /// entities and run the filterViewVolume method. This is for all things
   /// that should be done outside of update loop to keep thread-safe.
   //-------------------------------------------------------------------//
-
   virtual void prepareForUpdate() = 0;
 
   //-------------------------------------------------------------------//
   /// @brief a method to generate the view box, must be implemented in
   /// concrete types so that there can be variation on the view bboxes
   //-------------------------------------------------------------------//
-
   virtual void generateViewBBox() = 0;
 
   //-------------------------------------------------------------------//
@@ -295,8 +287,9 @@ protected:
   /// methods.
   /// @param[in] _colour colour to draw with
   //-------------------------------------------------------------------//
-
   void drawWithColour(const ngl::Vec3 &_colour);
+
+
 
 protected: //attributes
 
@@ -371,6 +364,12 @@ protected: //attributes
   //-------------------------------------------------------------------//
 
   ngl::TransformStack m_transformStack;
+
+  //-------------------------------------------------------------------//
+  /// @brief if the node is moved over when in creation mode flag will
+  /// be set to true and the node will be rendered differently
+  //-------------------------------------------------------------------//
+  int m_highlighted;
 
 private:
   //-------------------------------------------------------------------//

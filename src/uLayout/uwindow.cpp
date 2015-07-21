@@ -132,7 +132,7 @@ void UWindow::draw()
     if(m_isDrawable == true)
     {
         glDisable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND);
+//        glEnable(GL_BLEND);
 
         Window *window = Window::instance();
         ngl::ShaderLib *shader=ngl::ShaderLib::instance();

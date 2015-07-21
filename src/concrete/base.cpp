@@ -1,5 +1,5 @@
 #include "ngl/ShaderLib.h"
-
+#include "texturelib.h"
 #include "window.h"
 #include "concrete/base.h"
 #include "renderer.h"
@@ -59,19 +59,23 @@ void Base::generateViewBBox()
 
 void Base::draw()
 {
-  Renderer *r = Renderer::instance();
-  ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+    Renderer *r = Renderer::instance();
+    ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-  (*shader)["Phong"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(),
-                        "Phong"
-                        );
+    (*shader)["Constant"]->use();
+    r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+    ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
+    c = c/255.0f;
 
-  shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
+    shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
+    shader->setShaderParam1f("textured",1);
 
-  shader->setShaderParam4f("colour", 1, 0.1, 1, 1);
+    ngl::Vec4 colour = ngl::Vec4(0.8,0.7,1,1);
+    shader->setShaderParam4f("colour", colour[0], colour[1], colour[2], colour[3]);
 
-  r->draw("base", "Phong");
+    TextureLib *tex = TextureLib::instance();
+    tex->bindTexture("hexagon_AO");
+    r->draw("hexagon", "Constant");
 }
 
 //-------------------------------------------------------------------//

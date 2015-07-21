@@ -56,6 +56,7 @@ void PointLight::draw()
     (*shader)["Constant"]->use();
 
     shader->setShaderParam4f("colour", 0,1,0,1);
+    shader->setShaderParam1f("textured",0);
     ngl::Mat4 mat;
     mat.translate(m_pos[0],m_pos[1],m_pos[2]);
     r->loadMatrixToShader(mat,"Constant");

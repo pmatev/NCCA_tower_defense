@@ -151,11 +151,11 @@ HEADERS += \
 
 
 
-QMAKE_CXXFLAGS+=$$system($$(HOME)/SDL1/bin/sdl-config  --cflags)
+QMAKE_CXXFLAGS+=$$system(/opt/local/bin/sdl-config  --cflags)
 
 message(output from sdl-config --cflags added to CXXFLAGS= $$QMAKE_CXXFLAGS)
 
-LIBS+=$$system($$(HOME)/SDL1/bin/sdl-config --libs) -lSDL_ttf
+LIBS+=$$system(/opt/local/bin/sdl-config --libs) -lSDL_ttf
 message(output from sdl-config --libs added to LIB=$$LIBS)
 
 
@@ -195,10 +195,10 @@ OTHER_FILES += \
     shaders/UI.fs \
     shaders/Texture.vs \
     shaders/Texture.fs \
+    shaders/Texture3D.vs \
+    shaders/Texture3D.fs \
     shaders/Constant.vs \
     shaders/Constant.fs \
-    shaders/TexturedConst.vs \
-    shaders/TexturedConst.fs \
     shaders/Phong.vs \
     shaders/Phong.fs \
     \
@@ -302,4 +302,4 @@ OTHER_FILES += \
     textures/arrowUpButton.png \
     textures/arrowDownButtonPressed.png \
     textures/arrowDownButton.png \
-    textures/bg_tile.png
+    textures/bg_tile.png \

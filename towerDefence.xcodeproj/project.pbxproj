@@ -1,0 +1,2120 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+		D7BA7D76DAB5DD13389D6332 = {
+			buildActionMask = 2147483647;
+			files = (
+				);
+			generatedFileNames = (
+				);
+			isa = PBXShellScriptBuildPhase;
+			name = "Qt Qmake";
+			neededFileNames = (
+				);
+			shellPath = "/bin/sh";
+			shellScript = "make\ -C\ /Users/peter/BA3TowerDefence\ -f\ \'towerDefence.xcodeproj/qt_makeqmake.mak\'";
+		};
+		7EC3C68A81EFFF79B6CA22AC = {
+			isa = PBXFileReference;
+			name = "main.cpp";
+			path = "src/main.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		FD1638E377D97C82BDB438FB = {
+			fileRef = "7EC3C68A81EFFF79B6CA22AC";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		02744D49813A174F10A5B4E3 = {
+			isa = PBXFileReference;
+			name = "renderer.cpp";
+			path = "src/renderer.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		DB4FC9D0CF1F4F6FE4FC8835 = {
+			fileRef = "02744D49813A174F10A5B4E3";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		5FCFE707AC4518FC0AF1B4F0 = {
+			isa = PBXFileReference;
+			name = "entity.cpp";
+			path = "src/entity.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		A5793E7A0BE2F2C4F56512B9 = {
+			fileRef = "5FCFE707AC4518FC0AF1B4F0";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		E1F0718168E2ACCE01D4C875 = {
+			isa = PBXFileReference;
+			name = "staticentity.cpp";
+			path = "src/staticentity.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		82AFD2699A1863EDEB6FC836 = {
+			fileRef = "E1F0718168E2ACCE01D4C875";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		15FF132547D202D4F6103481 = {
+			isa = PBXFileReference;
+			name = "node.cpp";
+			path = "src/node.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		8C1240F45C6BD6B663CE950F = {
+			fileRef = "15FF132547D202D4F6103481";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		C57591D89F0BEE7486AF327E = {
+			isa = PBXFileReference;
+			name = "dynamicentity.cpp";
+			path = "src/dynamicentity.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		865604B08701DA40D3F9F57B = {
+			fileRef = "C57591D89F0BEE7486AF327E";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		B5108F584DDDDA882ADA51FB = {
+			isa = PBXFileReference;
+			name = "turret.cpp";
+			path = "src/turret.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		EEF4E3AB9B07271DABAA0C7A = {
+			fileRef = "B5108F584DDDDA882ADA51FB";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		FCFC2A913693DB7E96D77159 = {
+			isa = PBXFileReference;
+			name = "wave.cpp";
+			path = "src/wave.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		3009F3B812CEDDB9A39202C8 = {
+			fileRef = "FCFC2A913693DB7E96D77159";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		CFC3D876230829106A9A56A3 = {
+			isa = PBXFileReference;
+			name = "wavemanager.cpp";
+			path = "src/wavemanager.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		25355138B6B3FBA5CECBE646 = {
+			fileRef = "CFC3D876230829106A9A56A3";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		B94AB518A1AE68A9965572B8 = {
+			isa = PBXFileReference;
+			name = "entityfactory.cpp";
+			path = "src/entityfactory.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		B06A478101AB62FA3C476A5D = {
+			fileRef = "B94AB518A1AE68A9965572B8";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		6EF17526BE0E4CC9B0F882AF = {
+			isa = PBXFileReference;
+			name = "database.cpp";
+			path = "src/database.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		28A56EE146E0CE913E740E1C = {
+			fileRef = "6EF17526BE0E4CC9B0F882AF";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		45E60C24C44303B6E5209A21 = {
+			isa = PBXFileReference;
+			name = "uielement.cpp";
+			path = "src/uielement.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		BCF13522E191DFA5901870D7 = {
+			fileRef = "45E60C24C44303B6E5209A21";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		18513665750EF5ADF42B5EC2 = {
+			isa = PBXFileReference;
+			name = "game.cpp";
+			path = "src/game.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		38B08ECC3CCC2F393641E07B = {
+			fileRef = "18513665750EF5ADF42B5EC2";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		E2B656616D911EB8D3605C2E = {
+			isa = PBXFileReference;
+			name = "camera.cpp";
+			path = "src/camera.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		CD466338E3B7C60CA3A783D4 = {
+			fileRef = "E2B656616D911EB8D3605C2E";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		AEF9E958D9E5F476279C706E = {
+			isa = PBXFileReference;
+			name = "window.cpp";
+			path = "src/window.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		312FA3FC253AFAD4F4DE5522 = {
+			fileRef = "AEF9E958D9E5F476279C706E";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		BAA4D2D0FFAFDEC2B86BAF06 = {
+			isa = PBXFileReference;
+			name = "environment.cpp";
+			path = "src/environment.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		4B85E2CF3F8E2B92A90CC46E = {
+			fileRef = "BAA4D2D0FFAFDEC2B86BAF06";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		871634C5F6698F6A2EF2616A = {
+			isa = PBXFileReference;
+			name = "nodemanager.cpp";
+			path = "src/nodemanager.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		33EDC38709947040B98BC201 = {
+			fileRef = "871634C5F6698F6A2EF2616A";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		CF6291680856BCCF1D74FB58 = {
+			isa = PBXFileReference;
+			name = "uibutton.cpp";
+			path = "src/uibutton.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		EF0817A2856E4E6E1455EE67 = {
+			fileRef = "CF6291680856BCCF1D74FB58";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		1E2E29F4912BBEE028CD5264 = {
+			isa = PBXFileReference;
+			name = "ui.cpp";
+			path = "src/ui.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		CA34A5CCAAC0286E9BDB2F99 = {
+			fileRef = "1E2E29F4912BBEE028CD5264";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		52C36C761728AF2F0C443F7C = {
+			isa = PBXFileReference;
+			name = "enemy.cpp";
+			path = "src/enemy.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		52CD468D15D2579E6976B071 = {
+			fileRef = "52C36C761728AF2F0C443F7C";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		B429F62A82C49AD42D8542E0 = {
+			isa = PBXFileReference;
+			name = "projectile.cpp";
+			path = "src/projectile.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		9C8DA681F2BBB5A4D724A857 = {
+			fileRef = "B429F62A82C49AD42D8542E0";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		628AB6E28F80D7713903B8EF = {
+			isa = PBXFileReference;
+			name = "projectilemanager.cpp";
+			path = "src/projectilemanager.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		CD1435B096584191BA0DDD30 = {
+			fileRef = "628AB6E28F80D7713903B8EF";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		8576E208B5AB3A4BB4A5EAE7 = {
+			isa = PBXFileReference;
+			name = "databasegrid.cpp";
+			path = "src/databasegrid.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		52498982102B18F3BC644D02 = {
+			fileRef = "8576E208B5AB3A4BB4A5EAE7";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		F5D3116FF81FBB67D234FB75 = {
+			isa = PBXFileReference;
+			name = "bullet.cpp";
+			path = "src/concrete/bullet.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		FA99FA9C638DE2BA475C1317 = {
+			fileRef = "F5D3116FF81FBB67D234FB75";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		4C486ABFE3C5F5A4C29E1DD4 = {
+			isa = PBXFileReference;
+			name = "base.cpp";
+			path = "src/concrete/base.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		BBBE332B560CC4AE36993AF9 = {
+			fileRef = "4C486ABFE3C5F5A4C29E1DD4";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		8D4B94579B1FC04905820A68 = {
+			isa = PBXFileReference;
+			name = "testenemy.cpp";
+			path = "src/concrete/testenemy.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		F1253D2318A8A908BF02E72F = {
+			fileRef = "8D4B94579B1FC04905820A68";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		E8E986BF42296C7AA0DD3023 = {
+			isa = PBXFileReference;
+			name = "testturret.cpp";
+			path = "src/concrete/testturret.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		56E24B1A6BAB4FB50B9BB59D = {
+			fileRef = "E8E986BF42296C7AA0DD3023";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		65CEB36BD38313E5E399363B = {
+			isa = PBXFileReference;
+			name = "text.cpp";
+			path = "src/text.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		3EB5B444876AEE3A928FBA32 = {
+			fileRef = "65CEB36BD38313E5E399363B";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		1A52F0323E0000CE55583A07 = {
+			isa = PBXFileReference;
+			name = "statemachine.cpp";
+			path = "src/fsm/statemachine.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		42E4E3E9869377187BEA1F50 = {
+			fileRef = "1A52F0323E0000CE55583A07";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		BB6770FF35351443D2944980 = {
+			isa = PBXFileReference;
+			name = "enemystates.cpp";
+			path = "src/fsm/states/enemystates.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		5B1D64AAD0434130D967ABC0 = {
+			fileRef = "BB6770FF35351443D2944980";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		21C72A68E355735CDCFAE1FF = {
+			isa = PBXFileReference;
+			name = "steeringbehaviours.cpp";
+			path = "src/ai/steeringbehaviours.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		AAA1192C14608355BFB91D4D = {
+			fileRef = "21C72A68E355735CDCFAE1FF";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		DC52F162280289DD2D4D97D8 = {
+			isa = PBXFileReference;
+			name = "player.cpp";
+			path = "src/player.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		0D73E364245276CD4E2DA39B = {
+			fileRef = "DC52F162280289DD2D4D97D8";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		0535543039C574E9915B0FB8 = {
+			isa = PBXFileReference;
+			name = "column.cpp";
+			path = "src/uLayout/column.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		CF6930E62091F9A47804FEFD = {
+			fileRef = "0535543039C574E9915B0FB8";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		7928A43BF62972F2ADA8A7A7 = {
+			isa = PBXFileReference;
+			name = "table.cpp";
+			path = "src/uLayout/table.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		4DBD53E83E2C99938BADE952 = {
+			fileRef = "7928A43BF62972F2ADA8A7A7";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		AE5204DE615DAAAFB44C060B = {
+			isa = PBXFileReference;
+			name = "turretstates.cpp";
+			path = "src/fsm/states/turretstates.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		C1806C334F69CF7E6C2E37FF = {
+			fileRef = "AE5204DE615DAAAFB44C060B";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		1A5D522B1A5D7612547740ED = {
+			isa = PBXFileReference;
+			name = "projectilestates.cpp";
+			path = "src/fsm/states/projectilestates.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		FE474E2AD4E0A6A686D0952B = {
+			fileRef = "1A5D522B1A5D7612547740ED";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		66C3041EDFF4AC9384C4032F = {
+			isa = PBXFileReference;
+			name = "texturelib.cpp";
+			path = "src/texturelib.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		453B4D7C2628D650134F2146 = {
+			fileRef = "66C3041EDFF4AC9384C4032F";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		845AD689807959A72AC92E50 = {
+			isa = PBXFileReference;
+			name = "texture.cpp";
+			path = "src/texture.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		85FB8A8B29A3E4F9BEB06AB0 = {
+			fileRef = "845AD689807959A72AC92E50";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		BFDFD968DC150119CFFE380B = {
+			isa = PBXFileReference;
+			name = "billboard.cpp";
+			path = "src/billboard.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		24A28B067B6467552FE1EEB0 = {
+			fileRef = "BFDFD968DC150119CFFE380B";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		8AF9CA1D0C1D7771AFE35AD6 = {
+			isa = PBXFileReference;
+			name = "invisiblewall.cpp";
+			path = "src/concrete/invisiblewall.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		BF07F05E5E96B16901782350 = {
+			fileRef = "8AF9CA1D0C1D7771AFE35AD6";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		346E809CFCF4DD7A7DCE20A4 = {
+			isa = PBXFileReference;
+			name = "standardwall.cpp";
+			path = "src/concrete/standardwall.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		26878BAE3344DBC8782FD02D = {
+			fileRef = "346E809CFCF4DD7A7DCE20A4";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		58BC7C5115874A3C292EDC8D = {
+			isa = PBXFileReference;
+			name = "explosion.cpp";
+			path = "src/explosion.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		018B54DA49A0C34BCE2DDABA = {
+			fileRef = "58BC7C5115874A3C292EDC8D";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		369A954238F025B15EBCC00C = {
+			isa = PBXFileReference;
+			name = "meshlib.cpp";
+			path = "src/meshlib.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		0B9D2F81696AA47B549E2CC9 = {
+			fileRef = "369A954238F025B15EBCC00C";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		D0A769D701FFC7042B2DA6B8 = {
+			isa = PBXFileReference;
+			name = "pointlight.cpp";
+			path = "src/pointlight.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		DAED4278C66AA3215042FF74 = {
+			fileRef = "D0A769D701FFC7042B2DA6B8";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		9A5625E73A45D7ECE1335647 = {
+			isa = PBXFileReference;
+			name = "mesh.cpp";
+			path = "src/mesh.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		93313E961B89BACF5CA34223 = {
+			fileRef = "9A5625E73A45D7ECE1335647";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		1A816C73498F5E5D8F67D737 = {
+			isa = PBXFileReference;
+			name = "grenade.cpp";
+			path = "src/concrete/grenade.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		781D030164DA2C6CA58C7B02 = {
+			fileRef = "1A816C73498F5E5D8F67D737";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		8EBA166AE867B186EFF57F46 = {
+			isa = PBXFileReference;
+			name = "missilesilo.cpp";
+			path = "src/concrete/missilesilo.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		D7873C8F64731E1CBCAD5152 = {
+			fileRef = "8EBA166AE867B186EFF57F46";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		BC17AE25CDA836DE413B8F99 = {
+			isa = PBXFileReference;
+			name = "missilesilostate.cpp";
+			path = "src/fsm/states/missilesilostate.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		E3AEBF158F4C2FE8E7F03DCC = {
+			fileRef = "BC17AE25CDA836DE413B8F99";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		52E570FD4714E3B5A3A8B2F1 = {
+			isa = PBXFileReference;
+			name = "uwindow.cpp";
+			path = "src/uLayout/uwindow.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		FCDE6CD094E1593FB04FFF1C = {
+			fileRef = "52E570FD4714E3B5A3A8B2F1";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		3776B523484B18CD439D495B = {
+			isa = PBXFileReference;
+			name = "costbutton.cpp";
+			path = "src/costbutton.cpp";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		F3CB4690DEF8D3CA6E24A57C = {
+			fileRef = "3776B523484B18CD439D495B";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		F4CD2BDC12FBF8F823E5B771 = {
+			isa = PBXFileReference;
+			name = "window.h";
+			path = "include/window.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		34B8B474AF4AC82E0D6C0574 = {
+			isa = PBXFileReference;
+			name = "renderer.h";
+			path = "include/renderer.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		5EB3D8915CB128EC6309E6A7 = {
+			isa = PBXFileReference;
+			name = "smartpointers.h";
+			path = "include/smartpointers.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		430DE3E0E3AEE21B14EB7089 = {
+			isa = PBXFileReference;
+			name = "game.h";
+			path = "include/game.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		FAEEEF794A293D9176E5815D = {
+			isa = PBXFileReference;
+			name = "entity.h";
+			path = "include/entity.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		2E6E1B2EAC73DAC51E02D4CC = {
+			isa = PBXFileReference;
+			name = "node.h";
+			path = "include/node.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		F8D96CE59296C12CB40CA1E6 = {
+			isa = PBXFileReference;
+			name = "turret.h";
+			path = "include/turret.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		14298916DF9EC26ED6679512 = {
+			isa = PBXFileReference;
+			name = "staticentity.h";
+			path = "include/staticentity.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		288A9FF49E11F5F972540819 = {
+			isa = PBXFileReference;
+			name = "dynamicentity.h";
+			path = "include/dynamicentity.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		190628FBCE5FBB4348229AB2 = {
+			isa = PBXFileReference;
+			name = "database.h";
+			path = "include/database.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		BB699156A7BD5B21B93D2F7A = {
+			isa = PBXFileReference;
+			name = "wave.h";
+			path = "include/wave.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		0832E24AEAD30F92BA7EA04E = {
+			isa = PBXFileReference;
+			name = "wavemanager.h";
+			path = "include/wavemanager.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		427F2DCC61A041892E5B66E7 = {
+			isa = PBXFileReference;
+			name = "entityfactory.h";
+			path = "include/entityfactory.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		EE74552E13E833F6BDB5AAD2 = {
+			isa = PBXFileReference;
+			name = "enemy.h";
+			path = "include/enemy.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		AD1C6A245C303636B6DF37C4 = {
+			isa = PBXFileReference;
+			name = "camera.h";
+			path = "include/camera.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4825D1B8A7B7FF80E8F038A3 = {
+			isa = PBXFileReference;
+			name = "environment.h";
+			path = "include/environment.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		28FE2698CC4FA0066FA30607 = {
+			isa = PBXFileReference;
+			name = "nodemanager.h";
+			path = "include/nodemanager.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		32E2CBD90992A650EBC4B7F3 = {
+			isa = PBXFileReference;
+			name = "uibutton.h";
+			path = "include/uibutton.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		240038921789AD4CF6628F60 = {
+			isa = PBXFileReference;
+			name = "uielement.h";
+			path = "include/uielement.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		63C5DDE1D6AF7CAA861922FA = {
+			isa = PBXFileReference;
+			name = "ui.h";
+			path = "include/ui.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		EE1E8FF9193AA4B74FF59CAC = {
+			isa = PBXFileReference;
+			name = "projectile.h";
+			path = "include/projectile.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		75A9914C0121610FA3B94D54 = {
+			isa = PBXFileReference;
+			name = "projectilemanager.h";
+			path = "include/projectilemanager.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		883BFA0ACA83D42B5E1EDE57 = {
+			isa = PBXFileReference;
+			name = "databasegrid.h";
+			path = "include/databasegrid.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		6BDEA45EFCAFA06BF26A663E = {
+			isa = PBXFileReference;
+			name = "bullet.h";
+			path = "include/concrete/bullet.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		F0BEAFBEAD67134CB1A82CDD = {
+			isa = PBXFileReference;
+			name = "base.h";
+			path = "include/concrete/base.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		AE2FB28E63A661DAD99132D9 = {
+			isa = PBXFileReference;
+			name = "testenemy.h";
+			path = "include/concrete/testenemy.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		3624E8C32230C1572BF2C492 = {
+			isa = PBXFileReference;
+			name = "testturret.h";
+			path = "include/concrete/testturret.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		F257E81375FDB535F6E17574 = {
+			isa = PBXFileReference;
+			name = "database.h";
+			path = "include/fwd/database.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		351FF6466B6B08780657D23E = {
+			isa = PBXFileReference;
+			name = "entity.h";
+			path = "include/fwd/entity.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		BCAD4E913541072837737A90 = {
+			isa = PBXFileReference;
+			name = "game.h";
+			path = "include/fwd/game.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		B8D8FA2CDF73CA5EE94CC6F2 = {
+			isa = PBXFileReference;
+			name = "uibutton.h";
+			path = "include/fwd/uibutton.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		E4C406BCD7E86C5D4F06DF31 = {
+			isa = PBXFileReference;
+			name = "ui.h";
+			path = "include/fwd/ui.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		2B71B6EA1864A16741B60F66 = {
+			isa = PBXFileReference;
+			name = "text.h";
+			path = "include/text.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4C8F2C0B171E5BDB7B1C8878 = {
+			isa = PBXFileReference;
+			name = "camera.h";
+			path = "include/fwd/camera.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		94D776A8393BD8E5960941FD = {
+			isa = PBXFileReference;
+			name = "statemachine.h";
+			path = "include/fsm/statemachine.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		208C07FB9732D55695CAA7B9 = {
+			isa = PBXFileReference;
+			name = "state.h";
+			path = "include/fsm/state.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		FF710733FCD22E2C5E1BD87E = {
+			isa = PBXFileReference;
+			name = "enemystates.h";
+			path = "include/fsm/states/enemystates.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		232C825FCC43B4E9FBF3143F = {
+			isa = PBXFileReference;
+			name = "steeringbehaviours.h";
+			path = "include/ai/steeringbehaviours.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		3618E56F82CB1C591922DA76 = {
+			isa = PBXFileReference;
+			name = "player.h";
+			path = "include/player.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		C2030FA8FF619EC7D0C55B6A = {
+			isa = PBXFileReference;
+			name = "column.h";
+			path = "include/uLayout/column.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		9FC089C723052C0C96971477 = {
+			isa = PBXFileReference;
+			name = "row.h";
+			path = "include/uLayout/row.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		7DFBAD6166C67CFB93AA8A1E = {
+			isa = PBXFileReference;
+			name = "table.h";
+			path = "include/uLayout/table.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		D1714E393239C3CD5AC0916E = {
+			isa = PBXFileReference;
+			name = "table.h";
+			path = "include/fwd/table.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		3BA7A018BFE5589729FD41F6 = {
+			isa = PBXFileReference;
+			name = "row.h";
+			path = "include/fwd/row.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		69AF89E2F929CD0656AF0FDA = {
+			isa = PBXFileReference;
+			name = "column.h";
+			path = "include/fwd/column.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		84E03A85CD90EC71F22C33AE = {
+			isa = PBXFileReference;
+			name = "turretstates.h";
+			path = "include/fsm/states/turretstates.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		0EC465775C001240DC3765ED = {
+			isa = PBXFileReference;
+			name = "projectilestates.h";
+			path = "include/fsm/states/projectilestates.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		38491F5B4899CD0165AA5F66 = {
+			isa = PBXFileReference;
+			name = "texturelib.h";
+			path = "include/texturelib.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		F805442BF63E7DC16FD3959A = {
+			isa = PBXFileReference;
+			name = "texture.h";
+			path = "include/texture.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4209E113B7047297AA01AB49 = {
+			isa = PBXFileReference;
+			name = "billboard.h";
+			path = "include/billboard.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		8A31BD563C3CF4737580EBDC = {
+			isa = PBXFileReference;
+			name = "invisiblewall.h";
+			path = "include/concrete/invisiblewall.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		48AD34EABC399A58D26A1DC3 = {
+			isa = PBXFileReference;
+			name = "standardwall.h";
+			path = "include/concrete/standardwall.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		F6A37F4884126F11FDB96464 = {
+			isa = PBXFileReference;
+			name = "explosion.h";
+			path = "include/explosion.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		6925B4FAAEC6255F32D5E2C0 = {
+			isa = PBXFileReference;
+			name = "projectileManager.h";
+			path = "include/fwd/projectileManager.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		FC6FA6247040D21CA1240DFA = {
+			isa = PBXFileReference;
+			name = "meshlib.h";
+			path = "include/meshlib.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		5F7B550DA4C3BE215B33EA2D = {
+			isa = PBXFileReference;
+			name = "pointlight.h";
+			path = "include/pointlight.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		79460D222DAE65BF334EFCC5 = {
+			isa = PBXFileReference;
+			name = "mesh.h";
+			path = "include/mesh.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4620761FB6805F9B64FA1803 = {
+			isa = PBXFileReference;
+			name = "grenade.h";
+			path = "include/concrete/grenade.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4FE1F006547939F8A470F881 = {
+			isa = PBXFileReference;
+			name = "missilesilo.h";
+			path = "include/concrete/missilesilo.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		F395A5FB45CD68D95FA28AD6 = {
+			isa = PBXFileReference;
+			name = "missilesilostate.h";
+			path = "include/fsm/states/missilesilostate.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		020F22AE6B394A22F1AC2C69 = {
+			isa = PBXFileReference;
+			name = "uwindow.h";
+			path = "include/uLayout/uwindow.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		916A05179225266F156D5C4C = {
+			isa = PBXFileReference;
+			name = "uwindow.h";
+			path = "include/fwd/uwindow.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		C7CD80C62F58503C334A9DE1 = {
+			isa = PBXFileReference;
+			name = "costbutton.h";
+			path = "include/costbutton.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		131E2CBB5795280AAB40CC64 = {
+			isa = PBXFileReference;
+			name = "uielement.h";
+			path = "include/fwd/uielement.h";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		E9C6BDD75CC235E2C6D5207B = {
+			isa = PBXFileReference;
+			name = "towerDefence.pro";
+			path = "towerDefence.pro";
+			refType = 4;
+			sourceTree = "SOURCE_ROOT";
+		};
+		883D7615C4D2DE3FA1218F12 = {
+			isa = PBXGroup;
+			children = (
+				"3B5C31E0476CF26CC94CDADA");
+			name = "Headers";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		3B5C31E0476CF26CC94CDADA = {
+			isa = PBXGroup;
+			children = (
+				"F4CD2BDC12FBF8F823E5B771",
+				"34B8B474AF4AC82E0D6C0574",
+				"5EB3D8915CB128EC6309E6A7",
+				"430DE3E0E3AEE21B14EB7089",
+				"FAEEEF794A293D9176E5815D",
+				"2E6E1B2EAC73DAC51E02D4CC",
+				"F8D96CE59296C12CB40CA1E6",
+				"14298916DF9EC26ED6679512",
+				"288A9FF49E11F5F972540819",
+				"190628FBCE5FBB4348229AB2",
+				"BB699156A7BD5B21B93D2F7A",
+				"0832E24AEAD30F92BA7EA04E",
+				"427F2DCC61A041892E5B66E7",
+				"EE74552E13E833F6BDB5AAD2",
+				"AD1C6A245C303636B6DF37C4",
+				"4825D1B8A7B7FF80E8F038A3",
+				"28FE2698CC4FA0066FA30607",
+				"32E2CBD90992A650EBC4B7F3",
+				"240038921789AD4CF6628F60",
+				"63C5DDE1D6AF7CAA861922FA",
+				"EE1E8FF9193AA4B74FF59CAC",
+				"75A9914C0121610FA3B94D54",
+				"883BFA0ACA83D42B5E1EDE57",
+				"F6F078751CAC83D6E97380F0",
+				"134E222100BFC4CDD97FFC81",
+				"2B71B6EA1864A16741B60F66",
+				"ECC119D4772FD431FA570A8D",
+				"79A071505AD402DC1201882C",
+				"3618E56F82CB1C591922DA76",
+				"4DCEA8B6D475B560861D7536",
+				"38491F5B4899CD0165AA5F66",
+				"F805442BF63E7DC16FD3959A",
+				"4209E113B7047297AA01AB49",
+				"F6A37F4884126F11FDB96464",
+				"FC6FA6247040D21CA1240DFA",
+				"5F7B550DA4C3BE215B33EA2D",
+				"79460D222DAE65BF334EFCC5",
+				"C7CD80C62F58503C334A9DE1");
+			name = "include";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		79A071505AD402DC1201882C = {
+			isa = PBXGroup;
+			children = (
+				"232C825FCC43B4E9FBF3143F");
+			name = "ai";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		F6F078751CAC83D6E97380F0 = {
+			isa = PBXGroup;
+			children = (
+				"6BDEA45EFCAFA06BF26A663E",
+				"F0BEAFBEAD67134CB1A82CDD",
+				"AE2FB28E63A661DAD99132D9",
+				"3624E8C32230C1572BF2C492",
+				"8A31BD563C3CF4737580EBDC",
+				"48AD34EABC399A58D26A1DC3",
+				"4620761FB6805F9B64FA1803",
+				"4FE1F006547939F8A470F881");
+			name = "concrete";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		ECC119D4772FD431FA570A8D = {
+			isa = PBXGroup;
+			children = (
+				"94D776A8393BD8E5960941FD",
+				"208C07FB9732D55695CAA7B9",
+				"8DF79367BE2C47175DFED66E");
+			name = "fsm";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		8DF79367BE2C47175DFED66E = {
+			isa = PBXGroup;
+			children = (
+				"FF710733FCD22E2C5E1BD87E",
+				"84E03A85CD90EC71F22C33AE",
+				"0EC465775C001240DC3765ED",
+				"F395A5FB45CD68D95FA28AD6");
+			name = "states";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		134E222100BFC4CDD97FFC81 = {
+			isa = PBXGroup;
+			children = (
+				"F257E81375FDB535F6E17574",
+				"351FF6466B6B08780657D23E",
+				"BCAD4E913541072837737A90",
+				"B8D8FA2CDF73CA5EE94CC6F2",
+				"E4C406BCD7E86C5D4F06DF31",
+				"4C8F2C0B171E5BDB7B1C8878",
+				"D1714E393239C3CD5AC0916E",
+				"3BA7A018BFE5589729FD41F6",
+				"69AF89E2F929CD0656AF0FDA",
+				"6925B4FAAEC6255F32D5E2C0",
+				"916A05179225266F156D5C4C",
+				"131E2CBB5795280AAB40CC64");
+			name = "fwd";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		4DCEA8B6D475B560861D7536 = {
+			isa = PBXGroup;
+			children = (
+				"C2030FA8FF619EC7D0C55B6A",
+				"9FC089C723052C0C96971477",
+				"7DFBAD6166C67CFB93AA8A1E",
+				"020F22AE6B394A22F1AC2C69");
+			name = "uLayout";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		06674E1DE8D3EB6E763DFFDA = {
+			isa = PBXGroup;
+			children = (
+				"7EC3C68A81EFFF79B6CA22AC",
+				"02744D49813A174F10A5B4E3",
+				"5FCFE707AC4518FC0AF1B4F0",
+				"E1F0718168E2ACCE01D4C875",
+				"15FF132547D202D4F6103481",
+				"C57591D89F0BEE7486AF327E",
+				"B5108F584DDDDA882ADA51FB",
+				"FCFC2A913693DB7E96D77159",
+				"CFC3D876230829106A9A56A3",
+				"B94AB518A1AE68A9965572B8",
+				"6EF17526BE0E4CC9B0F882AF",
+				"45E60C24C44303B6E5209A21",
+				"18513665750EF5ADF42B5EC2",
+				"E2B656616D911EB8D3605C2E",
+				"AEF9E958D9E5F476279C706E",
+				"BAA4D2D0FFAFDEC2B86BAF06",
+				"871634C5F6698F6A2EF2616A",
+				"CF6291680856BCCF1D74FB58",
+				"1E2E29F4912BBEE028CD5264",
+				"52C36C761728AF2F0C443F7C",
+				"B429F62A82C49AD42D8542E0",
+				"628AB6E28F80D7713903B8EF",
+				"8576E208B5AB3A4BB4A5EAE7",
+				"87096C21CEC95A9D1C07AC29",
+				"65CEB36BD38313E5E399363B",
+				"DA5B82BB55363F5284FA6AA6",
+				"98F4BDE32838E95058F3E708",
+				"DC52F162280289DD2D4D97D8",
+				"6F37AFE23440A66BCBA8D1F5",
+				"66C3041EDFF4AC9384C4032F",
+				"845AD689807959A72AC92E50",
+				"BFDFD968DC150119CFFE380B",
+				"58BC7C5115874A3C292EDC8D",
+				"369A954238F025B15EBCC00C",
+				"D0A769D701FFC7042B2DA6B8",
+				"9A5625E73A45D7ECE1335647",
+				"3776B523484B18CD439D495B");
+			name = "src";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		98F4BDE32838E95058F3E708 = {
+			isa = PBXGroup;
+			children = (
+				"21C72A68E355735CDCFAE1FF");
+			name = "ai";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		87096C21CEC95A9D1C07AC29 = {
+			isa = PBXGroup;
+			children = (
+				"F5D3116FF81FBB67D234FB75",
+				"4C486ABFE3C5F5A4C29E1DD4",
+				"8D4B94579B1FC04905820A68",
+				"E8E986BF42296C7AA0DD3023",
+				"8AF9CA1D0C1D7771AFE35AD6",
+				"346E809CFCF4DD7A7DCE20A4",
+				"1A816C73498F5E5D8F67D737",
+				"8EBA166AE867B186EFF57F46");
+			name = "concrete";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		DA5B82BB55363F5284FA6AA6 = {
+			isa = PBXGroup;
+			children = (
+				"1A52F0323E0000CE55583A07",
+				"2D4F5B7E3985EEB430409182");
+			name = "fsm";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		2D4F5B7E3985EEB430409182 = {
+			isa = PBXGroup;
+			children = (
+				"BB6770FF35351443D2944980",
+				"AE5204DE615DAAAFB44C060B",
+				"1A5D522B1A5D7612547740ED",
+				"BC17AE25CDA836DE413B8F99");
+			name = "states";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		6F37AFE23440A66BCBA8D1F5 = {
+			isa = PBXGroup;
+			children = (
+				"0535543039C574E9915B0FB8",
+				"7928A43BF62972F2ADA8A7A7",
+				"52E570FD4714E3B5A3A8B2F1");
+			name = "uLayout";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		FB61758D0F0FDA4BA867C3D5 = {
+			isa = PBXGroup;
+			children = (
+				"06674E1DE8D3EB6E763DFFDA");
+			name = "Sources";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		7CABE3C80E79AD2B307756D2 = {
+			isa = PBXGroup;
+			children = (
+				"E9C6BDD75CC235E2C6D5207B");
+			name = "Sources [qmake]";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		A0A52A2ADF7A1E2A99738674 = {
+			buildActionMask = 2147483647;
+			files = (
+				);
+			generatedFileNames = (
+				"FD1638E377D97C82BDB438FB",
+				"DB4FC9D0CF1F4F6FE4FC8835",
+				"A5793E7A0BE2F2C4F56512B9",
+				"82AFD2699A1863EDEB6FC836",
+				"8C1240F45C6BD6B663CE950F",
+				"865604B08701DA40D3F9F57B",
+				"EEF4E3AB9B07271DABAA0C7A",
+				"3009F3B812CEDDB9A39202C8",
+				"25355138B6B3FBA5CECBE646",
+				"B06A478101AB62FA3C476A5D",
+				"28A56EE146E0CE913E740E1C",
+				"BCF13522E191DFA5901870D7",
+				"38B08ECC3CCC2F393641E07B",
+				"CD466338E3B7C60CA3A783D4",
+				"312FA3FC253AFAD4F4DE5522",
+				"4B85E2CF3F8E2B92A90CC46E",
+				"33EDC38709947040B98BC201",
+				"EF0817A2856E4E6E1455EE67",
+				"CA34A5CCAAC0286E9BDB2F99",
+				"52CD468D15D2579E6976B071",
+				"9C8DA681F2BBB5A4D724A857",
+				"CD1435B096584191BA0DDD30",
+				"52498982102B18F3BC644D02",
+				"FA99FA9C638DE2BA475C1317",
+				"BBBE332B560CC4AE36993AF9",
+				"F1253D2318A8A908BF02E72F",
+				"56E24B1A6BAB4FB50B9BB59D",
+				"3EB5B444876AEE3A928FBA32",
+				"42E4E3E9869377187BEA1F50",
+				"5B1D64AAD0434130D967ABC0",
+				"AAA1192C14608355BFB91D4D",
+				"0D73E364245276CD4E2DA39B",
+				"CF6930E62091F9A47804FEFD",
+				"4DBD53E83E2C99938BADE952",
+				"C1806C334F69CF7E6C2E37FF",
+				"FE474E2AD4E0A6A686D0952B",
+				"453B4D7C2628D650134F2146",
+				"85FB8A8B29A3E4F9BEB06AB0",
+				"24A28B067B6467552FE1EEB0",
+				"BF07F05E5E96B16901782350",
+				"26878BAE3344DBC8782FD02D",
+				"018B54DA49A0C34BCE2DDABA",
+				"0B9D2F81696AA47B549E2CC9",
+				"DAED4278C66AA3215042FF74",
+				"93313E961B89BACF5CA34223",
+				"781D030164DA2C6CA58C7B02",
+				"D7873C8F64731E1CBCAD5152",
+				"E3AEBF158F4C2FE8E7F03DCC",
+				"FCDE6CD094E1593FB04FFF1C",
+				"F3CB4690DEF8D3CA6E24A57C");
+			isa = PBXShellScriptBuildPhase;
+			name = "Qt Preprocessors";
+			neededFileNames = (
+				"FD1638E377D97C82BDB438FB",
+				"DB4FC9D0CF1F4F6FE4FC8835",
+				"A5793E7A0BE2F2C4F56512B9",
+				"82AFD2699A1863EDEB6FC836",
+				"8C1240F45C6BD6B663CE950F",
+				"865604B08701DA40D3F9F57B",
+				"EEF4E3AB9B07271DABAA0C7A",
+				"3009F3B812CEDDB9A39202C8",
+				"25355138B6B3FBA5CECBE646",
+				"B06A478101AB62FA3C476A5D",
+				"28A56EE146E0CE913E740E1C",
+				"BCF13522E191DFA5901870D7",
+				"38B08ECC3CCC2F393641E07B",
+				"CD466338E3B7C60CA3A783D4",
+				"312FA3FC253AFAD4F4DE5522",
+				"4B85E2CF3F8E2B92A90CC46E",
+				"33EDC38709947040B98BC201",
+				"EF0817A2856E4E6E1455EE67",
+				"CA34A5CCAAC0286E9BDB2F99",
+				"52CD468D15D2579E6976B071",
+				"9C8DA681F2BBB5A4D724A857",
+				"CD1435B096584191BA0DDD30",
+				"52498982102B18F3BC644D02",
+				"FA99FA9C638DE2BA475C1317",
+				"BBBE332B560CC4AE36993AF9",
+				"F1253D2318A8A908BF02E72F",
+				"56E24B1A6BAB4FB50B9BB59D",
+				"3EB5B444876AEE3A928FBA32",
+				"42E4E3E9869377187BEA1F50",
+				"5B1D64AAD0434130D967ABC0",
+				"AAA1192C14608355BFB91D4D",
+				"0D73E364245276CD4E2DA39B",
+				"CF6930E62091F9A47804FEFD",
+				"4DBD53E83E2C99938BADE952",
+				"C1806C334F69CF7E6C2E37FF",
+				"FE474E2AD4E0A6A686D0952B",
+				"453B4D7C2628D650134F2146",
+				"85FB8A8B29A3E4F9BEB06AB0",
+				"24A28B067B6467552FE1EEB0",
+				"BF07F05E5E96B16901782350",
+				"26878BAE3344DBC8782FD02D",
+				"018B54DA49A0C34BCE2DDABA",
+				"0B9D2F81696AA47B549E2CC9",
+				"DAED4278C66AA3215042FF74",
+				"93313E961B89BACF5CA34223",
+				"781D030164DA2C6CA58C7B02",
+				"D7873C8F64731E1CBCAD5152",
+				"E3AEBF158F4C2FE8E7F03DCC",
+				"FCDE6CD094E1593FB04FFF1C",
+				"F3CB4690DEF8D3CA6E24A57C");
+			shellPath = "/bin/sh";
+			shellScript = "make\ -C\ /Users/peter/BA3TowerDefence\ -f\ \'towerDefence.xcodeproj/qt_preprocess.mak\'";
+		};
+		C29B8785722055ED95EF7B57 = {
+			buildActionMask = 2147483647;
+			files = (
+				"FD1638E377D97C82BDB438FB",
+				"DB4FC9D0CF1F4F6FE4FC8835",
+				"A5793E7A0BE2F2C4F56512B9",
+				"82AFD2699A1863EDEB6FC836",
+				"8C1240F45C6BD6B663CE950F",
+				"865604B08701DA40D3F9F57B",
+				"EEF4E3AB9B07271DABAA0C7A",
+				"3009F3B812CEDDB9A39202C8",
+				"25355138B6B3FBA5CECBE646",
+				"B06A478101AB62FA3C476A5D",
+				"28A56EE146E0CE913E740E1C",
+				"BCF13522E191DFA5901870D7",
+				"38B08ECC3CCC2F393641E07B",
+				"CD466338E3B7C60CA3A783D4",
+				"312FA3FC253AFAD4F4DE5522",
+				"4B85E2CF3F8E2B92A90CC46E",
+				"33EDC38709947040B98BC201",
+				"EF0817A2856E4E6E1455EE67",
+				"CA34A5CCAAC0286E9BDB2F99",
+				"52CD468D15D2579E6976B071",
+				"9C8DA681F2BBB5A4D724A857",
+				"CD1435B096584191BA0DDD30",
+				"52498982102B18F3BC644D02",
+				"FA99FA9C638DE2BA475C1317",
+				"BBBE332B560CC4AE36993AF9",
+				"F1253D2318A8A908BF02E72F",
+				"56E24B1A6BAB4FB50B9BB59D",
+				"3EB5B444876AEE3A928FBA32",
+				"42E4E3E9869377187BEA1F50",
+				"5B1D64AAD0434130D967ABC0",
+				"AAA1192C14608355BFB91D4D",
+				"0D73E364245276CD4E2DA39B",
+				"CF6930E62091F9A47804FEFD",
+				"4DBD53E83E2C99938BADE952",
+				"C1806C334F69CF7E6C2E37FF",
+				"FE474E2AD4E0A6A686D0952B",
+				"453B4D7C2628D650134F2146",
+				"85FB8A8B29A3E4F9BEB06AB0",
+				"24A28B067B6467552FE1EEB0",
+				"BF07F05E5E96B16901782350",
+				"26878BAE3344DBC8782FD02D",
+				"018B54DA49A0C34BCE2DDABA",
+				"0B9D2F81696AA47B549E2CC9",
+				"DAED4278C66AA3215042FF74",
+				"93313E961B89BACF5CA34223",
+				"781D030164DA2C6CA58C7B02",
+				"D7873C8F64731E1CBCAD5152",
+				"E3AEBF158F4C2FE8E7F03DCC",
+				"FCDE6CD094E1593FB04FFF1C",
+				"F3CB4690DEF8D3CA6E24A57C");
+			isa = PBXSourcesBuildPhase;
+			name = "Build Sources";
+		};
+		B3DF326B4257A9DC22A2A29C = {
+			isa = PBXFileReference;
+			name = "SDLmain";
+			path = "/opt/local/lib/libSDLmain.a";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		3709936A988A69A371DB559D = {
+			fileRef = "B3DF326B4257A9DC22A2A29C";
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		2F804DF6EFD284DAA2F7CB5C = {
+			isa = PBXFileReference;
+			name = "SDL";
+			path = "/opt/local/lib/libSDL-1.2.0.dylib";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		3C1635EF8582BBD7030A6C70 = {
+			fileRef = "2F804DF6EFD284DAA2F7CB5C";
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8EE92F8FA333C9E415C5B34E = {
+			isa = PBXFrameworkReference;
+			name = "QtXml.framework";
+			path = "/Library/Frameworks/QtXml.framework";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		C2643FEB592DBFD1429BE4E1 = {
+			fileRef = "8EE92F8FA333C9E415C5B34E";
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		7BC2E65A5E699A5E5D834CA2 = {
+			isa = PBXFrameworkReference;
+			name = "QtCore.framework";
+			path = "/Library/Frameworks/QtCore.framework";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		069D05B0128AE5DC7EE31738 = {
+			fileRef = "7BC2E65A5E699A5E5D834CA2";
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		C374004D45E01156F931B37D = {
+			isa = PBXFrameworkReference;
+			name = "QtOpenGL.framework";
+			path = "/Library/Frameworks/QtOpenGL.framework";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		450A0D11527AF164AEFE7377 = {
+			fileRef = "C374004D45E01156F931B37D";
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		9B36DA7E32F0304E780E7972 = {
+			isa = PBXFrameworkReference;
+			name = "QtGui.framework";
+			path = "/Library/Frameworks/QtGui.framework";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		501667F26B3C1FF6767A7C12 = {
+			fileRef = "9B36DA7E32F0304E780E7972";
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA18A6831232F53228631AD1 = {
+			isa = PBXFrameworkReference;
+			name = "OpenGL.framework";
+			path = "/System/Library/Frameworks/OpenGL.framework";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		BCEF71E1EDFB18DA77DC750B = {
+			fileRef = "DA18A6831232F53228631AD1";
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		C6766F86E49E9C8701C8E637 = {
+			isa = PBXFrameworkReference;
+			name = "AGL.framework";
+			path = "/System/Library/Frameworks/AGL.framework";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		0C6D4628EE0B0D1479A20551 = {
+			fileRef = "C6766F86E49E9C8701C8E637";
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ED1E82605DD74B483AF3C982 = {
+			children = (
+				"B3DF326B4257A9DC22A2A29C",
+				"2F804DF6EFD284DAA2F7CB5C",
+				"8EE92F8FA333C9E415C5B34E",
+				"7BC2E65A5E699A5E5D834CA2",
+				"C374004D45E01156F931B37D",
+				"9B36DA7E32F0304E780E7972",
+				"DA18A6831232F53228631AD1",
+				"C6766F86E49E9C8701C8E637");
+			isa = PBXGroup;
+			name = "External Frameworks and Libraries";
+			path = "";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		2A1043669E6E5A7426EA502A = {
+			buildActionMask = 2147483647;
+			files = (
+				"3709936A988A69A371DB559D",
+				"3C1635EF8582BBD7030A6C70",
+				"C2643FEB592DBFD1429BE4E1",
+				"069D05B0128AE5DC7EE31738",
+				"450A0D11527AF164AEFE7377",
+				"501667F26B3C1FF6767A7C12",
+				"BCEF71E1EDFB18DA77DC750B",
+				"0C6D4628EE0B0D1479A20551");
+			isa = PBXFrameworksBuildPhase;
+			name = "Frameworks & Libraries";
+		};
+		05596AB53D8D521C69802C27 = {
+			children = (
+				"FB61758D0F0FDA4BA867C3D5",
+				"883D7615C4D2DE3FA1218F12",
+				"7CABE3C80E79AD2B307756D2",
+				"ED1E82605DD74B483AF3C982");
+			isa = PBXGroup;
+			name = "towerDefence";
+			path = "";
+			refType = 4;
+			sourceTree = "<Group>";
+		};
+		30115E31A0DF914E3DCE5145 = {
+			isa = PBXFileReference;
+			explicitFileType = "wrapper.executable";
+			path = "towerDefence";
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		068F80C7519D0528FB08E821 = {
+			children = (
+				"30115E31A0DF914E3DCE5145");
+			isa = PBXGroup;
+			name = "Products";
+			refType = 4;
+		};
+		37E486F6FE843AD8391E9552 = {
+			buildPhases = (
+				"D7BA7D76DAB5DD13389D6332",
+				"A0A52A2ADF7A1E2A99738674",
+				"C29B8785722055ED95EF7B57",
+				"2A1043669E6E5A7426EA502A");
+			buildSettings = {
+				CC = "/usr/bin/gcc";
+				CPLUSPLUS = "/usr/bin/g++";
+				LEXFLAGS = "";
+				YACCFLAGS = "-d";
+				OTHER_REZFLAGS = "";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "";
+				PREBINDING = NO;
+				BUILD_ROOT = "/Users/peter/BA3TowerDefence";
+				OTHER_LDFLAGS = (
+						"-headerpad_max_install_names",
+						"-L/Library/Frameworks",
+						"-F/Library/Frameworks",
+						"-L/opt/local/lib",
+						"-Wl,-framework,AppKit",
+						"-lSDL_ttf",
+						"-L/usr/local/lib",
+						"-L/$(HOME)/NGL/lib",
+						"-lNGL",
+						"-fopenmp",
+						"-lgomp");
+				DYLIB_CURRENT_VERSION = "1.0.0";
+				DYLIB_COMPATIBILITY_VERSION = "1.0";
+				MACOSX_DEPLOYMENT_TARGET = "10.4";
+				OBJROOT = "obj/";
+				PRODUCT_NAME = "towerDefence";
+				HOME = "/Users/peter";
+			};
+			conditionalBuildSettings = {
+			};
+			dependencies = (
+				);
+			productReference = "30115E31A0DF914E3DCE5145";
+			shouldUseHeadermap = 1;
+			buildConfigurationList = 17B3380A4D6A7D415E7F2E1E;
+			isa = PBXNativeTarget;
+			productType = "com.apple.product-type.tool";
+			name = "towerDefence";
+			productName = "towerDefence";
+			startupPath = "<<ProjectDirectory>>";
+		};
+		4B72B24813252891014BCF61 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = "NO";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = "YES";
+				GCC_OPTIMIZATION_LEVEL = "0";
+				PRODUCT_NAME = "towerDefence";
+				HEADER_SEARCH_PATHS = (
+					"/Library/Frameworks/QtCore.framework/Versions/4/Headers",
+					"/usr/include/QtCore",
+					"/Library/Frameworks/QtGui.framework/Versions/4/Headers",
+					"/usr/include/QtGui",
+					"/Library/Frameworks/QtOpenGL.framework/Versions/4/Headers",
+					"/usr/include/QtOpenGL",
+					"/Library/Frameworks/QtXml.framework/Versions/4/Headers",
+					"/usr/include/QtXml",
+					"/usr/include",
+					"include",
+					"/Users/peter/NGL/include/",
+					"/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers",
+					"/System/Library/Frameworks/AGL.framework/Headers",
+					"moc",
+					"/usr/local/include",
+					"/System/Library/Frameworks/CarbonCore.framework/Headers",
+					"/usr/local/Qt4.8/mkspecs/macx-xcode");
+				LIBRARY_SEARCH_PATHS = (
+					"/Library/Frameworks",
+					"/opt/local/lib",
+					"/usr/local/lib",
+					"/$(HOME)/NGL/lib",
+					"/System/Library/Frameworks/");
+				FRAMEWORK_SEARCH_PATHS = (
+					"/Library/Frameworks",
+					"/Library/Frameworks");
+				INFOPLIST_FILE = "Info.plist";
+				OTHER_CFLAGS = (
+					"-pipe",
+					"-g",
+					"-Wall",
+					"-W",
+					"-DNGL_DEBUG",
+					"-DQT_XML_LIB",
+					"-DQT_OPENGL_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_CORE_LIB",
+					"-DQT_SHARED");
+				OTHER_CPLUSPLUSFLAGS = (
+					"-pipe",
+					"-I/opt/local/include/SDL",
+					"-D_GNU_SOURCE=1",
+					"-D_THREAD_SAFE",
+					"-fopenmp",
+					"-lgomp",
+					"-g",
+					"-Wall",
+					"-W",
+					"-DNGL_DEBUG",
+					"-DQT_XML_LIB",
+					"-DQT_OPENGL_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_CORE_LIB",
+					"-DQT_SHARED");
+				OTHER_LDFLAGS = (
+						"-headerpad_max_install_names",
+						"-L/Library/Frameworks",
+						"-F/Library/Frameworks",
+						"-L/opt/local/lib",
+						"-Wl,-framework,AppKit",
+						"-lSDL_ttf",
+						"-L/usr/local/lib",
+						"-L/$(HOME)/NGL/lib",
+						"-lNGL",
+						"-fopenmp",
+						"-lgomp");
+				ARCHS = "x86_64";
+			};
+			name = "Debug";
+		};
+		BEC09A62E69C3553534FF35E = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = "NO";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = "YES";
+				GCC_OPTIMIZATION_LEVEL = "0";
+				PRODUCT_NAME = "towerDefence";
+				PRODUCT_NAME = "towerDefence";
+			};
+			name = "Debug";
+		};
+		2C641C3335766025DD51B7BD = {
+			buildRules = (
+				);
+			buildSettings = {
+				COPY_PHASE_STRIP = "NO";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = "YES";
+				GCC_OPTIMIZATION_LEVEL = "0";
+				PRODUCT_NAME = "towerDefence";
+			};
+			isa = "PBXBuildStyle";
+			name = "Debug";
+		};
+		D70590BEB531B51029F711BB = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = "YES";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = "NO";
+				PRODUCT_NAME = "towerDefence";
+				HEADER_SEARCH_PATHS = (
+					"/Library/Frameworks/QtCore.framework/Versions/4/Headers",
+					"/usr/include/QtCore",
+					"/Library/Frameworks/QtGui.framework/Versions/4/Headers",
+					"/usr/include/QtGui",
+					"/Library/Frameworks/QtOpenGL.framework/Versions/4/Headers",
+					"/usr/include/QtOpenGL",
+					"/Library/Frameworks/QtXml.framework/Versions/4/Headers",
+					"/usr/include/QtXml",
+					"/usr/include",
+					"include",
+					"/Users/peter/NGL/include/",
+					"/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers",
+					"/System/Library/Frameworks/AGL.framework/Headers",
+					"moc",
+					"/usr/local/include",
+					"/System/Library/Frameworks/CarbonCore.framework/Headers",
+					"/usr/local/Qt4.8/mkspecs/macx-xcode");
+				LIBRARY_SEARCH_PATHS = (
+					"/Library/Frameworks",
+					"/opt/local/lib",
+					"/usr/local/lib",
+					"/$(HOME)/NGL/lib",
+					"/System/Library/Frameworks/");
+				FRAMEWORK_SEARCH_PATHS = (
+					"/Library/Frameworks",
+					"/Library/Frameworks");
+				INFOPLIST_FILE = "Info.plist";
+				OTHER_CFLAGS = (
+					"-pipe",
+					"-g",
+					"-Wall",
+					"-W",
+					"-DNGL_DEBUG",
+					"-DQT_XML_LIB",
+					"-DQT_OPENGL_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_CORE_LIB",
+					"-DQT_SHARED");
+				OTHER_CPLUSPLUSFLAGS = (
+					"-pipe",
+					"-I/opt/local/include/SDL",
+					"-D_GNU_SOURCE=1",
+					"-D_THREAD_SAFE",
+					"-fopenmp",
+					"-lgomp",
+					"-g",
+					"-Wall",
+					"-W",
+					"-DNGL_DEBUG",
+					"-DQT_XML_LIB",
+					"-DQT_OPENGL_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_CORE_LIB",
+					"-DQT_SHARED");
+				OTHER_LDFLAGS = (
+						"-headerpad_max_install_names",
+						"-L/Library/Frameworks",
+						"-F/Library/Frameworks",
+						"-L/opt/local/lib",
+						"-Wl,-framework,AppKit",
+						"-lSDL_ttf",
+						"-L/usr/local/lib",
+						"-L/$(HOME)/NGL/lib",
+						"-lNGL",
+						"-fopenmp",
+						"-lgomp");
+				ARCHS = "x86_64";
+			};
+			name = "Release";
+		};
+		8C7174830A1E4DCBA0332EC1 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = "YES";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = "NO";
+				PRODUCT_NAME = "towerDefence";
+				PRODUCT_NAME = "towerDefence";
+			};
+			name = "Release";
+		};
+		26DE8D2AEA4B3714B41E931F = {
+			buildRules = (
+				);
+			buildSettings = {
+				COPY_PHASE_STRIP = "YES";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = "NO";
+				PRODUCT_NAME = "towerDefence";
+			};
+			isa = "PBXBuildStyle";
+			name = "Release";
+		};
+		CC82A9286117DFED018F418F = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				"4B72B24813252891014BCF61",
+				"D70590BEB531B51029F711BB");
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationIsName = "Debug";
+		};
+		17B3380A4D6A7D415E7F2E1E = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				"BEC09A62E69C3553534FF35E",
+				"8C7174830A1E4DCBA0332EC1");
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationIsName = "Debug";
+		};
+		91B15E841AA80083484172DE = {
+			buildStyles = (
+				"2C641C3335766025DD51B7BD",
+				"26DE8D2AEA4B3714B41E931F");
+			hasScannedForEncodings = 1;
+			isa = PBXProject;
+			mainGroup = "05596AB53D8D521C69802C27";
+			buildConfigurationList = "CC82A9286117DFED018F418F";
+			projectDirPath = "";
+			targets = (
+				"37E486F6FE843AD8391E9552");
+		};
+	};
+	rootObject = "91B15E841AA80083484172DE";
+}

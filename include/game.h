@@ -133,14 +133,6 @@ public: //methods
     ngl::Vec3 getBasePos() const;
 
     //-------------------------------------------------------------------//
-    /// @brief a method to set the hilighted value of the node
-    /// @param [in] _id the id of the node
-    /// @param [in] _highlighted the highlight value of the node
-    //-------------------------------------------------------------------//
-
-    void setNodeHighlighted(int _id, int _highlighted);
-
-    //-------------------------------------------------------------------//
     /// @brief return weak smart pointer to the environment
     /// @return a weak pointer to the environment
     //-------------------------------------------------------------------//

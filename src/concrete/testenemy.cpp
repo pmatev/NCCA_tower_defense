@@ -88,18 +88,23 @@ void TestEnemy::draw()
   TextureLib *tex = TextureLib::instance();
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-  (*shader)["TexturedConst"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "TexturedConst");
+  (*shader)["Constant"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
 
   tex->bindTexture("enemy_AO");
+  shader->setShaderParam4f("colour", 0.8, 0.1, 0.1, 1);
   shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
+  shader->setShaderParam1f("textured",1);
 
-  r->draw("enemy", "TexturedConst");
+  r->draw("enemy", "Constant");
 
   // draw healthbar
-  (*shader)["TexturedConst"]->use();
+  (*shader)["Texture3D"]->use();
   m_healthBar->setUVScale(50/m_health,1);
   tex->bindTexture("healthbar");
-  m_healthBar->draw("TexturedConst");
+  if(m_health < 100)
+  {
+    m_healthBar->draw("Texture3D");
+  }
 }
 

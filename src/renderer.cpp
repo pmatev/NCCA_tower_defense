@@ -115,27 +115,27 @@ void Renderer::init()
     m_shaderNames.push_back("Constant");
 
 
-    shader->createShaderProgram("TexturedConst");
+    shader->createShaderProgram("Texture3D");
 
-    shader->attachShader("TexturedConstVertex",ngl::VERTEX);
-    shader->attachShader("TexturedConstFragment",ngl::FRAGMENT);
-    shader->loadShaderSource("TexturedConstVertex", "shaders/TexturedConst.vs");
-    shader->loadShaderSource("TexturedConstFragment","shaders/TexturedConst.fs");
+    shader->attachShader("Texture3DVertex",ngl::VERTEX);
+    shader->attachShader("Texture3DFragment",ngl::FRAGMENT);
+    shader->loadShaderSource("Texture3DVertex", "shaders/Texture3D.vs");
+    shader->loadShaderSource("Texture3DFragment","shaders/Texture3D.fs");
 
-    shader->compileShader("TexturedConstVertex");
-    shader->compileShader("TexturedConstFragment");
+    shader->compileShader("Texture3DVertex");
+    shader->compileShader("Texture3DFragment");
 
-    shader->attachShaderToProgram("TexturedConst","TexturedConstVertex");
-    shader->attachShaderToProgram("TexturedConst","TexturedConstFragment");
+    shader->attachShaderToProgram("Texture3D","Texture3DVertex");
+    shader->attachShaderToProgram("Texture3D","Texture3DFragment");
 
-    shader->bindAttribute("TexturedConst", 0, "inVert");
-    shader->bindAttribute("TexturedConst", 1, "inUV");
-    shader->bindAttribute("TexturedConst", 2, "inNormal");
-    shader->linkProgramObject("TexturedConst");
+    shader->bindAttribute("Texture3D", 0, "inVert");
+    shader->bindAttribute("Texture3D", 1, "inUV");
+    shader->bindAttribute("Texture3D", 2, "inNormal");
+    shader->linkProgramObject("Texture3D");
 
-    glBindFragDataLocation(shader->getProgramID("TexturedConst"),0,"outColour");
+    glBindFragDataLocation(shader->getProgramID("Texture3D"),0,"outColour");
 
-    m_shaderNames.push_back("TexturedConst");
+    m_shaderNames.push_back("Texture3D");
 
 
     shader->createShaderProgram("UI");

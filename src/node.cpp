@@ -16,7 +16,6 @@ Node::Node(const ngl::Vec3 &_pos, float _hexagonSize, unsigned int _id):
   Entity(_pos, NODE,_id),
   m_isOccupied(false),
   m_hexagonSize(_hexagonSize),
-  m_highlighted(0),
   m_isVisible(true),
   m_isFound(false),
   m_searchDepth(-1)
@@ -160,40 +159,39 @@ void Node::draw()
     if(m_isVisible)
     {
         Renderer *r = Renderer::instance();
-
+        Game *game = Game::instance();
         ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-        (*shader)["TexturedConst"]->use();
-        r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "TexturedConst");
+        (*shader)["Constant"]->use();
+        r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
         ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
         c = c/255.0f;
 
-        shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
+        ngl::Vec4 colour = ngl::Vec4(1,1,1,1);
 
-//        if(m_highlighted == 1)
-//        {
-//            shader->setShaderParam4f("colour", 0, 0, 0, 1);
-//        }
-//        else if(m_highlighted == 2)
-//        {
-//            shader->setShaderParam4f("colour", 1, 0, 1, 1);
-//        }
-//        else if(m_isInSpawnPath)
-//        {
-//            shader->setShaderParam4f("colour", 0, 0, 1, 1);
-//        }
-//        else
-//        {
-//            shader->setShaderParam4f("colour", 0.8, 0.8, 0.8, 1);
-//        }
+
+        if(m_highlighted == 1)
+        {
+            shader->setShaderParam4f("highlightColour", 0.737,0.835,0.925,1);
+        }
+        else if(m_highlighted == 2)
+        {
+            shader->setShaderParam4f("highlightColour", 1,0,1,1);
+        }
+        else if(m_isInSpawnPath && game->getPaused())
+        {
+            colour = ngl::Vec4(1, 0.5, 0.5, 1);
+        }
+
+        shader->setShaderParam4f("colour", colour[0], colour[1], colour[2], colour[3]);
+        shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
+        shader->setShaderParam1f("textured",1);
 
         TextureLib *tex = TextureLib::instance();
         tex->bindTexture("hexagon_AO");
-        r->draw("hexagon", "TexturedConst");
-
+        r->draw("hexagon", "Constant");
+        shader->setShaderParam4f("highlightColour",1,1,1,1);
     }
-
-
 }
 
 //-------------------------------------------------------------------//

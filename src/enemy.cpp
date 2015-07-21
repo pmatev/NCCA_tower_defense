@@ -27,7 +27,7 @@ Enemy::Enemy(
   m_scoreValue(_scoreValue),
   m_killedByUser(true)
 {
-  m_healthBar = Billboard::create(Billboard::b3D, ngl::Vec4(m_pos), 1, 0.07);
+  m_healthBar = Billboard::create(Billboard::b3D, ngl::Vec4(m_pos), 1, 0.05);
 
   if(generateTempPath())
   {
@@ -299,7 +299,7 @@ void Enemy::draw()
     // draw healthbar
     m_healthBar->setUVScale(50/m_health, 1);
     tex->bindTexture("healthbar");
-    m_healthBar->draw("TexturedConst");
+    m_healthBar->draw("Texture3D");
 }
 
 //-------------------------------------------------------------------//

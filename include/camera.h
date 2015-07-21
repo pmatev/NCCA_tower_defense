@@ -3,19 +3,19 @@
 
 #include <ngl/Camera.h>
 #include "fwd/camera.h"
-//#include <ngl/TransformStack.h>
 #include "fwd/window.h"
 
 /// @file Camera.h
 /// @brief An extension of the ngl::Camera class to provide smooth navigation.
 /// @author Peter Matev
-/// @version 1.0
-/// @date 29/03/2012
+/// @version 1.1
+/// @date 24/03/2013
 /// Revision History :
 /// Initial Version 29/03/2012
 /// @class Camera
 /// @brief Extends the functionality of the ngl::Camera to provide dolly, track and tumble movement using quaternions.
-/// Also provides a mechanism for following a Bundle and tumbling around it.
+/// This version of the camera class has been customised specifically for this Tower Defence project.
+
 class Camera : public ngl::Camera {
 
 
@@ -24,6 +24,7 @@ public:
     /// @brief Constructor for Camera
     //----------------------------------------------------------------------------------------------------------------------
     Camera();
+
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief Constructor for Camera
     /// @param [in] _from eye vector
@@ -31,17 +32,17 @@ public:
     /// @param [in] _up the up vector
     //----------------------------------------------------------------------------------------------------------------------
     Camera(const ngl::Vec4 &_from, const ngl::Vec4 &_to, const ngl::Vec4 &_up);
-    //Camera(Bundle *_parentBundle);
+
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief Destructor for Camera
     //----------------------------------------------------------------------------------------------------------------------
     ~Camera();
 
-
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief update the eye and look vectors
     //----------------------------------------------------------------------------------------------------------------------
     void update();
+
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief set the eye and look vectors to the ngl::Camera
     //----------------------------------------------------------------------------------------------------------------------
@@ -55,6 +56,7 @@ public:
     /// @param [in] _newX mouse position Y coord
     //----------------------------------------------------------------------------------------------------------------------
     void tumble(int _oldX, int _oldY, int _newX, int _newY);
+
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief function to track the camera
     /// @param [in] _oldX previous mouse position X coord
@@ -63,6 +65,7 @@ public:
     /// @param [in] _newX mouse position Y coord
     //----------------------------------------------------------------------------------------------------------------------
     void track(int _oldX, int _oldY, int _newX, int _newY);
+
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief function to dolly the camera in and out along the viewing normal
     /// @param [in] _oldX previous mouse position X coord
@@ -70,10 +73,10 @@ public:
     //----------------------------------------------------------------------------------------------------------------------
     void dolly(int _oldX, int _newX);
 
-
     /// @brief set the radius of the sphere which the camera eye can move on
     //----------------------------------------------------------------------------------------------------------------------
     inline void setRadius(float _z){m_radius = _z;}
+
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief get the radius of the sphere which the camera eye can move on
     //----------------------------------------------------------------------------------------------------------------------
@@ -81,15 +84,6 @@ public:
 
 protected:
 
-    //----------------------------------------------------------------------------------------------------------------------
-    /// @brief tumble velocity - for momentum tumble /* NOT IMPLEMENTED */
-    //----------------------------------------------------------------------------------------------------------------------
-    float m_tumbleVel;
-    //----------------------------------------------------------------------------------------------------------------------
-    /// @brief tumble angle - for momentum tumble /* NOT IMPLEMENTED */
-    //----------------------------------------------------------------------------------------------------------------------
-    float m_tumbleAngle;
-    //----------------------------------------------------------------------------------------------------------------------
     /// @brief radius of the sphere in screen space
     //----------------------------------------------------------------------------------------------------------------------
     float m_radius;

@@ -65,6 +65,7 @@ public:
   //-------------------------------------------------------------------//
   virtual void prepareForUpdate();
 
+
 protected:
   //-------------------------------------------------------------------//
   /// @brief The upgrade level of the static entity
@@ -78,6 +79,8 @@ protected:
   //-------------------------------------------------------------------//
 
   NodeWPtr m_linkedNode;
+
+
 };
 
 #endif // STATICENTITY_H

@@ -1,5 +1,5 @@
 #include <ngl/ShaderLib.h>
-
+#include "texturelib.h"
 #include "include/concrete/standardwall.h"
 #include "window.h"
 
@@ -16,7 +16,7 @@ StandardWall::StandardWall(
   initialiseMesh("wall");
   publish();
 
-  _linkedNode->setVisibility(false);
+  _linkedNode->setVisibility(true);
   _linkedNode->setOccupied(true);
 }
 
@@ -60,15 +60,27 @@ void StandardWall::generateViewBBox()
 void StandardWall::draw()
 {
   Renderer *r = Renderer::instance();
-
+  TextureLib *tex = TextureLib::instance();
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
-  (*shader)["Phong"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  ngl::Vec4 colour = ngl::Vec4(0.3,0.2,0.9,1);
 
-  shader->setShaderParam4f("colour", 0.4, 0.1, 0.8, 1);
-  shader->setShaderParam4f("colourSelect", 0, 0, 0, 0);
+  (*shader)["Constant"]->use();
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
+  ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
+  c = c/255.0f;
 
-  r->draw("wall", "Phong");
+  shader->setShaderParam4f("colour", colour[0], colour[1], colour[2], colour[3]);
+  shader->setShaderParam1f("textured",1);
+  if(m_highlighted == 1)
+  {
+     shader->setShaderParam4f("highlightColour", 0.737,0.835,0.925,1);
+  }
+  shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
+
+  tex->bindTexture("wall_AO");
+  r->draw("wall", "Constant");
+   shader->setShaderParam4f("highlightColour", 1,1,1,1);
+
 
 }

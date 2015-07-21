@@ -12,13 +12,14 @@
 //-------------------------------------------------------------------//
 
 Entity::Entity(const ngl::Vec3 &_pos, GeneralType _type, unsigned int _id) :
-  m_ID(_id),
-  m_pos(_pos),
-  m_health(100.0),
-  m_shieldPercentage(1.0),
-  m_wsViewBBox(0,0,0,0,0,0),
-  m_lsMeshBBox(0,0,0,0,0,0),
-  m_generalType(_type)
+    m_ID(_id),
+    m_pos(_pos),
+    m_health(100.0),
+    m_shieldPercentage(1.0),
+    m_wsViewBBox(0,0,0,0,0,0),
+    m_lsMeshBBox(0,0,0,0,0,0),
+    m_generalType(_type),
+    m_highlighted(0)
 {
   m_IDStr = boost::lexical_cast<std::string>(m_ID);
 
@@ -208,6 +209,7 @@ void Entity::drawWithColour(const ngl::Vec3 &_colour)
   c = c/255.0f;
 
   shader->setShaderParam4f("colour", 1,1,1,1);
+  shader->setShaderParam1f("textured",0);
 
   if(m_generalType != ENEMY)
   {

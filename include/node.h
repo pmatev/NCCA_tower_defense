@@ -104,14 +104,6 @@ public:
   inline void setOccupied(bool _isOccupied) {m_isOccupied = _isOccupied;}
 
   //-------------------------------------------------------------------//
-  /// @brief set method for the m_isHighlighted variable
-  /// @param [in] _isHighlighted a boolean value to set the occupied flag
-  /// to
-  //-------------------------------------------------------------------//
-  inline void setHighlighted(int _isHighlighted){
-                                    m_highlighted = _isHighlighted;}
-
-  //-------------------------------------------------------------------//
   /// @brief get the list of children that a node is linked to
   /// @return m_children list of child nodes
   //-------------------------------------------------------------------//
@@ -204,11 +196,6 @@ public:
 
   void setVisibility(bool _visibility);
 
-  //-------------------------------------------------------------------//
-  /// @brief get wether the node is highlighted or not
-  //-------------------------------------------------------------------//
-
-  inline int getHighlighted() {return m_highlighted;}
 
 protected:
   //-------------------------------------------------------------------//
@@ -245,12 +232,7 @@ protected:
 
   float m_hexagonSize;
 
-  //-------------------------------------------------------------------//
-  /// @brief if the node is moved over when in creation mode flag will
-  /// be set to true and the node will be rendered differently
-  //-------------------------------------------------------------------//
 
-  int m_highlighted;
 
   //-------------------------------------------------------------------//
   /// @brief whether the node should draw or not

@@ -602,22 +602,6 @@ ProjectileManagerWPtr Game::getProjectileManagerWeakPtr()
   return a;
 }
 
-//-------------------------------------------------------------------//
-
-void Game::setNodeHighlighted(int _id, int _highlighted)
-{
-    EntityPtr entityClick = getEntityByID(_id).lock();
-
-
-    NodePtr node = boost::dynamic_pointer_cast<Node>(entityClick);
-
-
-    if(node) // check that it is a valid node
-    {
-        node->setHighlighted(_highlighted); //change highlighted flag
-    }
-
-}
 
 //-------------------------------------------------------------------//
 

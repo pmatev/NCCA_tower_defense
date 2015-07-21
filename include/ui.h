@@ -334,6 +334,8 @@ public:
     //-------------------------------------------------------------------//
     void mouseDisablePressedState();
 
+    void setHighlighted(const unsigned int _id, const int _state);
+
 
 private:
 
@@ -365,7 +367,7 @@ private:
     //-------------------------------------------------------------------//
     /// @brief stores id to highlighted node for selection
     //-------------------------------------------------------------------//
-    unsigned int m_highlightedNode;
+    unsigned int m_currentlyHighlighted;
 
     //-------------------------------------------------------------------//
     /// @brief transform stack used in creation mode for tmp mesh

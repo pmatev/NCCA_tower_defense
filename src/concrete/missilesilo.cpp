@@ -7,6 +7,7 @@
 #include "projectilemanager.h"
 #include "game.h"
 #include "concrete/grenade.h"
+#include "texturelib.h"
 
 //-------------------------------------------------------------------//
 
@@ -324,30 +325,46 @@ void MissileSilo::generateViewBBox()
 void MissileSilo::draw()
 {
   Renderer *r = Renderer::instance();
-
+  TextureLib *tex = TextureLib::instance();
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
   //Draw the turret base
-  m_transformStack.pushTransform();
-  m_transformStack.setPosition(m_pos);
 
-  (*shader)["Phong"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  ngl::Mat4 M;
+  M.translate(m_pos[0], m_pos[1], m_pos[2]);
+
+
+  (*shader)["Constant"]->use();
+  r->loadMatrixToShader(M, "Constant");
   ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
   c = c/255.0f;
 
-  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
+  ngl::Vec4 colour = ngl::Vec4(0.95,0.95,1.0,1);
+  if(m_upgradeIndex == 1)
+  {
+      colour = ngl::Vec4(0.6,0.7,1,1);
+  }
+
+
+  shader->setShaderParam4f("colour", colour[0], colour[1], colour[2], colour[3]);
+  shader->setShaderParam1f("textured",1);
+  if(m_highlighted == 1)
+  {
+      shader->setShaderParam4f("highlightColour", 0.737,0.835,0.925,1);
+  }
   shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
 
+  tex->bindTexture("turret_base");
+  r->draw("turret_base", "Constant");
 
-  r->draw("turret_base", "Phong");
-  m_transformStack.popTransform();
-
+  shader->setShaderParam4f("highlightColour",1,1,1,1);
   // Test code to render the targets for each grenade -------------------------------------
 
-  ngl::Mat4 testMat;
-  testMat.translate(m_targetPos.m_x, m_targetPos.m_y, m_targetPos.m_z);
-  r->loadMatrixToShader(testMat, "Constant");
-  shader->setShaderParam4f("colour", 1,1,1,1);
-  r->draw("bullet", "Constant");
+//  ngl::Mat4 testMat;
+//  testMat.translate(m_targetPos.m_x, m_targetPos.m_y, m_targetPos.m_z);
+//  (*shader)["Constant"]->use();
+//  r->loadMatrixToShader(testMat, "Constant");
+//  shader->setShaderParam4f("colour", 1,1,1,1);
+//  shader->setShaderParam1f("textured",0);
+//  r->draw("bullet", "Constant");
 }

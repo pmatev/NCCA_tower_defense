@@ -11,7 +11,7 @@
 
 
 UI::UI():
-  m_creationMode(false)
+    m_creationMode(false)
 {
 
 }
@@ -133,7 +133,7 @@ UIElementPtr UI::checkUIClicked(const unsigned int _ID)
     elementsMap::iterator it = m_IDMap.find(_ID);
     if(it == m_IDMap.end())
     {
-      return UIElementPtr();
+        return UIElementPtr();
     }
     return it->second;
 }
@@ -170,13 +170,13 @@ void UI::creationModeClick(const unsigned int _ID)
             if(isCreated == true) // if the tower was built
             {
                 game->addCurrency(-m_tmpCost); // update player currency
-                node->setHighlighted(false);
+                node->setHighlighted(0);
 
                 if(game->getPlayerCurrency()-m_tmpCost < 0)
                     // if there is no money left come out of creation mode
                 {
                     setCreationMode(false);
-                    game->setNodeHighlighted(m_highlightedNode, 0);
+                    setHighlighted(m_currentlyHighlighted, 0);
                 }
             }
             else
@@ -187,7 +187,7 @@ void UI::creationModeClick(const unsigned int _ID)
         else //you dont have enough money come out of creation mode
         {
             setCreationMode(false);
-            game->setNodeHighlighted(m_highlightedNode, 0);
+            setHighlighted(m_currentlyHighlighted, 0);
         }
     }
 
@@ -197,7 +197,7 @@ void UI::creationModeClick(const unsigned int _ID)
     {
         setCreationMode(false);
         turretClicked(_ID);
-        game->setNodeHighlighted(m_highlightedNode, 0);
+        setHighlighted(m_currentlyHighlighted, 0);
     }
 
     //else check the ui to see if other buttons have been pressed
@@ -215,7 +215,7 @@ void UI::creationModeClick(const unsigned int _ID)
                 //if the button is the same as what has already been pressed
             {
                 setCreationMode(false);
-                game->setNodeHighlighted(m_highlightedNode, 0);
+                setHighlighted(m_currentlyHighlighted, 0);
             }
             else if(button && button->getAffordable() == true)
 
@@ -477,7 +477,6 @@ void UI::mouseMoveEvent(const unsigned int _ID)
     Game* game = Game::instance();
 
     entityClick = game->getEntityByID(_ID).lock();
-
     // if it isnt an entity the it may be a ui so run ui hover command
 
     if(!entityClick)
@@ -497,26 +496,32 @@ void UI::mouseMoveEvent(const unsigned int _ID)
             setButtonState(m_tmpHoverButton, DEFAULT);
         }
 
+        GeneralType eType = entityClick->getGeneralType();
+
+        if(eType == TURRET || eType == WALL)
+        {
+            setHighlighted(m_currentlyHighlighted, 0);
+            setHighlighted(_ID, 1);
+            m_currentlyHighlighted = _ID;
+        }
+
         //if we are in creation mode then highlight the current node
 
-        if(m_creationMode == true)
+        if(eType == NODE)
         {
-            if(entityClick->getGeneralType() == NODE &&
-                    _ID != m_highlightedNode)
+            //set existing nodes flag to false
+            setHighlighted(m_currentlyHighlighted, 0);
+
+            if(m_creationMode)
             {
-
-                //set existing nodes flag to false
-                game->setNodeHighlighted(m_highlightedNode, false);
-
                 //set new nodes flag to true
-                game->setNodeHighlighted(_ID, true);
+                setHighlighted(_ID, 1);
 
-                m_highlightedNode = _ID;
+                m_currentlyHighlighted = _ID;
             }
         }
     }
 }
-
 //-------------------------------------------------------------------//
 void UI::placeDownStaticEntity(const std::string &_type, NodePtr _node)
 {
@@ -635,7 +640,7 @@ TablePtr UI::getMenu(std::string _name)
         TablePtr menu = it->second;
         if(menu->getName() == _name)
         {
-           return menu;
+            return menu;
         }
     }
     return TablePtr();
@@ -682,12 +687,12 @@ void UI::createMenu(TablePtr _menu)
 //-------------------------------------------------------------------//
 void UI::createWindow
 (
-    ngl::Vec2 _pos,
-    std::string _name,
-    std::string _imageFile,
-    UI *_parent,
-    ngl::Vec2 _size
-    )
+        ngl::Vec2 _pos,
+        std::string _name,
+        std::string _imageFile,
+        UI *_parent,
+        ngl::Vec2 _size
+        )
 {
     UWindowPtr menu = UWindowPtr(new UWindow(_pos,_name,_imageFile,_parent,_size));
 
@@ -1265,10 +1270,10 @@ void UI::createInGameSettingsWindow()
     uwindow->createTable
             (
                 ngl::Vec2(0,0),
-                         "settingsmenu",
-                         "background",
-                         "",
-                         this);
+                "settingsmenu",
+                "background",
+                "",
+                this);
 
     UIElementPtr element = uwindow->getElement("settingsmenu");
 
@@ -1466,7 +1471,7 @@ void UI::backToGameFunction()
         menu->setTexture(1,0,"pauseButton");
     }
 
- }
+}
 
 //-------------------------------------------------------------------//
 void UI::startGameFunction()
@@ -1569,5 +1574,13 @@ void UI::closeTowerMenuFunction()
     menu->runAnimation();
 }
 
+void UI::setHighlighted(const unsigned int _id, const int _state)
+{
+    Game *game = Game::instance();
+    EntityPtr entity = game->getEntityByID(_id).lock();
 
-
+    if(entity)
+    {
+        entity->setHighlighted(_state);
+    }
+}

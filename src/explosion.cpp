@@ -157,6 +157,7 @@ void Explosion::draw()
   r->loadMatrixToShader(matrix, "Constant");
 
   shader->setShaderParam4f("colour", 1,1,1,weight*weight);
+  shader->setShaderParam1f("textured",0);
 
   r->draw("bullet", "Constant");
 

@@ -59,6 +59,7 @@ void Grenade::draw()
   r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
 
   shader->setShaderParam4f("colour", 1,0,0,1);
+  shader->setShaderParam1f("textured",0);
 
   r->draw("bullet", "Constant");
 }

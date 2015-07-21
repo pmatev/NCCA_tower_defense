@@ -6,7 +6,7 @@
 #include "renderer.h"
 #include "include/concrete/grenade.h"
 #include "game.h"
-
+#include "texturelib.h"
 #include "window.h"
 #include "ngl/ShaderLib.h"
 
@@ -163,23 +163,35 @@ void TestTurret::generateViewBBox()
 void TestTurret::draw()
 {
   Renderer *r = Renderer::instance();
-
+  TextureLib *tex = TextureLib::instance();
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
 
   //Draw the turret base
+  (*shader)["Constant"]->use();
+
   m_transformStack.pushTransform();
   m_transformStack.setPosition(m_pos);
 
-  (*shader)["Phong"]->use();
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
+  ngl::Vec4 colour = ngl::Vec4(0.95,0.95,1.0,1);
+  if(m_upgradeIndex == 1)
+  {
+      colour = ngl::Vec4(0.6,0.7,1,1);
+  }
+
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
   ngl::Vec3 c = Window::instance()->IDToColour(m_ID);
   c = c/255.0f;
 
-  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
+  shader->setShaderParam4f("colour", colour[0], colour[1], colour[2], colour[3]);
+  shader->setShaderParam1f("textured",1);
+  if(m_highlighted == 1)
+  {
+      shader->setShaderParam4f("highlightColour", 0.737,0.835,0.925,1);
+  }
   shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
 
-
-  r->draw("turret_base", "Phong");
+  tex->bindTexture("turret_base");
+  r->draw("turret_base", "Constant");
   m_transformStack.popTransform();
 
   //Draw the cannon
@@ -189,19 +201,11 @@ void TestTurret::draw()
   float turret_y_rotation = (atan2(m_aim[0], m_aim[2])) * (180 / 3.14159263);
   //float turret_xz_rotation = (atan2(m_aim[1], m_aim[0])) * (180 / 3.14159263);
   m_transformStack.setRotation(ngl::Vec3(0, turret_y_rotation, 0));
+  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Constant");
 
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
-  (*shader)["Phong"]->use();
-
-  shader->setShaderParam4f("colourSelect", c[0], c[1], c[2], 1);
-
-  shader->setShaderParam4f("colour", 0.1, 0.1, 0.8, 1);
-
-  m_transformStack.setPosition(m_shotPos);
-  m_transformStack.setRotation(ngl::Vec3(0, (atan(m_aim[0] / m_aim[2])) * (180 / 3.14159263), 0));
-  r->loadMatrixToShader(m_transformStack.getCurrentTransform().getMatrix(), "Phong");
-
-  r->draw("turret_cannon", "Phong");
+  tex->bindTexture("turret_cannon");
+  r->draw("turret_cannon", "Constant");
 
   m_transformStack.popTransform();
+  shader->setShaderParam4f("highlightColour", 1,1,1,1);
 }
